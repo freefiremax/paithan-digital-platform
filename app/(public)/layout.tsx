@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { NoticeTicker } from "@/components/layout/NoticeTicker";
+import { FloatingChatbotWidget } from "@/components/chatbot/FloatingChatbotWidget";
 
 /**
  * Shell for every public page: government utility strip, council identity, section
@@ -20,6 +21,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       <NoticeTicker />
       <main id="main-content">{children}</main>
       <Footer />
+      <FloatingChatbotWidget />
     </>
   );
 }
+

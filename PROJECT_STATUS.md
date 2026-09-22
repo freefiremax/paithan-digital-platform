@@ -46,18 +46,38 @@ The **Paithan Digital Platform** is an official municipal, heritage, and tourism
   * Citizen Services strip (Property Tax, Birth/Death Certificates, Ward Locator, Grievance Helpline).
   * Official Tenders & Notices Register (tabular government format).
   * 17 Wards at a Glance with live work summaries.
-* **About Nagar Parishad (`app/(public)/nagar-parishad/page.tsx`):**
-  * History since 1854, council metrics, departments (Health, Water, Works, Revenue, Planning), secretariat contacts.
-* **Public Representatives Page (`app/(public)/nagar-parishad/representatives/page.tsx`):**
-  * Executive leadership cards (MLA Vilas Bhumre, MP Sandipanrao Bhumre, Chief Officer Santosh Dagdu Agle).
-  * 17 Ward Corporators (Nagar Sevaks) roster with verified vs sample badges.
-* **17 Wards Directory (`app/(public)/nagar-parishad/ward-map/page.tsx`):**
-  * Complete directory of all 17 wards with authentic locality mapping and active work summaries.
-* **Development Works Registry (`app/(public)/nagar-parishad/development-works/page.tsx`):**
-  * Interactive filterable ledger by ward (1–17) and by status (`Completed` / `Ongoing` / `Planned`), search bar, and progress meters.
-* **Notifications & Tenders (`app/(public)/nagar-parishad/notifications/page.tsx`):**
-  * Categorized e-procurement ledger (`Tender`, `Notice`, `Scheme`, `Announcement`) with reference numbers and closing dates.
-* **Dr. Balasaheb Patil Museum (`app/(public)/heritage/museum/page.tsx`):**
+* **About Nagar Parishad (`app/(public)/nagar-parishad/page.tsx`):** History since 1854, council metrics, departments, secretariat contacts.
+* **Public Representatives Page (`app/(public)/nagar-parishad/representatives/page.tsx`):** Executive leadership cards (MLA Vilas Bhumre, MP Sandipanrao Bhumre, Chief Officer Santosh Dagdu Agle).
+* **Major Infrastructure Projects (`app/(public)/nagar-parishad/projects/page.tsx`):** AMRUT 2.0 Underground Sewerage, PMAY Housing, Paithani Handloom Weavers Park, and Solid Waste Plant.
+* **Ward Corporators Directory (`app/(public)/nagar-parishad/nagar-sevak/page.tsx`):** 17 Wards Nagar Sevak contact ledger with SEC advisory.
+* **17 Wards Directory (`app/(public)/nagar-parishad/ward-map/page.tsx`):** Full ward boundaries and localities.
+* **Development Works Registry (`app/(public)/nagar-parishad/development-works/page.tsx`):** Interactive filterable ledger across all wards.
+* **Notifications & Tenders (`app/(public)/nagar-parishad/notifications/page.tsx`):** Categorized e-procurement ledger.
+* **Dr. Balasaheb Patil Museum (`app/(public)/heritage/museum/page.tsx`):** State archaeological exhibits, Satavahana coins, and Modi script Rajpatra.
+* **Antiquities Catalog (`app/(public)/heritage/artifacts/page.tsx`):** Filterable museum catalog with accession numbers.
+* **3D Heritage Models (`app/(public)/heritage/3d-models/page.tsx`):** Interactive 360° rotational 3D artifact simulator with wireframe mode.
+* **Cultural Heritage & Traditions (`app/(public)/heritage/cultural-heritage/page.tsx`):** Sant Eknath Bhakti, Nath Shashti yatra, and GI Paithani silk.
+* **Tourism Portal Landing (`app/(public)/tourism/page.tsx`):** Central tourism hub with visitor guidelines and quick links.
+* **Jayakwadi Dam Dedicated Guide (`app/(public)/tourism/jayakwadi/page.tsx`):** Engineering specifications, reservoir capacity, and promenade guide.
+* **Nath Sagar Bird Sanctuary (`app/(public)/tourism/nath-sagar/page.tsx`):** Wetland bird species catalog, Siberian flamingos, and birdwatching trails.
+* **Heritage Sites & Temples (`app/(public)/tourism/heritage-sites/page.tsx`):** Sant Eknath Samadhi Mandir, Nagghat, Sant Eknath Wada, Apegaon.
+* **Interactive Tourist Map (`app/(public)/tourism/map/page.tsx`):** 10 verified landmarks with GPS coordinates and Google Maps routing.
+
+### Step 6: AI Citizen Chatbot (Completed & Verified)
+* **Chatbot API (`app/api/chatbot/route.ts`):** Integrated Google Gemini API with robust zero-hallucination fallback to local verified RAG knowledge base.
+* **Interactive Chat Interface (`components/chatbot/ChatInterface.tsx`):** Bilingual (English / मराठी), suggested prompt pills, typing animation, source citations with clickable route links.
+* **Dedicated Chatbot Page (`app/(public)/chatbot/page.tsx`):** Full-screen citizen inquiry desk with council escalation contacts.
+* **Global Floating Widget (`components/chatbot/FloatingChatbotWidget.tsx`):** Accessible floating trigger button on all public pages.
+
+### Step 7: Admin CMS Governance Portal (Completed & Verified)
+* **Auth & Roles (`lib/auth.ts`):** Role-based access (`SUPER_ADMIN`, `EDITOR`, `WARD_EDITOR`) with demo presets.
+* **Admin Login (`app/admin/login/page.tsx`):** Municipal staff sign-in with 1-click demo role switcher.
+* **Admin Layout (`app/admin/layout.tsx`):** Independent admin shell with navigation drawer and audit banner.
+* **Admin Dashboard (`app/admin/dashboard/page.tsx`):** Municipal KPIs, tender tracker, and capital works ledger.
+* **Tenders & Circulars Manager (`app/admin/notifications/page.tsx`):** Create, pin, and archive tenders.
+* **Development Works Manager (`app/admin/development-works/page.tsx`):** Ward capital outlay tracker and status editor.
+* **Wards & Corporators Manager (`app/admin/wards/page.tsx`):** Corporator roster editor with SEC gazette flag toggle.
+
   * Gallery of Satavahana coins, Chhatrapati Shivaji Maharaj's Rajpatra, Roman carnelian beads, antique Paithani sarees, ivory dice, visiting info, and state archaeology credentials.
 * **Ancient Pratishthana History (`app/(public)/heritage/history/page.tsx`):**
   * Chronological timeline of 5 historical eras across 2,200 years.
