@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+/*
+ * Maps the approved Option A token values (defined verbatim in :root below) onto Tailwind
+ * utility names so pages can write `bg-navy-900` / `text-zari-500` instead of repeating
+ * arbitrary-value syntax. `inline` keeps the utilities pointing at the original variables,
+ * so the token values themselves remain the single source of truth.
+ */
+@theme inline {
+  --color-navy-950: var(--gov-navy-950);
+  --color-navy-900: var(--gov-navy-900);
+  --color-navy-800: var(--gov-navy-800);
+  --color-navy-700: var(--gov-navy-700);
+  --color-zari-600: var(--zari-gold-600);
+  --color-zari-500: var(--zari-gold-500);
+  --color-zari-400: var(--zari-gold-400);
+  --color-zari-100: var(--zari-gold-100);
+  --color-slate-ink: var(--civic-slate-900);
+  --color-slate-body: var(--civic-slate-700);
+  --color-slate-muted: var(--civic-slate-500);
+  --color-surface: var(--bg-surface-white);
+  --color-ash: var(--bg-surface-ash);
+  --color-shade: var(--bg-surface-slate);
+  --color-rule: var(--border-subtle);
+  --color-rule-strong: var(--border-strong);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --font-devanagari: var(--font-noto-devanagari), var(--font-inter), "Nirmala UI", sans-serif;
+}
+
+@layer base {
+  :root {
+    --gov-navy-950: #071224;
+    --gov-navy-900: #0C1E3C;
+    --gov-navy-800: #162B4E;
+    --gov-navy-700: #1E3A8A;
+    --zari-gold-600: #9A7007;
+    --zari-gold-500: #B8860B;
+    --zari-gold-400: #D4AF37;
+    --zari-gold-100: #FEF9C3;
+    --civic-slate-900: #0F172A;
+    --civic-slate-700: #334155;
+    --civic-slate-500: #64748B;
+    --bg-surface-white: #FFFFFF;
+    --bg-surface-ash: #F8FAFC;
+    --bg-surface-slate: #F1F5F9;
+    --border-subtle: #E2E8F0;
+    --border-strong: #CBD5E1;
+  }
+
+  body {
+    background-color: var(--bg-surface-ash);
+    color: var(--civic-slate-900);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * Institutional type discipline: figures in a municipal register have to line up
+   * column-to-column, so ward numbers, budgets, dates and reference numbers are all
+   * set in tabular figures by default rather than per-component.
+   */
+  th,
+  td,
+  time,
+  .civic-figure {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :lang(mr) {
+    font-family: var(--font-devanagari);
+  }
+
+  /* Keyboard focus stays visible everywhere — prd.md §8 requires keyboard navigability. */
+  :focus-visible {
+    outline: 2px solid var(--zari-gold-500);
+    outline-offset: 2px;
+  }
+
+  .gov-nav-bar :focus-visible,
+  .gov-top-bar :focus-visible,
+  footer :focus-visible {
+    outline-color: var(--zari-gold-400);
+  }
+}
+
+/* Skip link: visually hidden until focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+  background-color: var(--bg-surface-white);
+  color: var(--gov-navy-900);
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--gov-navy-900);
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* Institutional Civic Utilities */
+.gov-top-bar {
+  background-color: #071224;
+  color: #E2E8F0;
+}
+
+.gov-nav-bar {
+  background-color: #0C1E3C;
+  color: #FFFFFF;
+}
+
+.gov-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 4px;
+}
+
+.gov-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gov-table th {
+  background-color: #F1F5F9;
+  color: #1E293B;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #CBD5E1;
+}
+
+.gov-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #E2E8F0;
+  color: #334155;
+}
+
+.gov-table tr:hover {
+  background-color: #F8FAFC;
+}
+
+/* Badge System */
+.badge-civic {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.badge-tender {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FCD34D;
+}
+
+.badge-notice {
+  background-color: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+}
+
+.badge-scheme {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.badge-ongoing {
+  background-color: #FEF3C7;
+  color: #B45309;
+}
+
+.badge-completed {
+  background-color: #DCFCE7;
+  color: #166534;
+}
+
+.badge-planned {
+  background-color: #F1F5F9;
+  color: #475569;
+}
+
+.badge-announcement {
+  background-color: #EDE9FE;
+  color: #5B21B6;
+  border: 1px solid #DDD6FE;
+}
+
+/*
+ * Provenance marker required by rules.md §8. Deliberately the loudest badge in the system
+ * so an unconfirmed record can never be mistaken for published council data.
+ */
+.badge-sample {
+  background-color: #FFF7ED;
+  color: #9A3412;
+  border: 1px solid #FDBA74;
+}
+
+/*
+ * Section heading rule — a single zari-gold bar is the one accent that marks authority on
+ * this platform (section headings, active nav, notice strip). Used nowhere decorative.
+ */
+.section-rule {
+  border-bottom: 3px solid var(--zari-gold-500);
+  padding-bottom: 0.625rem;
+}
+
+/* Notice ticker. Paused on hover/focus and fully disabled for reduced-motion users. */
+@keyframes notice-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.notice-track {
+  display: flex;
+  width: max-content;
+  animation: notice-scroll 48s linear infinite;
+}
+
+.notice-viewport:hover .notice-track,
+.notice-viewport:focus-within .notice-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice-track {
+    animation: none;
+  }
+
+  /* No auto-scroll, so the strip becomes a manually scrollable list instead. */
+  .notice-viewport {
+    overflow-x: auto;
+  }
+
+  .notice-duplicate {
+    display: none;
+  }
+}

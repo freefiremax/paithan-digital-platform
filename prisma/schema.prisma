@@ -1,0 +1,278 @@
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum WorkStatus {
+  PLANNED
+  ONGOING
+  COMPLETED
+}
+
+enum NotificationCategory {
+  ANNOUNCEMENT
+  SCHEME
+  TENDER
+  NOTICE
+}
+
+enum HistoryEra {
+  ANCIENT
+  HISTORICAL
+  EVENTS
+  CULTURAL
+  MODERN
+}
+
+enum CulturalCategory {
+  MANUSCRIPT
+  MONUMENT
+  TRADITION
+  ART
+  LITERATURE
+  PERSONALITY
+}
+
+enum TouristCategory {
+  JAYAKWADI
+  NATHSAGAR
+  HERITAGE_SITE
+  GENERAL
+}
+
+enum RouteType {
+  ONE_DAY
+  FAMILY
+  HERITAGE
+  NATURE
+  TEMPLE
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  EDITOR
+  WARD_EDITOR
+}
+
+model Ward {
+  id               String            @id @default(cuid())
+  number           Int               @unique
+  name             String
+  boundaryGeoJSON  Json?
+  description      String?
+  representatives  Representative[]
+  nagarSevaks      NagarSevak[]
+  developmentWorks DevelopmentWork[]
+  adminUsers       AdminUser[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model Representative {
+  id          String   @id @default(cuid())
+  name        String
+  nameMr      String?
+  designation String
+  designationMr String?
+  photoUrl    String?
+  contactInfo Json?
+  wardId      String?
+  ward        Ward?    @relation(fields: [wardId], references: [id])
+  bio         String?
+  bioMr       String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NagarSevak {
+  id               String   @id @default(cuid())
+  name             String
+  nameMr           String?
+  wardId           String
+  ward             Ward     @relation(fields: [wardId], references: [id])
+  photoUrl         String?
+  contactInfo      Json?
+  developmentNotes String?
+  developmentNotesMr String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model DevelopmentWork {
+  id                 String     @id @default(cuid())
+  title              String
+  titleMr            String?
+  wardId             String
+  ward               Ward       @relation(fields: [wardId], references: [id])
+  description        String
+  descriptionMr      String?
+  status             WorkStatus @default(PLANNED)
+  startDate          DateTime?
+  expectedCompletion DateTime?
+  department         String
+  budget             Float?
+  progressPct        Int        @default(0)
+  images             String[]
+  locationLatLng     Json?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+}
+
+model Project {
+  id              String      @id @default(cuid())
+  title           String
+  titleMr         String?
+  description     String
+  descriptionMr   String?
+  estimatedBudget Float?
+  status          WorkStatus  @default(PLANNED)
+  department      String
+  timeline        String?
+  location        String?
+  progressPct     Int         @default(0)
+  attachments     String[]
+  images          String[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Notification {
+  id          String               @id @default(cuid())
+  title       String
+  titleMr     String?
+  body        String
+  bodyMr      String?
+  category    NotificationCategory @default(NOTICE)
+  publishedAt DateTime             @default(now())
+  isPinned    Boolean              @default(false)
+  pdfUrl      String?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model MuseumExhibit {
+  id            String   @id @default(cuid())
+  name          String
+  nameMr        String?
+  description   String
+  descriptionMr String?
+  images        String[]
+  significance  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Artifact {
+  id            String    @id @default(cuid())
+  name          String
+  nameMr        String?
+  image         String?
+  description   String
+  descriptionMr String?
+  period        String?
+  origin        String?
+  significance  String?
+  models        Model3D[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Model3D {
+  id                String    @id @default(cuid())
+  name              String
+  description       String?
+  glbFileUrl        String
+  thumbnailUrl      String?
+  relatedArtifactId String?
+  relatedArtifact   Artifact? @relation(fields: [relatedArtifactId], references: [id])
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model HistoryEvent {
+  id            String     @id @default(cuid())
+  era           HistoryEra
+  title         String
+  titleMr       String?
+  description   String
+  descriptionMr String?
+  order         Int        @default(0)
+  images        String[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model CulturalHeritageItem {
+  id            String           @id @default(cuid())
+  category      CulturalCategory
+  title         String
+  titleMr       String?
+  description   String
+  descriptionMr String?
+  images        String[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model TouristPlace {
+  id             String          @id @default(cuid())
+  name           String
+  nameMr         String?
+  category       TouristCategory @default(GENERAL)
+  description    String
+  descriptionMr  String?
+  images         String[]
+  locationLatLng Json?
+  howToReach     String?
+  routeStops     RouteStop[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Route {
+  id          String      @id @default(cuid())
+  name        String
+  nameMr      String?
+  description String?
+  type        RouteType   @default(ONE_DAY)
+  stops       RouteStop[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model RouteStop {
+  id             String       @id @default(cuid())
+  routeId        String
+  route          Route        @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  touristPlaceId String
+  touristPlace   TouristPlace @relation(fields: [touristPlaceId], references: [id])
+  order          Int
+  note           String?
+}
+
+model ChatbotChunk {
+  id         String   @id @default(cuid())
+  sourceType String
+  sourceId   String
+  content    String
+  // Stored in Postgres as pgvector; Prisma manages raw vector column via migrations or string representation
+  updatedAt  DateTime @updatedAt
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  passwordHash String
+  role         AdminRole @default(EDITOR)
+  wardId       String?
+  ward         Ward?     @relation(fields: [wardId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
