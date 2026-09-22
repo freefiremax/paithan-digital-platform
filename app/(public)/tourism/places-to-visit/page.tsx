@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Clock, Tag, Calendar, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
+import { Clock, Tag, Calendar, CheckCircle2, MapPin } from "lucide-react";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
@@ -30,7 +31,7 @@ export default function PlacesToVisitPage() {
         <SectionHeading
           as="h1"
           title="Places to Visit in Paithan"
-          description="A curated guide to the spiritual shrines, monumental dams, avian wetlands, and historic museums that make Paithan one of Maharashtra's foremost cultural destinations."
+          description="A curated guide to the spiritual shrines, monumental dams, avian wetlands, and historic museums that make Paithan one of Maharashtra's foremost cultural destinations with authentic official photography."
         />
 
         {/* DESTINATIONS GRID */}
@@ -38,24 +39,49 @@ export default function PlacesToVisitPage() {
           {TOURIST_PLACES.map((place) => (
             <article
               key={place.id}
-              className="border border-[var(--border-subtle)] bg-white p-6 flex flex-col justify-between"
+              className="border border-[var(--border-subtle)] bg-white overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow"
             >
               <div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-[10px] font-bold text-[var(--zari-gold-600)] uppercase tracking-wider">
-                    {place.category.replace("_", " ")}
-                  </span>
-                  <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">
-                    {place.distanceFromBusStand} from Bus Stand
-                  </span>
+                {/* Official Landmark Image */}
+                <div className="relative w-full h-56 bg-slate-100 overflow-hidden group">
+                  <Image
+                    src={place.imageUrl}
+                    alt={place.imageAlt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+                  
+                  {/* Category & Badge overlay */}
+                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                    <span className="bg-[var(--gov-navy-900)]/90 text-[var(--zari-gold-300)] text-[10px] font-bold px-2.5 py-1 rounded-sm uppercase tracking-wider backdrop-blur-xs">
+                      {place.category.replace("_", " ")}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-3 right-3">
+                    <span className="inline-flex items-center gap-1 bg-emerald-950/80 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded backdrop-blur-xs border border-emerald-500/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                      अधिकृत छायाचित्र
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
+                    <span className="flex items-center gap-1 font-mono text-[11px] bg-black/40 px-2 py-0.5 rounded">
+                      <MapPin className="w-3 h-3 text-[var(--zari-gold-400)]" />
+                      {place.distanceFromBusStand} from Bus Stand
+                    </span>
+                  </div>
                 </div>
 
-                <h2 className="mt-2 text-lg font-bold text-[var(--gov-navy-900)] font-serif">
-                  {place.nameEn}
-                </h2>
-                <p lang="mr" className="text-xs text-slate-500 mt-0.5 font-medium">
-                  {place.nameMr}
-                </p>
+                <div className="p-6">
+                  <h2 className="text-xl font-bold text-[var(--gov-navy-900)] font-serif">
+                    {place.nameEn}
+                  </h2>
+                  <p lang="mr" className="text-sm text-slate-500 mt-0.5 font-medium">
+                    {place.nameMr}
+                  </p>
 
                 <p className="mt-2 text-xs font-semibold text-[var(--gov-navy-700)]">
                   {place.tagline}
@@ -80,6 +106,7 @@ export default function PlacesToVisitPage() {
                   </ul>
                 </div>
               </div>
+            </div>
 
               {/* Practical Info Strip */}
               <div className="mt-6 pt-4 border-t border-[var(--border-subtle)] grid grid-cols-2 gap-2 text-[11px] text-slate-600">

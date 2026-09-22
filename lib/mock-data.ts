@@ -1014,6 +1014,8 @@ export interface TouristPlace {
   bestSeason: string;
   distanceFromBusStand: string;
   coordinates: { lat: number; lng: number };
+  imageUrl: string;
+  imageAlt: string;
 }
 
 export const TOURIST_PLACES: readonly TouristPlace[] = [
@@ -1037,6 +1039,8 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "August to February (Post-monsoon full reservoir)",
     distanceFromBusStand: "3.5 km",
     coordinates: { lat: 19.4883, lng: 75.3892 },
+    imageUrl: "/images/sites/jayakwadi-dam.jpg",
+    imageAlt: "Jayakwadi Dam showcasing the 27 radial spillway floodgates across the Godavari River in Paithan",
   },
   {
     id: "tp-bird-sanctuary",
@@ -1058,6 +1062,8 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "November to March (Peak migratory season)",
     distanceFromBusStand: "4.0 km",
     coordinates: { lat: 19.495, lng: 75.375 },
+    imageUrl: "/images/sites/jaikwadi-birds.jpg",
+    imageAlt: "Greater Flamingos and migratory cranes foraging across the waters of Jaikwadi Bird Sanctuary at Nath Sagar",
   },
   {
     id: "tp-eknath-mandir",
@@ -1079,6 +1085,8 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "Throughout the year (especially during Nath Shashti in March)",
     distanceFromBusStand: "1.2 km",
     coordinates: { lat: 19.48, lng: 75.385 },
+    imageUrl: "/images/sites/sant-eknath-mandir.jpg",
+    imageAlt: "Sant Eknath Maharaj Samadhi Mandir and historic Nagghat stone steps with pilgrims on Godavari river",
   },
   {
     id: "tp-eknath-wada",
@@ -1099,6 +1107,8 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "Throughout the year",
     distanceFromBusStand: "1.5 km",
     coordinates: { lat: 19.482, lng: 75.387 },
+    imageUrl: "/images/sites/sant-eknath-wada.jpg",
+    imageAlt: "Historic interior courtyard of Sant Eknath Maharaj Wada showing carved teakwood pillars and sacred Shrikhandya pillar",
   },
   {
     id: "tp-apegaon",
@@ -1119,6 +1129,8 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "July to March",
     distanceFromBusStand: "12 km (Paithan–Apegaon Road)",
     coordinates: { lat: 19.512, lng: 75.495 },
+    imageUrl: "/images/sites/apegaon-temple.jpg",
+    imageAlt: "Sant Dnyaneshwar Birthplace Temple at Apegaon on the picturesque banks of the Godavari River",
   },
   {
     id: "tp-dnyaneshwar-udyan",
@@ -1140,6 +1152,8 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "October to March",
     distanceFromBusStand: "2.8 km",
     coordinates: { lat: 19.486, lng: 75.391 },
+    imageUrl: "/images/sites/dnyaneshwar-udyan.jpg",
+    imageAlt: "Sant Dnyaneshwar Udyan botanical gardens with evening illuminated dancing musical fountains",
   },
   {
     id: "tp-patil-museum",
@@ -1161,6 +1175,8 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "Throughout the year",
     distanceFromBusStand: "2.8 km",
     coordinates: { lat: 19.4855, lng: 75.3905 },
+    imageUrl: "/images/sites/balasaheb-patil-museum.jpg",
+    imageAlt: "Dr. Balasaheb Patil Government Archaeological Museum gallery displaying ancient Satavahana coins and terracotta artifacts",
   },
   {
     id: "tp-paithani-weavers",
@@ -1181,6 +1197,31 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     bestSeason: "Throughout the year",
     distanceFromBusStand: "1.0 km (Paithani Weavers Colony)",
     coordinates: { lat: 19.479, lng: 75.382 },
+    imageUrl: "/images/sites/paithani-weaving.jpg",
+    imageAlt: "Master handloom weaver on a traditional wooden pit loom weaving pure mulberry silk and gold zari Paithani saree",
+  },
+  {
+    id: "tp-brahmapuri",
+    slug: "brahmapuri-ancient-mound",
+    nameEn: "Brahmapuri Ancient Satavahana Archaeological Mound",
+    nameMr: "ब्रह्मपुरी प्राचीन सातवाहन उत्खनन टेकडी",
+    category: "HERITAGE",
+    tagline: "Excavated Capital of the Imperial Satavahana Dynasty (2nd Century BCE)",
+    description:
+      "Paithan's ancient citadel and archaeological excavation zone overlooking the Godavari River. Excavations by the Archaeological Survey of India (ASI) revealed multi-level urban settlements, brick foundations, terracotta drainage ring wells, and direct Greco-Roman trading artifacts.",
+    highlights: [
+      "Ancient Satavahana urban brick architecture and terracotta ring wells",
+      "ASI preserved excavation site with bilingual educational interpretation boards",
+      "Panoramic views overlooking the holy Godavari river basin",
+      "Evidence of Mediterranean trade documented in Periplus of the Erythraean Sea",
+    ],
+    visitingHours: "08:00 AM – 06:00 PM",
+    entryFee: "Free",
+    bestSeason: "October to March",
+    distanceFromBusStand: "2.0 km",
+    coordinates: { lat: 19.475, lng: 75.38 },
+    imageUrl: "/images/sites/brahmapuri-mound.jpg",
+    imageAlt: "Archaeological excavation site at Brahmapuri mound exposing Satavahana brick masonry walls and terracotta ring wells",
   },
 ];
 

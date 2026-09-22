@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Clock, MapPin, Tag, ShieldCheck, Sparkles } from "lucide-react";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -29,8 +30,39 @@ export default function MuseumPage() {
           description="Located within the Sant Dnyaneshwar Garden campus in Paithan, this state museum is administered by the Directorate of Archaeology and Museums, Government of Maharashtra. It preserves rare antiquities donated by late scholar Dr. Balasaheb Patil."
         />
 
+        {/* Official Museum Gallery Photography */}
+        <div className="mt-8 relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-lg">
+          <div className="relative h-64 sm:h-80 md:h-96 w-full bg-slate-900">
+            <Image
+              src="/images/sites/balasaheb-patil-museum.jpg"
+              alt="Dr. Balasaheb Patil Archaeological Museum gallery displaying Satavahana coins, terracotta figurines and ancient beads"
+              fill
+              priority
+              sizes="(max-width: 1200px) 100vw, 1180px"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
+            
+            <div className="absolute top-4 right-4">
+              <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                शासकीय वस्तुसंग्रहालय — अधिकृत छायाचित्र
+              </span>
+            </div>
+
+            <div className="absolute bottom-4 left-4 right-4 text-white">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-300">
+                Satavahana Imperial Gallery
+              </span>
+              <p className="text-sm sm:text-base font-semibold text-slate-100">
+                Showcasing 2,200-year-old coin hoards, terracotta Roman-contact figurines, and Chhatrapati Shivaji Maharaj&apos;s Royal Charter
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* 1. VISITING INFO BAR */}
-        <div className="mt-8 border border-[var(--border-subtle)] bg-white p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-6 border border-[var(--border-subtle)] bg-white p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="flex items-start gap-2.5">
             <Clock className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0 mt-0.5" />
             <div>

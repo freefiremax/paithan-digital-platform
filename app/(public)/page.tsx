@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Building2,
   Landmark,
@@ -12,6 +13,7 @@ import {
   ArrowUpRight,
   MapPin,
   CreditCard,
+  Camera,
 } from "lucide-react";
 import { NotificationCategoryBadge } from "@/components/ui/NotificationCategoryBadge";
 import {
@@ -22,6 +24,7 @@ import {
   getWardWorkSummary,
   notifications,
   wards,
+  TOURIST_PLACES,
 } from "@/lib/mock-data";
 
 /** Newest notices first — the ledger reads like a register, most recent at the top. */
@@ -34,6 +37,9 @@ export default function HomePage() {
     <>
       <PillarsHero />
       <CitizenServicesSection />
+
+      {/* Official Landmarks Showcase */}
+      <OfficialLandmarksShowcase />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-12">
@@ -184,21 +190,33 @@ function PillarsHero() {
 
           {/* Pillar 2: Heritage & Museum */}
           <div className="group relative bg-white text-slate-900 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#D97706]" />
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#D97706] z-10" />
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-11 h-11 rounded-lg bg-[#FEF3C7] flex items-center justify-center text-[#B45309] group-hover:bg-[#D97706] group-hover:text-white transition-colors">
-                  <Landmark className="w-5 h-5" />
-                </div>
-                <span className="text-[10px] font-bold text-[#B45309] bg-[#FFFBEB] px-2 py-0.5 rounded uppercase tracking-wider border border-[#FEF3C7]">
+              {/* Photo Preview */}
+              <div className="relative h-32 w-full -mx-6 -mt-6 mb-4 overflow-hidden bg-slate-900">
+                <Image
+                  src="/images/sites/balasaheb-patil-museum.jpg"
+                  alt="Dr. Balasaheb Patil Museum gallery"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+                <span className="absolute top-3 right-3 text-[10px] font-bold text-amber-900 bg-amber-100/90 backdrop-blur-xs px-2 py-0.5 rounded uppercase tracking-wider border border-amber-300">
                   ARCHAEOLOGY & ARTS
                 </span>
               </div>
-              <div className="mb-2 flex items-baseline gap-2">
-                <h2 className="text-xl font-bold text-[#0C1E3C] font-serif">Heritage & Museum</h2>
-                <span lang="mr" className="text-sm text-slate-500 font-medium">वारसा व संग्रहालय</span>
+
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-9 h-9 rounded-lg bg-[#FEF3C7] flex items-center justify-center text-[#B45309] shrink-0">
+                  <Landmark className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-[#0C1E3C] font-serif leading-tight">Heritage & Museum</h2>
+                  <span lang="mr" className="text-xs text-slate-500 font-medium">वारसा व संग्रहालय</span>
+                </div>
               </div>
-              <p className="text-xs text-slate-600 mb-5 leading-relaxed">
+              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
                 Imperial capital of the Satavahanas (Pratishthana), 2,000-year-old GI-tagged Paithani silk, and Varkari saint traditions.
               </p>
               <ul className="flex flex-col gap-1 mb-6 text-xs">
@@ -238,21 +256,33 @@ function PillarsHero() {
 
           {/* Pillar 3: Explore Paithan */}
           <div className="group relative bg-white text-slate-900 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#0369A1]" />
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#0369A1] z-10" />
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-11 h-11 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0369A1] group-hover:bg-[#0369A1] group-hover:text-white transition-colors">
-                  <Compass className="w-5 h-5" />
-                </div>
-                <span className="text-[10px] font-bold text-[#0369A1] bg-[#F0F9FF] px-2 py-0.5 rounded uppercase tracking-wider border border-[#BAE6FD]">
-                  NATURE & PILGRIMAGE
+              {/* Photo Preview */}
+              <div className="relative h-32 w-full -mx-6 -mt-6 mb-4 overflow-hidden bg-slate-900">
+                <Image
+                  src="/images/sites/jayakwadi-dam.jpg"
+                  alt="Jayakwadi Dam reservoir"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+                <span className="absolute top-3 right-3 text-[10px] font-bold text-sky-900 bg-sky-100/90 backdrop-blur-xs px-2 py-0.5 rounded uppercase tracking-wider border border-sky-300">
+                  NATURE & RESERVOIR
                 </span>
               </div>
-              <div className="mb-2 flex items-baseline gap-2">
-                <h2 className="text-xl font-bold text-[#0C1E3C] font-serif">Explore Paithan</h2>
-                <span lang="mr" className="text-sm text-slate-500 font-medium">पर्यटन व परिसर</span>
+
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-9 h-9 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0369A1] shrink-0">
+                  <Compass className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-[#0C1E3C] font-serif leading-tight">Explore Paithan</h2>
+                  <span lang="mr" className="text-xs text-slate-500 font-medium">पर्यटन व परिसर</span>
+                </div>
               </div>
-              <p className="text-xs text-slate-600 mb-5 leading-relaxed">
+              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
                 Jayakwadi Dam across the Godavari, Nath Sagar wetland sanctuary for Siberian flamingos, and sacred riverside ghats.
               </p>
               <ul className="flex flex-col gap-1 mb-6 text-xs">
@@ -700,3 +730,113 @@ function WardsOverview() {
     </section>
   );
 }
+
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Official Visual Tour of Paithan: showcasing authentic photography of all
+ * major landmarks, shrines, reservoir and archaeological excavation sites.
+ */
+function OfficialLandmarksShowcase() {
+  return (
+    <section className="bg-slate-100/70 border-y border-slate-200 py-12 lg:py-16" aria-labelledby="sites-showcase-heading">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300 mb-2">
+              <Camera className="w-3.5 h-3.5 text-amber-700" />
+              <span>अधिकृत स्थळ दर्शन • Verified Official Site Imagery</span>
+            </div>
+            <h2 id="sites-showcase-heading" className="text-2xl sm:text-3xl font-bold text-[#0C1E3C] font-serif tracking-tight">
+              Official Sites & Landmarks of Paithan
+            </h2>
+            <p className="text-sm text-slate-600 mt-1 max-w-2xl">
+              Authentic visual reference for tourists, pilgrims, and scholars visiting the spiritual and ancient capital on the Godavari.
+            </p>
+          </div>
+
+          <Link
+            href="/tourism/places-to-visit"
+            className="inline-flex items-center gap-2 bg-[#0C1E3C] hover:bg-[#071224] text-white px-4 py-2.5 rounded-lg text-xs font-semibold shadow-xs transition self-start md:self-auto"
+          >
+            <span>Explore All 9 Sites</span>
+            <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
+          </Link>
+        </div>
+
+        {/* 9 Sites Gallery Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {TOURIST_PLACES.map((place) => (
+            <article
+              key={place.id}
+              className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md hover:border-amber-400 transition-all flex flex-col justify-between group"
+            >
+              <div>
+                {/* Official Image Container */}
+                <div className="relative h-48 w-full bg-slate-900 overflow-hidden">
+                  <Image
+                    src={place.imageUrl}
+                    alt={place.imageAlt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
+
+                  {/* Badges */}
+                  <div className="absolute top-2.5 left-2.5">
+                    <span className="bg-[#0C1E3C]/90 text-[var(--zari-gold-300)] text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider backdrop-blur-xs">
+                      {place.category.replace("_", " ")}
+                    </span>
+                  </div>
+
+                  <div className="absolute top-2.5 right-2.5">
+                    <span className="inline-flex items-center gap-1 bg-emerald-950/80 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded backdrop-blur-xs border border-emerald-500/40">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                      अधिकृत
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1 font-mono text-[11px] bg-black/50 px-2 py-0.5 rounded backdrop-blur-xs">
+                      <MapPin className="w-3 h-3 text-amber-400" />
+                      {place.distanceFromBusStand}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <h3 className="text-base font-bold text-[#0C1E3C] font-serif group-hover:text-amber-700 transition-colors">
+                    {place.nameEn}
+                  </h3>
+                  <p lang="mr" className="text-xs text-slate-500 font-medium mt-0.5">
+                    {place.nameMr}
+                  </p>
+                  <p className="mt-2 text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                    {place.tagline}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-5 pt-0">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-slate-500 text-[11px]">
+                    {place.visitingHours.split("(")[0]}
+                  </span>
+                  <Link
+                    href="/tourism/places-to-visit"
+                    className="inline-flex items-center gap-1 font-semibold text-[#0C1E3C] hover:text-[#D97706]"
+                  >
+                    <span>Details</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+

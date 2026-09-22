@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   Waves,
   Clock,
@@ -33,19 +34,38 @@ export default function JayakwadiPage() {
   return (
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Banner */}
-        <div className="bg-gradient-to-r from-[#071224] via-[#0C1E3C] to-[#122B54] text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-amber-500/20 relative overflow-hidden">
-          <div className="relative z-10 max-w-3xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/40 mb-3">
-              <Waves className="w-3.5 h-3.5 text-blue-400" />
-              <span>Marathwada&apos;s Life Reservoir</span>
+        {/* Banner with Official Image */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-amber-500/30">
+          <div className="relative h-72 sm:h-96 w-full">
+            <Image
+              src="/images/sites/jayakwadi-dam.jpg"
+              alt="Jayakwadi Dam with 27 radial spillway gates across Godavari River in Paithan"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#071224] via-[#071224]/70 to-transparent" />
+            
+            <div className="absolute top-4 right-4 z-10">
+              <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                शासकीय अधिकृत छायाचित्र (Official Photo)
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              जायकवाडी धरण — नाथ सागर (Jayakwadi Dam)
-            </h1>
-            <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-              Constructed across the holy Godavari river at Paithan, Jayakwadi is one of Asia&apos;s most monumental civil engineering achievements, securing drinking water, agricultural irrigation, and industrial growth for the entire Deccan region.
-            </p>
+
+            <div className="absolute bottom-6 left-6 right-6 z-10 max-w-3xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-200 border border-blue-500/40 mb-3 backdrop-blur-md">
+                <Waves className="w-3.5 h-3.5 text-blue-400" />
+                <span>Marathwada&apos;s Life Reservoir • Nath Sagar</span>
+              </div>
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
+                जायकवाडी धरण — नाथ सागर (Jayakwadi Dam)
+              </h1>
+              <p className="text-sm sm:text-base text-slate-200 mt-2 leading-relaxed drop-shadow-sm">
+                Constructed across the holy Godavari river at Paithan, Jayakwadi is one of Asia&apos;s most monumental civil engineering achievements, measuring 9.99 km with 27 radial gates.
+              </p>
+            </div>
           </div>
         </div>
 
