@@ -100,11 +100,27 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <div className="lg:hidden">
+          {/* Mobile Actions: Emergency Call + Menu Toggle */}
+          <div className="flex items-center gap-1.5 lg:hidden">
+            <a
+              href="tel:02431223010"
+              aria-label="Emergency Civic Helpline"
+              className="w-9 h-9 rounded bg-[#FEF3C7] text-[#B45309] hover:bg-[#FDE68A] flex items-center justify-center transition-colors shrink-0"
+              title="Civic Helpline: 02431-223010"
+            >
+              <Phone className="w-4 h-4" />
+            </a>
+            <Link
+              href="/chatbot"
+              aria-label="Ask Paithan AI"
+              className="w-9 h-9 rounded bg-slate-100 text-[#0C1E3C] hover:bg-slate-200 flex items-center justify-center transition-colors shrink-0"
+              title="Citizen AI Bot"
+            >
+              <Bot className="w-4 h-4 text-[#D97706]" />
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded text-slate-700 hover:text-[#0C1E3C] hover:bg-slate-100"
+              className="p-2 rounded text-slate-700 hover:text-[#0C1E3C] hover:bg-slate-100 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -7,10 +7,14 @@
  * so the token values themselves remain the single source of truth.
  */
 @theme inline {
-  --color-navy-950: var(--gov-navy-950);
-  --color-navy-900: var(--gov-navy-900);
-  --color-navy-800: var(--gov-navy-800);
-  --color-navy-700: var(--gov-navy-700);
+  --color-navy-950: var(--civic-navy-dark);
+  --color-navy-900: var(--civic-navy-surface);
+  --color-navy-800: #162B4E;
+  --color-navy-700: #1E3A8A;
+  --color-heritage-gold: var(--heritage-gold);
+  --color-heritage-gold-deep: var(--heritage-gold-deep);
+  --color-heritage-amber-light: var(--heritage-amber-light);
+  --color-heritage-amber-subtle: var(--heritage-amber-subtle);
   --color-zari-600: var(--zari-gold-600);
   --color-zari-500: var(--zari-gold-500);
   --color-zari-400: var(--zari-gold-400);
@@ -19,10 +23,22 @@
   --color-slate-body: var(--civic-slate-700);
   --color-slate-muted: var(--civic-slate-500);
   --color-surface: var(--bg-surface-white);
+  --color-canvas-bg: var(--canvas-bg);
+  --color-surface-card: var(--surface-card);
+  --color-surface-subtle: var(--surface-subtle);
   --color-ash: var(--bg-surface-ash);
   --color-shade: var(--bg-surface-slate);
   --color-rule: var(--border-subtle);
   --color-rule-strong: var(--border-strong);
+
+  --color-status-tender-bg: var(--status-tender-bg);
+  --color-status-tender-fg: var(--status-tender-fg);
+  --color-status-notice-bg: var(--status-notice-bg);
+  --color-status-notice-fg: var(--status-notice-fg);
+  --color-status-scheme-bg: var(--status-scheme-bg);
+  --color-status-scheme-fg: var(--status-scheme-fg);
+  --color-status-alert-bg: var(--status-alert-bg);
+  --color-status-alert-fg: var(--status-alert-fg);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
   --font-devanagari: var(--font-noto-devanagari), var(--font-inter), "Nirmala UI", sans-serif;
@@ -30,22 +46,44 @@
 
 @layer base {
   :root {
+    --civic-navy-dark: #071224;
+    --civic-navy-surface: #0C1E3C;
+    --heritage-gold: #D97706;
+    --heritage-gold-deep: #B45309;
+    --heritage-amber-light: #FEF3C7;
+    --heritage-amber-subtle: #FFFBEB;
+
     --gov-navy-950: #071224;
     --gov-navy-900: #0C1E3C;
     --gov-navy-800: #162B4E;
     --gov-navy-700: #1E3A8A;
-    --zari-gold-600: #9A7007;
-    --zari-gold-500: #B8860B;
-    --zari-gold-400: #D4AF37;
-    --zari-gold-100: #FEF9C3;
-    --civic-slate-900: #0F172A;
+    --zari-gold-600: #B45309;
+    --zari-gold-500: #D97706;
+    --zari-gold-400: #F59E0B;
+    --zari-gold-100: #FEF3C7;
+
+    --civic-slate-900: #0B1C30;
     --civic-slate-700: #334155;
     --civic-slate-500: #64748B;
+    --canvas-bg: #F8FAFC;
+    --surface-card: #FFFFFF;
+    --surface-subtle: #F1F5F9;
     --bg-surface-white: #FFFFFF;
     --bg-surface-ash: #F8FAFC;
     --bg-surface-slate: #F1F5F9;
     --border-subtle: #E2E8F0;
     --border-strong: #CBD5E1;
+
+    --status-tender-bg: #FEF3C7;
+    --status-tender-fg: #92400E;
+    --status-notice-bg: #E0F2FE;
+    --status-notice-fg: #0369A1;
+    --status-scheme-bg: #DCFCE7;
+    --status-scheme-fg: #15803D;
+    --status-alert-bg: #FEE2E2;
+    --status-alert-fg: #B91C1C;
+    --ticker-bg: #071224;
+    --footer-bg: #050C18;
   }
 
   body {
@@ -249,3 +287,12 @@
     display: none;
   }
 }
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
