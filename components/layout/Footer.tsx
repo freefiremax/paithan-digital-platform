@@ -1,84 +1,100 @@
 import React from "react";
 import Link from "next/link";
 import { Phone, MapPin, ExternalLink, Clock } from "lucide-react";
+import { StateEmblem } from "@/components/ui/StateEmblem";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#071224] text-slate-300 border-t-4 border-amber-600">
-      {/* 1. TOP STATUTORY BAR: Emergency Helplines */}
-      <div className="bg-[#0C1E3C] border-b border-slate-800 text-xs py-2.5 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
-          <div className="flex items-center gap-2 font-semibold text-amber-400">
-            <Phone className="w-3.5 h-3.5" />
-            <span>Emergency Services & Helplines (Paithan):</span>
+    <footer className="border-t-[3px] border-[var(--saffron-500)] bg-[var(--footer-bg)] text-[var(--on-vangi-muted)]">
+      {/* 1. TOP STATUTORY BAR: Emergency Helplines. One step off the footer
+          ground, so the bar reads as a separate band rather than the page
+          running on. Saffron is the only warm note down here. */}
+      <div className="border-b border-[var(--on-vangi-rule)] bg-[var(--vangi-850)] px-4 py-2.5 text-xs sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 font-semibold text-[var(--saffron-500)]">
+            <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Emergency Services &amp; Helplines (Paithan)</span>
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-200">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px]">
             <span>
-              Municipal Office: <strong className="text-white">02431-223010</strong>
+              Municipal Office:{" "}
+              <strong className="text-white tabular-nums">02431-223010</strong>
             </span>
-            <span className="text-slate-600">|</span>
             <span>
-              Water Supply Emergency: <strong className="text-white">02431-223015</strong>
+              Water Supply:{" "}
+              <strong className="text-white tabular-nums">02431-223015</strong>
             </span>
-            <span className="text-slate-600">|</span>
             <span>
-              Paithan Police Station: <strong className="text-white">112 / 02431-223033</strong>
+              Police: <strong className="text-white tabular-nums">112 / 02431-223033</strong>
             </span>
-            <span className="text-slate-600">|</span>
             <span>
-              Rural Hospital Paithan: <strong className="text-white">108 / 02431-223040</strong>
+              Hospital: <strong className="text-white tabular-nums">108 / 02431-223040</strong>
             </span>
           </div>
         </div>
       </div>
 
       {/* 2. MAIN FOOTER GRID */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-xs">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-10 text-xs md:grid-cols-2 lg:grid-cols-4 lg:px-8">
         {/* Col 1: Council Address & Office Hours */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center font-serif font-bold text-sm">
-              प
-            </div>
+          <div className="flex items-center gap-2.5">
+            <span
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--saffron-500)] bg-[var(--portal-blue-800)] font-bold text-[var(--saffron-500)]"
+              aria-hidden="true"
+            >
+              <span lang="mr">पै</span>
+            </span>
             <div>
-              <h3 className="text-sm font-bold text-white font-serif">
-                Paithan Municipal Council
-              </h3>
-              <p className="text-[11px] text-amber-400">पैठण नगर परिषद</p>
+              <h3 className="text-sm font-bold text-white">Paithan Municipal Council</h3>
+              <p lang="mr" className="text-[11px] text-[var(--saffron-500)]">
+                पैठण नगर परिषद
+              </p>
             </div>
           </div>
-          <p className="text-slate-400 leading-relaxed">
-            Local self-government urban local body providing civic amenities, infrastructure, and heritage preservation for the historic town of Paithan.
+          <p className="leading-relaxed text-[var(--on-vangi-muted)]">
+            Local self-government urban local body providing civic amenities, infrastructure,
+            and heritage preservation for the historic town of Paithan.
           </p>
-          <div className="space-y-1.5 pt-1 text-slate-300">
+          <div className="space-y-1.5 pt-1 text-[var(--on-vangi-muted)]">
             <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <MapPin
+                className="mt-0.5 h-4 w-4 shrink-0 text-[var(--saffron-500)]"
+                aria-hidden="true"
+              />
               <span>
-                Municipal Council Administrative Complex, Main Road, Tq. Paithan, Dist. Chhatrapati Sambhajinagar, Maharashtra - 431107
+                Municipal Council Administrative Complex, Main Road, Tq. Paithan, Dist.
+                Chhatrapati Sambhajinagar, Maharashtra - 431107
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span>Office Hours: 09:45 AM to 06:15 PM (Mon–Sat)</span>
+              <Clock
+                className="h-3.5 w-3.5 shrink-0 text-[var(--saffron-500)]"
+                aria-hidden="true"
+              />
+              <span>Office Hours: 09:45 AM to 06:15 PM (Mon&ndash;Sat)</span>
             </div>
           </div>
         </div>
 
         {/* Col 2: Citizen Civic Services */}
-        <div className="space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 border-b border-slate-800 pb-1.5">
-            Civic Services & e-Governance
+        <nav className="space-y-3" aria-labelledby="footer-services">
+          <h4
+            id="footer-services"
+            className="border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
+          >
+            Civic Services &amp; e-Governance
           </h4>
-          <ul className="space-y-2 text-slate-300">
+          <ul className="space-y-2">
             <li>
               <a
                 href="https://paithanmahaulb.maharashtra.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-amber-300 inline-flex items-center gap-1 transition-colors"
+                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
                 <span>Online Property Tax Payment</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
             <li>
@@ -86,84 +102,118 @@ export default function Footer() {
                 href="https://crsorgi.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-amber-300 inline-flex items-center gap-1 transition-colors"
+                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
-                <span>Birth & Death Registration (CRS)</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <span>Birth &amp; Death Registration (CRS)</span>
+                <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
             <li>
-              <Link href="/nagar-parishad/development-works" className="hover:text-amber-300 transition-colors">
+              <Link
+                href="/nagar-parishad/development-works"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
                 Ward-wise Development Works Status
               </Link>
             </li>
             <li>
-              <Link href="/nagar-parishad/ward-map" className="hover:text-amber-300 transition-colors">
-                Paithan 17 Wards Directory & Map
+              <Link
+                href="/nagar-parishad/ward-map"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
+                Paithan 17 Wards Directory &amp; Map
               </Link>
             </li>
             <li>
-              <Link href="/nagar-parishad/notifications" className="hover:text-amber-300 transition-colors">
-                E-Tenders & Municipal Notices
+              <Link
+                href="/nagar-parishad/notifications"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
+                E-Tenders &amp; Municipal Notices
               </Link>
             </li>
           </ul>
-        </div>
+        </nav>
 
         {/* Col 3: Heritage & Tourism Wings */}
-        <div className="space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 border-b border-slate-800 pb-1.5">
-            Heritage & Tourism Portals
+        <nav className="space-y-3" aria-labelledby="footer-heritage">
+          <h4
+            id="footer-heritage"
+            className="border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
+          >
+            Heritage &amp; Tourism Portals
           </h4>
-          <ul className="space-y-2 text-slate-300">
+          <ul className="space-y-2">
             <li>
-              <Link href="/heritage/museum" className="hover:text-amber-300 transition-colors">
+              <Link
+                href="/heritage/museum"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
                 Dr. Balasaheb Patil Archaeological Museum
               </Link>
             </li>
             <li>
-              <Link href="/heritage/history" className="hover:text-amber-300 transition-colors">
-                Ancient Pratishthana & Satavahana Dynasty
+              <Link
+                href="/heritage/history"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
+                Ancient Pratishthana &amp; Satavahana Dynasty
               </Link>
             </li>
             <li>
-              <Link href="/heritage/cultural-heritage" className="hover:text-amber-300 transition-colors">
+              <Link
+                href="/heritage/cultural-heritage"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
                 Paithani Sarees GI Weaving Legacy
               </Link>
             </li>
             <li>
-              <Link href="/tourism/jayakwadi" className="hover:text-amber-300 transition-colors">
-                Jayakwadi Dam & Reservoir Engineering
+              <Link
+                href="/tourism/jayakwadi"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
+                Jayakwadi Dam &amp; Reservoir Engineering
               </Link>
             </li>
             <li>
-              <Link href="/tourism/nath-sagar" className="hover:text-amber-300 transition-colors">
-                Nath Sagar & Jaikwadi Bird Sanctuary
+              <Link
+                href="/tourism/nath-sagar"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
+                Nath Sagar &amp; Jaikwadi Bird Sanctuary
               </Link>
             </li>
             <li>
-              <Link href="/tourism/routes" className="hover:text-amber-300 transition-colors">
-                Pilgrim & Heritage Tourist Itineraries
+              <Link
+                href="/tourism/routes"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
+                Pilgrim &amp; Heritage Tourist Itineraries
               </Link>
             </li>
           </ul>
-        </div>
+        </nav>
 
         {/* Col 4: Official State Portals */}
-        <div className="space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 border-b border-slate-800 pb-1.5">
-            Government Links
+        <nav className="space-y-3" aria-labelledby="footer-gov">
+          <h4
+            id="footer-gov"
+            className="flex items-center gap-2 border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
+          >
+            <StateEmblem size={16} invert />
+            <span>Government Links</span>
           </h4>
-          <ul className="space-y-2 text-slate-300">
+          <ul className="space-y-2">
             <li>
               <a
                 href="https://aaplesarkar.mahaonline.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-amber-300 inline-flex items-center gap-1 transition-colors"
+                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
                 <span>Aaple Sarkar Citizen Services</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
             <li>
@@ -171,10 +221,10 @@ export default function Footer() {
                 href="https://maharashtra.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-amber-300 inline-flex items-center gap-1 transition-colors"
+                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
                 <span>Government of Maharashtra</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
             <li>
@@ -182,10 +232,10 @@ export default function Footer() {
                 href="https://aurangabad.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-amber-300 inline-flex items-center gap-1 transition-colors"
+                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
                 <span>Chhatrapati Sambhajinagar District Portal</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
             <li>
@@ -193,36 +243,36 @@ export default function Footer() {
                 href="https://mahatenders.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-amber-300 inline-flex items-center gap-1 transition-colors"
+                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
                 <span>MahaTenders e-Procurement</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
             <li>
-              <Link href="/chatbot" className="text-amber-400 font-semibold hover:text-amber-300 transition-colors">
-                AI Citizen Assistant (&ldquo;Ask Paithan AI&rdquo;)
+              <Link
+                href="/chatbot"
+                className="font-semibold text-[var(--saffron-500)] transition-colors hover:text-[var(--saffron-600)]"
+              >
+                AI Citizen Assistant
               </Link>
             </li>
           </ul>
-        </div>
+        </nav>
       </div>
 
       {/* 3. STATUTORY FOOTER: Disclaimers & Copyright */}
-      <div className="border-t border-slate-800/80 py-4 px-4 sm:px-6 lg:px-8 text-[11px] text-slate-400">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-          <div>
-            © {new Date().getFullYear()} Paithan Municipal Council (पैठण नगर परिषद). All Rights Reserved.
-          </div>
-          <div className="flex items-center gap-4 text-slate-400">
-            <span className="hover:text-slate-200 cursor-pointer">Right to Information (RTI)</span>
-            <span>•</span>
-            <span className="hover:text-slate-200 cursor-pointer">Citizen Charter</span>
-            <span>•</span>
-            <span className="hover:text-slate-200 cursor-pointer">Privacy Policy</span>
-            <span>•</span>
-            <span className="hover:text-slate-200 cursor-pointer">Terms of Use</span>
-          </div>
+      <div className="border-t border-[var(--on-vangi-rule)] px-4 py-4 text-[11px] lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
+          <p>
+            &copy; {new Date().getFullYear()} Paithan Municipal Council (पैठण नगर परिषद).
+          </p>
+          <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>Right to Information (RTI)</span>
+            <span>Citizen Charter</span>
+            <span>Privacy Policy</span>
+            <span>Terms of Use</span>
+          </nav>
         </div>
       </div>
     </footer>
@@ -230,4 +280,3 @@ export default function Footer() {
 }
 
 export { Footer };
-
