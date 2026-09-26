@@ -45,7 +45,7 @@ export default function JayakwadiPage() {
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#071224] via-[#071224]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-oxide-950 via-oxide-950/70 to-transparent" />
             
             <div className="absolute top-4 right-4 z-10">
               <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
@@ -76,7 +76,7 @@ export default function JayakwadiPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Visiting Hours</div>
               <div className="text-xs text-slate-600">08:00 AM – 06:00 PM</div>
-              <div className="text-[10px] text-slate-400">Open 7 days a week</div>
+              <div className="text-[10px] text-slate-body">Open 7 days a week</div>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ export default function JayakwadiPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Entry & Parking</div>
               <div className="text-xs text-slate-600">Free Public Entry</div>
-              <div className="text-[10px] text-slate-400">Nominal vehicle parking fee</div>
+              <div className="text-[10px] text-slate-body">Nominal vehicle parking fee</div>
             </div>
           </div>
 
@@ -94,7 +94,7 @@ export default function JayakwadiPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Ideal Season</div>
               <div className="text-xs text-slate-600">August to February</div>
-              <div className="text-[10px] text-slate-400">Peak post-monsoon full reservoir</div>
+              <div className="text-[10px] text-slate-body">Peak post-monsoon full reservoir</div>
             </div>
           </div>
 
@@ -103,7 +103,7 @@ export default function JayakwadiPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Distance</div>
               <div className="text-xs text-slate-600">3.5 km from Paithan Bus Stand</div>
-              <div className="text-[10px] text-slate-400">Adjacent to Dnyaneshwar Udyan</div>
+              <div className="text-[10px] text-slate-body">Adjacent to Dnyaneshwar Udyan</div>
             </div>
           </div>
         </div>
@@ -112,14 +112,14 @@ export default function JayakwadiPage() {
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
           <div>
             <h2 className="text-xl font-bold text-slate-900">तांत्रिक वैशिष्ट्ये (Technical & Engineering Specifications)</h2>
-            <p className="text-xs text-slate-500 mt-1">Verified hydrological metrics from Maharashtra Water Resources Department</p>
+            <p className="text-xs text-slate-muted mt-1">Verified hydrological metrics from Maharashtra Water Resources Department</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {DAM_SPECS.map((spec, i) => (
               <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col justify-between">
-                <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">{spec.label}</span>
-                <div className="text-lg font-extrabold text-[#0C1E3C] mt-1">{spec.value}</div>
+                <span className="text-[11px] font-semibold text-slate-muted uppercase tracking-wider">{spec.label}</span>
+                <div className="text-lg font-extrabold text-teal-700 mt-1">{spec.value}</div>
                 <div className="text-[11px] text-slate-600 mt-1">{spec.subtext}</div>
               </div>
             ))}

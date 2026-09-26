@@ -23,14 +23,14 @@ export function FloatingChatbotWidget() {
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Open Paithan AI Civic Assistant"
-            className="group relative flex items-center gap-2.5 bg-gradient-to-r from-[#071224] to-[#0C1E3C] hover:from-[#0C1E3C] hover:to-[#071224] text-white pl-3.5 pr-4 py-3 rounded-full shadow-2xl border-2 border-amber-500/40 hover:border-amber-400 transition-all duration-300 transform hover:scale-105 active:scale-95"
+            className="group relative flex items-center gap-2.5 bg-gradient-to-r from-[var(--vangi-950)] to-[var(--vangi-850)] hover:from-[var(--vangi-850)] hover:to-[var(--vangi-950)] text-white pl-3.5 pr-4 py-3 rounded-full shadow-2xl border-2 border-amber-500/40 hover:border-amber-400 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
             <div className="relative">
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-white shadow-md">
                 <Bot className="w-4 h-4" />
               </div>
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#071224] rounded-full animate-ping" />
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[#071224] rounded-full" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[var(--vangi-950)] rounded-full animate-ping" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[var(--vangi-950)] rounded-full" />
             </div>
 
             <div className="text-left hidden xs:block">

@@ -88,7 +88,7 @@ export default function CulturalHeritagePage() {
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Banner */}
-        <div className="bg-gradient-to-r from-[#071224] via-[#0C1E3C] to-[#122B54] text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-amber-500/20 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-oxide-700 via-oxide-800 to-teal-900 text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-amber-500/20 relative overflow-hidden">
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 mb-3">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -97,7 +97,7 @@ export default function CulturalHeritagePage() {
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
               पैठणची सांस्कृतिक व आध्यात्मिक परंपरा (Cultural Heritage)
             </h1>
-            <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+            <p className="text-sm text-slate-body mt-2 leading-relaxed">
               Explore the rich spiritual literature of Sant Eknath, the vibrant devotion of the annual Nath Shashti fair, and the exquisite craftsmanship of GI-tagged Paithani silk.
             </p>
           </div>
@@ -161,10 +161,10 @@ export default function CulturalHeritagePage() {
         </div>
 
         {/* Tourism Route Callout */}
-        <div className="bg-gradient-to-br from-[#071224] to-[#0C1E3C] text-white rounded-2xl p-6 sm:p-8 border border-amber-500/20 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="bg-gradient-to-br from-oxide-800 to-teal-900 text-white rounded-2xl p-6 sm:p-8 border border-amber-500/20 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
             <h2 className="text-lg font-bold text-white">Experience Living Paithan Heritage In Person</h2>
-            <p className="text-xs text-slate-300 mt-1">
+            <p className="text-xs text-slate-body mt-1">
               Follow our curated 1-Day Pilgrim & Varkari Heritage Route to visit all historic shrines and weaving ateliers.
             </p>
           </div>

@@ -7,10 +7,19 @@
  * so the token values themselves remain the single source of truth.
  */
 @theme inline {
-  --color-navy-950: var(--civic-navy-dark);
-  --color-navy-900: var(--civic-navy-surface);
-  --color-navy-800: #162B4E;
-  --color-navy-700: #1E3A8A;
+  --color-portal-950: var(--portal-blue-900);
+  --color-portal-900: var(--portal-blue-800);
+  --color-portal-800: var(--portal-blue-700);
+  --color-portal-700: var(--portal-blue-600);
+  --color-portal-100: var(--portal-blue-100);
+  --color-portal-50: var(--portal-blue-50);
+
+  /* Legacy navy names kept as aliases so the 20 pages already written
+     migrate onto the portal scale without touching their markup. */
+  --color-navy-950: var(--portal-blue-900);
+  --color-navy-900: var(--portal-blue-800);
+  --color-navy-800: var(--portal-blue-700);
+  --color-navy-700: var(--portal-blue-600);
   --color-heritage-gold: var(--heritage-gold);
   --color-heritage-gold-deep: var(--heritage-gold-deep);
   --color-heritage-amber-light: var(--heritage-amber-light);
@@ -18,6 +27,7 @@
   --color-zari-600: var(--zari-gold-600);
   --color-zari-500: var(--zari-gold-500);
   --color-zari-400: var(--zari-gold-400);
+  --color-zari-300: var(--zari-gold-400);
   --color-zari-100: var(--zari-gold-100);
   --color-slate-ink: var(--civic-slate-900);
   --color-slate-body: var(--civic-slate-700);
@@ -40,50 +50,363 @@
   --color-status-alert-bg: var(--status-alert-bg);
   --color-status-alert-fg: var(--status-alert-fg);
 
+  /* ---------------------------------------------------------------------
+   * RAMP REDIRECTION -- read before adding any new `slate-*` / `amber-*` /
+   * `blue-*` utility to this codebase.
+   *
+   * These three assignments override Tailwind's stock ramps. `text-slate-700`
+   * now renders the warm ink neutral, `text-amber-500` renders bronze, and
+   * `text-blue-700` renders peacock. The utility NAME no longer describes the
+   * colour; that is the deliberate trade that let ~920 call sites across 19
+   * public pages move onto the Paithan palette without a 19-file rewrite, and
+   * it is why a reviewer reading `text-amber-600` in markup should read it as
+   * "bronze 600", not "orange".
+   *
+   * To get a genuine orange, sky or blue back, delete the relevant line here.
+   * Nothing else depends on the stock values.
+   *
+   * NOT redirected, on purpose:
+   *   emerald -- "scheme sanctioned" / "work completed" is semantic state,
+   *              not decoration. Flattening it into teal would make a
+   *              completed scheme indistinguishable from a civic notice.
+   *   red     -- rejection and alert. Kept distinct from the bronze accent so
+   *              an alert never reads as decoration.
+   * Both are the only two saturated hues left in the public build.
+   * ------------------------------------------------------------------- */
+  --color-slate-50: var(--paper-50);
+  --color-slate-100: var(--paper-100);
+  --color-slate-200: var(--paper-200);
+  --color-slate-300: var(--paper-300);
+  --color-slate-400: var(--paper-400);
+  --color-slate-500: var(--paper-500);
+  --color-slate-600: var(--paper-600);
+  --color-slate-700: var(--paper-700);
+  --color-slate-800: var(--paper-800);
+  --color-slate-900: var(--paper-900);
+  --color-slate-950: var(--paper-950);
+
+  --color-amber-50: var(--bronze-50);
+  --color-amber-100: var(--bronze-100);
+  --color-amber-200: var(--bronze-200);
+  --color-amber-300: var(--bronze-300);
+  --color-amber-400: var(--bronze-400);
+  --color-amber-500: var(--bronze-500);
+  --color-amber-600: var(--bronze-600);
+  --color-amber-700: var(--bronze-700);
+  --color-amber-800: var(--bronze-800);
+  --color-amber-900: var(--bronze-900);
+  --color-amber-950: var(--bronze-950);
+
+  --color-blue-50: var(--teal-50);
+  --color-blue-100: var(--teal-100);
+  --color-blue-200: var(--teal-200);
+  --color-blue-300: var(--teal-300);
+  --color-blue-400: var(--teal-400);
+  --color-blue-500: var(--teal-500);
+  --color-blue-600: var(--teal-600);
+  --color-blue-700: var(--teal-700);
+  --color-blue-800: var(--teal-800);
+  --color-blue-900: var(--teal-900);
+  --color-blue-950: var(--teal-950);
+
+  /* The two one-off stock ramps still in use, mapped onto the same scales so
+     there is no third hue hiding in the build. sky-400 was a bright cyan
+     button label on the tourism map; teal-100 was already peacock-adjacent. */
+  --color-sky-400: var(--teal-400);
+  --color-teal-100: var(--teal-100);
+  --color-teal-900: var(--teal-900);
+  --color-yellow-600: var(--bronze-600);
+  --color-orange-800: var(--oxide-600);
+  --color-purple-600: var(--oxide-700);
+
+  /* The oxide ramp is the one family that is not a redirect: it replaces the
+     three hardcoded navy hero gradients, so it needs its own utility names.
+     Without these, `from-oxide-700` silently compiles to nothing and the hero
+     renders with a missing gradient stop rather than an error. */
+  --color-oxide-50: var(--oxide-50);
+  --color-oxide-100: var(--oxide-100);
+  --color-oxide-200: var(--oxide-200);
+  --color-oxide-300: var(--oxide-300);
+  --color-oxide-400: var(--oxide-400);
+  --color-oxide-500: var(--oxide-500);
+  --color-oxide-600: var(--oxide-600);
+  --color-oxide-700: var(--oxide-700);
+  --color-oxide-800: var(--oxide-800);
+  --color-oxide-900: var(--oxide-900);
+  --color-oxide-950: var(--oxide-950);
+
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
   --font-devanagari: var(--font-noto-devanagari), var(--font-inter), "Nirmala UI", sans-serif;
+
+  /* The display face: an old-style serif with optical sizing, which is the
+     letterform of a printed gazette rather than of a heritage-brand logo. */
+  --font-display: var(--font-besley), var(--font-noto-devanagari), Georgia, serif;
+
+  /* Marathi display: a traditional manuscript face, so the Devanagari headings
+     read as calligraphy rather than as UI text set in a Latin-first sans. */
+  --font-display-deva: var(--font-tiro), var(--font-noto-devanagari), serif;
+
+  /*
+   * `font-serif` is used in 39 places across the site but was never declared,
+   * so every one of them silently fell back to the browser's default serif.
+   * Aliasing it to the display stack gives those call sites the gazette
+   * letterform without a 39-file sweep.
+   */
+  --font-serif: var(--font-besley), var(--font-inter), Georgia, serif;
 }
 
 @layer base {
   :root {
-    --civic-navy-dark: #071224;
-    --civic-navy-surface: #0C1E3C;
-    --heritage-gold: #D97706;
-    --heritage-gold-deep: #B45309;
-    --heritage-amber-light: #FEF3C7;
-    --heritage-amber-subtle: #FFFBEB;
+    /*
+     * Paithani / Marathi manuscript palette.
+     *
+     * The brief is hand-drawn, old-painted, nostalgic and Marathi, so the
+     * ground is aged handmade paper rather than a screen white, the outlines are
+     * iron-gall ink rather than grey, and the structural colour is the madder
+     * crimson of a Paithani field rather than a flag hue. The reference is
+     * Ajanta — the caves are in this district — and a Paithani border: flat
+     * colour, a bold drawn line, and a zari thread laid along the edge.
+     *
+     * The variable names still say "portal-blue", "zari-gold", "on-vangi". They
+     * are the contract ~20 pages and their components already depend on, and the
+     * previous palette changes were all landed values-only so the diff stayed
+     * reviewable. Renaming is a separate sweep. Read every one of them as its
+     * Marathi meaning, not its Latin one.
+     */
 
-    --gov-navy-950: #071224;
-    --gov-navy-900: #0C1E3C;
-    --gov-navy-800: #162B4E;
-    --gov-navy-700: #1E3A8A;
-    --zari-gold-600: #B45309;
-    --zari-gold-500: #D97706;
-    --zari-gold-400: #F59E0B;
-    --zari-gold-100: #FEF3C7;
+    /* Madder crimson, the pallu ground. The three deepest steps are the
+       structural ones: the gov bar, the footer and the darkest rules. -600 is
+       the only one cleared for body text on silk (7.09:1); -300 and lighter are
+       tints for fills. */
+    --portal-blue-900: #4d0f20;
+    --portal-blue-800: #631127;
+    --portal-blue-700: #7d1430;
+    --portal-blue-600: #9c1c3b;
+    --portal-blue-300: #e07f96;
+    --portal-blue-100: #f7dbe2;
+    --portal-blue-50: #fbeef1;
 
-    --civic-slate-900: #0B1C30;
-    --civic-slate-700: #334155;
-    --civic-slate-500: #64748B;
-    --canvas-bg: #F8FAFC;
-    --surface-card: #FFFFFF;
-    --surface-subtle: #F1F5F9;
-    --bg-surface-white: #FFFFFF;
-    --bg-surface-ash: #F8FAFC;
-    --bg-surface-slate: #F1F5F9;
-    --border-subtle: #E2E8F0;
-    --border-strong: #CBD5E1;
+    /*
+     * Zari: the gold thread along a Paithani border. The two brightest are
+     * ornament only and MUST NOT carry text — thread gold at 400 manages 2.1:1
+     * on silk, which is why the saffron slot exists below at all. -600 is
+     * marigold deep enough to read (5.02:1) and is what the old --zari-gold-600
+     * name maps to, so the ~20 call sites that set text in it become accessible.
+     */
+    --saffron-500: #dd9f1c;
+    --saffron-600: #6f470b;
+    --saffron-700: #553608;
+    --saffron-100: #fbecc2;
 
-    --status-tender-bg: #FEF3C7;
-    --status-tender-fg: #92400E;
-    --status-notice-bg: #E0F2FE;
-    --status-notice-fg: #0369A1;
-    --status-scheme-bg: #DCFCE7;
-    --status-scheme-fg: #15803D;
-    --status-alert-bg: #FEE2E2;
-    --status-alert-fg: #B91C1C;
-    --ticker-bg: #071224;
-    --footer-bg: #050C18;
+    --zari-gold-600: #6f470b;
+    --zari-gold-500: #8f5d09;
+    --zari-gold-400: #dd9f1c;
+    --zari-gold-100: #fbecc2;
+
+    /* Retained for the heritage surfaces that predate the portal scale. */
+    --heritage-gold: #6f470b;
+    --heritage-gold-deep: #3d2807;
+    --heritage-amber-light: #fbecc2;
+    --heritage-amber-subtle: #fdf7ee;
+
+    /* Legacy madder aliases. */
+    --civic-navy-dark: var(--portal-blue-900);
+    --civic-navy-surface: var(--portal-blue-800);
+    --gov-navy-950: var(--portal-blue-900);
+    --gov-navy-900: var(--portal-blue-800);
+    --gov-navy-800: var(--portal-blue-700);
+    --gov-navy-700: var(--portal-blue-600);
+
+    /*
+     * Silk and ink. The neutrals are warm because a Paithani ground is a dyed
+     * ivory, not paper stock; a cool grey next to it reads as a different
+     * document. -500 is 5.4:1 on silk, so the small print in the vitals and the
+     * reference lines stays readable without going to full ink.
+     */
+    --civic-slate-900: #2e281f;
+    --civic-slate-700: #5b4d39;
+    --civic-slate-500: #706045;
+    --canvas-bg: #f3e6cf;
+    --surface-card: #faf1e2;
+    --surface-subtle: #f3e6cf;
+    --bg-surface-white: #faf1e2;
+    --bg-surface-ash: #f3e6cf;
+    --bg-surface-slate: #e9d6b3;
+    --border-subtle: #ddc59c;
+    --border-strong: #9d8b6c;
+
+    /*
+     * Status tints. Each is a dark ink on a wash of its own hue, because a wash
+     * over parchment needs a deeper ink than it would over white. Scheme and
+     * alert stay green and red on purpose: those two encode meaning a citizen
+     * reads at a glance, and recolouring a semantic signal to flatter a palette
+     * is how a register becomes unreadable.
+     */
+    --status-tender-bg: #fbecc2;
+    --status-tender-fg: #6f470b;
+    --status-notice-bg: #dce9e4;
+    --status-notice-fg: #0e5a51;
+    --status-scheme-bg: #dcead9;
+    --status-scheme-fg: #1a5c38;
+    --status-alert-bg: #f7dbe2;
+    --status-alert-fg: #9c1c3b;
+
+    --ticker-bg: #f3e6cf;
+
+    /*
+     * Notice accents. Confined to the home notice loop, where they do a job
+     * rather than decorate: each row's bar and badge take one, so a citizen can
+     * tell rows apart while the loop is moving.
+     *
+     * Saffron, rose, zari and fuchsia are the festive register, and that is
+     * deliberate -- see prd.md 9.1. These are dye names, not decoration names:
+     * marigold petals and madder root are how a Paithani pallu actually gets
+     * its colour, and zari is the gold thread on top. What made the earlier
+     * attempt read as Diwali merchandise was the *technique* -- gold fills,
+     * glow, gradient marigold, ornament -- not these hues. So the hues stay and
+     * the technique is what has to stay away.
+     *
+     * Every value is light enough to sit on the dark row chip as an accent (the
+     * chip supplies the contrast), so none is ever used as text on silk. Rose
+     * and fuchsia were lifted once already: at their first values they measured
+     * 2.3-2.6:1 as a bar against the chip and vanished into it. 3:1 is the bar.
+     */
+    --notice-accent-1: #ffc233; /* saffron — marigold petals, the dye itself */
+    --notice-accent-2: #ffa0b0; /* rose — madder root, run thin */
+    --notice-accent-3: #ffd97a; /* zari — the gold thread catching light */
+    --notice-accent-4: #2fe0c8; /* peacock — the one cool note, kept on purpose */
+    --notice-accent-5: #ff96f2; /* fuchsia — the magenta in the buti weave */
+    --notice-accent-6: #9ee04f; /* leaf — the green peacock feather takes */
+
+
+    /*
+     * Peacock morpanhki — the bird on a Paithani pallu, and the one cool note
+     * that keeps the warm palette from closing into a single field. Carries the
+     * heritage card rule and notice accents, never body text.
+     */
+    --morpanhki: #0e5a51;
+    --morpanhki-light: #dce9e4;
+    --morpanhki-600: #157065;
+    --morpanhki-400: #46a491;
+    --morpanhki-050: #eef4f2;
+
+    /*
+     * The crimson field. A Paithani pallu is a madder ground with gold on it, so
+     * this is the colour the whole palette is built to sit against. It carries
+     * the notice panel and the footer; on it, 7.5:1 for body and 9.8:1 for the
+     * muted step.
+     */
+    --paithani-red: #5e0f22;
+    --paithani-red-light: #f7dbe2;
+    /* Meta line on the notice chip: 5.40:1 over the worst-case composite. */
+    --notice-ink-muted: #f2dfe4;
+
+    /*
+     * Ink for type sitting ON the crimson bands: 7.46:1 for the body, 9.4:1 for
+     * the muted step, and a rose hairline you can just see against it.
+     */
+    --on-vangi: #fdf7ee;
+    --on-vangi-muted: #faf1e2;
+    --on-vangi-rule: #c99a9a;
+
+    --vangi-950: #7d1430;
+    --vangi-850: #9c1c3b;
+
+    --footer-bg: #4d0f20;
+
+    /* ---------------------------------------------------------------------
+     * WORKING RAMPS
+     *
+     * Four complete, monotonic scales. These are the real palette. Everything
+     * above is either an alias into these or a one-off structural colour, and
+     * the `slate` / `amber` / `blue` utility ramps in `@theme inline` are
+     * redirected onto `paper` / `bronze` / `teal` so the ~920 default-Tailwind
+     * utilities already written across the 19 public pages pick these up
+     * without a 19-file markup sweep.
+     *
+     * Every value below was contrast-checked against the grounds it is
+     * actually used on. See prd.md 9.1 for why amber was flattened to bronze
+     * and blue to teal, and which two utilities were deliberately NOT
+     * redirected.
+     * ------------------------------------------------------------------- */
+
+    /* Silk. The warm ivory a Paithani ground actually is. Replaces Tailwind
+       `slate`, which is a cool blue-grey and turned to mud here. Note the
+       50-300 end carries a little pink, not grey: an ivory with no red in it
+       reads as paper stock, and the madder sits on it far better against a
+       warm ground. Steps 400-500 are borders and disabled states only -- body
+       text uses `--civic-slate-*` via the `slate-body` / `slate-muted`
+       utilities, because the stock `text-slate-400` and `text-slate-500` were
+       1.53:1 and 2.23:1 and are used for 11px labels. */
+    --paper-50: #fdf7ee;
+    --paper-100: #faf1e2;
+    --paper-200: #f3e6cf;
+    --paper-300: #e9d6b3;
+    --paper-400: #9d8b6c;
+    --paper-500: #867454;
+    --paper-600: #706045;
+    --paper-700: #5b4d39;
+    --paper-800: #41382a;
+    --paper-900: #2e281f;
+    --paper-950: #1c1813;
+
+    /* Marigold. Replaces Tailwind `amber`, and this time the marigold stays.
+       A Paithani border is marigold-yellow against madder, so flattening this
+       into a dull bronze was the thing that cost the palette its identity --
+       the dull build measured fine on contrast and still looked like dust,
+       because a yellow with the chroma taken out is not a softer yellow, it is
+       a different, lifeless one. 300-400 are the bright steps, 500-600 the
+       link steps, 600 pinned at 5.02:1 on silk because the first value at
+       #a0680a came in at 4.18:1 and failed. */
+    --bronze-50: #fdf6e3;
+    --bronze-100: #fbecc2;
+    --bronze-200: #f6d888;
+    --bronze-300: #eec04a;
+    --bronze-400: #dd9f1c;
+    --bronze-500: #c07f0c;
+    --bronze-600: #8f5d09;
+    --bronze-700: #6f470b;
+    --bronze-800: #553608;
+    --bronze-900: #3d2807;
+    --bronze-950: #261705;
+
+    /* Peacock. Replaces Tailwind `blue`, so every link, info chip and hero
+       moves off corporate navy onto the complementary axis. Warmed and deepened
+       slightly against the new madder ground, because the old value had a green
+       cast that now vibrates next to crimson. 600 is the link step at 5.3:1,
+       700 the deep panel step, and 700+ stays dark because it carries light
+       text. */
+    --teal-50: #eef4f2;
+    --teal-100: #dce9e4;
+    --teal-200: #bfd9d1;
+    --teal-300: #6fbfae;
+    --teal-400: #46a491;
+    --teal-500: #27897a;
+    --teal-600: #157065;
+    --teal-700: #0e5a51;
+    --teal-800: #0a473f;
+    --teal-900: #073731;
+    --teal-950: #052a26;
+
+    /* Madder. The crimson ground of the pallu, and the near-complement of the
+       peacock. Replaces the three hardcoded navy hero hexes. This is the ramp
+       the earlier review pushed toward a red-orange terracotta; that was the
+       wrong lean. Madder root gives a crimson that leans magenta, not toward
+       orange, and getting that lean right is the difference between "Paithani
+       silk" and "Diwali poster". 700 is the structural step at 9.79:1 for
+       headings on silk, 600 the link step at 7.09:1. */
+    --oxide-50: #fbeef1;
+    --oxide-100: #f7dbe2;
+    --oxide-200: #eeb3c1;
+    --oxide-300: #e07f96;
+    --oxide-400: #c94a68;
+    --oxide-500: #b32a4b;
+    --oxide-600: #9c1c3b;
+    --oxide-700: #7d1430;
+    --oxide-800: #631127;
+    --oxide-900: #4d0f20;
+    --oxide-950: #2e0813;
   }
 
   body {
@@ -92,6 +415,30 @@
     font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * Paper fibre. A flat parchment swatch is the single most recognisable
+   * "AI generated" tell in a warm palette, so the ground is given an actual
+   * material: an SVG fractal-noise tile multiplied over it at low opacity, which
+   * is what separates handmade paper from a colour value. Fixed and inert, so
+   * it costs one composited layer rather than repainting on scroll.
+   */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='fibre'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23fibre)' opacity='0.22'/%3E%3C/svg%3E");
+  }
+
+  /* Every child sits above the fibre layer. */
+  body > * {
+    position: relative;
+    z-index: 1;
   }
 
   /*
@@ -110,15 +457,20 @@
     font-family: var(--font-devanagari);
   }
 
-  /* Keyboard focus stays visible everywhere — prd.md §8 requires keyboard navigability. */
+  /* Keyboard focus stays visible everywhere — prd.md §8 requires keyboard
+     navigability. Madder on paper, because a focus ring has to clear 3:1
+     against whatever it surrounds. */
   :focus-visible {
-    outline: 2px solid var(--zari-gold-500);
+    outline: 2px solid var(--portal-blue-700);
     outline-offset: 2px;
   }
 
+  /* On the madder chrome the ring flips to the zari gold: 3.9:1 against 900,
+     where a madder ring would vanish into the band it is drawn on. */
   .gov-nav-bar :focus-visible,
   .gov-top-bar :focus-visible,
-  footer :focus-visible {
+  footer :focus-visible,
+  .portal-band :focus-visible {
     outline-color: var(--zari-gold-400);
   }
 }
@@ -143,20 +495,90 @@
 }
 
 /* Institutional Civic Utilities */
+/*
+ * The two stacked header bands, both madder. They are two steps of one hue on
+ * purpose: a single flat madder across the utility bar and the nav would read as
+ * one tall block, and the step change is what tells you where the
+ * administrative header ends and the navigation begins.
+ */
 .gov-top-bar {
-  background-color: #071224;
-  color: #E2E8F0;
+  background-color: var(--portal-blue-900);
+  color: var(--on-vangi);
 }
 
 .gov-nav-bar {
-  background-color: #0C1E3C;
-  color: #FFFFFF;
+  background-color: var(--morpanhki);
+  color: var(--on-vangi);
+}
+
+/*
+ * The zari border — the single recurring ornament of the whole site.
+ *
+ * A Paithani pallu is edged by a drawn sawtooth with a bead at each peak, and
+ * that is exactly what this tile is: gold chevrons, madder beads, hand-cut feel.
+ * It is the one thing that makes the identity read as Paithani rather than as a
+ * warm palette, so it appears under the masthead, under the utility bar and at
+ * the head of each section.
+ */
+.zari-rule {
+  height: 9px;
+  background-color: var(--saffron-100);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='9' viewBox='0 0 36 9'%3E%3Cpath d='M0 8.5 L6 2.5 L12 8.5 L18 2.5 L24 8.5 L30 2.5 L36 8.5' fill='none' stroke='%237a6a3a' stroke-width='1.4'/%3E%3Cpath d='M0 9 L6 3 L12 9 L18 3 L24 9 L30 3 L36 9' fill='none' stroke='%238f4028' stroke-width='0.7' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* The zari rule in its quiet form: no beads, for a section that needs an edge
+   rather than a statement. */
+.zari-rule--plain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='9' viewBox='0 0 36 9'%3E%3Cpath d='M0 8.5 L6 2.5 L12 8.5 L18 2.5 L24 8.5 L30 2.5 L36 8.5' fill='none' stroke='%237a6a3a' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+
+/*
+ * The illuminated initial. A manuscript opens on a painted capital, and a civic
+ * masthead is the same gesture: a madder square, a zari thread around it, and
+ * the opening letter in gold. `initial-letter` would do this natively but has
+ * patchy support, so it is built from a float.
+ */
+/*
+ * The opening initial.
+ *
+ * This WAS a gold letter in a madder square with a zari keyline, which is
+ * exactly the construction of a wedding invitation and was the single loudest
+ * Diwali signal on the page. Gold on crimson does not read as "historic" — it
+ * reads as "celebration", and a municipal gazette is not a celebration.
+ *
+ * It is now an engraved initial: the letter in oxide on bare paper, inside a
+ * double keyline. A double-ruled box around a letter is how an initial is cut
+ * into stone and how a register head is ruled on a printed form, which is the
+ * register this site is. No fill, no gold, no inset shadow, nothing that
+ * catches the eye.
+ *
+ * `initial-letter` would do this natively but has patchy support, so it is
+ * built from a float.
+ */
+.illuminated-cap {
+  float: left;
+  margin: 0.1em 0.16em 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--portal-blue-800);
+  background-color: transparent;
+  border: 1px solid var(--border-strong);
+  box-shadow: inset 0 0 0 3px var(--canvas-bg), inset 0 0 0 4px var(--border-subtle);
 }
 
 .gov-card {
-  background-color: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 4px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
 }
 
 .gov-table {
@@ -165,22 +587,22 @@
 }
 
 .gov-table th {
-  background-color: #F1F5F9;
-  color: #1E293B;
+  background-color: var(--portal-blue-50);
+  color: var(--portal-blue-900);
   font-weight: 600;
   text-align: left;
   padding: 0.75rem 1rem;
-  border-bottom: 2px solid #CBD5E1;
+  border-bottom: 2px solid var(--border-strong);
 }
 
 .gov-table td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #E2E8F0;
-  color: #334155;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--civic-slate-700);
 }
 
 .gov-table tr:hover {
-  background-color: #F8FAFC;
+  background-color: var(--portal-blue-50);
 }
 
 /* Badge System */
@@ -195,36 +617,36 @@
 }
 
 .badge-tender {
-  background-color: #FEF3C7;
-  color: #92400E;
-  border: 1px solid #FCD34D;
+  background-color: var(--status-tender-bg);
+  color: var(--status-tender-fg);
+  border: 1px solid #f0d9b0;
 }
 
 .badge-notice {
-  background-color: #E0F2FE;
-  color: #0369A1;
-  border: 1px solid #BAE6FD;
+  background-color: var(--status-notice-bg);
+  color: var(--status-notice-fg);
+  border: 1px solid var(--portal-blue-300);
 }
 
 .badge-scheme {
-  background-color: #DCFCE7;
-  color: #15803D;
+  background-color: var(--status-scheme-bg);
+  color: var(--status-scheme-fg);
   border: 1px solid #BBF7D0;
 }
 
 .badge-ongoing {
-  background-color: #FEF3C7;
-  color: #B45309;
+  background-color: var(--status-tender-bg);
+  color: var(--zari-gold-600);
 }
 
 .badge-completed {
-  background-color: #DCFCE7;
+  background-color: var(--status-scheme-bg);
   color: #166534;
 }
 
 .badge-planned {
-  background-color: #F1F5F9;
-  color: #475569;
+  background-color: var(--portal-blue-50);
+  color: var(--civic-slate-700);
 }
 
 .badge-announcement {
@@ -243,15 +665,221 @@
   border: 1px solid #FDBA74;
 }
 
-/*
- * Section heading rule — a single zari-gold bar is the one accent that marks authority on
- * this platform (section headings, active nav, notice strip). Used nowhere decorative.
- */
-.section-rule {
-  border-bottom: 3px solid var(--zari-gold-500);
-  padding-bottom: 0.625rem;
+/* --------------------------------------------------------------------------
+ * Portal components
+ *
+ * A municipal site's job is to be scanned and printed, so these are square
+ * and flat: 3px corners, hairline rules, no drop shadows. The top accent
+ * rule is load-bearing — it encodes which wing a card belongs to
+ * (blue = civic, gold = heritage, teal = tourism) rather than decorating it.
+ * -------------------------------------------------------------------------- */
+
+.portal-masthead {
+  background-color: var(--surface-card);
+  color: var(--portal-blue-900);
+  position: relative;
 }
 
+/*
+ * The join at the top of the masthead. The zari band, not a hairline: it is
+ * the edge that tells you the video has ended and the document has begun, which
+ * is the one job a rule can do here that ornament cannot. It sits at the TOP
+ * now, because the woven buti border below took the foot of the page.
+ */
+.portal-masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 9px;
+  background-color: var(--saffron-100);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='9' viewBox='0 0 36 9'%3E%3Cpath d='M0 8.5 L6 2.5 L12 8.5 L18 2.5 L24 8.5 L30 2.5 L36 8.5' fill='none' stroke='%237a6a3a' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/*
+ * THE PAITHANI BORDER — the identity's one ornament.
+ *
+ * This is deliberately not a drawing. An earlier attempt drew the town as
+ * "hand-sketched" line art and read as machine-generated: one uniform stroke
+ * width, dead-straight 300px runs, and a shikhara mirrored to `centre ± 26`.
+ * Real drawing modulates its line weight and does not hold a long line true;
+ * bezier paths cannot do either, and faking it with overshoots only adds a
+ * second layer of the same mistake.
+ *
+ * A woven pallu border is none of those things. It is a repeating unit of flat
+ * geometry — a calyx (buti) alternating with a lozenge, between two zari
+ * threads — so it is built as a genuinely periodic tile instead of an
+ * illustration. Period 18px, butis at x=9 and x=27, lozenge at x=18. Every
+ * motif sits fully inside the 36px tile box, so the repeat has no cut edges and
+ * no seam. Perfect periodicity is correct here rather than a tell: cloth is
+ * mathematically regular, and the regularity is the point.
+ *
+ * Two zari threads top and bottom, madder line-work between them.
+ */
+.paithani-band {
+  height: 12px;
+  background-color: var(--saffron-100);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='12' viewBox='0 0 36 12'%3E%3Cg fill='none' stroke='%237a6a3a' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath d='M0 0.7 H36'/%3E%3Cpath d='M0 11.3 H36'/%3E%3C/g%3E%3Cg fill='none' stroke='%238f4028' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 1.8 C6.4 3.6 5.6 6 6.2 8.1 C6.6 9.5 7.8 9.9 9 9.9 C10.2 9.9 11.4 9.5 11.8 8.1 C12.4 6 11.6 3.6 9 1.8 Z'/%3E%3Cpath d='M9 3.6 C7.9 5 7.5 6.6 7.8 8.2'/%3E%3Cpath d='M9 3.6 C10.1 5 10.5 6.6 10.2 8.2'/%3E%3Cpath d='M27 1.8 C24.4 3.6 23.6 6 24.2 8.1 C24.6 9.5 25.8 9.9 27 9.9 C28.2 9.9 29.4 9.5 29.8 8.1 C30.4 6 29.6 3.6 27 1.8 Z'/%3E%3Cpath d='M27 3.6 C25.9 5 25.5 6.6 25.8 8.2'/%3E%3Cpath d='M27 3.6 C28.1 5 28.5 6.6 28.2 8.2'/%3E%3C/g%3E%3Cg fill='none' stroke='%231e5049' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 3.6 L20.4 6 L18 8.4 L15.6 6 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/*
+ * Vital-statistics strip. The gazette's opening block.
+ *
+ * This was a paper panel with a drawn double edge, which is correct but was
+ * disappearing into the ground it sat on — four figures in a grid is the most
+ * important block on the page and it had no weight. It is now the page's one
+ * large field of the complementary teal, with the figures in paper. Oxide
+ * red-orange against teal is the near-complementary pair the whole identity is
+ * built on, and this is where it is spent at scale.
+ */
+.portal-vitals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--morpanhki);
+  border-top: 4px double var(--zari-gold-400);
+  border-radius: 2px;
+  background-color: var(--morpanhki);
+}
+
+@media (min-width: 768px) {
+  .portal-vitals {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Hairlines in a light step of the panel's own hue, not a warm grey — a warm
+   grey divider on teal is the one combination that would look like a mistake. */
+.portal-vital {
+  padding: 0.875rem 1rem;
+  border-right: 1px solid var(--morpanhki-400);
+  border-bottom: 1px solid var(--morpanhki-400);
+}
+
+.portal-vital dt {
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--morpanhki-light);
+  margin: 0;
+}
+
+/* References render in figures so columns line up down the page. */
+.portal-vital dd {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--surface-card);
+}
+
+.portal-vital dd small {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--morpanhki-light);
+}
+
+/* The gazette rule. The one flourish the page is allowed: a heavy zari segment
+   closed by a hairline, which is how a gazette separates its title from its
+   body. */
+.gazette-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.gazette-rule::before {
+  content: "";
+  height: 3px;
+  width: 3.5rem;
+  background-color: var(--zari-gold-500);
+}
+
+.gazette-rule::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  max-width: 12rem;
+  background-color: var(--border-strong);
+}
+
+/* Section card. Flat, with a drawn edge rather than a shadow, and a zari thread
+   along the top keyed to the wing: madder for civic, gold for heritage (the
+   Paithani zari is what that wing is about), peacock for tourism. */
+.portal-card {
+  position: relative;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background-color: var(--portal-blue-700);
+  border-radius: 3px 3px 0 0;
+}
+
+.portal-card--heritage::before {
+  background-color: var(--zari-gold-500);
+}
+
+.portal-card--tourism::before {
+  background-color: var(--morpanhki);
+}
+
+/* Register table: the council's notices, tenders and works. */
+.portal-register {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.portal-register thead th {
+  background-color: var(--portal-blue-50);
+  color: var(--portal-blue-900);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border-strong);
+  white-space: nowrap;
+}
+
+.portal-register tbody td {
+  padding: 0.8125rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--civic-slate-700);
+  vertical-align: top;
+}
+
+.portal-register tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.portal-register tbody tr:hover {
+  background-color: var(--portal-blue-50);
+}
+
+/* Section band: a full-bleed blue rule that opens a wing of the site. */
+.portal-band {
+  background-color: var(--portal-blue-800);
+  color: #FFFFFF;
+}
+
+.portal-rule {
+  border-bottom: 3px solid var(--portal-blue-700);
+  padding-bottom: 0.625rem;
+}
 /* Notice ticker. Paused on hover/focus and fully disabled for reduced-motion users. */
 @keyframes notice-scroll {
   from {
@@ -296,3 +924,421 @@
   padding-top: env(safe-area-inset-top, 0px);
 }
 
+/* ==========================================================================
+   PRINT
+   Government registers get printed, signed and filed, so this page has to
+   survive paper rather than just a screen. Screen chrome is dropped, colour
+   is flattened to black on white, and the register tables are allowed to
+   break across sheets with their header row repeated on each one.
+   ========================================================================== */
+@media print {
+  /* Chrome that has no business on paper. `position: fixed` is a dependable
+     proxy for the floating widgets, which avoids coupling these rules to
+     markup owned by shared components. */
+  header,
+  footer,
+  aside[aria-label*="ticker" i],
+  dialog,
+  [role="dialog"],
+  .fixed {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10.5pt;
+  }
+
+  /* Keep the masthead: it is what identifies who issued the record. Flattened
+     to a heavy rule rather than a colour field, since large areas of ink are
+     the first thing to be dropped by a budget print policy. */
+  .portal-masthead {
+    background: #fff !important;
+    color: #000 !important;
+    padding-bottom: 8pt !important;
+    border-bottom: 2.5pt solid #000;
+  }
+
+  .portal-masthead h1 {
+    color: #000 !important;
+  }
+
+  /* The gold rule is the page's one flourish; on paper it becomes a solid
+     black rule so it survives a greyscale copier. */
+  .portal-rule {
+    border-bottom: 1.5pt solid #000;
+  }
+
+  /* Reveal section headings that are visually carried by a colour block on
+     screen, so the printed page still has a navigable outline. */
+  .portal-band {
+    background: #fff !important;
+    border-block: 1pt solid #000;
+  }
+
+  .portal-vitals {
+    border: 1pt solid #000;
+  }
+
+  .portal-vital {
+    border-color: #000 !important;
+  }
+
+  .portal-vital dt,
+  .portal-vital dd,
+  .portal-vital dd small {
+    color: #000 !important;
+  }
+
+  /* Flatten the tinted surfaces. */
+  .portal-card,
+  .portal-register tbody tr:nth-child(even) {
+    background: #fff !important;
+  }
+
+  .portal-card,
+  .portal-card::before {
+    box-shadow: none !important;
+  }
+
+  .portal-register {
+    border: 1pt solid #000;
+    font-size: 8.5pt;
+  }
+
+  /* A horizontally scrollable wrapper clips its content on paper, which would
+     silently cut off the right-hand columns of the register. */
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  .portal-register td {
+    min-width: 0 !important;
+  }
+
+  .portal-register th,
+  .portal-register td {
+    border-color: #999 !important;
+    color: #000 !important;
+    padding: 5pt 6pt;
+  }
+
+  /* Repeat the column headings on every sheet a long register spills onto —
+     the single most useful thing print CSS can do for a records table. */
+  .portal-register thead {
+    display: table-header-group;
+  }
+
+  /* Never split a single record across two sheets. */
+  .portal-register tr,
+  .portal-card,
+  blockquote,
+  figure {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Keep a heading with the content it introduces. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Links are meaningless on paper unless the target is visible, so expose it
+     for the register and directory links only — not every nav item. */
+  .portal-register a[href^="http"]::after,
+  .portal-register a[href^="/"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #444;
+    word-break: break-all;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  /* Do not waste a sheet on a mostly-empty page. */
+  section {
+    break-inside: auto;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   The notice loop over the video.
+
+   A vertical marquee: one list, duplicated, translated up by exactly half its
+   own height, so the second copy arrives where the first left off and the cycle
+   has no visible join. -50% is only seamless because the track holds exactly
+   two identical halves, so the copy count is load-bearing — do not reduce it to
+   one to "simplify" the markup or the loop will jump.
+
+   Accessibility, which WCAG 2.2.2 makes mandatory for anything that moves for
+   more than five seconds:
+   - Pauses on hover AND on focus-within, so a keyboard user tabbing into the
+     list actually stops it. Hover alone is not sufficient.
+   - Under prefers-reduced-motion the animation is removed entirely and the
+     duplicate is display:none'd, leaving a real, natively scrollable list. The
+     notices are content, not decoration: they are never hidden from assistive
+     tech, and the duplicated half is aria-hidden so it is not announced twice.
+   --------------------------------------------------------------------------- */
+
+@keyframes notice-loop-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.notice-loop {
+  position: relative;
+  overflow: hidden;
+  /* A fade at the top and foot so items enter and leave instead of being
+     chopped by the panel edge. Mask, not a gradient overlay, so it does not
+     sit on top of the text. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 2.5rem,
+    #000 calc(100% - 2.5rem),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 2.5rem,
+    #000 calc(100% - 2.5rem),
+    transparent 100%
+  );
+}
+
+.notice-loop__track {
+  animation: notice-loop-scroll var(--notice-loop-duration, 48s) linear infinite;
+  will-change: transform;
+}
+
+/* Hover AND focus-within: a pointer user stops it by touching the list, a
+   keyboard user stops it by tabbing into it. */
+.notice-loop:hover .notice-loop__track,
+.notice-loop:focus-within .notice-loop__track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice-loop {
+    overflow-y: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .notice-loop__track {
+    animation: none;
+  }
+
+  /* Hide the duplicated half so the list is not read or scrolled twice. */
+  .notice-loop__track > [data-loop-copy] {
+    display: none;
+  }
+}
+
+/*
+ * The playback controls. Only at lg, where the footage is full-bleed and there is
+ * exposed video for them to sit on. Below lg the video is an ordinary block above
+ * the notices, so a control pinned to the band's bottom corner would land on top
+ * of the notice list instead of on the footage.
+ */
+.video-controls {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  /*
+   * Bottom-left, in the footage the panel does not cover. The chip is the same
+   * 0.68 dark as a notice row so the two read as one family, and the label
+   * stays near-white rather than taking an accent, because these are chrome
+   * rather than content.
+   */
+  .video-controls {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: calc(100% - 23rem);
+  }
+
+  .video-controls__caption {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.4rem 0.75rem;
+    background-color: rgb(26 8 14 / 0.68);
+    border-left: 3px solid var(--morpanhki-400);
+    color: var(--surface-card);
+    font-size: 0.8125rem;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+  }
+
+  .video-controls__coords {
+    font-size: 0.6875rem;
+  color: var(--notice-ink-muted);
+}
+
+  .video-controls__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.8rem;
+    background-color: rgb(26 8 14 / 0.68);
+    border: 1px solid var(--morpanhki-400);
+    color: var(--surface-card);
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  .video-controls__toggle:hover:not(:disabled) {
+    background-color: rgb(26 8 14 / 0.82);
+  }
+
+  .video-controls__toggle:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+
+  .video-controls__glyph {
+    font-size: 0.625rem;
+    line-height: 1;
+  }
+}
+
+/*
+ * Focus ring for the two new controls. The shared `*:focus-visible` rule covers
+ * the toggle; the caption is not interactive and needs none.
+ */
+.video-controls__toggle:focus-visible {
+  outline: 2px solid var(--morpanhki-light);
+  outline-offset: 2px;
+}
+
+/*
+ * NOTICE PANEL. The background is owned here rather than by a `bg-` utility on
+ * the element, because it has to change at the lg boundary and a utility would
+ * either win the cascade on both sides or need an arbitrary breakpoint variant.
+ *
+ * Mobile: a solid block. There is no footage behind it, so nothing to show.
+ * Desktop: transparent, so the video stays visible between the rows. The
+ * contrast that the panel used to provide is now carried per row by the chip
+ * below, which is the only way to stay legible over an unknown frame.
+ */
+.notice-panel {
+  background-color: var(--paithani-red);
+}
+
+@media (min-width: 64rem) {
+  .notice-panel {
+    background-color: transparent;
+  }
+
+  /*
+   * The heading bar is one line of text sitting straight on the footage with no
+   * row chip around it, so it keeps a backing of its own. Warm dark crimson to
+   * match the row chips instead of reintroducing the matte panel.
+   */
+  .notice-panel__head {
+    background-color: rgb(26 8 14 / 0.55);
+  }
+}
+
+/*
+ * One row. The translucent chip plus the accent bar is the whole contrast
+ * strategy: the title is near-white on a dark chip, which is the only chip that
+ * stays legible over an unknown frame, and the video is still visible around it.
+ *
+ * 0.68 is not a taste decision, it is the arithmetic. Compositing the chip over a
+ * pure-white frame (the brightest thing in the clip) gives the worst case, and
+ * white text needs a background luminance of 0.117 or lower:
+ *   a=0.55 -> #81777a -> 4.33:1  (fails)
+ *   a=0.60 -> #766b6e -> 5.11:1
+ *   a=0.68 -> #63575b -> 6.47:1  (chosen, for headroom)
+ * Going lighter re-breaks the guarantee, and no frame of the actual clip is
+ * white enough to justify gambling on it.
+ */
+.notice-item {
+  display: block;
+  position: relative;
+  padding: 0.75rem 1rem 0.75rem 1.15rem;
+  background-color: rgb(26 8 14 / 0.68);
+  box-shadow: inset 3px 0 0 var(--notice-accent, var(--notice-accent-1));
+  transition: background-color 150ms ease;
+}
+
+.notice-item:hover,
+.notice-item:focus-visible {
+  background-color: rgb(26 8 14 / 0.82);
+}
+
+/* The loop puts air between the rows, which is what sells the transparency. */
+.notice-loop__track > li + li {
+  margin-top: 0.375rem;
+}
+
+.notice-item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--morpanhki-light);
+}
+
+/*
+ * Inside the loop the category badge takes the row's accent instead of its own
+ * status colour, so a single glance down the panel separates notices while the
+ * loop is moving. The status badges keep their own colours everywhere else.
+ *
+ * The badge is a SOLID accent with near-black text, not an accent tinted into a
+ * dark chip. Two reasons, both measured:
+ *   - as text on the dark chip the accents run 5.08:1 (zari) down to 3.58:1
+ *     (rose and fuchsia), so the label cannot be the accent;
+ *   - a 24% `color-mix` tint was tried first and abandoned. The minifier wraps
+ *     it in `@supports (color: color-mix(...))` and emits a plain
+ *     `background-color: var(--notice-accent)` fallback, which in any browser
+ *     missing color-mix means white text on a solid bright accent — about
+ *     1.7:1. Dark text on the solid accent is 9.2:1 to 13:1, is the more
+ *     colourful of the two options, and behaves identically in both branches.
+ */
+.notice-item .badge-civic {
+  color: var(--paper-950);
+  border-color: var(--notice-accent, var(--notice-accent-1));
+  background-color: var(--notice-accent, var(--notice-accent-1));
+}
+
+.notice-item__title {
+  display: block;
+  margin: 0.3rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--surface-card);
+  /* Belt and braces: the chip is doing the work, this covers its soft edge. */
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+}
+
+.notice-item:hover .notice-item__title,
+.notice-item:focus-visible .notice-item__title {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

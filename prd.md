@@ -113,6 +113,104 @@ Single chatbot, not scoped to tourism only. Must answer across:
 - Should read as a **modern government digital platform**, not an "AI-generated futuristic website" and not an old-style bare-bones government portal
 - Should not look like a tourism-brand microsite — administration and public-service content need to feel just as prominent as heritage/tourism content
 
+### 9.1 Decisions taken during the visual rebuild
+
+Recorded here so the rejected directions are not re-litigated. These were settled
+with the client, not inferred.
+
+**Palette.** A madder crimson ground with marigold and zari gold against deep
+peacock, on warm silk ivory. Every hue in it is a Paithani dye or thread colour:
+madder root gives the crimson field, marigold petals give the yellow, zari is the
+gold thread laid along the border, and the peacock buti supplies the one cool note.
+Ajanta pairs ochre with green-blue, and Paithani pairs a red field with a peacock
+border, so the pair is locally authentic rather than borrowed.
+
+Three directions were tried, and the record matters because the first rejection
+was later reversed:
+
+- *Saturated crimson, marigold and metallic gold.* Rejected at first on the
+  grounds that it read as Diwali/festive merchandise rather than a civic archive.
+  **This rejection was wrong and has been reversed by the client.** See below.
+- *A fully desaturated warm-grey palette.* Correctly avoided the festive reading
+  but read as unfinished and cheap, and the client rejected it as boring.
+- *The first oxide/bronze/paper build, held at low chroma.* The same mistake as the
+  desaturated palette in a different key: "not festive" had been read as "not
+  saturated". Delivered, reviewed, and rejected as boring.
+
+**What the reversal actually turned on.** The hues were never the problem. Crimson,
+marigold and gold are how a Paithani pallu is dyed, and flattening marigold into a
+dull bronze measurably *passed* contrast while still looking like dust, because a
+yellow with the chroma removed is not a softer yellow, it is a different and
+lifeless one. What made the first attempt read as Diwali merchandise was the
+**technique** applied to those hues: gold used as a large fill, glow, gradient
+marigold, ornament. So the rule now is:
+
+> Keep the dye colours. Earn them with technique, not with hue. Saturation is
+> authentic; glitter, glow and gold-as-fill are not.
+
+Restraint is expressed by *how* a colour is used — zari gold is a hairline and never
+a block, accents live only in the notice loop — not by desaturating the palette.
+Madder also leans magenta rather than orange; getting that lean right is the whole
+difference between "Paithani silk" and "Diwali poster", and the earlier
+red-orange `oxide` ramp had it wrong.
+
+**The notice accents.** The home notice loop is the one place allowed six
+deliberately high-chroma colours, because there they do a job rather than decorate:
+each row's bar and badge take one, so a citizen can separate rows while the loop is
+moving. The six are saffron, rose, zari, peacock, fuchsia and leaf. The peacock is
+kept on purpose as the single cool note; without it the panel collapses into one
+warm field. Two of them had to be lightened once already — at their first values
+rose and fuchsia measured 2.3-2.6:1 as a bar against the row chip and disappeared
+into it.
+
+**Typography.** A display serif (Besley) with a Devanagari companion
+(Tiro Devanagari Hindi) for headings, and Inter retained for body and UI. Display
+faces are for headings and numerals only; the civic body text stays neutral and
+legible at small sizes.
+
+**Ornament.** Flat Paithani textile geometry — butis, lotus rosettes, woven
+borders — drawn as inline SVG and CSS. An illustrated townscape was built and
+rejected: it read as AI-generated, which directly violates the line above about
+not looking AI-generated. Ornament is applied to structure (borders, finsials,
+dividers), never to content.
+
+**Motion.** The home notice loop pauses on hover *and* on focus-within, because a
+hover-only pause fails a keyboard user, and WCAG 2.2.2 requires any motion over
+five seconds to be pausable. The duplicated list copy is hidden from assistive
+technology, and `prefers-reduced-motion` replaces the loop with a static
+scrollable list.
+
+### 9.2 Known gaps in the design system
+
+- The public palette migration is complete: all public pages and shared components
+  resolve to the four ramps (`paper`, `bronze`, `teal`, `oxide`) with no hex
+  literals, via utility redirects in `globals.css` rather than a call-site rewrite.
+  Those redirects are intentionally semantically dishonest - `slate-*` renders
+  silk, `amber-*` renders marigold, `blue-*` renders peacock - so a future
+  contributor reading `bg-slate-900` will not guess the colour from the name. The
+  comment above the block in `globals.css` says so; this line is the second copy
+  of that warning.
+- `app/admin` is deliberately **not** on these ramps. It is a separate internal
+  product surface and still carries its own navy; migrating it was scoped out by
+  decision, not overlooked.
+- The council crest in `components/layout/CouncilSeal.tsx` is a non-official
+  placeholder and must be replaced with the authorised emblem before launch.
+- The home video is 848x424 at roughly 125 kbps and is visibly soft when scaled to
+  a full-width band. This needs a re-encode, not a CSS change; no encoder is
+  available in the current environment.
+- The home video autoplay for `prefers-reduced-motion` users is now **closed**.
+  `components/layout/VideoControls.tsx` is a small client island that pauses the
+  clip when the media query matches, and it also exposes a pause/play control
+  because the clip loops indefinitely and WCAG 2.2.2 requires motion past five
+  seconds to be pausable. Verified `prefers-reduced-motion` in that file.
+- `/heritage` has no index page, so the route itself 404s even though the
+  individual heritage pages exist.
+- The four ramp *names* are now historical: `paper` is a warm silk ivory, `bronze`
+  is marigold, and `oxide` is madder crimson. The values moved, the identifiers did
+  not, so the redirect block in `globals.css` still reads as if `amber-*` were
+  bronze. Renaming the identifiers is a separate sweep and was deliberately left
+  out of a values-only change to keep the diff reviewable.
+
 ## 10. Milestones
 
 1. Finalize structure/sitemap (this doc)

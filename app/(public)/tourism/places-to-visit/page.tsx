@@ -79,7 +79,7 @@ export default function PlacesToVisitPage() {
                   <h2 className="text-xl font-bold text-[var(--gov-navy-900)] font-serif">
                     {place.nameEn}
                   </h2>
-                  <p lang="mr" className="text-sm text-slate-500 mt-0.5 font-medium">
+                  <p lang="mr" className="text-sm text-slate-muted mt-0.5 font-medium">
                     {place.nameMr}
                   </p>
 
@@ -111,15 +111,15 @@ export default function PlacesToVisitPage() {
               {/* Practical Info Strip */}
               <div className="mt-6 pt-4 border-t border-[var(--border-subtle)] grid grid-cols-2 gap-2 text-[11px] text-slate-600">
                 <div className="flex items-start gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                  <Clock className="w-3.5 h-3.5 text-slate-body shrink-0 mt-0.5" />
                   <span>{place.visitingHours}</span>
                 </div>
                 <div className="flex items-start gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                  <Tag className="w-3.5 h-3.5 text-slate-body shrink-0 mt-0.5" />
                   <span>Entry: {place.entryFee}</span>
                 </div>
-                <div className="flex items-start gap-1.5 col-span-2 text-[10px] text-slate-400">
-                  <Calendar className="w-3 h-3 text-slate-400 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-1.5 col-span-2 text-[10px] text-slate-body">
+                  <Calendar className="w-3 h-3 text-slate-body shrink-0 mt-0.5" />
                   <span>Best Season: {place.bestSeason}</span>
                 </div>
               </div>
@@ -252,7 +252,7 @@ export default function PlacesToVisitPage() {
                       <td className="py-3 px-4 text-slate-700">
                         {city.travelTimeHours}
                       </td>
-                      <td className="py-3 px-4 text-slate-500">
+                      <td className="py-3 px-4 text-slate-muted">
                         {city.routeVia}
                       </td>
                       <td className="py-3 px-4 text-slate-600">

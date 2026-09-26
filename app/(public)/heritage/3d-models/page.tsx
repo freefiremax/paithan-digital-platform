@@ -91,14 +91,14 @@ export default function ThreeDModelsPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1">
+            <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">
               <Rotate3d className="w-4 h-4" />
               <span>Digital Heritage & 3D Photogrammetry</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
               पैठण डिजिटल ३डी अवशेष दालन (3D Heritage Models)
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-300 mt-1">
               Explore laser-scanned archaeological antiquities, numismatics, and temple architecture in full 360-degree interactive 3D.
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function ThreeDModelsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left: 3D Interactive Viewer Canvas (8 cols) */}
           <div className="lg:col-span-8 space-y-4">
-            <div className="relative aspect-4/3 sm:aspect-16/10 bg-[#071224] rounded-3xl border-2 border-slate-800 overflow-hidden shadow-2xl flex flex-col justify-between p-6">
+            <div className="relative aspect-4/3 sm:aspect-16/10 bg-oxide-800 rounded-3xl border-2 border-slate-800 overflow-hidden shadow-2xl flex flex-col justify-between p-6">
               {/* Viewer Controls Top Overlay */}
               <div className="flex items-center justify-between z-10">
                 <div className="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 text-xs">
@@ -177,7 +177,7 @@ export default function ThreeDModelsPage() {
               {/* Bottom Interactive Slider & Sliders */}
               <div className="z-10 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                 <div className="flex items-center gap-3 w-full sm:w-auto">
-                  <span className="text-slate-400 font-medium">Rotation:</span>
+                  <span className="text-slate-300 font-medium">Rotation:</span>
                   <input
                     type="range"
                     min="0"
@@ -190,7 +190,7 @@ export default function ThreeDModelsPage() {
                 </div>
 
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                  <span className="text-slate-400 font-medium">Zoom:</span>
+                  <span className="text-slate-300 font-medium">Zoom:</span>
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => setZoomLevel(Math.max(0.7, zoomLevel - 0.1))}
@@ -216,15 +216,15 @@ export default function ThreeDModelsPage() {
               <p className="text-xs text-slate-300 leading-relaxed">{activeModel.description}</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
                 <div>
-                  <span className="text-slate-400 text-[11px] block">Historical Period</span>
+                  <span className="text-slate-300 text-[11px] block">Historical Period</span>
                   <span className="font-semibold text-amber-300">{activeModel.era}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 text-[11px] block">Material Composition</span>
+                  <span className="text-slate-300 text-[11px] block">Material Composition</span>
                   <span className="font-semibold text-slate-200">{activeModel.material}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 text-[11px] block">Mesh Topology</span>
+                  <span className="text-slate-300 text-[11px] block">Mesh Topology</span>
                   <span className="font-semibold text-slate-200">{activeModel.geometryType}</span>
                 </div>
               </div>
@@ -256,10 +256,10 @@ export default function ThreeDModelsPage() {
                   >
                     <div className="flex items-center justify-between text-xs mb-1">
                       <span className="font-bold text-amber-400">{model.category}</span>
-                      <span className="text-[10px] text-slate-400">{model.era}</span>
+                      <span className="text-[10px] text-slate-300">{model.era}</span>
                     </div>
                     <div className="font-bold text-sm text-white line-clamp-1">{model.titleEn}</div>
-                    <div className="text-xs text-slate-400 font-marathi line-clamp-1 mt-0.5">
+                    <div className="text-xs text-slate-300 font-marathi line-clamp-1 mt-0.5">
                       {model.titleMr}
                     </div>
                   </button>
@@ -277,7 +277,7 @@ export default function ThreeDModelsPage() {
               </p>
               <Link
                 href="/heritage/museum"
-                className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold pt-1"
+                className="inline-flex items-center gap-1 text-amber-600 hover:text-amber-700 font-semibold pt-1"
               >
                 <span>Visit Museum Guide</span>
                 <ArrowRight className="w-3.5 h-3.5" />

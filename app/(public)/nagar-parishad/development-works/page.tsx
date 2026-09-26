@@ -62,7 +62,7 @@ export default function DevelopmentWorksPage() {
           <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
             {/* Search Input */}
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-body absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search works by title, department, or keyword..."
@@ -117,7 +117,7 @@ export default function DevelopmentWorksPage() {
         {filteredWorks.length === 0 ? (
           <div className="border border-[var(--border-subtle)] bg-white p-12 text-center">
             <p className="text-sm font-semibold text-slate-700">No development works match your filter criteria.</p>
-            <p className="mt-1 text-xs text-slate-500">Try clearing your search query or selecting &ldquo;All Wards&rdquo;.</p>
+            <p className="mt-1 text-xs text-slate-muted">Try clearing your search query or selecting &ldquo;All Wards&rdquo;.</p>
           </div>
         ) : (
           <div className="grid gap-5 md:grid-cols-2">
@@ -137,7 +137,7 @@ export default function DevelopmentWorksPage() {
                   <h2 className="mt-2 text-[0.9375rem] font-semibold text-[var(--gov-navy-900)] leading-snug">
                     {work.title}
                   </h2>
-                  <p lang="mr" className="text-xs text-slate-500 mt-0.5">
+                  <p lang="mr" className="text-xs text-slate-muted mt-0.5">
                     {work.titleMr}
                   </p>
 
@@ -161,14 +161,14 @@ export default function DevelopmentWorksPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-muted">
                     <span className="font-semibold text-slate-800">
                       Budget: ₹{work.budgetInLakhs.toFixed(1)} Lakhs
                     </span>
                     <span>Dept: {work.department}</span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                  <div className="flex items-center gap-1.5 text-[10px] text-slate-body">
                     <Calendar className="w-3 h-3" />
                     <span>
                       Timeline: {work.startDate} to {work.expectedCompletion}

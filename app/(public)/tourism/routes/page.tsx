@@ -46,7 +46,7 @@ export default function RoutesPage() {
                   >
                     {route.nameEn}
                   </h2>
-                  <p lang="mr" className="text-xs text-slate-500 mt-0.5">
+                  <p lang="mr" className="text-xs text-slate-muted mt-0.5">
                     {route.nameMr}
                   </p>
                 </div>
@@ -67,7 +67,7 @@ export default function RoutesPage() {
                 <div className="space-y-4">
                   {route.stops.map((stop, sIdx) => (
                     <div key={sIdx} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[var(--gov-navy-900)] text-amber-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      <div className="w-6 h-6 rounded-full bg-[var(--gov-navy-900)] text-amber-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                         {sIdx + 1}
                       </div>
                       <div className="flex-1">

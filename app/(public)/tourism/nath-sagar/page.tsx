@@ -83,7 +83,7 @@ export default function NathSagarPage() {
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#071224] via-[#071224]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-oxide-950 via-oxide-950/70 to-transparent" />
 
             <div className="absolute top-4 right-4 z-10">
               <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
@@ -114,7 +114,7 @@ export default function NathSagarPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Best Watching Hours</div>
               <div className="text-xs text-slate-600">06:30 AM – 10:00 AM</div>
-              <div className="text-[10px] text-slate-400">& 04:30 PM – 06:00 PM (Sunset)</div>
+              <div className="text-[10px] text-slate-body">& 04:30 PM – 06:00 PM (Sunset)</div>
             </div>
           </div>
 
@@ -123,7 +123,7 @@ export default function NathSagarPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Peak Season</div>
               <div className="text-xs text-slate-600">November to March</div>
-              <div className="text-[10px] text-slate-400">Peak Siberian flamingo arrival</div>
+              <div className="text-[10px] text-slate-body">Peak Siberian flamingo arrival</div>
             </div>
           </div>
 
@@ -132,7 +132,7 @@ export default function NathSagarPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Sanctuary Entry</div>
               <div className="text-xs text-slate-600">Nominal Forest Dept Fee</div>
-              <div className="text-[10px] text-slate-400">Camera permits applicable</div>
+              <div className="text-[10px] text-slate-body">Camera permits applicable</div>
             </div>
           </div>
 
@@ -141,7 +141,7 @@ export default function NathSagarPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Prime Viewpoint</div>
               <div className="text-xs text-slate-600">Flamingo Point & Watchtower</div>
-              <div className="text-[10px] text-slate-400">4.0 km from Paithan Town</div>
+              <div className="text-[10px] text-slate-body">4.0 km from Paithan Town</div>
             </div>
           </div>
         </div>
@@ -153,7 +153,7 @@ export default function NathSagarPage() {
               <h2 className="text-xl font-bold text-slate-900">
                 प्रमुख पक्षी प्रजाती (Signature Avian Species of Nath Sagar)
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-muted">
                 Verified records documented by Bombay Natural History Society (BNHS) and Maharashtra Forest Department
               </p>
             </div>
@@ -172,13 +172,13 @@ export default function NathSagarPage() {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
                     {bird.status}
                   </span>
-                  <span className="text-[11px] text-slate-500 font-medium">{bird.season}</span>
+                  <span className="text-[11px] text-slate-muted font-medium">{bird.season}</span>
                 </div>
 
                 <div>
                   <h3 className="font-bold text-slate-900 text-sm">{bird.commonNameEn}</h3>
                   <div className="text-xs text-slate-600 font-marathi">{bird.commonNameMr}</div>
-                  <div className="text-[11px] text-slate-400 italic font-serif">{bird.scientificName}</div>
+                  <div className="text-[11px] text-slate-body italic font-serif">{bird.scientificName}</div>
                 </div>
 
                 <p className="text-xs text-slate-600 leading-relaxed pt-1">

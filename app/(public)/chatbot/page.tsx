@@ -29,7 +29,7 @@ export default function ChatbotPage() {
               <Bot className="w-4 h-4" />
               <span>Civic Artificial Intelligence</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#071224] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-oxide-700 tracking-tight">
               Paithan Citizen AI Assistant (पैठण AI सहाय्यक)
             </h1>
             <p className="text-sm text-slate-600 mt-1 max-w-2xl">
@@ -85,12 +85,12 @@ export default function ChatbotPage() {
             </div>
 
             {/* Direct Official Escalation Card */}
-            <div className="bg-gradient-to-br from-[#071224] to-[#0C1E3C] text-white rounded-2xl p-6 border border-amber-500/20 shadow-lg">
+            <div className="bg-gradient-to-br from-oxide-800 to-teal-900 text-white rounded-2xl p-6 border border-amber-500/20 shadow-lg">
               <h2 className="font-bold text-white text-base mb-1 flex items-center gap-2">
                 <Building2Icon className="w-4 h-4 text-amber-400" />
                 <span>Municipal Headquarters</span>
               </h2>
-              <p className="text-xs text-slate-300 mb-4">
+              <p className="text-xs text-slate-body mb-4">
                 For legal certificates, RTI, and formal complaints:
               </p>
 
@@ -98,7 +98,7 @@ export default function ChatbotPage() {
                 <div className="flex items-center gap-2.5">
                   <PhoneCall className="w-4 h-4 text-amber-400 shrink-0" />
                   <div>
-                    <div className="text-[11px] text-slate-400">Civic Phone Line</div>
+                    <div className="text-[11px] text-slate-body">Civic Phone Line</div>
                     <a href="tel:02431223010" className="font-semibold text-white hover:text-amber-300">
                       02431-223010
                     </a>
@@ -108,7 +108,7 @@ export default function ChatbotPage() {
                 <div className="flex items-center gap-2.5">
                   <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
                   <div>
-                    <div className="text-[11px] text-slate-400">Office Location</div>
+                    <div className="text-[11px] text-slate-body">Office Location</div>
                     <span>Municipal Council Complex, Main Road, Paithan 431107</span>
                   </div>
                 </div>
@@ -117,14 +117,14 @@ export default function ChatbotPage() {
               <div className="mt-5 pt-4 border-t border-slate-700/80 flex items-center justify-between text-xs">
                 <Link
                   href="/nagar-parishad"
-                  className="text-amber-400 hover:text-amber-300 font-medium inline-flex items-center gap-1"
+                  className="text-amber-600 hover:text-amber-700 font-medium inline-flex items-center gap-1"
                 >
                   <span>Council Directory</span>
                   <ExternalLink className="w-3 h-3" />
                 </Link>
                 <Link
                   href="/nagar-parishad/development-works"
-                  className="text-slate-300 hover:text-white font-medium inline-flex items-center gap-1"
+                  className="text-slate-body hover:text-white font-medium inline-flex items-center gap-1"
                 >
                   <span>Development Works</span>
                   <ExternalLink className="w-3 h-3" />

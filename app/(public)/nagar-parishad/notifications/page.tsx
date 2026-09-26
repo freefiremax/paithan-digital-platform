@@ -68,7 +68,7 @@ export default function NotificationsPage() {
         <div className="border border-[var(--border-subtle)] bg-white p-4 mb-6">
           <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
             <div className="relative w-full md:w-80">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-body absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search by keyword, reference no..."
@@ -130,10 +130,10 @@ export default function NotificationsPage() {
                   </td>
                   <td>
                     <p className="font-semibold text-xs text-[var(--gov-navy-900)]">{item.title}</p>
-                    <p lang="mr" className="text-[11px] text-slate-500 mt-0.5">
+                    <p lang="mr" className="text-[11px] text-slate-muted mt-0.5">
                       {item.titleMr}
                     </p>
-                    <p className="text-[10px] text-slate-400 mt-1">Issued by: {item.department}</p>
+                    <p className="text-[10px] text-slate-body mt-1">Issued by: {item.department}</p>
                   </td>
                   <td className="text-xs font-mono text-slate-600">{item.referenceNo}</td>
                   <td className="text-xs text-slate-600">
@@ -142,7 +142,7 @@ export default function NotificationsPage() {
                         {formatCivicDate(item.closingAt)}
                       </span>
                     ) : (
-                      <span className="text-slate-400">—</span>
+                      <span className="text-slate-body">—</span>
                     )}
                   </td>
                   <td className="text-center">

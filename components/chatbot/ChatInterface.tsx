@@ -170,7 +170,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
       }`}
     >
       {/* Chat Header */}
-      <div className="bg-gradient-to-r from-[#071224] to-[#0C1E3C] text-white px-5 py-4 flex items-center justify-between border-b border-amber-500/20">
+      <div className="bg-gradient-to-r from-[var(--vangi-950)] to-[var(--vangi-850)] text-white px-5 py-4 flex items-center justify-between border-b border-amber-500/20">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-white shadow-md shadow-amber-500/20">
             <Bot className="w-5 h-5" />
@@ -185,7 +185,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
                 Live Civic RAG
               </span>
             </div>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-slate-body">
               {language === "mr"
                 ? "अधिकृत पालिका व पर्यटन माहिती प्रणाली"
                 : "Official Municipal & Cultural Knowledge Base"}
@@ -234,7 +234,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
             <div
               className={`max-w-[85%] sm:max-w-[78%] rounded-2xl p-4 shadow-sm text-sm leading-relaxed ${
                 msg.role === "user"
-                  ? "bg-[#0C1E3C] text-white rounded-br-none"
+                  ? "bg-[var(--vangi-850)] text-white rounded-br-none"
                   : "bg-white text-slate-800 border border-slate-200/80 rounded-bl-none shadow"
               }`}
             >
@@ -250,7 +250,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
               {/* Grounded Source Citations */}
               {msg.sources && msg.sources.length > 0 && (
                 <div className="mt-3 pt-2.5 border-t border-slate-100 flex flex-col gap-1">
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                  <span className="text-[11px] font-semibold text-slate-muted uppercase tracking-wider flex items-center gap-1">
                     <ShieldCheck className="w-3 h-3 text-emerald-600" /> Verified Sources:
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -269,7 +269,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
               )}
             </div>
 
-            <span className="text-[10px] text-slate-400 mt-1 px-1">{msg.timestamp}</span>
+            <span className="text-[10px] text-slate-body mt-1 px-1">{msg.timestamp}</span>
           </div>
         ))}
 
@@ -277,7 +277,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
           <div className="flex items-start gap-2">
             <div className="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-sm rounded-bl-none flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-slate-muted font-medium">
                 {language === "mr"
                   ? "माहिती शोधत आहे..."
                   : "Retrieving official council records..."}
@@ -334,12 +334,12 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
                 ? "पैठण पालिका, कर, पाणीपुरवठा, पर्यटन विषयी विचारा..."
                 : "Ask about municipal services, water supply, tax, pilgrimage..."
             }
-            className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition placeholder:text-slate-400"
+            className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition placeholder:text-slate-body"
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="bg-[#0C1E3C] hover:bg-[#071224] disabled:opacity-40 disabled:hover:bg-[#0C1E3C] text-white px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-1.5 shadow-sm transition shrink-0"
+            className="bg-[var(--vangi-850)] hover:bg-[var(--vangi-950)] disabled:opacity-40 disabled:hover:bg-[var(--vangi-850)] text-white px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-1.5 shadow-sm transition shrink-0"
           >
             <span>{language === "mr" ? "पाठवा" : "Send"}</span>
             <Send className="w-4 h-4 text-amber-400" />

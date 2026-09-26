@@ -154,10 +154,10 @@ export default function TouristMapPage() {
               <Compass className="w-4 h-4" />
               <span>Geographic Information & Navigation</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-[#071224] tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-oxide-700 tracking-tight">
               पैठण पर्यटन नकाशा व दिशानिर्देश (Interactive Tourist Map)
             </h1>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-muted mt-1">
               Explore key pilgrimage temples, Jayakwadi reservoir viewpoints, museums, and handloom clusters with GPS coordinates.
             </p>
           </div>
@@ -198,13 +198,13 @@ export default function TouristMapPage() {
           {/* Left: Interactive Map Simulation */}
           <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6 overflow-hidden">
             {/* Map Area */}
-            <div className="relative aspect-4/3 sm:aspect-16/10 bg-[#0C1E3C] rounded-2xl overflow-hidden shadow-inner flex flex-col justify-between p-4 sm:p-6">
+            <div className="relative aspect-4/3 sm:aspect-16/10 bg-teal-800 rounded-2xl overflow-hidden shadow-inner flex flex-col justify-between p-4 sm:p-6">
               {/* Godavari River Blue Gradient Flow Vector */}
               <div
                 className="absolute inset-0 opacity-25 pointer-events-none"
                 style={{
                   background:
-                    "radial-gradient(ellipse at 70% 30%, #38bdf8 0%, transparent 60%), radial-gradient(ellipse at 30% 80%, #0284c7 0%, transparent 70%)",
+                    "radial-gradient(ellipse at 70% 30%, var(--teal-500) 0%, transparent 60%), radial-gradient(ellipse at 30% 80%, var(--teal-700) 0%, transparent 70%)",
                 }}
               />
 
@@ -213,7 +213,7 @@ export default function TouristMapPage() {
                 <path
                   d="M 0,200 Q 250,150 450,280 T 900,220"
                   fill="none"
-                  stroke="#38bdf8"
+                  stroke="var(--teal-500)"
                   strokeWidth="32"
                   strokeLinecap="round"
                 />
@@ -253,7 +253,7 @@ export default function TouristMapPage() {
                         className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shadow-lg border-2 transition ${
                           isSelected
                             ? "bg-amber-500 border-white text-slate-950 shadow-amber-500/50"
-                            : "bg-[#071224] border-amber-400 text-amber-300 hover:bg-amber-500 hover:text-slate-950"
+                            : "bg-oxide-800 border-amber-400 text-amber-300 hover:bg-amber-500 hover:text-slate-950"
                         }`}
                       >
                         <MapPin className="w-4 h-4" />
@@ -282,7 +282,7 @@ export default function TouristMapPage() {
                     <span className="w-2 h-2 rounded-full bg-sky-400" /> Godavari River
                   </span>
                 </div>
-                <span className="text-slate-400">Map Center: 19.48° N, 75.38° E</span>
+                <span className="text-slate-body">Map Center: 19.48° N, 75.38° E</span>
               </div>
             </div>
           </div>
@@ -294,7 +294,7 @@ export default function TouristMapPage() {
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 border border-blue-200">
                   {selectedPoint.category}
                 </span>
-                <span className="text-xs font-mono text-slate-500">
+                <span className="text-xs font-mono text-slate-muted">
                   {selectedPoint.distanceFromBusStand}
                 </span>
               </div>
@@ -328,7 +328,7 @@ export default function TouristMapPage() {
                 href={`https://www.google.com/maps/dir/?api=1&destination=${selectedPoint.lat},${selectedPoint.lng}`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#0C1E3C] hover:bg-[#071224] text-white py-3 rounded-xl text-xs font-bold shadow-md transition"
+                className="w-full inline-flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-900 text-white py-3 rounded-xl text-xs font-bold shadow-md transition"
               >
                 <Navigation className="w-4 h-4 text-amber-400" />
                 <span>Navigate in Google Maps</span>

@@ -66,7 +66,7 @@ export function MobileNav() {
             <div key={section.href} className="border-b border-white/10 px-4 py-3">
               <Link href={section.href} className="block text-[0.9375rem] font-semibold text-white">
                 {section.label}
-                <span lang="mr" className="ml-2 text-[0.8125rem] font-normal text-[var(--zari-gold-400)]">
+                <span lang="mr" className="ml-2 text-[0.8125rem] font-normal text-[var(--saffron-500)]">
                   {section.labelMr}
                 </span>
               </Link>

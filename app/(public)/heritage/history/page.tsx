@@ -48,7 +48,7 @@ export default function HistoryPage() {
                     {era.titleEn}
                   </h2>
                 </div>
-                <span lang="mr" className="text-sm text-slate-500 font-medium">
+                <span lang="mr" className="text-sm text-slate-muted font-medium">
                   {era.titleMr}
                 </span>
               </div>

@@ -66,18 +66,18 @@ export default function WardMapPage() {
                   <h2 className="mt-2 text-base font-semibold text-[var(--gov-navy-900)] font-serif">
                     {ward.name}
                   </h2>
-                  <p lang="mr" className="text-xs text-slate-500 mt-0.5">
+                  <p lang="mr" className="text-xs text-slate-muted mt-0.5">
                     {ward.nameMr}
                   </p>
 
                   <div className="mt-3 flex items-start gap-1.5 text-xs text-slate-600">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                    <MapPin className="w-3.5 h-3.5 text-slate-body shrink-0 mt-0.5" />
                     <span>Locality: {ward.locality}</span>
                   </div>
                 </div>
 
                 <div className="mt-5 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs">
-                  <span className="text-slate-500">
+                  <span className="text-slate-muted">
                     {summary.total} {summary.total === 1 ? "project" : "projects"}{" "}
                     {summary.ongoing > 0 ? (
                       <strong className="text-amber-700">({summary.ongoing} ongoing)</strong>

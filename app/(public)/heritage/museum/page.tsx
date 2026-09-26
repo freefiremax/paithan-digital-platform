@@ -68,7 +68,7 @@ export default function MuseumPage() {
             <div>
               <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Visiting Hours</p>
               <p className="text-xs text-slate-600">10:30 AM – 05:00 PM</p>
-              <p className="text-[10px] text-slate-400">Closed on Mondays & Public Holidays</p>
+              <p className="text-[10px] text-slate-body">Closed on Mondays & Public Holidays</p>
             </div>
           </div>
 
@@ -77,7 +77,7 @@ export default function MuseumPage() {
             <div>
               <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Admission Fee</p>
               <p className="text-xs text-slate-600">₹10 (Adults) • ₹5 (Children)</p>
-              <p className="text-[10px] text-slate-400">Free for school student groups</p>
+              <p className="text-[10px] text-slate-body">Free for school student groups</p>
             </div>
           </div>
 
@@ -86,7 +86,7 @@ export default function MuseumPage() {
             <div>
               <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Location</p>
               <p className="text-xs text-slate-600">Sant Dnyaneshwar Udyan Campus</p>
-              <p className="text-[10px] text-slate-400">Main Road, Paithan - 431107</p>
+              <p className="text-[10px] text-slate-body">Main Road, Paithan - 431107</p>
             </div>
           </div>
 
@@ -95,7 +95,7 @@ export default function MuseumPage() {
             <div>
               <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Authority</p>
               <p className="text-xs text-slate-600">Directorate of Archaeology</p>
-              <p className="text-[10px] text-slate-400">Government of Maharashtra</p>
+              <p className="text-[10px] text-slate-body">Government of Maharashtra</p>
             </div>
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function MuseumPage() {
                   <h3 className="mt-3 text-[0.9375rem] font-semibold text-[var(--gov-navy-900)] leading-snug">
                     {exhibit.nameEn}
                   </h3>
-                  <p lang="mr" className="text-xs text-slate-500 mt-0.5">
+                  <p lang="mr" className="text-xs text-slate-muted mt-0.5">
                     {exhibit.nameMr}
                   </p>
 
@@ -152,7 +152,7 @@ export default function MuseumPage() {
                   <p className="text-[11px] text-[var(--gov-navy-800)] font-medium">
                     Historical Value:
                   </p>
-                  <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                  <p className="text-[11px] text-slate-muted mt-0.5 leading-snug">
                     {exhibit.significance}
                   </p>
                 </div>

@@ -35,7 +35,7 @@ export default function NagarSevakPage() {
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Banner Header */}
-        <div className="bg-gradient-to-r from-[#071224] via-[#0C1E3C] to-[#122B54] text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-amber-500/20 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-oxide-700 via-oxide-800 to-teal-900 text-white rounded-3xl p-6 sm:p-10 shadow-xl border border-amber-500/20 relative overflow-hidden">
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 mb-3">
               <Building2 className="w-3.5 h-3.5 text-amber-400" />
@@ -87,7 +87,7 @@ export default function NagarSevakPage() {
                   <h3 className="text-lg font-bold text-slate-900 mt-2">{rep.name}</h3>
                   <p className="text-xs text-slate-600 font-marathi">{rep.nameMr}</p>
                   <p className="text-xs text-amber-800 font-semibold mt-1">{rep.constituency}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{rep.termNote}</p>
+                  <p className="text-xs text-slate-muted mt-0.5">{rep.termNote}</p>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 space-y-1">
@@ -101,7 +101,7 @@ export default function NagarSevakPage() {
             {administrationRepresentatives.slice(0, 1).map((rep) => (
               <div
                 key={rep.id}
-                className="bg-gradient-to-br from-[#071224] to-[#0C1E3C] text-white rounded-2xl border border-amber-500/30 p-6 shadow-md flex flex-col justify-between"
+                className="bg-gradient-to-br from-oxide-800 to-teal-900 text-white rounded-2xl border border-amber-500/30 p-6 shadow-md flex flex-col justify-between"
               >
                 <div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase tracking-wider">
@@ -110,7 +110,7 @@ export default function NagarSevakPage() {
                   <h3 className="text-lg font-bold text-white mt-2">{rep.name}</h3>
                   <p className="text-xs text-amber-200/80 font-marathi">{rep.nameMr}</p>
                   <p className="text-xs text-slate-300 font-semibold mt-1">{rep.designation}</p>
-                  <p className="text-xs text-slate-400 mt-0.5">{councilProfile.nameEn}</p>
+                  <p className="text-xs text-slate-300 mt-0.5">{councilProfile.nameEn}</p>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-slate-700/80 text-xs text-slate-300 space-y-1">
@@ -129,13 +129,13 @@ export default function NagarSevakPage() {
               <h2 className="text-lg font-bold text-slate-900">
                 17 प्रभागांचे नगरसेवक (Ward-Wise Corporators)
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-muted">
                 Direct contacts for civic grievances, water supply, and local ward maintenance
               </p>
             </div>
 
             <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-slate-body absolute left-3 top-3" />
               <input
                 type="text"
                 value={searchTerm}
@@ -156,7 +156,7 @@ export default function NagarSevakPage() {
                 >
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black bg-[#0C1E3C] text-white px-2.5 py-1 rounded-lg">
+                      <span className="text-xs font-black bg-teal-800 text-white px-2.5 py-1 rounded-lg">
                         Ward {ward.wardNumber}
                       </span>
                       <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded flex items-center gap-1">
@@ -167,16 +167,16 @@ export default function NagarSevakPage() {
 
                     <div className="mt-3">
                       <h3 className="font-bold text-base text-slate-900">{ward.wardName}</h3>
-                      <p className="text-xs text-slate-500 font-marathi">{ward.wardNameMr}</p>
+                      <p className="text-xs text-slate-muted font-marathi">{ward.wardNameMr}</p>
                     </div>
 
                     <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                      <div className="text-[11px] text-slate-400 font-medium uppercase">Nagar Sevak / Corporator</div>
+                      <div className="text-[11px] text-slate-body font-medium uppercase">Nagar Sevak / Corporator</div>
                       <div className="font-bold text-sm text-slate-900 mt-0.5">{ward.name}</div>
                       <div className="text-xs text-slate-600 font-marathi">{ward.nameMr}</div>
 
                       <div className="mt-2 pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                        <span className="text-slate-500">Paithan Municipal Council</span>
+                        <span className="text-slate-muted">Paithan Municipal Council</span>
                         <a
                           href={`tel:${(ward.phone || "02431223010").replace(/[^0-9]/g, "")}`}
                           className="font-mono text-amber-700 hover:text-amber-800 font-semibold flex items-center gap-1"
@@ -190,14 +190,14 @@ export default function NagarSevakPage() {
                     {wardInfo && (
                       <div className="mt-3 text-xs text-slate-600">
                         <div className="flex items-start gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                          <MapPin className="w-3.5 h-3.5 text-slate-body shrink-0 mt-0.5" />
                           <span>Locality: {wardInfo.locality}</span>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-muted">
                     <span>Census Ward #{ward.wardNumber}</span>
                     <Link
                       href={`/nagar-parishad/development-works`}
