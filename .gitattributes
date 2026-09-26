@@ -1,0 +1,20 @@
+# Normalise line endings to LF in the repository.
+#
+# core.autocrlf is true on this machine, which means without this file every
+# tracked file is rewritten to CRLF in the working tree and committed back as
+# LF. That round trip does not corrupt anything, but it makes a real one-line
+# change show up as a whole-file diff, which is how line-ending noise gets
+# committed by accident and later fought with in review.
+* text=auto eol=lf
+
+# Binary assets: never translate, and never let a text rule try to.
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.mp4  binary
+*.pdf  binary
+*.woff  binary
+*.woff2 binary
