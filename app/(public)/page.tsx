@@ -17,12 +17,19 @@ import {
 } from "lucide-react";
 import { NotificationCategoryBadge } from "@/components/ui/NotificationCategoryBadge";
 import {
+  ButiOrnament,
+  SectionFinial,
+  FigureMount,
+} from "@/components/ui/HistoricMotifs";
+import { HomeVideoBand } from "@/components/layout/HomeVideoBand";
+import {
   councilProfile,
   developmentWorks,
   electedRepresentatives,
   formatCivicDate,
   getWardWorkSummary,
   notifications,
+  paithanDemographics,
   wards,
   TOURIST_PLACES,
 } from "@/lib/mock-data";
@@ -32,63 +39,106 @@ const ledgerEntries = [...notifications].sort((a, b) =>
   b.publishedAt.localeCompare(a.publishedAt)
 );
 
+/** The three wings of the platform, declared once so the hero and nav cannot drift. */
+const WINGS = [
+  {
+    key: "civic",
+    title: "Nagar Parishad",
+    titleMr: "नगर परिषद",
+    blurb:
+      "Council administration for all 17 wards: elected representatives, the corporator roster, development works and official notices.",
+    facts: "17 wards · Class C council · Established 1854",
+    links: [
+      { label: "Public representatives", href: "/nagar-parishad/representatives" },
+      { label: "Ward directory & corporators", href: "/nagar-parishad/ward-map" },
+      { label: "Development works register", href: "/nagar-parishad/development-works" },
+      { label: "Tenders & public notices", href: "/nagar-parishad/notifications" },
+    ],
+  },
+  {
+    key: "heritage",
+    title: "Heritage & Museum",
+    titleMr: "वारसा व संग्रहालय",
+    blurb:
+      "Pratishthana, capital of the Satavahanas, the state archaeological museum, and two thousand years of Paithani silk weaving.",
+    facts: "King Hala's Gaha Sattasai · GI-tagged Paithani silk",
+    links: [
+      { label: "Dr. Balasaheb Patil Museum", href: "/heritage/museum" },
+      { label: "Satavahana coins & antiquities", href: "/heritage/artifacts" },
+      { label: "History of ancient Pratishthana", href: "/heritage/history" },
+      { label: "Sant Eknath & Paithani weaving", href: "/heritage/cultural-heritage" },
+    ],
+  },
+  {
+    key: "tourism",
+    title: "Explore Paithan",
+    titleMr: "पर्यटन व परिसर",
+    blurb:
+      "Jayakwadi Dam on the Godavari, the Nath Sagar wetland sanctuary, and the riverside ghats of the Sant Eknath pilgrimage circuit.",
+    facts: "341 km² sanctuary · Winter migratory season",
+    links: [
+      { label: "Jayakwadi Dam & reservoir", href: "/tourism/jayakwadi" },
+      { label: "Jaikwadi Bird Sanctuary", href: "/tourism/nath-sagar" },
+      { label: "Temples & heritage sites", href: "/tourism/heritage-sites" },
+      { label: "Suggested day routes", href: "/tourism/routes" },
+    ],
+  },
+] as const;
+
 export default function HomePage() {
   return (
     <>
-      <PillarsHero />
+      <HomeVideoBand />
+      <Masthead />
       <CitizenServicesSection />
 
-      {/* Official Landmarks Showcase */}
-      <OfficialLandmarksShowcase />
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
+        {/*
+          One finial per page, at the single structural break between the wing
+          cards and the working sections. A manuscript marks its divisions too,
+          and adding one here means the rest of the page can stay plain.
+        */}
+        <SectionFinial className="-mt-6 mb-6 lg:-mt-8 lg:mb-8" />
         <div className="grid gap-10 lg:grid-cols-12">
           {/* LEFT: TENDERS & PUBLIC NOTICES */}
           <section className="lg:col-span-8 flex flex-col" aria-labelledby="notices-heading">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
               <div>
-                <h2 id="notices-heading" className="text-2xl sm:text-[1.75rem] font-bold text-[#0C1E3C] font-serif tracking-tight">
-                  Tenders and public notices
-                </h2>
-                <p className="mt-1 text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-                  Every announcement, scheme, tender and public notice the council issues is published here in one register, with its reference number and closing date.
+                <div className="flex items-center gap-2.5">
+                  <ButiOrnament className="h-8 w-4 shrink-0 text-[var(--saffron-700)]" />
+                  <h2
+                    id="notices-heading"
+                    className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
+                  >
+                    Tenders and public notices
+                  </h2>
+                </div>
+                <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
+                  Every announcement, scheme, tender and public notice the council issues is
+                  published in one register, with its reference number and closing date.
                 </p>
               </div>
               <Link
                 href="/nagar-parishad/notifications"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#B45309] hover:underline whitespace-nowrap self-start sm:self-auto shrink-0"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
               >
                 <span>All notifications</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
-            </div>
-
-            {/* Sample Disclaimer Banner */}
-            <div className="mb-5 rounded-lg border-l-4 border-[#D97706] bg-[#FEF3C7]/60 p-4">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="w-5 h-5 text-[#B45309] shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#B45309] block">
-                    Sample / TBD — Confirm with Nagar Parishad
-                  </span>
-                  <p className="mt-1 text-xs text-slate-700 leading-relaxed">
-                    The register below is illustrative. Live tenders and notices will replace these rows once the Nagar Parishad supplies its notice file.
-                  </p>
-                </div>
-              </div>
             </div>
 
             <NoticeLedger />
           </section>
 
           {/* RIGHT: THE COUNCIL SIDEBAR */}
-          <aside className="lg:col-span-4 flex flex-col gap-6" aria-labelledby="council-heading">
+          <aside className="lg:col-span-4 flex flex-col gap-6">
             <CouncilPanel />
           </aside>
         </div>
       </div>
 
       <WardsOverview />
+      <OfficialLandmarksShowcase />
     </>
   );
 }
@@ -96,397 +146,341 @@ export default function HomePage() {
 /* -------------------------------------------------------------------------- */
 
 /**
- * Three-pillar hero featuring subtle Godavari River wave geometry and Stitch card styling.
+ * Masthead. The memorable element is the vitals strip — the council's own vital
+ * statistics set in a bordered block, the way a gazette opens. It replaces the
+ * gradient-and-three-cards hero this page used to carry, which said nothing a
+ * citizen did not already know.
+ *
+ * Paper, not colour. The full-bleed video closes immediately above this band, and
+ * a saturated ground here would put two loud fields edge to edge; on white the
+ * video ends on a clean line and the navy type needs no halo. The saffron that
+ * used to fill this band now appears once, as the gazette rule under the title.
+ *
+ * The band is deliberately slim and ends at the vitals. The three wings then
+ * straddle the paper/canvas boundary below, so the page opens calm and the
+ * cards carry the only edges.
  */
-function PillarsHero() {
+function Masthead() {
   return (
-    <section className="relative w-full bg-[#071224] text-white overflow-hidden pb-16 pt-10 sm:pt-14">
-      {/* Subtle Architectural & Godavari River Ripple Geometry Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-        <svg className="w-full h-full object-cover" fill="none" viewBox="0 0 1440 600" xmlns="http://www.w3.org/2000/svg">
-          <path d="M-100 200 C300 120 450 320 800 210 C1150 100 1300 260 1600 180" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M-100 260 C280 180 430 380 820 270 C1210 160 1320 320 1600 240" stroke="currentColor" strokeWidth="1" />
-          <circle cx="950" cy="180" r="140" stroke="currentColor" strokeDasharray="4 6" strokeWidth="1" />
-          <circle cx="950" cy="180" r="220" stroke="currentColor" strokeWidth="0.75" />
-          <path d="M0 450 H1440 M0 490 H1440" stroke="currentColor" strokeWidth="0.5" />
-        </svg>
-      </div>
+    <>
+      <section className="portal-masthead">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
+          <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-[var(--civic-slate-500)]">
+            <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--portal-blue-800)]">
+              <ShieldCheck className="h-3.5 w-3.5 text-[var(--saffron-700)]" aria-hidden="true" />
+              Statutory Urban Local Body
+            </span>
+            <span className="text-[var(--border-strong)]" aria-hidden="true">
+              |
+            </span>
+            <span>{councilProfile.districtEn} district, Maharashtra</span>
+          </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Institutional Context Badge */}
-        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 text-[#FEF3C7] px-3.5 py-1 rounded-full backdrop-blur-md mb-4">
-          <span className="w-2 h-2 rounded-full bg-[#D97706] animate-pulse" />
-          <span className="text-[11px] font-bold uppercase tracking-wider">
-            Statutory Urban Local Body • Chhatrapati Sambhajinagar
-          </span>
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
+            <div className="lg:col-span-7">
+              {/*
+                The illuminated initial. A manuscript opens on a painted capital
+                and a municipal masthead is the same gesture, so the first letter
+                is dropped into a madder square with a zari thread around it.
+              */}
+              <h1 className="font-display text-[2.1rem] font-semibold leading-[1.18] tracking-tight text-[var(--portal-blue-900)] sm:text-[2.6rem] lg:text-[3rem]">
+                <span className="illuminated-cap" aria-hidden="true">
+                  R
+                </span>
+                <span className="sr-only">R</span>ecords, services and information for the{" "}
+                {councilProfile.wardCount} wards of Paithan
+              </h1>
+
+              <div className="gazette-rule mt-6" aria-hidden="true" />
+
+              <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed text-[var(--civic-slate-700)]">
+                Paithan is a municipal town of {councilProfile.wardCount} wards in
+                Chhatrapati Sambhajinagar district, and the ancient Pratishthana &mdash; capital
+                of the Satavahanas, and home of the Paithani weavers. The council publishes
+                its records, the town&apos;s heritage and its visitor information here.
+              </p>
+
+              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[var(--civic-slate-500)]">
+                Pratishthana was the capital of the Satavahanas, and King Hala&apos;s
+                <cite className="font-display-deva not-italic text-[var(--civic-slate-700)]">
+                  {" "}Gaha Sattasai
+                </cite>{" "}
+                is still sung here after two thousand years. The cloth woven in this town carries
+                the GI tag, and the peepal at the kund has not moved since the Satavahanas.
+              </p>
+            </div>
+
+            <div className="lg:col-span-5 lg:pt-1">
+              <dl className="portal-vitals">
+                <div className="portal-vital">
+                  <dt>Wards</dt>
+                  <dd>{councilProfile.wardCount}</dd>
+                </div>
+                <div className="portal-vital">
+                  <dt>Established</dt>
+                  <dd>{councilProfile.establishedYear}</dd>
+                </div>
+                <div className="portal-vital">
+                  <dt>Population</dt>
+                  <dd>
+                    {paithanDemographics.totalPopulation.toLocaleString("en-IN")}
+                    <small> / Census {paithanDemographics.censusYear}</small>
+                  </dd>
+                </div>
+                <div className="portal-vital">
+                  <dt>Control room</dt>
+                  <dd className="text-[1.05rem]">{councilProfile.phone}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         </div>
 
-        {/* Main Civic Headline */}
-        <div className="max-w-4xl mb-10 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-white tracking-tight leading-[1.15] font-serif">
-            Civic, heritage and tourism information for Paithan
-          </h1>
-          <p className="mt-4 text-sm sm:text-base text-slate-300 max-w-3xl leading-relaxed">
-            Paithan is a municipal town of{" "}
-            <span className="text-[#D97706] font-bold">17 wards</span> in Chhatrapati Sambhajinagar district, and the ancient Pratishthana, capital of the Satavahanas. The council publishes its records, the town’s heritage and its visitor information here.
-          </p>
-        </div>
+        {/*
+          The woven border closes the masthead. An earlier revision had the wing
+          cards straddle the bottom edge on a negative margin, which would have
+          covered this — so the straddle is gone and the border sits above the
+          cards, where a pallu border actually is. The band is decorative and
+          carries no information, so it is hidden from assistive technology.
+        */}
+        <div className="paithani-band mt-12" aria-hidden="true" />
+      </section>
 
-        {/* 3 Pillar Triptych Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Pillar 1: Nagar Parishad */}
-          <div className="group relative bg-white text-slate-900 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#0C1E3C]" />
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-11 h-11 rounded-lg bg-slate-100 flex items-center justify-center text-[#0C1E3C] group-hover:bg-[#0C1E3C] group-hover:text-white transition-colors">
-                  <Building2 className="w-5 h-5" />
+      {/*
+        The three wings, sitting below the woven border rather than straddling
+        the masthead's foot. The top rule on each card encodes the wing, so the
+        colour carries meaning rather than ornament. Link rows are plain text —
+        no chevron per row, which at four stacked rows per card read as machine
+        output.
+      */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10">
+        <div className="grid gap-5 md:grid-cols-3">
+          {WINGS.map((wing) => (
+            <article
+              key={wing.key}
+              className={`portal-card ${
+                wing.key === "heritage"
+                  ? "portal-card--heritage"
+                  : wing.key === "tourism"
+                    ? "portal-card--tourism"
+                    : ""
+              }`}
+            >
+              <div className="flex flex-1 flex-col p-5">
+                <div className="mb-2 flex items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)]">
+                    {wing.key === "civic" ? (
+                      <Building2 className="h-4 w-4" aria-hidden="true" />
+                    ) : wing.key === "heritage" ? (
+                      <Landmark className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Compass className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </span>
+                  <div>
+                    <h2 className="font-display text-lg font-semibold leading-tight text-[var(--portal-blue-900)]">
+                      {wing.title}
+                    </h2>
+                    <span lang="mr" className="text-xs text-[var(--civic-slate-500)]">
+                      {wing.titleMr}
+                    </span>
+                  </div>
                 </div>
-                <span className="text-[10px] font-bold text-[#B45309] bg-[#FFFBEB] px-2 py-0.5 rounded uppercase tracking-wider border border-[#FEF3C7]">
-                  MUNICIPAL GOV
-                </span>
-              </div>
-              <div className="mb-2 flex items-baseline gap-2">
-                <h2 className="text-xl font-bold text-[#0C1E3C] font-serif">Nagar Parishad</h2>
-                <span lang="mr" className="text-sm text-slate-500 font-medium">नगर परिषद</span>
-              </div>
-              <p className="text-xs text-slate-600 mb-5 leading-relaxed">
-                Civic administration for Paithan&apos;s 17 wards, municipal council works, public representatives, and official notifications.
-              </p>
-              <ul className="flex flex-col gap-1 mb-6 text-xs">
-                <li>
-                  <Link href="/nagar-parishad/representatives" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Public representatives</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/nagar-parishad/ward-map" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Ward map & corporator roster</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/nagar-parishad/development-works" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Development works registry</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/nagar-parishad/notifications" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5">
-                    <span>Tenders & notices</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="pt-3 bg-slate-50 -mx-6 -mb-6 px-6 pb-4 border-t border-slate-100">
-              <span className="text-[11px] text-slate-600 flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                17 wards • Established 1854 • Class B/C Council
-              </span>
-            </div>
-          </div>
 
-          {/* Pillar 2: Heritage & Museum */}
-          <div className="group relative bg-white text-slate-900 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#D97706] z-10" />
-            <div>
-              {/* Photo Preview */}
-              <div className="relative h-32 w-full -mx-6 -mt-6 mb-4 overflow-hidden bg-slate-900">
-                <Image
-                  src="/images/sites/balasaheb-patil-museum.jpg"
-                  alt="Dr. Balasaheb Patil Museum gallery"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                <p className="mb-4 text-sm leading-relaxed text-[var(--civic-slate-700)]">
+                  {wing.blurb}
+                </p>
+
+                <ul className="mt-auto">
+                  {wing.links.map((link) => (
+                    <li
+                      key={link.href + link.label}
+                      className="border-t border-[var(--border-subtle)]"
+                    >
+                      <Link
+                        href={link.href}
+                        className="block py-2 text-sm font-medium text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)] hover:underline"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <p className="flex items-center gap-1.5 border-t border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-5 py-2.5 text-xs font-medium text-[var(--civic-slate-700)]">
+                <CheckCircle2
+                  className="h-3.5 w-3.5 shrink-0 text-[var(--saffron-700)]"
+                  aria-hidden="true"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
-                <span className="absolute top-3 right-3 text-[10px] font-bold text-amber-900 bg-amber-100/90 backdrop-blur-xs px-2 py-0.5 rounded uppercase tracking-wider border border-amber-300">
-                  ARCHAEOLOGY & ARTS
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-9 h-9 rounded-lg bg-[#FEF3C7] flex items-center justify-center text-[#B45309] shrink-0">
-                  <Landmark className="w-4 h-4" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-[#0C1E3C] font-serif leading-tight">Heritage & Museum</h2>
-                  <span lang="mr" className="text-xs text-slate-500 font-medium">वारसा व संग्रहालय</span>
-                </div>
-              </div>
-              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                Imperial capital of the Satavahanas (Pratishthana), 2,000-year-old GI-tagged Paithani silk, and Varkari saint traditions.
+                {wing.facts}
               </p>
-              <ul className="flex flex-col gap-1 mb-6 text-xs">
-                <li>
-                  <Link href="/heritage/museum" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Dr. Balasaheb Patil Museum</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/heritage/museum" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Satavahana coins & antiquities</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/heritage/history" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Ancient Pratishthana history</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tourism/places-to-visit" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5">
-                    <span>Paithani Weavers & Eknath Wada</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="pt-3 bg-[#FFFBEB] -mx-6 -mb-6 px-6 pb-4 border-t border-[#FEF3C7]">
-              <span className="text-[11px] text-[#B45309] flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#D97706]" />
-                Capital of King Hala • GI Paithani Weaving
-              </span>
-            </div>
-          </div>
-
-          {/* Pillar 3: Explore Paithan */}
-          <div className="group relative bg-white text-slate-900 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#0369A1] z-10" />
-            <div>
-              {/* Photo Preview */}
-              <div className="relative h-32 w-full -mx-6 -mt-6 mb-4 overflow-hidden bg-slate-900">
-                <Image
-                  src="/images/sites/jayakwadi-dam.jpg"
-                  alt="Jayakwadi Dam reservoir"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
-                <span className="absolute top-3 right-3 text-[10px] font-bold text-sky-900 bg-sky-100/90 backdrop-blur-xs px-2 py-0.5 rounded uppercase tracking-wider border border-sky-300">
-                  NATURE & RESERVOIR
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-9 h-9 rounded-lg bg-[#E0F2FE] flex items-center justify-center text-[#0369A1] shrink-0">
-                  <Compass className="w-4 h-4" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-[#0C1E3C] font-serif leading-tight">Explore Paithan</h2>
-                  <span lang="mr" className="text-xs text-slate-500 font-medium">पर्यटन व परिसर</span>
-                </div>
-              </div>
-              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                Jayakwadi Dam across the Godavari, Nath Sagar wetland sanctuary for Siberian flamingos, and sacred riverside ghats.
-              </p>
-              <ul className="flex flex-col gap-1 mb-6 text-xs">
-                <li>
-                  <Link href="/tourism/places-to-visit" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Jayakwadi Dam & reservoir</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tourism/places-to-visit" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Jaikwadi Bird Sanctuary</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tourism/places-to-visit" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5 border-b border-slate-100">
-                    <span>Sant Eknath Samadhi & Temples</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tourism/routes" className="text-slate-800 hover:text-[#D97706] font-medium flex items-center justify-between py-1.5">
-                    <span>Curated 1-day travel routes</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="pt-3 bg-[#F0F9FF] -mx-6 -mb-6 px-6 pb-4 border-t border-[#BAE6FD]">
-              <span className="text-[11px] text-[#0369A1] flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0369A1]" />
-                341 km² Sanctuary • 200+ Migratory Birds
-              </span>
-            </div>
-          </div>
+            </article>
+          ))}
         </div>
       </div>
-    </section>
+    </>
   );
 }
 
 /* -------------------------------------------------------------------------- */
 
 /**
- * Citizen Services deck.
- * Mobile: Quick Emergency 3-tap action strip + 2x2 touch grid.
- * Desktop: Overlapping floating card deck (-mt-8) with styled themed cards.
+ * Citizen services. On mobile this collapses to a three-tap emergency bar —
+ * the one thing a citizen on a phone in a ward actually needs first.
  */
 function CitizenServicesSection() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 w-full mb-10">
-      {/* Mobile Emergency Quick Bar (Visible on mobile only) */}
-      <div className="sm:hidden rounded-xl bg-white p-2.5 shadow-sm border border-slate-200 mb-4 flex items-center justify-between gap-1">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full mt-12 mb-14">
+      {/* Mobile emergency quick bar */}
+      <div className="sm:hidden mb-4 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-[var(--border-subtle)]">
         <a
           href="tel:02431223010"
-          className="flex-1 min-h-[44px] flex flex-col items-center justify-center p-1 rounded hover:bg-slate-50 transition-colors text-center"
+          className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 bg-white px-1 py-2 text-center hover:bg-[var(--portal-blue-50)]"
         >
-          <span className="flex items-center gap-1 text-[11px] text-[#0C1E3C] font-bold">
-            <Building2 className="w-3.5 h-3.5 text-[#D97706]" />
+          <span className="flex items-center gap-1 text-xs font-bold text-[var(--portal-blue-900)]">
+            <Building2 className="h-3.5 w-3.5 text-[var(--zari-gold-600)]" aria-hidden="true" />
             नगर परिषद
           </span>
-          <span className="text-[10px] text-slate-500 font-medium">02431-223010</span>
+          <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">02431-223010</span>
         </a>
-        <div className="w-px h-6 bg-slate-200 shrink-0" />
         <a
           href="tel:112"
-          className="flex-1 min-h-[44px] flex flex-col items-center justify-center p-1 rounded hover:bg-slate-50 transition-colors text-center"
+          className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 bg-white px-1 py-2 text-center hover:bg-[var(--portal-blue-50)]"
         >
-          <span className="flex items-center gap-1 text-[11px] text-red-700 font-bold">
-            <Phone className="w-3.5 h-3.5 text-red-600" />
-            पोलीस कक्ष
+          <span className="flex items-center gap-1 text-xs font-bold text-red-800">
+            <Phone className="h-3.5 w-3.5 text-red-600" aria-hidden="true" />
+            पोलीस
           </span>
-          <span className="text-[10px] text-slate-500 font-medium">112 / 223033</span>
+          <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">112 / 223033</span>
         </a>
-        <div className="w-px h-6 bg-slate-200 shrink-0" />
         <a
           href="tel:108"
-          className="flex-1 min-h-[44px] flex flex-col items-center justify-center p-1 rounded hover:bg-slate-50 transition-colors text-center"
+          className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 bg-white px-1 py-2 text-center hover:bg-[var(--portal-blue-50)]"
         >
-          <span className="flex items-center gap-1 text-[11px] text-emerald-700 font-bold">
-            <Phone className="w-3.5 h-3.5 text-emerald-600" />
+          <span className="flex items-center gap-1 text-xs font-bold text-emerald-800">
+            <Phone className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
             रुग्णालय
           </span>
-          <span className="text-[10px] text-slate-500 font-medium">108 / 223040</span>
+          <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">108 / 223040</span>
         </a>
       </div>
 
-      {/* Citizen Services Card Container */}
-      <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#B45309]">
-              Fast Citizen Gateway
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#0C1E3C] font-serif">
-              Citizen services
-            </h2>
-          </div>
-          <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-600 bg-slate-100 px-3 py-1.5 rounded">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>24/7 Digital Self-Assessment & Unified Records</span>
-          </div>
+      <div className="rounded-sm border border-[var(--border-subtle)] bg-white p-5 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+          <h2 className="portal-rule font-display text-xl font-semibold text-[var(--portal-blue-900)]">
+            Citizen services
+          </h2>
+          <p className="text-xs text-[var(--civic-slate-500)]">
+            Payment and certificate services run on state government portals
+          </p>
         </div>
 
-        {/* 4 Polished Action Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Service 1: Property Tax */}
-          <div className="group bg-slate-50 hover:bg-[#EFF4FF] rounded-lg p-4 transition-all duration-200 flex flex-col justify-between border border-slate-100">
-            <div>
-              <div className="w-10 h-10 rounded-full bg-[#FEF3C7] flex items-center justify-center text-[#B45309] mb-3">
-                <CreditCard className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-[#0C1E3C] mb-1">
-                Property tax & water charges
-              </h3>
-              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                Assessment status, online payment receipts and dues inquiry via MahaULB.
-              </p>
-            </div>
-            <a
-              href="https://paithanmahaulb.maharashtra.gov.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-between text-[#B45309] text-[11px] uppercase tracking-wider hover:text-[#0C1E3C] pt-2 font-bold border-t border-slate-200"
-            >
-              <span>Pay / Inquire Online</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </div>
-
-          {/* Service 2: Birth & Death */}
-          <div className="group bg-slate-50 hover:bg-[#EFF4FF] rounded-lg p-4 transition-all duration-200 flex flex-col justify-between border border-slate-100">
-            <div>
-              <div className="w-10 h-10 rounded-full bg-[#E0F2FE] flex items-center justify-center text-[#0369A1] mb-3">
-                <FileText className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-[#0C1E3C] mb-1">
-                Birth & death certificates
-              </h3>
-              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                Official civil registration certificates through MahaOnline CRS portal.
-              </p>
-            </div>
-            <a
-              href="https://crsorgi.gov.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-between text-[#0369A1] text-[11px] uppercase tracking-wider hover:text-[#0C1E3C] pt-2 font-bold border-t border-slate-200"
-            >
-              <span>Apply / Download (CRS)</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </div>
-
-          {/* Service 3: Find Ward */}
-          <div className="group bg-slate-50 hover:bg-[#EFF4FF] rounded-lg p-4 transition-all duration-200 flex flex-col justify-between border border-slate-100">
-            <div>
-              <div className="w-10 h-10 rounded-full bg-[#D3E4FE] flex items-center justify-center text-[#0C1E3C] mb-3">
-                <MapPin className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-[#0C1E3C] mb-1">
-                Find your ward & corporator
-              </h3>
-              <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                Locate your municipal ward among the 17 wards and review ongoing works.
-              </p>
-            </div>
-            <Link
-              href="/nagar-parishad/ward-map"
-              className="inline-flex items-center justify-between text-[#0C1E3C] text-[11px] uppercase tracking-wider hover:text-[#D97706] pt-2 font-bold border-t border-slate-200"
-            >
-              <span>Explore Wards</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {/* Service 4: Grievance Helpline */}
-          <div className="group bg-slate-50 hover:bg-[#EFF4FF] rounded-lg p-4 transition-all duration-200 flex flex-col justify-between border border-slate-100">
-            <div>
-              <div className="w-10 h-10 rounded-full bg-[#FEE2E2] flex items-center justify-center text-[#B91C1C] mb-3">
-                <Phone className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-[#0C1E3C] mb-1">
-                Citizen grievance helpline
-              </h3>
-              <p className="text-xs text-slate-600 mb-2 leading-relaxed">
-                Civic complaints, sanitation alerts and water supply disruptions.
-              </p>
-              <span className="text-[10px] text-slate-400 italic block mb-3">
-                Counter service — online application not yet available
-              </span>
-            </div>
-            <a
-              href="tel:02431223010"
-              className="inline-flex items-center justify-between text-[#B91C1C] text-[11px] uppercase tracking-wider hover:text-[#0C1E3C] pt-2 font-bold border-t border-slate-200"
-            >
-              <span>Call 02431-223010</span>
-              <Phone className="w-3.5 h-3.5" />
-            </a>
-          </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ServiceCard
+            icon={<CreditCard className="h-5 w-5" aria-hidden="true" />}
+            iconClass="bg-[var(--zari-gold-100)] text-[var(--zari-gold-600)]"
+            title="Property tax & water charges"
+            body="Assessment status, online payment receipts and dues inquiry through MahaULB."
+            href="https://paithanmahaulb.maharashtra.gov.in"
+            action="Pay or inquire online"
+            external
+          />
+          <ServiceCard
+            icon={<FileText className="h-5 w-5" aria-hidden="true" />}
+            iconClass="bg-[var(--portal-blue-50)] text-[var(--portal-blue-700)]"
+            title="Birth & death certificates"
+            body="Civil registration certificates issued through the MahaOnline CRS portal."
+            href="https://crsorgi.gov.in"
+            action="Apply or download"
+            external
+          />
+          <ServiceCard
+            icon={<MapPin className="h-5 w-5" aria-hidden="true" />}
+            iconClass="bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)]"
+            title="Find your ward & corporator"
+            body="Locate your municipal ward among the 17 and review the works listed for it."
+            href="/nagar-parishad/ward-map"
+            action="Open ward directory"
+          />
+          <ServiceCard
+            icon={<Phone className="h-5 w-5" aria-hidden="true" />}
+            iconClass="bg-red-50 text-red-700"
+            title="Citizen grievance helpline"
+            body="Sanitation, street lighting and water supply complaints."
+            href="tel:02431223010"
+            action="Call 02431-223010"
+            footnote="Counter service. Online application not yet available."
+          />
         </div>
       </div>
     </div>
+  );
+}
+
+function ServiceCard({
+  icon,
+  iconClass,
+  title,
+  body,
+  href,
+  action,
+  footnote,
+  external,
+}: {
+  icon: React.ReactNode;
+  iconClass: string;
+  title: string;
+  body: string;
+  href: string;
+  action: string;
+  footnote?: string;
+  external?: boolean;
+}) {
+  const classes =
+    "flex flex-col justify-between rounded-sm border border-[var(--border-subtle)] bg-[var(--portal-blue-50)] p-4 transition-colors hover:border-[var(--portal-blue-300)] hover:bg-white";
+
+  const inner = (
+    <>
+      <div>
+        <span
+          className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full ${iconClass}`}
+        >
+          {icon}
+        </span>
+        <h3 className="font-display text-base font-semibold text-[var(--portal-blue-900)] mb-1">{title}</h3>
+        <p className="text-xs text-[var(--civic-slate-700)] leading-relaxed">{body}</p>
+        {footnote ? (
+          <p className="mt-2 text-[11px] text-[var(--civic-slate-500)]">{footnote}</p>
+        ) : null}
+      </div>
+      <span className="mt-4 flex items-center justify-between gap-2 border-t border-[var(--border-subtle)] pt-2.5 text-xs font-bold text-[var(--portal-blue-700)]">
+        {action}
+        {external ? (
+          <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+        ) : (
+          <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+        )}
+      </span>
+    </>
+  );
+
+  if (href.startsWith("tel:") || external) {
+    return (
+      <a
+        href={href}
+        className={classes}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={classes}>
+      {inner}
+    </Link>
   );
 }
 
@@ -494,62 +488,83 @@ function CitizenServicesSection() {
 
 function NoticeLedger() {
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs">
-      <table className="w-full text-left text-xs border-collapse">
-        <caption className="sr-only">
-          Council notice register, most recently published first
-        </caption>
-        <thead>
-          <tr className="bg-slate-50 text-slate-700 font-bold uppercase tracking-wider text-[11px] border-b border-slate-200">
-            <th scope="col" className="py-3.5 px-4 whitespace-nowrap">Published</th>
-            <th scope="col" className="py-3.5 px-3 whitespace-nowrap">Category</th>
-            <th scope="col" className="py-3.5 px-4 min-w-[16rem]">Subject</th>
-            <th scope="col" className="py-3.5 px-4 whitespace-nowrap">Closes</th>
-            <th scope="col" className="py-3.5 px-3 text-right whitespace-nowrap">Action</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-100 text-slate-800">
-          {ledgerEntries.map((entry) => (
-            <tr key={entry.id} className="hover:bg-slate-50/70 transition-colors">
-              <td className="py-3.5 px-4 whitespace-nowrap font-medium text-slate-600">
-                <time dateTime={entry.publishedAt}>{formatCivicDate(entry.publishedAt)}</time>
-              </td>
-              <td className="py-3.5 px-3 whitespace-nowrap">
-                <NotificationCategoryBadge category={entry.category} />
-              </td>
-              <td className="py-3.5 px-4">
-                <Link
-                  href="/nagar-parishad/notifications"
-                  className="font-medium text-[#0C1E3C] hover:text-[#B45309] hover:underline block leading-snug"
-                >
-                  {entry.title}
-                </Link>
-                <span className="mt-0.5 block text-[11px] text-slate-400 font-mono">
-                  Reference {entry.referenceNo}
-                </span>
-              </td>
-              <td className="py-3.5 px-4 whitespace-nowrap font-medium text-slate-700">
-                {entry.closingAt ? (
-                  <time dateTime={entry.closingAt} className="text-[#B91C1C] font-semibold">
-                    {formatCivicDate(entry.closingAt)}
-                  </time>
-                ) : (
-                  <span className="text-slate-400">—</span>
-                )}
-              </td>
-              <td className="py-3.5 px-3 text-right whitespace-nowrap">
-                <Link
-                  href="/nagar-parishad/notifications"
-                  className="inline-flex items-center justify-center p-1.5 rounded bg-slate-100 hover:bg-[#0C1E3C] hover:text-white text-slate-700 transition-colors"
-                  title="View Notice Details"
-                >
-                  <Eye className="w-4 h-4" />
-                </Link>
-              </td>
+    <div>
+      {/*
+        Provenance notice (rules.md §8). Loud by design: the register below is
+        illustrative and must never be mistaken for live procurement data.
+      */}
+      <div className="mb-4 flex items-start gap-3 rounded-sm border border-[var(--border-subtle)] border-l-4 border-l-[var(--portal-blue-700)] bg-[var(--saffron-100)] p-4">
+        <ShieldCheck className="h-5 w-5 shrink-0 mt-0.5 text-[var(--portal-blue-700)]" aria-hidden="true" />
+        <div>
+          <span className="block text-xs font-bold text-[var(--portal-blue-800)]">
+            Sample / TBD — confirm with Nagar Parishad
+          </span>
+          <p className="mt-1 text-xs text-[var(--civic-slate-700)] leading-relaxed">
+            The register below is illustrative. Live tenders and notices replace these rows
+            once the Nagar Parishad supplies its notice file.
+          </p>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto rounded-sm border border-[var(--border-subtle)] bg-white">
+        <table className="portal-register">
+          <caption className="sr-only">
+            Council notice register, most recently published first
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Published</th>
+              <th scope="col">Category</th>
+              <th scope="col">Subject</th>
+              <th scope="col">Closes</th>
+              <th scope="col" className="text-right">
+                Notice
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {ledgerEntries.map((entry) => (
+              <tr key={entry.id}>
+                <td className="whitespace-nowrap font-medium">
+                  <time dateTime={entry.publishedAt}>{formatCivicDate(entry.publishedAt)}</time>
+                </td>
+                <td className="whitespace-nowrap">
+                  <NotificationCategoryBadge category={entry.category} />
+                </td>
+                <td className="min-w-[16rem]">
+                  <Link
+                    href="/nagar-parishad/notifications"
+                    className="block font-semibold text-[var(--portal-blue-800)] leading-snug hover:text-[var(--zari-gold-600)] hover:underline"
+                  >
+                    {entry.title}
+                  </Link>
+                  <span className="mt-0.5 block text-[11px] text-[var(--civic-slate-500)]">
+                    Reference {entry.referenceNo}
+                  </span>
+                </td>
+                <td className="whitespace-nowrap font-medium">
+                  {entry.closingAt ? (
+                    <time dateTime={entry.closingAt} className="font-bold text-red-700">
+                      {formatCivicDate(entry.closingAt)}
+                    </time>
+                  ) : (
+                    <span className="text-[var(--civic-slate-500)]">—</span>
+                  )}
+                </td>
+                <td className="whitespace-nowrap text-right">
+                  <Link
+                    href="/nagar-parishad/notifications"
+                    className="inline-flex items-center justify-center rounded-sm border border-[var(--border-subtle)] bg-[var(--portal-blue-50)] p-2 text-[var(--portal-blue-800)] transition-colors hover:bg-[var(--portal-blue-800)] hover:text-white"
+                    aria-label={`View notice: ${entry.title}`}
+                  >
+                    <Eye className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -561,98 +576,108 @@ function CouncilPanel() {
 
   return (
     <div className="space-y-6">
-      {/* Elected Representatives */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-xs overflow-hidden">
-        <div className="border-b border-slate-100 bg-slate-50/80 px-4 py-3 flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#0C1E3C]">
+      <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="council-heading">
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
+          <h2 id="council-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
             Elected representatives
-          </h3>
-          <span className="text-[10px] bg-[#FEF3C7] text-[#B45309] font-bold px-2 py-0.5 rounded">
-            Gazetted
-          </span>
+          </h2>
+          <span className="badge-tender badge-civic">Gazetted</span>
         </div>
-        <div className="p-4 space-y-3">
+        <div className="divide-y divide-[var(--border-subtle)]">
           {electedRepresentatives.map((representative) => (
-            <div key={representative.slug} className="p-3 rounded-lg bg-slate-50 border border-slate-100">
-              <span className="text-sm font-bold text-[#0C1E3C] block font-serif">
+            <div key={representative.slug} className="px-4 py-3">
+              <span className="block text-sm font-bold text-[var(--portal-blue-900)]">
                 {representative.name}
               </span>
-              <span className="text-xs text-slate-600 block mt-0.5">
+              <span className="mt-0.5 block text-xs text-[var(--civic-slate-700)]">
                 {representative.designation}
               </span>
-              {representative.termNote && (
-                <span className="text-[11px] text-[#B45309] font-semibold block mt-1">
+              {representative.termNote ? (
+                <span className="mt-1 block text-[11px] font-semibold text-[var(--zari-gold-600)]">
                   Elected term: {representative.termNote}
                 </span>
-              )}
+              ) : null}
             </div>
           ))}
         </div>
-        <div className="border-t border-slate-100 px-4 py-2.5 bg-slate-50/50">
+        <div className="border-t border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
           <Link
             href="/nagar-parishad/representatives"
-            className="text-xs font-semibold text-[#0C1E3C] hover:text-[#D97706] hover:underline flex items-center justify-between"
+            className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
           >
             <span>All public representatives</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
-      </div>
+      </section>
 
-      {/* Work in Progress */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-xs overflow-hidden">
-        <div className="border-b border-slate-100 bg-slate-50/80 px-4 py-3 flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#0C1E3C]">
+      <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="progress-heading">
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
+          <h2 id="progress-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
             Work in progress
-          </h3>
-          <span className="text-[10px] text-slate-500 font-medium">17 Wards</span>
+          </h2>
+          <span className="text-[11px] font-medium text-[var(--civic-slate-500)]">
+            {councilProfile.wardCount} wards
+          </span>
         </div>
-        <div className="p-4 space-y-3">
+        <div className="divide-y divide-[var(--border-subtle)]">
           {ongoingWorks.slice(0, 3).map((work) => (
-            <div key={work.id} className="p-3 rounded-lg bg-slate-50 border border-slate-100">
-              <p className="text-xs font-semibold text-[#0C1E3C] leading-snug">{work.title}</p>
-              <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500">
-                <span className="font-semibold text-slate-700">Ward {work.wardNumber}</span>
-                <span className="font-bold text-[#B45309]">{work.progressPct}% done</span>
+            <div key={work.id} className="px-4 py-3">
+              <p className="text-xs font-semibold leading-snug text-[var(--portal-blue-900)]">
+                {work.title}
+              </p>
+              <div className="mt-2 flex items-center justify-between text-[11px] text-[var(--civic-slate-500)]">
+                <span className="font-semibold text-[var(--civic-slate-700)]">
+                  Ward {work.wardNumber}
+                </span>
+                <span className="font-bold tabular-nums text-[var(--zari-gold-600)]">
+                  {work.progressPct}% complete
+                </span>
               </div>
-              <div className="mt-1.5 w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+              <div
+                className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-[var(--border-subtle)]"
+                role="progressbar"
+                aria-valuenow={work.progressPct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${work.title} progress`}
+              >
                 <div
-                  className="bg-[#D97706] h-full rounded-full transition-all"
+                  className="h-full rounded-full bg-[var(--zari-gold-500)]"
                   style={{ width: `${work.progressPct}%` }}
                 />
               </div>
             </div>
           ))}
         </div>
-        <div className="border-t border-slate-100 px-4 py-2.5 bg-slate-50/50 flex items-center justify-between">
+        <div className="border-t border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
           <Link
             href="/nagar-parishad/development-works"
-            className="text-xs font-semibold text-[#0C1E3C] hover:text-[#D97706] hover:underline flex items-center gap-1"
+            className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
           >
             <span>All development works</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
-      </div>
+      </section>
 
-      {/* Council Office Contact Card */}
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-[#0C1E3C] mb-2">
+      <section className="rounded-sm border border-[var(--border-subtle)] bg-white p-4" aria-labelledby="office-heading">
+        <h2 id="office-heading" className="text-sm font-bold text-[var(--portal-blue-900)] mb-2">
           Council office
-        </h3>
-        <p className="text-xs text-slate-600 leading-relaxed">
+        </h2>
+        <p className="text-xs text-[var(--civic-slate-700)] leading-relaxed">
           {councilProfile.addressLine}
         </p>
-        <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-          <span className="text-slate-500">Phone:</span>
+        <div className="mt-3 flex items-center justify-between border-t border-[var(--border-subtle)] pt-3 text-xs">
+          <span className="text-[var(--civic-slate-500)]">Phone</span>
           <a
             href={`tel:${councilProfile.phone}`}
-            className="font-bold text-[#0C1E3C] hover:text-[#D97706] hover:underline"
+            className="font-bold tabular-nums text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)] hover:underline"
           >
             {councilProfile.phone}
           </a>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
@@ -662,53 +687,67 @@ function CouncilPanel() {
 /** 17 wards at a glance */
 function WardsOverview() {
   return (
-    <section className="border-t border-slate-200 bg-slate-50 py-14" aria-labelledby="wards-heading">
+    <section
+      className="border-y border-[var(--border-subtle)] bg-[var(--portal-blue-50)] py-12"
+      aria-labelledby="wards-heading"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
           <div>
-            <h2 id="wards-heading" className="text-2xl sm:text-[1.75rem] font-bold text-[#0C1E3C] font-serif">
+            <h2
+              id="wards-heading"
+                className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
+            >
               {councilProfile.wardCount} wards at a glance
             </h2>
-            <p className="mt-1 text-xs sm:text-sm text-slate-600 max-w-2xl">
-              Paithan Municipal Council is divided into 17 wards. Ward names, boundaries and the sitting corporator for each ward are pending publication by the council.
+            <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl">
+              The council is divided into {councilProfile.wardCount} wards. Ward names,
+              boundaries and the sitting corporator for each ward await publication by the
+              council.
             </p>
           </div>
           <Link
             href="/nagar-parishad/ward-map"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#B45309] hover:underline self-start sm:self-auto shrink-0"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
           >
-            <span>Open the ward map</span>
-            <ArrowRight className="w-4 h-4" />
+            <span>Open the ward directory</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {wards.map((ward) => {
             const summary = getWardWorkSummary(ward.number);
             return (
               <div
                 key={ward.number}
-                className="rounded-lg border border-slate-200 bg-white p-3.5 shadow-xs hover:border-[#D97706]/50 transition-colors"
+                className="rounded-sm border border-[var(--border-subtle)] border-l-[3px] border-l-[var(--zari-gold-500)] bg-white p-3.5 transition-colors hover:border-[var(--portal-blue-300)] hover:border-l-[var(--portal-blue-700)]"
               >
                 <div className="flex items-baseline justify-between mb-1">
-                  <span className="text-xl font-bold text-[#0C1E3C] font-serif">
+                  <span className="text-xl font-bold tabular-nums text-[var(--portal-blue-900)]">
                     {ward.number}
                   </span>
-                  <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-medium">
-                    Ward {ward.number}
+                  <span className="rounded-sm bg-[var(--portal-blue-50)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--civic-slate-500)]">
+                    Ward
                   </span>
                 </div>
-                <p lang="mr" className="text-xs font-semibold text-slate-800 leading-snug line-clamp-1">
+                <p
+                  lang="mr"
+                  className="text-xs font-semibold leading-snug text-[var(--civic-slate-900)] line-clamp-1"
+                >
                   {ward.nameMr}
                 </p>
-                <p className="mt-2 text-[11px] text-slate-500">
+                <p className="mt-2 text-[11px] text-[var(--civic-slate-500)]">
                   {summary.total === 0 ? (
                     "No works listed"
                   ) : (
                     <>
-                      <span className="font-semibold text-slate-700">{summary.total}</span> works
+                      <span className="font-semibold tabular-nums text-[var(--civic-slate-700)]">
+                        {summary.total}
+                      </span>{" "}
+                      works
                       {summary.ongoing > 0 ? (
-                        <span className="block text-[#B45309] font-medium">
+                        <span className="block font-medium text-[var(--zari-gold-600)]">
                           {summary.ongoing} ongoing
                         </span>
                       ) : null}
@@ -720,12 +759,11 @@ function WardsOverview() {
           })}
         </div>
 
-        <div className="mt-6 p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-slate-700">
-          <span className="font-bold text-[#B45309] uppercase tracking-wider text-[10px] block mb-1">
-            Provenance Note:
-          </span>
-          The ward count of {councilProfile.wardCount} is confirmed. Work counts shown above come from illustrative records and do not reflect the council’s actual works register.
-        </div>
+        <p className="mt-6 rounded-sm border border-[var(--border-subtle)] bg-white p-3.5 text-xs text-[var(--civic-slate-700)]">
+          <span className="font-bold text-[var(--zari-gold-600)]">Provenance note. </span>
+          The ward count of {councilProfile.wardCount} is confirmed. Work counts above come
+          from illustrative records and do not reflect the council&apos;s actual works register.
+        </p>
       </div>
     </section>
   );
@@ -733,110 +771,151 @@ function WardsOverview() {
 
 /* -------------------------------------------------------------------------- */
 
-/**
- * Official Visual Tour of Paithan: showcasing authentic photography of all
- * major landmarks, shrines, reservoir and archaeological excavation sites.
- */
+/** Visual tour of the town's landmarks. */
 function OfficialLandmarksShowcase() {
   return (
-    <section className="bg-slate-100/70 border-y border-slate-200 py-12 lg:py-16" aria-labelledby="sites-showcase-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+    <section
+      className="border-t border-[var(--border-subtle)] bg-white py-12 lg:py-14"
+      aria-labelledby="sites-showcase-heading"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300 mb-2">
-              <Camera className="w-3.5 h-3.5 text-amber-700" />
-              <span>अधिकृत स्थळ दर्शन • Verified Official Site Imagery</span>
-            </div>
-            <h2 id="sites-showcase-heading" className="text-2xl sm:text-3xl font-bold text-[#0C1E3C] font-serif tracking-tight">
-              Official Sites & Landmarks of Paithan
+            <p className="mb-2 flex items-center gap-2 text-xs font-semibold text-[var(--saffron-700)]">
+              <Camera className="h-3.5 w-3.5" aria-hidden="true" />
+              <span lang="mr">अधिकृत स्थळ दर्शन</span>
+              <span className="font-normal text-[var(--civic-slate-500)]">
+                Verified site imagery
+              </span>
+            </p>
+            <h2
+              id="sites-showcase-heading"
+                className="portal-rule text-2xl font-bold tracking-tight text-[var(--portal-blue-900)]"
+            >
+              Official sites and landmarks of Paithan
             </h2>
-            <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-              Authentic visual reference for tourists, pilgrims, and scholars visiting the spiritual and ancient capital on the Godavari.
+            <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl">
+              A visual reference for tourists, pilgrims and scholars visiting the spiritual
+              and ancient capital on the Godavari.
             </p>
           </div>
 
           <Link
             href="/tourism/places-to-visit"
-            className="inline-flex items-center gap-2 bg-[#0C1E3C] hover:bg-[#071224] text-white px-4 py-2.5 rounded-lg text-xs font-semibold shadow-xs transition self-start md:self-auto"
+            className="inline-flex items-center gap-2 self-start rounded-sm border border-[var(--portal-blue-800)] bg-[var(--portal-blue-800)] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--portal-blue-900)] md:self-auto"
           >
-            <span>Explore All 9 Sites</span>
-            <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
+            <span>Explore all {TOURIST_PLACES.length} sites</span>
+            <ArrowRight className="h-4 w-4 text-[var(--saffron-500)]" aria-hidden="true" />
           </Link>
         </div>
 
-        {/* 9 Sites Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {TOURIST_PLACES.map((place) => (
-            <article
-              key={place.id}
-              className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md hover:border-amber-400 transition-all flex flex-col justify-between group"
-            >
-              <div>
-                {/* Official Image Container */}
-                <div className="relative h-48 w-full bg-slate-900 overflow-hidden">
-                  <Image
-                    src={place.imageUrl}
-                    alt={place.imageAlt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
+        {/*
+          Asymmetric on purpose. Nine identical photo cards is the card-kit
+          pattern the design brief warns against, so the lead site gets a wide
+          feature and the remaining eight become a compact thumbnail ledger —
+          a different rhythm rather than nine repeats of one component.
+        */}
+        <div className="grid gap-5 lg:grid-cols-12">
+          <LandmarkFeature place={TOURIST_PLACES[0]} />
 
-                  {/* Badges */}
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="bg-[#0C1E3C]/90 text-[var(--zari-gold-300)] text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider backdrop-blur-xs">
-                      {place.category.replace("_", " ")}
-                    </span>
-                  </div>
-
-                  <div className="absolute top-2.5 right-2.5">
-                    <span className="inline-flex items-center gap-1 bg-emerald-950/80 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded backdrop-blur-xs border border-emerald-500/40">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                      अधिकृत
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white flex items-center justify-between text-xs">
-                    <span className="flex items-center gap-1 font-mono text-[11px] bg-black/50 px-2 py-0.5 rounded backdrop-blur-xs">
-                      <MapPin className="w-3 h-3 text-amber-400" />
-                      {place.distanceFromBusStand}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-5">
-                  <h3 className="text-base font-bold text-[#0C1E3C] font-serif group-hover:text-amber-700 transition-colors">
-                    {place.nameEn}
-                  </h3>
-                  <p lang="mr" className="text-xs text-slate-500 font-medium mt-0.5">
-                    {place.nameMr}
-                  </p>
-                  <p className="mt-2 text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                    {place.tagline}
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-5 pt-0">
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 text-[11px]">
-                    {place.visitingHours.split("(")[0]}
+          <ul className="grid gap-px overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-[var(--border-subtle)] sm:grid-cols-2 lg:col-span-7">
+            {TOURIST_PLACES.slice(1).map((place) => (
+              <li key={place.id} className="bg-white">
+                <Link
+                  href="/tourism/places-to-visit"
+                  className="flex h-full items-start gap-3 p-3 transition-colors hover:bg-[var(--portal-blue-50)]"
+                >
+                  <span className="relative h-16 w-20 shrink-0 overflow-hidden rounded-sm bg-[var(--portal-blue-900)]">
+                    <Image
+                      src={place.imageUrl}
+                      alt={place.imageAlt}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
                   </span>
-                  <Link
-                    href="/tourism/places-to-visit"
-                    className="inline-flex items-center gap-1 font-semibold text-[#0C1E3C] hover:text-[#D97706]"
-                  >
-                    <span>Details</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold leading-snug text-[var(--portal-blue-900)]">
+                      {place.nameEn}
+                    </span>
+                    <span lang="mr" className="mt-0.5 block text-[11px] text-[var(--civic-slate-500)]">
+                      {place.nameMr}
+                    </span>
+                    <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-[var(--civic-slate-500)]">
+                      <span className="inline-flex items-center gap-1 tabular-nums">
+                        <MapPin className="h-3 w-3 text-[var(--zari-gold-600)]" aria-hidden="true" />
+                        {place.distanceFromBusStand}
+                      </span>
+                      <span className="tabular-nums">{place.visitingHours}</span>
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
   );
 }
 
+/** Lead landmark: the one site that gets the full-bleed treatment. */
+function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) {
+  return (
+    <article className="portal-card overflow-hidden lg:col-span-5">
+      <div className="relative h-60 w-full bg-[var(--portal-blue-900)] lg:h-full lg:min-h-[26rem]">
+        <Image
+          src={place.imageUrl}
+          alt={place.imageAlt}
+          fill
+          sizes="(max-width: 1024px) 100vw, 42vw"
+          className="object-cover"
+        />
+          <span className="absolute left-0 top-4 bg-[var(--portal-blue-900)]/90 px-3 py-1 text-xs font-semibold text-[var(--saffron-500)]">
+
+          {place.category.replace(/_/g, " ").toLowerCase()}
+        </span>
+        {/* The drawn mount, so the photograph sits in a frame rather than
+            floating as a modern rectangle inside a hand-drawn page. */}
+        <span className="absolute inset-x-3 bottom-3 text-[var(--saffron-100)]">
+          <FigureMount className="opacity-70" />
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-display text-xl font-semibold leading-tight text-[var(--portal-blue-900)]">
+          {place.nameEn}
+        </h3>
+        <p lang="mr" className="mt-0.5 text-sm font-medium text-[var(--civic-slate-500)]">
+          {place.nameMr}
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-[var(--civic-slate-700)]">
+          {place.tagline}
+        </p>
+
+        <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-[var(--border-subtle)] text-xs">
+          <div className="bg-[var(--portal-blue-50)] px-3 py-2">
+            <dt className="text-[var(--civic-slate-500)]">From bus stand</dt>
+            <dd className="mt-0.5 font-bold tabular-nums text-[var(--portal-blue-900)]">
+              {place.distanceFromBusStand}
+            </dd>
+          </div>
+          <div className="bg-[var(--portal-blue-50)] px-3 py-2">
+            <dt className="text-[var(--civic-slate-500)]">Open</dt>
+            <dd className="mt-0.5 font-bold tabular-nums text-[var(--portal-blue-900)]">
+              {place.visitingHours}
+            </dd>
+          </div>
+        </dl>
+
+        <Link
+          href="/tourism/places-to-visit"
+          className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-[var(--portal-blue-700)] hover:text-[var(--zari-gold-600)]"
+        >
+          <span>Open the site directory</span>
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      </div>
+    </article>
+  );
+}
