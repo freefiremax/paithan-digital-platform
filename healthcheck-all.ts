@@ -8,7 +8,7 @@ async function checkDatabase() {
   console.log('\n=== 1. Neon Postgres (DATABASE_URL / DIRECT_URL) ===');
   const prisma = new PrismaClient();
   try {
-    const result = await prisma.$queryRaw`SELECT 1 as test`;
+    await prisma.$queryRaw`SELECT 1 as test`;
     console.log('✅ PASS: Database connection successful');
     
     // Check migration status

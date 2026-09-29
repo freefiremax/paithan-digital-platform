@@ -20,6 +20,12 @@ const envSchema = z.object({
   INITIAL_ADMIN_EMAIL: z.string().email().optional(),
   INITIAL_ADMIN_PASSWORD: z.string().min(12).optional(),
   INITIAL_ADMIN_NAME: z.string().optional(),
+  SENTRY_DSN: z.string().url().optional(),
+  SENTRY_ORG: z.string().optional(),
+  SENTRY_PROJECT: z.string().optional(),
+  SENTRY_AUTH_TOKEN: z.string().optional(),
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().optional(),
+  TURNSTILE_SECRET_KEY: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -44,6 +50,12 @@ export function getEnv(): Env {
     INITIAL_ADMIN_EMAIL: process.env.INITIAL_ADMIN_EMAIL,
     INITIAL_ADMIN_PASSWORD: process.env.INITIAL_ADMIN_PASSWORD,
     INITIAL_ADMIN_NAME: process.env.INITIAL_ADMIN_NAME,
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    SENTRY_ORG: process.env.SENTRY_ORG,
+    SENTRY_PROJECT: process.env.SENTRY_PROJECT,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+    NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+    TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
   };
 
   const parsed = envSchema.safeParse(envWithDefaults);
