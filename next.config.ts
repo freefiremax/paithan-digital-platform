@@ -1,8 +1,24 @@
 import type { NextConfig } from "next";
+import type { SentryWebpackPluginOptions } from "@sentry/webpack-plugin";
 
 const nextConfig: NextConfig = {
   // Security headers are set in middleware.ts to avoid duplicate CSP headers
   // and to allow per-request nonce generation.
+  turbopack: {},
+  webpack: async (config, { isServer }) => {
+    if (!isServer) {
+      const { sentryWebpackPlugin } = await import("@sentry/webpack-plugin");
+      const options: SentryWebpackPluginOptions = {
+        silent: true,
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        sourcemaps: { disable: false },
+      };
+      config.plugins.push(sentryWebpackPlugin(options));
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
