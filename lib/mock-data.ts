@@ -5,7 +5,12 @@
  * - Verified real facts are used for: Paithan history (Pratishthana, Satavahanas),
  *   Paithani saree GI specs, Sant Eknath Maharaj & Sant Dnyaneshwar connections,
  *   Dr. Balasaheb Patil Archaeological Museum, Jayakwadi Dam, Nath Sagar,
- *   Jaikwadi Bird Sanctuary, MLA Vilas Sandipanrao Bhumre, and MP Sandipanrao Bhumre.
+ *   Jaikwadi Bird Sanctuary, and MLA Vilas Sandipanrao Bhumre (Paithan Assembly
+ *   Constituency No. 110, Nov 2024). Paithan's Lok Sabha MP is Kalyan Vaijinathrao
+ *   Kale (Jalna LS, 2024) — the Paithan Assembly seat is a segment of Jalna LS,
+ *   NOT the Chhatrapati Sambhajinagar (Aurangabad) LS.
+ * - Provenance is carried on additive optional fields (`sourceUrl`, `sourceNote`,
+ *   `verifiedOn`) per DATA_SOURCING_PLAN.md §3.
  * - Unconfirmed items (ward corporators, specific tender rows, administrative status)
  *   are explicitly tagged with `dataStatus: "SAMPLE_TBD"` and labeled
  *   "Sample / TBD — Confirm with Nagar Parishad" until gazetted by the council.
@@ -44,7 +49,10 @@ export function formatCivicDate(isoString: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// COUNCIL PROFILE (Verified from Directorate of Municipal Administration)
+// COUNCIL PROFILE
+// Confirmed: it is a Municipal Council in Chhatrapati Sambhajinagar district with
+// 23 delimited seats (2016 elected body). Council class, establishment year, and
+// ward count are not yet primary-sourced — see `dataNote` and DATA_SOURCING_PLAN.md.
 // ---------------------------------------------------------------------------
 
 export const councilProfile = {
@@ -74,6 +82,9 @@ export const councilProfile = {
   ruralHospitalPhone: "02431-223040",
   elevationMeters: 458,
   riverName: "Godavari River (दक्षिणेची गंगा)",
+  sourceUrl: "https://en.wikipedia.org/wiki/Paithan",
+  dataNote:
+    "23 delimited seats confirmed (2016 elected body). councilClass ('C'), establishedYear (1854) and wardCount (17) are not yet primary-sourced — confirm with the DMA / Nagar Parishad. The official portal is currently unreachable from external tooling.",
 };
 
 // ---------------------------------------------------------------------------
@@ -95,6 +106,9 @@ export interface CivicDemographics {
   geographicalAreaSqKm: number;
   densityPerSqKm: number;
   primaryLanguages: string[];
+  /** Additive provenance (DATA_SOURCING_PLAN.md §3). */
+  sourceUrl?: string;
+  sourceNote?: string;
 }
 
 export const paithanDemographics: CivicDemographics = {
@@ -112,6 +126,9 @@ export const paithanDemographics: CivicDemographics = {
   geographicalAreaSqKm: 18.5,
   densityPerSqKm: 2245,
   primaryLanguages: ["Marathi (मराठी)", "Hindi (हिंदी)", "Urdu (उर्दू)"],
+  sourceUrl: "http://www.citypopulation.de/de/india/maharashtra/aurangabad/2741909000__paithan/",
+  sourceNote:
+    "Census 2011: total population (41,536), male (21,269) and female (20,267) are primary-confirmed. Households, literacy rates, child (0–6) count, area and density await reconfirmation against the Census 2011 Primary Census Abstract (censusindia.gov.in) before being treated as final.",
 };
 
 // ---------------------------------------------------------------------------
@@ -222,7 +239,10 @@ export const paithanEmergencyDirectory: readonly EmergencyContact[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// VERIFIED JAYAKWADI DAM TECHNICAL SPECIFICATIONS
+// JAYAKWADI DAM TECHNICAL SPECIFICATIONS
+// Engineering figures cross-checked against Wikipedia (Jayakwadi Dam) and the
+// Godavari Marathwada Irrigation Development Corporation project profile.
+// See DATA_SOURCING_PLAN.md §6; India-WRIS deep link pending (pass 2).
 // ---------------------------------------------------------------------------
 
 export const jayakwadiDamSpecs = {
@@ -234,15 +254,14 @@ export const jayakwadiDamSpecs = {
   totalLengthMeters: 9998, // 9.998 km
   maxHeightMeters: 41.3,
   spillwayRadialGates: 27,
-  gateDimensions: "12.50 m (width) × 7.90 m (height) each",
   grossStorageTMC: 102.7, // 2,909 million m³
   liveStorageTMC: 76.6, // 2,170 million m³
   deadStorageTMC: 26.1,
   catchmentAreaSqKm: 21750,
   waterSpreadAreaSqKm: 341.05,
-  irrigatedCommandAreaHectares: 240000,
+  irrigatedCommandAreaHectares: 237452, // ~2.37 lakh ha (Wikipedia: Jayakwadi Dam)
   leftBankCanalLengthKm: 208,
-  rightBankCanalLengthKm: 132, // Majalgaon Right Canal
+  rightBankCanalLengthKm: 132, // Paithan Right Bank Canal
   beneficiaryDistricts: [
     "Chhatrapati Sambhajinagar",
     "Jalna",
@@ -257,10 +276,14 @@ export const jayakwadiDamSpecs = {
     "Shendra DMIC (AURIC Mega Smart City)",
     "Over 200 rural tap-water schemes across Marathwada",
   ],
+  sourceUrl: "https://en.wikipedia.org/wiki/Jayakwadi_Dam",
 };
 
 // ---------------------------------------------------------------------------
-// VERIFIED JAIKWADI BIRD SANCTUARY DATA
+// JAIKWADI BIRD SANCTUARY DATA
+// Cross-checked against the 2017 GoI eco-sensitive-zone gazette (341.05 sq km),
+// BNHS / eBird records and press coverage of the annual census.
+// See DATA_SOURCING_PLAN.md §6.
 // ---------------------------------------------------------------------------
 
 export const jaikwadiBirdSanctuaryInfo = {
@@ -269,23 +292,23 @@ export const jaikwadiBirdSanctuaryInfo = {
   notificationYear: 1986,
   governingLaw: "Wildlife Protection Act 1972 (Section 18)",
   sanctuaryAreaSqKm: 341.05,
-  totalRecordedBirdSpecies: 234,
-  migratorySpeciesCount: 78,
+  totalRecordedBirdSpecies: 234, // resident + migratory species combined
   bestVisitingSeason: "October to March (Peak: December to February)",
   prominentMigratoryBirds: [
-    "Greater Flamingo (Phoenicopterus roseus) — Up to 10,000+ flock annually",
-    "Demoiselle Crane (Grus virgo / कुरोंच)",
+    "Greater Flamingo (Phoenicopterus roseus)",
+    "Demoiselle Crane (Grus virgo / कुरोंच) — 10,000+ congregate in winter",
     "Bar-headed Goose (Anser indicus)",
-    "Brahminy Shelduck (Tadorna ferruginea / चक्रवाक)",
     "Northern Pintail (Anas acuta)",
+    "Northern Shoveler (Spatula clypeata)",
+    "Common Teal (Anas crecca)",
+    "Great White Pelican (Pelecanus onocrotalus)",
     "Glossy Ibis (Plegadis falcinellus)",
-    "Black-headed Ibis (Threskiornis melanocephalus)",
     "Eurasian Spoonbill (Platalea leucorodia)",
-    "Osprey (Pandion haliaetus)",
-    "Peregrine Falcon (Falco peregrinus)",
+    "Brahminy Shelduck (Tadorna ferruginea / चक्रवाक)",
   ],
   ecologicalSignificance:
-    "Critical stopover on the Central Asian Flyway (CAF); recognized by Bombay Natural History Society (BNHS) and BirdLife International as an Important Bird and Biodiversity Area (IBA IN-MH-15).",
+    "An important stopover on the migratory flyway: more than 50,000 waterbirds congregate on the Nath Sagar wetland in winter, including over 10,000 Demoiselle Cranes. Recognised as an Important Bird Area (IBA) by BirdLife International / BNHS; a 341.05 sq km area was notified as an eco-sensitive zone in the 2017 Government of India gazette.",
+  sourceUrl: "https://en.wikipedia.org/wiki/Jayakwadi_Dam#Bird_sanctuary",
 };
 
 // ---------------------------------------------------------------------------
@@ -382,7 +405,7 @@ export const pillars: readonly Pillar[] = [
     titleMr: "वारसा व संग्रहालय",
     href: "/heritage/museum",
     summary:
-      "Imperial capital of the Satavahanas (Pratishthana), 2,000-year-old GI-tagged Paithani silk, and Varkari saint traditions.",
+      "Imperial capital of the Satavahanas (Pratishthana), the centuries-old GI-tagged Paithani silk tradition, and Varkari saint traditions.",
     anchorFact: "Capital of King Hala & Satavahanas • GI Paithani Weaving",
     links: [
       { label: "Dr. Balasaheb Patil Museum", href: "/heritage/museum" },
@@ -397,8 +420,8 @@ export const pillars: readonly Pillar[] = [
     titleMr: "पर्यटन व परिसर",
     href: "/tourism/jayakwadi",
     summary:
-      "Jayakwadi Dam across the Godavari, Nath Sagar wetland sanctuary for Siberian flamingos, and sacred riverside ghats.",
-    anchorFact: "350 km² Nath Sagar • 200+ Migratory bird species",
+      "Jayakwadi Dam across the Godavari, Nath Sagar wetland sanctuary for migratory flamingos and waterbirds, and sacred riverside ghats.",
+    anchorFact: "341 km² Nath Sagar • 234 recorded bird species",
     links: [
       { label: "Jayakwadi Dam & reservoir", href: "/tourism/jayakwadi" },
       { label: "Jaikwadi Bird Sanctuary", href: "/tourism/nath-sagar" },
@@ -709,6 +732,10 @@ export interface Representative {
   officeAddress?: string;
   termNote?: string;
   sourceNote?: string;
+  /** Additive provenance (DATA_SOURCING_PLAN.md §3): link to the authoritative source. */
+  sourceUrl?: string;
+  /** ISO date this record's facts were last verified against a source. */
+  verifiedOn?: string;
   dataStatus: DataStatus;
 }
 
@@ -721,30 +748,32 @@ export const electedRepresentatives: readonly Representative[] = [
     designation: "Member of Legislative Assembly (MLA)",
     designationMr: "विधानसभा सदस्य (आमदार)",
     category: "legislative",
-    constituency: "107 - Paithan Assembly Constituency",
+    constituency: "110 - Paithan Assembly Constituency",
     phone: "02431-223010",
     email: "mla.paithan@maharashtra.gov.in",
     officeAddress: "MLA Office, Near Bus Stand, Paithan, Dist. Chhatrapati Sambhajinagar - 431107",
-    bio: "Elected to the Maharashtra Legislative Assembly in November 2024 representing Paithan constituency. Focused on agricultural water connectivity from Jayakwadi, Godavari ghat development, and handloom weaver welfare.",
+    bio: "Elected to the Maharashtra Legislative Assembly in November 2024 from Paithan (Constituency No. 110) on a Shiv Sena ticket, with 1,32,474 votes (52.31%). Focused on agricultural water connectivity from Jayakwadi, Godavari ghat development, and handloom weaver welfare.",
     termNote: "Elected term: 2024–2029",
-    sourceNote: "Verified: Maharashtra Legislative Assembly General Election Results, Nov 2024.",
+    sourceNote: "Verified: Maharashtra Legislative Assembly General Election Results, Nov 2024 (ECI). Paithan is Assembly Constituency No. 110.",
+    sourceUrl: "https://en.wikipedia.org/wiki/Paithan_Assembly_constituency",
+    verifiedOn: "2026-09-29",
     dataStatus: "VERIFIED",
   },
   {
     id: "rep-mp",
-    slug: "sandipanrao-bhumre",
-    name: "Shri Sandipanrao Bhumre",
-    nameMr: "श्री. संदिपानराव भुमरे",
+    slug: "kalyan-vaijinathrao-kale",
+    name: "Shri Kalyan Vaijinathrao Kale",
+    nameMr: "श्री. कल्याण वैजिनाथराव काळे",
     designation: "Member of Parliament (Lok Sabha)",
     designationMr: "खासदार (लोकसभा)",
     category: "legislative",
-    constituency: "Chhatrapati Sambhajinagar Parliamentary Constituency",
-    phone: "0240-2331100",
-    email: "mp.sambhajinagar@sansad.nic.in",
-    officeAddress: "Parliamentary Office, Chhatrapati Sambhajinagar / Paithan Liaison Office",
-    bio: "Elected Member of Parliament in the June 2024 Lok Sabha general election. Former Cabinet Minister in Government of Maharashtra, overseeing Marathwada regional infrastructure, Godavari basin water management, and Jayakwadi canal modernization.",
+    constituency: "Jalna Parliamentary Constituency (Paithan Assembly is a segment)",
+    officeAddress: "Jalna Lok Sabha Constituency (covers the Paithan Assembly segment)",
+    bio: "Represents Paithan in the Lok Sabha as the Member of Parliament for the Jalna parliamentary constituency, of which the Paithan Assembly segment forms a part. Elected in the June 2024 general election (Indian National Congress) with 6,07,897 votes, a margin of about 1,09,958. Note: Paithan does not fall under the Chhatrapati Sambhajinagar (Aurangabad) Lok Sabha seat.",
     termNote: "Elected term: 2024–2029",
-    sourceNote: "Verified: Election Commission of India (ECI) Lok Sabha Results, Jun 2024.",
+    sourceNote: "Verified: Election Commission of India, Lok Sabha Results, Jun 2024. Paithan Assembly (No. 110) is a segment of Jalna LS, not Aurangabad LS.",
+    sourceUrl: "https://en.wikipedia.org/wiki/Paithan_Assembly_constituency",
+    verifiedOn: "2026-09-29",
     dataStatus: "VERIFIED",
   },
 ];
@@ -753,17 +782,18 @@ export const administrationRepresentatives: readonly Representative[] = [
   {
     id: "rep-co",
     slug: "chief-officer",
-    name: "Shri Santosh Dagdu Agle",
-    nameMr: "श्री. संतोष दगडू अगल",
+    name: "Office of the Chief Officer (Administrator)",
+    nameMr: "मुख्याधिकारी (प्रशासक) कार्यालय",
     designation: "Chief Officer / Administrator",
     designationMr: "मुख्याधिकारी / प्रशासक",
     category: "administrative",
     officeAddress: "Paithan Municipal Council, Main Administrative Building, Paithan - 431107",
     phone: "02431-223010",
     email: "munptn@gmail.com",
-    bio: "Heads the executive and municipal administration of Paithan Municipal Council, supervising public health, municipal engineering, revenue collection, and smart city works.",
-    termNote: "Administrative posting",
-    sourceNote: "Documented in 2024–2025 DMA filings. Subject to routine state civil service rotations.",
+    bio: "Heads the executive and municipal administration of Paithan Municipal Council, supervising public health, municipal engineering, revenue collection, and civic works. The Chief Officer is a state-appointed post filled by routine civil-service rotation.",
+    termNote: "Administrative posting — current holder's name pending confirmation",
+    sourceNote:
+      "The specific officer's name is not independently verifiable online and must be confirmed with the Nagar Parishad / DMA before publishing.",
     dataStatus: "SAMPLE_TBD",
   },
   {
@@ -777,9 +807,12 @@ export const administrationRepresentatives: readonly Representative[] = [
     officeAddress: "President's Chamber, Paithan Municipal Council",
     phone: "02431-223010",
     email: "munptn@gmail.com",
-    bio: "The elected presiding officer of the Municipal Council. In accordance with state local body election schedules, council governance status is subject to notification.",
-    termNote: "Office status pending confirmation",
-    sourceNote: "Awaiting Nagar Parishad confirmation regarding elected body vs. Administrator governance.",
+    bio: "The elected presiding officer of the Municipal Council. Paithan's last elected council body dates to the 2016 municipal election; that term has since expired and the council currently functions under Administrator rule. Fresh Nagar Parishad polls were stayed as of 30 November 2025 pending a ward-nomination dispute, so there is no sitting President at present.",
+    termNote: "No sitting President — council under Administrator rule",
+    sourceNote:
+      "Council under Administrator rule; 2016 was the last elected body. Fresh polls stayed as of 30 Nov 2025. Confirm current status with the Nagar Parishad / State Election Commission.",
+    sourceUrl: "https://en.wikipedia.org/wiki/Paithan",
+    verifiedOn: "2026-09-29",
     dataStatus: "SAMPLE_TBD",
   },
   {
@@ -844,11 +877,11 @@ export const HISTORY_TIMELINE: readonly HistoryTimelineEra[] = [
     titleEn: "Pratishthana — Imperial Capital of the Satavahanas",
     titleMr: "प्रतिष्ठान — सातवाहन साम्राज्याची राजधानी",
     significance:
-      "Founded as the capital of the great Satavahana Empire by King Simuka. Became India's foremost emporium connecting Arabian Sea ports with the Deccan interior.",
+      "A principal capital of the Satavahana Empire, whose traditional founder was King Simuka. A major inland emporium connecting the Arabian Sea ports with the Deccan interior.",
     events: [
       "Satavahana King Hala rules from Pratishthana and compiles the world-renowned Maharashtri Prakrit poetic anthology 'Gaha Sattasai' (Gatha Saptashati).",
-      "Mentioned as 'Plithana' in the Greek navigation chronicle 'Periplus of the Erythraean Sea' as a grand trade center supplying carnelian, cotton, and muslin to Rome.",
-      "Imperial ruler Gautamiputra Satakarni and Vasishthiputra Pulumavi mint coins from Paithan, recovered at the Brahmapuri mound.",
+      "Referred to as 'Paethana' in the 1st-century Greek chronicle 'Periplus of the Erythraean Sea', from where carnelian (agate) was carried down to the western ports for the Roman trade; the Periplus attributes fine muslins to Tagara, not to Paithan.",
+      "Satavahana rulers such as Gautamiputra Satakarni and Vasishthiputra Pulumavi issue coinage; Satavahana-era coins and coin-moulds have been recovered from excavations at Paithan.",
     ],
   },
   {
@@ -860,7 +893,7 @@ export const HISTORY_TIMELINE: readonly HistoryTimelineEra[] = [
       "Pratishthana served as the supreme religious court of Maharashtra, renowned for Vedic scholars and Sanskrit jurists.",
     events: [
       "Sant Dnyaneshwar and his siblings (Nivruttinath, Sopandev, Muktabai) travel from nearby Apegaon (12 km away) to Paithan to seek certification of purification (Shuddhipatra).",
-      "The historic miracle at Paithan where a passing water buffalo recites Vedic hymns, leading the learned scholars to revere the young saints.",
+      "According to Varkari tradition, a miracle at Paithan in which a buffalo recites Vedic hymns leads the assembled scholars to revere the young saints.",
       "Issuance of the formal Shuddhipatra acknowledging the divine authority of the Dnyaneshwar siblings.",
     ],
   },
@@ -885,7 +918,7 @@ export const HISTORY_TIMELINE: readonly HistoryTimelineEra[] = [
     significance:
       "Paithan flourishes under Maratha sovereignty. Royal patronage elevates Paithani silk weaving with beaten gold and silver zari.",
     events: [
-      "Chhatrapati Shivaji Maharaj issues a formal royal edict (Rajpatra) regarding judicial administration in Paithan pargana (preserved in Dr. Balasaheb Patil Museum).",
+      "Paithan, a prominent pargana town, remains a centre of judicial and religious scholarship under Maratha rule.",
       "Peshwas and Maratha aristocracy heavily commission pure gold zari sarees featuring peacock (Bangadi Mor) and flowering vine (Asawali) motifs.",
       "Establishment of dedicated handloom colonies along the Godavari riverbank.",
     ],
@@ -899,15 +932,20 @@ export const HISTORY_TIMELINE: readonly HistoryTimelineEra[] = [
       "Inauguration of Jayakwadi Dam transforms Marathwada's water landscape, creating the Nath Sagar reservoir and Jaikwadi Bird Sanctuary.",
     events: [
       "Prime Minister Indira Gandhi inaugurates the Jayakwadi Dam across the Godavari in 1976.",
-      "Notification of the Jaikwadi Bird Sanctuary (1986), attracting over 200 species of migratory birds including Siberian Flamingos.",
-      "Establishment of the Dr. Balasaheb Patil Government Archaeological Museum in 1997 inside Sant Dnyaneshwar Udyan.",
-      "Paithani Saree awarded Geographical Indication (GI) registration (GI Application #84).",
+      "Notification of the Jaikwadi Bird Sanctuary (1986), which records 234 resident and migratory bird species, including Greater Flamingo and Demoiselle Crane.",
+      "Establishment of the Dr. Balasaheb Patil Government Archaeological Museum inside the Sant Dnyaneshwar Udyan campus.",
+      "Paithani Saree awarded Geographical Indication (GI) registration (2010).",
     ],
   },
 ];
 
 // ---------------------------------------------------------------------------
-// DR. BALASAHEB PATIL ARCHAEOLOGICAL MUSEUM EXHIBITS (Verified from State Archaeology)
+// DR. BALASAHEB PATIL ARCHAEOLOGICAL MUSEUM EXHIBITS
+// The museum is real and holds a large body of antiquities (press reports put it
+// near 9,000 items) including Satavahana-era coins and coin-moulds. The specific
+// exhibit entries, catalogue references, and attributions below are ILLUSTRATIVE
+// of the collection's themes and are tagged SAMPLE_TBD pending confirmation with
+// the Directorate of Archaeology & Museums, Maharashtra. See DATA_SOURCING_PLAN.md §6.
 // ---------------------------------------------------------------------------
 
 export interface MuseumExhibit {
@@ -919,6 +957,7 @@ export interface MuseumExhibit {
   description: string;
   category: "COINS" | "SCULPTURE" | "TEXTILE" | "MANUSCRIPT" | "WEAPONS" | "IVORY";
   accessionRef: string;
+  dataStatus: DataStatus;
 }
 
 export const MUSEUM_EXHIBITS: readonly MuseumExhibit[] = [
@@ -928,23 +967,25 @@ export const MUSEUM_EXHIBITS: readonly MuseumExhibit[] = [
     nameMr: "सातवाहन कालीन नाणी संग्रह",
     period: "2nd Century BCE – 2nd Century CE",
     significance:
-      "Bearing Brahmi legends and elephant/chaitya royal insignias of King Gautamiputra Satakarni and Vasishthiputra Pulumavi, unearthed at Brahmapuri.",
+      "Bearing Brahmi legends and elephant/chaitya royal insignias associated with Satavahana rulers such as Gautamiputra Satakarni and Vasishthiputra Pulumavi.",
     description:
-      "Rare metallurgical coin samples minted when Paithan was the imperial capital of the Satavahana Empire, evidencing thriving monetized trade with Rome.",
+      "Representative of the coin and coin-mould finds of the Satavahana period, when Paithan (Pratishthana) was an imperial capital engaged in long-distance trade.",
     category: "COINS",
     accessionRef: "BPGM-NUM-014",
+    dataStatus: "SAMPLE_TBD",
   },
   {
     id: "ex-shivaji-rajpatra",
-    nameEn: "Chhatrapati Shivaji Maharaj Royal Decree (Rajpatra)",
-    nameMr: "छत्रपती शिवाजी महाराजांचे ऐतिहासिक राजपत्र",
-    period: "17th Century CE (1670s)",
+    nameEn: "Maratha-Era Royal Decree (Rajpatra) — Modi Script",
+    nameMr: "मराठाकालीन राजपत्र (मोडी लिपी)",
+    period: "17th Century CE",
     significance:
-      "Original Modi script royal parchment issued by Chhatrapati Shivaji Maharaj governing land revenue and civic disputes in the Paithan pargana.",
+      "A Modi-script parchment of the type associated with Maratha-era land-revenue and civic administration in the Paithan pargana.",
     description:
-      "Authentic handmade paper parchment bearing the sacred royal seal (Rajmudra). Preserved in the private collection of Dr. Balasaheb Patil before being gifted to the state.",
+      "Illustrative of Maratha-period manuscript records; the specific attribution, royal seal, and provenance shown here are indicative and pending confirmation with the museum.",
     category: "MANUSCRIPT",
     accessionRef: "BPGM-MAN-001",
+    dataStatus: "SAMPLE_TBD",
   },
   {
     id: "ex-roman-antiquities",
@@ -952,23 +993,25 @@ export const MUSEUM_EXHIBITS: readonly MuseumExhibit[] = [
     nameMr: "रोमन कार्नेलियन मणी व मद्यपात्रे",
     period: "1st Century BCE – 1st Century CE",
     significance:
-      "Corroborates Paithan's identification with 'Plithana' in the Greek 'Periplus of the Erythraean Sea'.",
+      "Reflects Paithan's role in Indo-Roman trade; the 1st-century Greek 'Periplus of the Erythraean Sea' records carnelian carried down from 'Paethana' to the western ports.",
     description:
-      "Carved carnelian and agate gemstone beads with Greco-Roman engraving motifs, alongside terracotta handles of imported Mediterranean wine amphorae.",
+      "Carved carnelian and agate beads of the kind linked to the Roman-contact trade; the specific items and any amphorae attribution shown here are indicative and pending confirmation.",
     category: "SCULPTURE",
     accessionRef: "BPGM-ARC-088",
+    dataStatus: "SAMPLE_TBD",
   },
   {
     id: "ex-antique-paithani",
-    nameEn: "200-Year-Old Peshwa-Era Pure Gold Asawali Paithani",
-    nameMr: "ऐतिहासिक २०० वर्षे जुनी असावली पैठणी",
-    period: "Early 19th Century CE",
+    nameEn: "Antique Peshwa-Era Asawali Paithani (Gold Zari)",
+    nameMr: "ऐतिहासिक असावली पैठणी (सुवर्ण जरी)",
+    period: "19th Century CE",
     significance:
-      "Woven with pure beaten gold (kincob) zari and vegetable dyes depicting the classic Asawali flowering vase motif on the pallu.",
+      "Woven with gold zari depicting the Asawali flowering-vine motif on the pallu — a classic Paithani heritage design.",
     description:
-      "A masterpiece of handloom weaving history gifted to the state museum, representing the unbroken 2,000-year legacy of master weavers in Paithan.",
+      "Illustrative of the museum's antique Paithani textiles; the specific age, materials, and provenance shown here are indicative and pending confirmation.",
     category: "TEXTILE",
     accessionRef: "BPGM-TEX-004",
+    dataStatus: "SAMPLE_TBD",
   },
   {
     id: "ex-satavahana-ivory",
@@ -976,11 +1019,12 @@ export const MUSEUM_EXHIBITS: readonly MuseumExhibit[] = [
     nameMr: "सातवाहन कालीन हस्तिदंती फासे व फणी",
     period: "1st Century CE",
     significance:
-      "Highlights courtly life and leisure activities in imperial Pratishthana during the Golden Age.",
+      "Reflects courtly life and leisure in ancient Pratishthana during the Satavahana period.",
     description:
-      "Intricately engraved elephant ivory gaming dice with concentric circular pips, recovered during the 1965 ASI excavations at Brahmapuri mound.",
+      "Engraved ivory gaming dice of the type associated with excavations at ancient Pratishthana (Paithan); the specific find details shown here are indicative and pending confirmation.",
     category: "IVORY",
     accessionRef: "BPGM-IVO-019",
+    dataStatus: "SAMPLE_TBD",
   },
   {
     id: "ex-maratha-swords",
@@ -990,14 +1034,18 @@ export const MUSEUM_EXHIBITS: readonly MuseumExhibit[] = [
     significance:
       "Used by Maratha horsemen stationed at the Godavari river crossing defense garrisons.",
     description:
-      "Hand-forged carbon steel Khanda broadswords with reinforced pommels and basket hilts, paired with iron-ring riveted protective chainmail.",
+      "Hand-forged Khanda broadswords with basket hilts, paired with riveted iron chainmail — illustrative of Maratha-era arms; the specific items shown here are indicative and pending confirmation.",
     category: "WEAPONS",
     accessionRef: "BPGM-MIL-032",
+    dataStatus: "SAMPLE_TBD",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// REAL TOURISM DESTINATIONS (Verified Specifications & Visitor Information)
+// TOURISM DESTINATIONS (specifications & visitor information)
+// Core sites (Jayakwadi, Sant Eknath samadhi, Paithani weaving) are well
+// documented; per-site timings, fees and some specifics are indicative and
+// should be confirmed locally. See DATA_SOURCING_PLAN.md §6.
 // ---------------------------------------------------------------------------
 
 export interface TouristPlace {
@@ -1048,7 +1096,7 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     nameEn: "Jaikwadi Bird Sanctuary (Nath Sagar)",
     nameMr: "जायकवाडी पक्षी अभयारण्य (नाथ सागर)",
     category: "DAM_RESERVOIR",
-    tagline: "International Ramsar Candidate Wetland hosting 200+ Migratory Species",
+    tagline: "Notified bird sanctuary on Nath Sagar hosting 234 recorded bird species",
     description:
       "Notified in 1986 across 341 km² of the Nath Sagar reservoir. The shallow backwaters and reed beds form one of Western India's greatest winter havens for migratory waterfowl traveling along the Central Asian Flyway.",
     highlights: [
@@ -1161,14 +1209,14 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     nameEn: "Dr. Balasaheb Patil Government Archaeological Museum",
     nameMr: "बाळासाहेब पाटील शासकीय वस्तुसंग्रहालय",
     category: "HERITAGE",
-    tagline: "State Museum holding Satavahana Relics & Chhatrapati Shivaji's Rajpatra",
+    tagline: "State museum holding Satavahana-era relics and Maratha-era Modi-script records",
     description:
       "Located inside the Sant Dnyaneshwar Garden campus. Administered by the Maharashtra Directorate of Archaeology & Museums, holding over 10,000 antiquities donated by late scholar Dr. Balasaheb Patil including Satavahana coins, ancient pottery, weapons, and Maratha charters.",
     highlights: [
-      "Modi script Royal Charter (Rajpatra) of Chhatrapati Shivaji Maharaj",
-      "Satavahana imperial coin hoard (2nd cent. BCE)",
-      "Roman carnelian beads and amphorae fragments",
-      "200-year-old pure gold Paithani saree pallu",
+      "Modi-script Maratha-era royal decree (Rajpatra)",
+      "Satavahana-era coins and coin-moulds (2nd cent. BCE onward)",
+      "Roman-contact carnelian and agate beads",
+      "Antique gold-zari Paithani saree pallu",
     ],
     visitingHours: "10:30 AM – 05:00 PM (Closed on Mondays & Public Holidays)",
     entryFee: "₹10 Adults, ₹5 Children",
@@ -1184,9 +1232,9 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     nameEn: "Paithani Handloom Weaving Clusters & Mega Tourism Centre",
     nameMr: "पैठणी हातमाग विणकाम केंद्र",
     category: "WEAVING",
-    tagline: "2,000-Year-Old GI-Tagged Handloom Silk Weaving Tradition",
+    tagline: "Centuries-Old GI-Tagged Handloom Silk Weaving Tradition",
     description:
-      "Paithan is the global heart of Paithani silk weaving. Visitors can observe master artisans operating wooden pit looms, interlacing pure mulberry silk with electroplated and pure gold zari to create signature Bangadi Mor and Munia motifs.",
+      "Paithan is a historic centre of Paithani silk weaving. Visitors can observe master artisans operating traditional pit looms, interlacing pure silk with gold and silver zari to create classic motifs such as the peacock (Bangadi Mor), lotus and Munia (parrot).",
     highlights: [
       "Live demonstrations of intricate tapestry handloom weaving",
       "Direct cooperative purchasing from master weavers",
@@ -1198,22 +1246,22 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     distanceFromBusStand: "1.0 km (Paithani Weavers Colony)",
     coordinates: { lat: 19.479, lng: 75.382 },
     imageUrl: "/images/sites/paithani-weaving.jpg",
-    imageAlt: "Master handloom weaver on a traditional wooden pit loom weaving pure mulberry silk and gold zari Paithani saree",
+    imageAlt: "Master handloom weaver on a traditional wooden pit loom weaving a pure silk and gold zari Paithani saree",
   },
   {
     id: "tp-brahmapuri",
     slug: "brahmapuri-ancient-mound",
-    nameEn: "Brahmapuri Ancient Satavahana Archaeological Mound",
-    nameMr: "ब्रह्मपुरी प्राचीन सातवाहन उत्खनन टेकडी",
+    nameEn: "Ancient Pratishthana Archaeological Mound (Brahmapuri)",
+    nameMr: "प्राचीन प्रतिष्ठान उत्खनन टेकडी (ब्रह्मपुरी)",
     category: "HERITAGE",
-    tagline: "Excavated Capital of the Imperial Satavahana Dynasty (2nd Century BCE)",
+    tagline: "Excavated Settlement of the Satavahana-Era Capital, Pratishthana",
     description:
-      "Paithan's ancient citadel and archaeological excavation zone overlooking the Godavari River. Excavations by the Archaeological Survey of India (ASI) revealed multi-level urban settlements, brick foundations, terracotta drainage ring wells, and direct Greco-Roman trading artifacts.",
+      "The ancient settlement mound of Pratishthana (Paithan) beside the Godavari River. Archaeological excavations here are reported to have exposed early urban brick structures, terracotta ring wells and finds pointing to long-distance Roman-contact trade. Site access and facilities should be confirmed locally before visiting.",
     highlights: [
-      "Ancient Satavahana urban brick architecture and terracotta ring wells",
-      "ASI preserved excavation site with bilingual educational interpretation boards",
-      "Panoramic views overlooking the holy Godavari river basin",
-      "Evidence of Mediterranean trade documented in Periplus of the Erythraean Sea",
+      "Reported Satavahana-era brick structures and terracotta ring wells",
+      "Open archaeological site beside the Godavari (visitor facilities to be confirmed)",
+      "Views overlooking the Godavari river basin",
+      "Associated with the Roman-contact trade recorded in the Periplus of the Erythraean Sea",
     ],
     visitingHours: "08:00 AM – 06:00 PM",
     entryFee: "Free",
@@ -1221,12 +1269,12 @@ export const TOURIST_PLACES: readonly TouristPlace[] = [
     distanceFromBusStand: "2.0 km",
     coordinates: { lat: 19.475, lng: 75.38 },
     imageUrl: "/images/sites/brahmapuri-mound.jpg",
-    imageAlt: "Archaeological excavation site at Brahmapuri mound exposing Satavahana brick masonry walls and terracotta ring wells",
+    imageAlt: "Archaeological excavation mound at ancient Pratishthana (Paithan) exposing Satavahana-era brick walls and terracotta ring wells",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// CURATED TOURIST ROUTES / ITINERARIES (Verified)
+// CURATED TOURIST ROUTES / ITINERARIES (suggested)
 // ---------------------------------------------------------------------------
 
 export interface CuratedRoute {
@@ -1265,10 +1313,10 @@ export const CURATED_ROUTES: readonly CuratedRoute[] = [
     description:
       "Trace 2,200 years of Deccan history from imperial Pratishthana's Roman trade to royal Maratha edicts and master handloom silk weaving.",
     stops: [
-      { placeName: "Dr. Balasaheb Patil Government Museum", note: "10:30 AM — Study Satavahana coin hoards, Roman beads, and Shivaji's Rajpatra." },
-      { placeName: "Brahmapuri Ancient Mound", note: "01:30 PM — Visit the archaeological excavation site of the Satavahana capital." },
+      { placeName: "Dr. Balasaheb Patil Government Museum", note: "10:30 AM — Study Satavahana coin hoards, Roman-trade beads, and Maratha-era Modi-script records." },
+      { placeName: "Ancient Pratishthana Mound (Brahmapuri)", note: "01:30 PM — Visit the site of the ancient Satavahana capital, Pratishthana." },
       { placeName: "Paithani Handloom Weaving Colony", note: "03:30 PM — Experience live tapestry weaving on wooden pit looms with master artisans." },
-      { placeName: "Sant Dnyaneshwar Udyan", note: "05:30 PM — Relax in the 300-acre botanical gardens and watch the sunset." },
+      { placeName: "Sant Dnyaneshwar Udyan", note: "05:30 PM — Relax in the expansive botanical gardens and watch the sunset." },
     ],
   },
   {
@@ -1278,7 +1326,7 @@ export const CURATED_ROUTES: readonly CuratedRoute[] = [
     duration: "1 Day (Best in Winter)",
     idealFor: "Birdwatchers, Photographers & Nature Enthusiasts",
     description:
-      "Explore Asia's largest earthen dam and witness thousands of Siberian migratory birds feeding along the Nath Sagar wetland borders.",
+      "Explore one of Asia's largest earthen dams and witness thousands of migratory birds feeding along the Nath Sagar wetland borders.",
     stops: [
       { placeName: "Jaikwadi Bird Sanctuary (Flamingo Point)", note: "06:30 AM — Early morning birdwatching; spot Greater Flamingos and cranes." },
       { placeName: "Jayakwadi Dam Crest & Spillway View", note: "10:00 AM — Walk along the 10 km dam overlook; inspect the 27 radial gates." },

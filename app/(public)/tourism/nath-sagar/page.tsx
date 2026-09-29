@@ -31,7 +31,7 @@ const BIRD_SPECIES = [
     commonNameMr: "कुरंग (क्रौंच पक्षी)",
     scientificName: "Anthropoides virgo",
     season: "December to February",
-    status: "Long-distance Siberian Migrant",
+    status: "Long-distance Central Asian Migrant",
     notes: "Elegant long-legged cranes congregating along open sandy river spits.",
   },
   {
@@ -77,7 +77,7 @@ export default function NathSagarPage() {
           <div className="relative h-72 sm:h-96 w-full">
             <Image
               src="/images/sites/jaikwadi-birds.jpg"
-              alt="Greater Flamingos and Siberian migratory birds at Jaikwadi Bird Sanctuary Nath Sagar"
+              alt="Greater Flamingos and migratory waterbirds at Jaikwadi Bird Sanctuary Nath Sagar"
               fill
               priority
               sizes="100vw"
@@ -88,20 +88,20 @@ export default function NathSagarPage() {
             <div className="absolute top-4 right-4 z-10">
               <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                शासकीय अधिकृत छायाचित्र (Official Photo)
+                जायकवाडी पक्षी अभयारण्य, नाथ सागर
               </span>
             </div>
 
             <div className="absolute bottom-6 left-6 right-6 z-10 max-w-3xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-500/40 mb-3 backdrop-blur-md">
                 <Feather className="w-3.5 h-3.5 text-emerald-400" />
-                <span>International Ramsar Candidate Wetland • 341 sq. km</span>
+                <span>Notified Bird Sanctuary (1986) • 341 sq. km</span>
               </div>
               <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
                 जायकवाडी पक्षी अभयारण्य — नाथ सागर (Bird Sanctuary)
               </h1>
               <p className="text-sm sm:text-base text-slate-200 mt-2 leading-relaxed drop-shadow-sm">
-                Encompassing 341 square kilometers of the Nath Sagar reservoir, this sanctuary is Western India&apos;s premier winter haven for over 200 species of migratory waterfowl travelling along the Central Asian Flyway.
+                Encompassing 341 square kilometers of the Nath Sagar reservoir, this sanctuary is a major winter haven that records 234 resident and migratory bird species, many travelling along the Central Asian Flyway.
               </p>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function NathSagarPage() {
             <div>
               <div className="text-xs font-bold text-slate-900">Peak Season</div>
               <div className="text-xs text-slate-600">November to March</div>
-              <div className="text-[10px] text-slate-body">Peak Siberian flamingo arrival</div>
+              <div className="text-[10px] text-slate-body">Peak flamingo &amp; crane arrival</div>
             </div>
           </div>
 
@@ -154,11 +154,11 @@ export default function NathSagarPage() {
                 प्रमुख पक्षी प्रजाती (Signature Avian Species of Nath Sagar)
               </h2>
               <p className="text-xs text-slate-muted">
-                Verified records documented by Bombay Natural History Society (BNHS) and Maharashtra Forest Department
+                Representative species reported at the sanctuary; detailed records are maintained by the Bombay Natural History Society (BNHS) and the Maharashtra Forest Department
               </p>
             </div>
             <span className="text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full self-start sm:self-auto">
-              200+ Avian Species
+              234 Recorded Species
             </span>
           </div>
 

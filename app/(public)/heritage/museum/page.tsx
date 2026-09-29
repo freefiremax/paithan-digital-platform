@@ -5,11 +5,12 @@ import { Clock, MapPin, Tag, ShieldCheck, Sparkles } from "lucide-react";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { MUSEUM_EXHIBITS } from "@/lib/mock-data";
+import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
 
 export const metadata: Metadata = {
   title: "Dr. Balasaheb Patil Government Museum",
   description:
-    "Official guide to the Dr. Balasaheb Patil Government Archaeological Museum in Paithan, housing Satavahana coin hoards and Chhatrapati Shivaji Maharaj's royal decree.",
+    "Official guide to the Dr. Balasaheb Patil Government Archaeological Museum in Paithan, which preserves Satavahana-era coins, coin-moulds and antiquities of ancient Pratishthana.",
 };
 
 export default function MuseumPage() {
@@ -46,7 +47,7 @@ export default function MuseumPage() {
             <div className="absolute top-4 right-4">
               <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                शासकीय वस्तुसंग्रहालय — अधिकृत छायाचित्र
+                शासकीय पुरातत्व वस्तुसंग्रहालय, पैठण
               </span>
             </div>
 
@@ -55,7 +56,7 @@ export default function MuseumPage() {
                 Satavahana Imperial Gallery
               </span>
               <p className="text-sm sm:text-base font-semibold text-slate-100">
-                Showcasing 2,200-year-old coin hoards, terracotta Roman-contact figurines, and Chhatrapati Shivaji Maharaj&apos;s Royal Charter
+                Satavahana-era coins and coin-moulds, terracotta figurines, and antiquities of ancient Pratishthana
               </p>
             </div>
           </div>
@@ -68,7 +69,7 @@ export default function MuseumPage() {
             <div>
               <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Visiting Hours</p>
               <p className="text-xs text-slate-600">10:30 AM – 05:00 PM</p>
-              <p className="text-[10px] text-slate-body">Closed on Mondays & Public Holidays</p>
+              <p className="text-[10px] text-slate-body">Closed Mondays &amp; public holidays · confirm before visit</p>
             </div>
           </div>
 
@@ -77,7 +78,7 @@ export default function MuseumPage() {
             <div>
               <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Admission Fee</p>
               <p className="text-xs text-slate-600">₹10 (Adults) • ₹5 (Children)</p>
-              <p className="text-[10px] text-slate-body">Free for school student groups</p>
+              <p className="text-[10px] text-slate-body">Indicative — confirm current fees before visit</p>
             </div>
           </div>
 
@@ -106,9 +107,9 @@ export default function MuseumPage() {
             The Vision of Late Dr. Balasaheb Patil
           </h2>
           <p className="mt-2 text-xs text-slate-700 leading-relaxed max-w-4xl">
-            Established in 1997 on land allocated near the Jayakwadi dam, the museum honors the tireless lifetime research of local dignitary and antiquarian <strong>Dr. Balasaheb Patil</strong>.
-            Over several decades, Dr. Patil retrieved thousands of artifacts from surface explorations around the ancient Brahmapuri mound and the Godavari riverbed.
-            Recognizing their national historical value, he generously transferred this priceless collection to the Maharashtra State Archaeology Department so that future generations could study Paithan&apos;s 2,200-year civilizational heritage.
+            Set within the Sant Dnyaneshwar Udyan campus, the museum honors the lifetime research of local antiquarian <strong>Dr. Balasaheb Patil</strong>.
+            Over several decades, Dr. Patil gathered a large body of artifacts from explorations around ancient Pratishthana (Paithan) and the Godavari riverbed.
+            Recognizing their historical value, the collection is preserved with the Maharashtra State Directorate of Archaeology &amp; Museums so that future generations can study Paithan&apos;s heritage.
           </p>
         </section>
 
@@ -119,6 +120,12 @@ export default function MuseumPage() {
             title="Featured Permanent Gallery Exhibits"
             description="Artifacts from ancient Pratishthana's Satavahana era, Roman trade emporium period, and Maratha historical records."
           />
+
+          <p className="mt-4 border border-amber-600/30 bg-amber-50/60 px-4 py-3 text-[11px] leading-relaxed text-amber-900">
+            <strong>Note:</strong> The exhibit entries below are illustrative of the collection&apos;s themes. Specific items,
+            catalogue references, dates and attributions are indicative and should be confirmed with the Directorate of
+            Archaeology &amp; Museums, Maharashtra, before being cited.
+          </p>
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {MUSEUM_EXHIBITS.map((exhibit) => (
@@ -155,6 +162,9 @@ export default function MuseumPage() {
                   <p className="text-[11px] text-slate-muted mt-0.5 leading-snug">
                     {exhibit.significance}
                   </p>
+                  <div className="mt-3">
+                    <DataStatusBadge status={exhibit.dataStatus} />
+                  </div>
                 </div>
               </article>
             ))}

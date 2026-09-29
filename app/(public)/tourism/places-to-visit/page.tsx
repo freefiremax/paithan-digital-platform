@@ -63,7 +63,7 @@ export default function PlacesToVisitPage() {
                   <div className="absolute top-3 right-3">
                     <span className="inline-flex items-center gap-1 bg-emerald-950/80 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded backdrop-blur-xs border border-emerald-500/30">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                      अधिकृत छायाचित्र
+                      छायाचित्र
                     </span>
                   </div>
 
@@ -132,7 +132,7 @@ export default function PlacesToVisitPage() {
           <SectionHeading
             id="dam-datasheet-heading"
             title="Jayakwadi Project — Official Technical Datasheet"
-            description="Verified engineering metrics for Nath Sagar reservoir, Asia's largest earthen dam, commissioned in 1976 on the Godavari River."
+            description="Key engineering metrics for Nath Sagar reservoir, one of Asia's largest earthen dams, commissioned in 1976 on the Godavari River."
           />
 
           <div className="mt-6 border border-[var(--border-subtle)] bg-white p-6">
@@ -164,7 +164,7 @@ export default function PlacesToVisitPage() {
                 <p className="mt-1 text-xl font-bold text-[var(--zari-gold-600)] font-serif">
                   {jayakwadiDamSpecs.spillwayRadialGates} Gates
                 </p>
-                <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">12.5m × 7.9m each</p>
+                <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">On central ogee spillway</p>
               </div>
 
               <div className="border border-[var(--border-subtle)] p-3.5 bg-slate-50/50">
@@ -172,7 +172,7 @@ export default function PlacesToVisitPage() {
                   Irrigation Command
                 </span>
                 <p className="mt-1 text-xl font-bold text-emerald-800 font-serif">
-                  2.40 Lakh Ha
+                  {(jayakwadiDamSpecs.irrigatedCommandAreaHectares / 100000).toFixed(2)} Lakh Ha
                 </p>
                 <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">Across 5 Marathwada dists</p>
               </div>
@@ -185,7 +185,7 @@ export default function PlacesToVisitPage() {
                 </h4>
                 <ul className="space-y-1 text-slate-700">
                   <li>• <strong>Left Bank Canal:</strong> {jayakwadiDamSpecs.leftBankCanalLengthKm} km (Paithan to Beed/Parbhani border)</li>
-                  <li>• <strong>Right Bank Canal:</strong> {jayakwadiDamSpecs.rightBankCanalLengthKm} km (Majalgaon feeder network)</li>
+                  <li>• <strong>Right Bank Canal:</strong> {jayakwadiDamSpecs.rightBankCanalLengthKm} km (Paithan Right Bank Canal)</li>
                   <li>• <strong>Water Spread Area:</strong> {jayakwadiDamSpecs.waterSpreadAreaSqKm} sq km (Nath Sagar)</li>
                 </ul>
               </div>

@@ -77,7 +77,7 @@ const MAP_POINTS: MapPoint[] = [
     lng: 75.391,
     distanceFromBusStand: "2.8 km",
     timings: "10:00 AM – 07:00 PM",
-    description: "300-acre botanical garden with illuminated musical fountains.",
+    description: "Expansive botanical garden with illuminated musical fountains.",
   },
   {
     id: "p-patil-museum",
