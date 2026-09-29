@@ -53,10 +53,39 @@ enum RouteType {
   TEMPLE
 }
 
-enum AdminRole {
-  SUPER_ADMIN
+enum Role {
+  PUBLIC
   EDITOR
-  WARD_EDITOR
+  ADMIN
+}
+
+enum DataStatus {
+  VERIFIED
+  SAMPLE_TBD
+}
+
+enum CivicSector {
+  ROADS_TRANSPORT
+  WATER_SANITATION
+  EDUCATION
+  HEALTH
+  OTHER_CIVIC_WORKS
+}
+
+enum FacilityType {
+  SCHOOL
+  PHC
+  WATER_WORKS
+  COMMUNITY_CENTER
+  ANGANWADI
+  OTHER
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  VERIFY
 }
 
 model Ward {
@@ -69,6 +98,8 @@ model Ward {
   nagarSevaks      NagarSevak[]
   developmentWorks DevelopmentWork[]
   adminUsers       AdminUser[]
+  users            User[]
+  facilities       Facility[]
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 }
@@ -105,23 +136,27 @@ model NagarSevak {
 }
 
 model DevelopmentWork {
-  id                 String     @id @default(cuid())
+  id                 String       @id @default(cuid())
   title              String
   titleMr            String?
   wardId             String
-  ward               Ward       @relation(fields: [wardId], references: [id])
+  ward               Ward         @relation(fields: [wardId], references: [id])
+  sector             CivicSector
   description        String
   descriptionMr      String?
-  status             WorkStatus @default(PLANNED)
+  status             WorkStatus   @default(PLANNED)
   startDate          DateTime?
   expectedCompletion DateTime?
   department         String
   budget             Float?
-  progressPct        Int        @default(0)
+  progressPct        Int          @default(0)
   images             String[]
   locationLatLng     Json?
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
+  dataStatus         DataStatus   @default(SAMPLE_TBD)
+  createdById        String
+  createdBy          User         @relation(fields: [createdById], references: [id])
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
 }
 
 model Project {
@@ -270,9 +305,72 @@ model AdminUser {
   email        String    @unique
   name         String?
   passwordHash String
-  role         AdminRole @default(EDITOR)
+  role         Role      @default(PUBLIC)
   wardId       String?
   ward         Ward?     @relation(fields: [wardId], references: [id])
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  role          Role      @default(PUBLIC)
+  wardId        String?
+  ward          Ward?     @relation(fields: [wardId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  works         DevelopmentWork[]
+  facilities    Facility[]
+  auditLogs     AuditLog[]
+}
+
+model CivicSectorInfo {
+  id          String       @id @default(cuid())
+  sector      CivicSector  @unique
+  titleEn     String
+  titleMr     String
+  taglineEn   String
+  taglineMr   String
+  overviewEn  String
+  overviewMr  String
+  department  String
+  contactJson Json?
+  dataStatus  DataStatus   @default(SAMPLE_TBD)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Facility {
+  id              String       @id @default(cuid())
+  sector          CivicSector
+  type            FacilityType
+  nameEn          String
+  nameMr          String?
+  address         String
+  contactJson     Json?
+  wardId          String?
+  ward            Ward?        @relation(fields: [wardId], references: [id])
+  isOperational   Boolean      @default(true)
+  dataStatus      DataStatus   @default(SAMPLE_TBD)
+  createdById     String
+  createdBy       User         @relation(fields: [createdById], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  actorId   String
+  actor     User        @relation(fields: [actorId], references: [id])
+  action    AuditAction
+  entity    String
+  entityId  String
+  before    Json?
+  after     Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime    @default(now())
 }
