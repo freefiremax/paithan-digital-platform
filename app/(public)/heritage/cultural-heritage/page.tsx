@@ -52,17 +52,17 @@ const TRADITIONS = [
   },
   {
     id: "paithani-silk-tradition",
-    titleEn: "Paithani Handloom Silk Weaving (GI Application #84)",
+    titleEn: "Paithani Handloom Silk Weaving (GI Tagged)",
     titleMr: "अस्सल पैठणी रेशमी हातमाग विणकाम (भौगोलिक मानांकन)",
-    era: "200 BCE to Present Day",
+    era: "Centuries-old to Present Day",
     category: "Intangible Craft & GI",
     icon: Award,
     summary:
-      "Known as the 'Queen of Silks' (महावस्त्र), Paithani represents an unbroken 2,200-year lineage of tapestry weaving using fine mulberry silk warp and pure gold and silver electroplated zari weft.",
+      "Known as the 'Queen of Silks' (महावस्त्र), Paithani is a centuries-old tapestry-weaving tradition using pure silk warp and gold- and silver-toned zari weft.",
     keyPoints: [
       "Woven entirely by hand on traditional wooden pit looms without mechanical jacquards.",
       "Signature motifs: Bangadi Mor (peacock in bangle ring), Munia (parrot), Asavali (flowering vine), and Tota-Maina.",
-      "Awarded Geographical Indication (GI) tag by the Government of India under Application #84.",
+      "Awarded the Geographical Indication (GI) tag by the Government of India in 2010.",
       "A genuine heirloom Paithani requires between 1 to 6 months of painstaking handcrafting.",
     ],
   },

@@ -35,7 +35,7 @@ export default function TourismLandingPage() {
               पैठण पर्यटन व तीर्थक्षेत्र दर्शन (Paithan Tourism)
             </h1>
             <p className="text-sm text-slate-body mt-2 leading-relaxed">
-              Discover Asia&apos;s largest earthen dam at Jayakwadi, Siberian flamingos in Nath Sagar, the sacred samadhi shrine of Sant Eknath, and the 2,000-year-old living art of Paithani silk.
+              Discover one of Asia&apos;s largest earthen dams at Jayakwadi, migratory flamingos in Nath Sagar, the sacred samadhi shrine of Sant Eknath, and the centuries-old living art of Paithani silk.
             </p>
           </div>
         </div>

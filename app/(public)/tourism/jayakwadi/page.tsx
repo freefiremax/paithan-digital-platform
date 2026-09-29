@@ -50,7 +50,7 @@ export default function JayakwadiPage() {
             <div className="absolute top-4 right-4 z-10">
               <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                शासकीय अधिकृत छायाचित्र (Official Photo)
+                जायकवाडी धरण, पैठण
               </span>
             </div>
 
@@ -154,7 +154,7 @@ export default function JayakwadiPage() {
             </div>
             <h3 className="font-bold text-slate-900 text-sm">Adjacent Gardens & Bird Sanctuary</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Just below the spillway lies the 300-acre Sant Dnyaneshwar Botanical Garden, and further along the backwaters is the Jaikwadi Bird Sanctuary hosting thousands of Siberian flamingos.
+              Just below the spillway lies the Sant Dnyaneshwar Botanical Garden, and further along the backwaters is the Jaikwadi Bird Sanctuary, which hosts thousands of migratory flamingos and cranes in winter.
             </p>
           </div>
         </div>

@@ -32,7 +32,7 @@ const MODELS_DATA: ModelItem[] = [
     era: "c. 106 – 130 CE",
     category: "Numismatics",
     description:
-      "Interactive 3D photogrammetric reconstruction of a potin coin bearing the dynamic three-arched hill (Chaitya) with crescent and river symbol on obverse, and Ujjain symbol on reverse.",
+      "Interactive 3D reconstruction of a potin coin bearing the dynamic three-arched hill (Chaitya) with crescent and river symbol on obverse, and Ujjain symbol on reverse.",
     dimensions: "22 mm diameter, 3.4 mm thickness, 8.2 grams",
     material: "Potin (Copper-Lead-Zinc Alloy)",
     colorScheme: "from-amber-700 to-amber-900",
@@ -40,12 +40,12 @@ const MODELS_DATA: ModelItem[] = [
   },
   {
     id: "terracotta-goddess",
-    titleEn: "Brahmapuri Excavated Terracotta Mother Goddess",
-    titleMr: "ब्रह्मपुरी टेकडी उत्खनित मातका देवी मूर्ती",
+    titleEn: "Satavahana-Era Terracotta Mother Goddess (Representative)",
+    titleMr: "सातवाहनकालीन मातृदेवता मूर्ती (प्रातिनिधिक)",
     era: "1st Century BCE",
     category: "Terracotta Sculpture",
     description:
-      "High-precision 3D scan of an archaic baked-clay mother goddess figurine excavated at the ancient Brahmapuri archaeological mound in Paithan.",
+      "Illustrative 3D reconstruction of an archaic baked-clay mother-goddess figurine of the type associated with the ancient Pratishthana (Paithan) region.",
     dimensions: "14.2 cm height, 7.8 cm width",
     material: "Alluvial Godavari River Terracotta Clay",
     colorScheme: "from-orange-800 to-red-950",
@@ -71,9 +71,9 @@ const MODELS_DATA: ModelItem[] = [
     era: "19th Century CE Royal Collection",
     category: "Textile Art",
     description:
-      "Sub-millimeter micro-surface topology model illustrating the interlocking weft tapestry technique where pure silver thread electroplated with 24-carat gold intertwines with natural mulberry silk warp.",
+      "Sub-millimeter micro-surface topology model illustrating the interlocking weft tapestry technique where fine gold- and silver-toned zari intertwines with a pure silk warp.",
     dimensions: "120 cm x 80 cm motif panel",
-    material: "Pure Mulberry Silk & 24K Gold Plated Zari",
+    material: "Pure Silk & Gold-toned Zari",
     colorScheme: "from-amber-500 to-yellow-600",
     geometryType: "Micro-fiber textile matrix with peacock medallion",
   },
@@ -93,13 +93,13 @@ export default function ThreeDModelsPage() {
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">
               <Rotate3d className="w-4 h-4" />
-              <span>Digital Heritage & 3D Photogrammetry</span>
+              <span>Digital Heritage & 3D Reconstructions</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
               पैठण डिजिटल ३डी अवशेष दालन (3D Heritage Models)
             </h1>
             <p className="text-xs text-slate-300 mt-1">
-              Explore laser-scanned archaeological antiquities, numismatics, and temple architecture in full 360-degree interactive 3D.
+              Explore illustrative 3D reconstructions of Paithan&apos;s antiquities, numismatics, and temple architecture in an interactive 360-degree viewer.
             </p>
           </div>
 
