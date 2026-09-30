@@ -88,6 +88,14 @@ enum AuditAction {
   VERIFY
 }
 
+enum GrievanceStatus {
+  SUBMITTED
+  ACKNOWLEDGED
+  IN_PROGRESS
+  RESOLVED
+  REJECTED
+}
+
 model Ward {
   id               String            @id @default(cuid())
   number           Int               @unique
@@ -100,6 +108,7 @@ model Ward {
   adminUsers       AdminUser[]
   users            User[]
   facilities       Facility[]
+  grievances       Grievance[]
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 }
@@ -373,4 +382,31 @@ model AuditLog {
   ip        String?
   userAgent String?
   createdAt DateTime    @default(now())
+}
+
+model Grievance {
+  id          String           @id @default(cuid())
+  ticketNo    String           @unique
+  sector      CivicSector
+  wardId      String?
+  ward        Ward?            @relation(fields: [wardId], references: [id])
+  title       String
+  description String
+  citizenName String
+  citizenPhone String
+  citizenEmail String?
+  photoUrl    String?
+  status      GrievanceStatus  @default(SUBMITTED)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  updates     StatusUpdate[]
+}
+
+model StatusUpdate {
+  id           String           @id @default(cuid())
+  grievanceId  String
+  grievance    Grievance        @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  status       GrievanceStatus
+  note         String?
+  createdAt    DateTime         @default(now())
 }

@@ -15,6 +15,7 @@ import {
   FileText,
   ChevronDown,
   Globe,
+  AlertCircle,
 } from 'lucide-react';
 import { CouncilSeal } from '@/components/layout/CouncilSeal';
 import { StateEmblem } from '@/components/ui/StateEmblem';
@@ -41,6 +42,15 @@ const WINGS: Wing[] = [
       { href: '/nagar-parishad/development-works', labelKey: 'developmentWorks' },
       { href: '/nagar-parishad/projects', labelKey: 'projects' },
       { href: '/nagar-parishad/notifications', labelKey: 'notifications' },
+    ],
+  },
+  {
+    id: 'grievances',
+    labelKey: 'grievances',
+    icon: AlertCircle,
+    items: [
+      { href: '/grievances/new', labelKey: 'submitGrievance' },
+      { href: '/grievances/track', labelKey: 'trackGrievance' },
     ],
   },
   {

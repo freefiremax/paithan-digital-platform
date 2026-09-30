@@ -21,6 +21,8 @@ export const workStatusEnum = z.enum(["PLANNED", "ONGOING", "COMPLETED"]);
 export const dataStatusEnum = z.enum(["VERIFIED", "SAMPLE_TBD"]);
 export const roleEnum = z.enum(["PUBLIC", "EDITOR", "ADMIN"]);
 
+export const grievanceStatusEnum = z.enum(["SUBMITTED", "ACKNOWLEDGED", "IN_PROGRESS", "RESOLVED", "REJECTED"]);
+
 export const sectorSlugParamSchema = z.object({
   sector: civicSectorEnum,
 });
@@ -115,4 +117,42 @@ export const updateUserSchema = z.object({
 
 export const verifyContentSchema = z.object({
   dataStatus: z.literal("VERIFIED"),
+}).strict();
+
+export const grievanceCreateSchema = z.object({
+  sector: civicSectorEnum,
+  wardId: z.string().cuid().optional().nullable(),
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(5000),
+  citizenName: z.string().min(1).max(100),
+  citizenPhone: z.string().min(10).max(15).regex(/^[\d\s\-\+\(\)]+$/),
+  citizenEmail: z.string().email().optional().nullable(),
+  photoUrl: z.string().url().optional().nullable(),
+  turnstileToken: z.string().min(1),
+}).strict();
+
+export const grievanceTrackSchema = z.object({
+  ticketNo: z.string().min(1).max(50),
+  phone: z.string().min(10).max(15).regex(/^[\d\s\-\+\(\)]+$/),
+}).strict();
+
+export const grievanceStatusUpdateSchema = z.object({
+  status: grievanceStatusEnum,
+  note: z.string().max(2000).optional().nullable(),
+}).strict();
+
+export const grievanceQuerySchema = paginationSchema.extend({
+  status: grievanceStatusEnum.optional(),
+  sector: civicSectorEnum.optional(),
+  wardId: z.string().cuid().optional(),
+  search: z.string().max(100).optional(),
+}).strict();
+
+export const contactFormSchema = z.object({
+  name: z.string().min(1).max(100),
+  email: z.string().email(),
+  phone: z.string().min(10).max(15).regex(/^[\d\s\-\+\(\)]+$/).optional().nullable(),
+  subject: z.string().min(1).max(200),
+  message: z.string().min(1).max(5000),
+  turnstileToken: z.string().min(1),
 }).strict();

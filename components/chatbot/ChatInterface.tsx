@@ -65,7 +65,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
     {
       id: 'welcome-msg',
       role: 'assistant',
-      content: locale === 'mr' ? t('welcomeMr') : locale === 'hi' ? t('welcome') : t('welcome'),
+      content: locale === 'mr' ? t('welcomeMr') : locale === 'hi' ? t('welcomeHi') : t('welcome'),
       timestamp: '10:00 AM',
       sources: [
         { title: t('sources').split(':')[0], url: '/nagar-parishad' },
@@ -146,12 +146,12 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
     [input, isLoading, locale, messages, t]
   );
 
-  const handleReset = () => {
+const handleReset = () => {
     setMessages([
       {
         id: 'welcome-msg',
         role: 'assistant',
-        content: locale === 'mr' ? t('welcomeMr') : locale === 'hi' ? t('welcome') : t('welcome'),
+        content: locale === 'mr' ? t('welcomeMr') : locale === 'hi' ? t('welcomeHi') : t('welcome'),
         timestamp: '10:00 AM',
         sources: [
           { title: 'Paithan Municipal Council Directory', url: '/nagar-parishad' },
@@ -181,7 +181,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
           <div>
             <div className="flex items-center gap-2">
               <h2 className="font-semibold text-base tracking-wide text-white">
-                {locale === 'mr' ? t('titleMr') : t('title')}
+                {locale === 'mr' ? t('titleMr') : locale === 'hi' ? t('titleHi') : t('title')}
               </h2>
               <span className="flex items-center gap-1 text-[11px] bg-emerald-500/20 text-emerald-300 font-medium px-2 py-0.5 rounded-full border border-emerald-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -189,7 +189,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
               </span>
             </div>
             <p className="text-xs text-slate-body">
-              {locale === 'mr' ? t('subtitleMr') : t('subtitle')}
+              {locale === 'mr' ? t('subtitleMr') : locale === 'hi' ? t('subtitleHi') : t('subtitle')}
             </p>
           </div>
         </div>
@@ -279,7 +279,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
             <div className="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-sm rounded-bl-none flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
               <span className="text-xs text-slate-muted font-medium">
-                {locale === 'mr' ? t('thinkingMr') : t('thinking')}
+                {locale === 'mr' ? t('thinkingMr') : locale === 'hi' ? t('thinkingHi') : t('thinking')}
               </span>
             </div>
           </div>
@@ -292,7 +292,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
         <div className="px-4 py-2.5 bg-amber-50/50 border-t border-slate-100">
           <div className="flex items-center gap-1 text-xs font-semibold text-slate-600 mb-1.5">
             <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
-            <span>{locale === 'mr' ? t('suggestionsTitleMr') : t('suggestionsTitle')}</span>
+            <span>{locale === 'mr' ? t('suggestionsTitleMr') : locale === 'hi' ? t('suggestionsTitleHi') : t('suggestionsTitle')}</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {PROMPT_SUGGESTIONS.map((item, idx) => {
@@ -324,7 +324,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={locale === 'mr' ? t('placeholderMr') : locale === 'hi' ? t('placeholder') : t('placeholder')}
+            placeholder={locale === 'mr' ? t('placeholderMr') : locale === 'hi' ? t('placeholderHi') : t('placeholder')}
             className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition placeholder:text-slate-body"
           />
           <button
@@ -332,12 +332,12 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
             disabled={!input.trim() || isLoading}
             className="bg-[var(--vangi-850)] hover:bg-[var(--vangi-950)] disabled:opacity-40 disabled:hover:bg-[var(--vangi-850)] text-white px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-1.5 shadow-sm transition shrink-0"
           >
-            <span>{locale === 'mr' ? t('sendMr') : t('send')}</span>
+            <span>{locale === 'mr' ? t('sendMr') : locale === 'hi' ? t('sendHi') : t('send')}</span>
             <Send className="w-4 h-4 text-amber-400" />
           </button>
         </form>
         <p className="text-[10px] text-center text-slate-600 mt-2">
-          {t('disclaimer')}
+          {locale === 'mr' ? t('disclaimerMr') : locale === 'hi' ? t('disclaimerHi') : t('disclaimer')}
         </p>
       </div>
     </div>

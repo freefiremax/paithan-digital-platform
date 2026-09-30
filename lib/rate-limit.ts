@@ -65,4 +65,5 @@ export const RATE_LIMIT_CONFIGS = {
   auth: { limit: 5, window: "1 m" },
   apiMutation: { limit: 30, window: "1 m" },
   apiRead: { limit: 100, window: "1 m" },
+  grievanceTrack: { limit: 10, window: "1 m" },
 } as const;

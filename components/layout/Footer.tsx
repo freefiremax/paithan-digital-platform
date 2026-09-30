@@ -268,10 +268,14 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Paithan Municipal Council (पैठण नगर परिषद).
           </p>
           <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <Link href="/policies/privacy" className="hover:text-[var(--saffron-500)]">Privacy Policy</Link>
+            <Link href="/policies/terms" className="hover:text-[var(--saffron-500)]">Terms & Conditions</Link>
+            <Link href="/policies/copyright" className="hover:text-[var(--saffron-500)]">Copyright Policy</Link>
+            <Link href="/policies/hyperlinking" className="hover:text-[var(--saffron-500)]">Hyperlinking Policy</Link>
+            <Link href="/policies/disclaimer" className="hover:text-[var(--saffron-500)]">Disclaimer</Link>
+            <Link href="/policies/accessibility" className="hover:text-[var(--saffron-500)]">Accessibility Statement</Link>
             <span>Right to Information (RTI)</span>
             <span>Citizen Charter</span>
-            <span>Privacy Policy</span>
-            <span>Terms of Use</span>
           </nav>
         </div>
       </div>
