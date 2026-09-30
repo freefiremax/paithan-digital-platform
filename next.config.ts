@@ -1,5 +1,8 @@
-import type { NextConfig } from "next";
-import type { SentryWebpackPluginOptions } from "@sentry/webpack-plugin";
+import type { NextConfig } from 'next';
+import type { SentryWebpackPluginOptions } from '@sentry/webpack-plugin';
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
 const nextConfig: NextConfig = {
   // Security headers are set in middleware.ts to avoid duplicate CSP headers
@@ -7,7 +10,7 @@ const nextConfig: NextConfig = {
   turbopack: {},
   webpack: async (config, { isServer }) => {
     if (!isServer) {
-      const { sentryWebpackPlugin } = await import("@sentry/webpack-plugin");
+      const { sentryWebpackPlugin } = await import('@sentry/webpack-plugin');
       const options: SentryWebpackPluginOptions = {
         silent: true,
         org: process.env.SENTRY_ORG,
@@ -21,4 +24,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

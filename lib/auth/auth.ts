@@ -5,6 +5,7 @@ import { verify } from "@node-rs/argon2";
 import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
 import { generateCsrfToken, setCsrfCookie } from "@/lib/csrf";
+import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -16,9 +17,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        turnstileToken: { label: "Turnstile Token", type: "text" },
       },
       authorize: async (credentials) => {
         if (!credentials?.email || !credentials?.password) return null;
+
+        if (isTurnstileEnabled()) {
+          const turnstileValid = await verifyTurnstileToken(credentials.turnstileToken as string | undefined);
+          if (!turnstileValid) return null;
+        }
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },

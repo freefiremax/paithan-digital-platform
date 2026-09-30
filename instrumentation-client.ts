@@ -7,7 +7,6 @@ if (dsn) {
   Sentry.init({
     dsn,
     tracesSampleRate: 1.0,
-    sendDefaultPii: false,
     debug: env.NODE_ENV === "development",
     replaysOnErrorSampleRate: 1.0,
     replaysSessionSampleRate: 0.1,

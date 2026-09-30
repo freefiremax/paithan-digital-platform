@@ -1,0 +1,68 @@
+{
+  "header": {
+    "governmentOfMaharashtra": "Government of Maharashtra",
+    "dma": "Directorate of Municipal Administration",
+    "helpline": "Helpline 02431-223010",
+    "email": "munptn@gmail.com",
+    "language": "Language"
+  },
+  "nav": {
+    "home": "Home",
+    "nagarParishad": "Nagar Parishad",
+    "heritageCulture": "Heritage & Culture",
+    "tourismPlaces": "Tourism & Places",
+    "aboutCouncil": "About the municipal council",
+    "representatives": "Public representatives (MLA, MP, CEO)",
+    "wards": "17 wards & corporator roster",
+    "nagarSevaks": "Ward-wise nagar sevaks",
+    "developmentWorks": "Development works register",
+    "projects": "Major municipal projects",
+    "notifications": "Official notices & tenders",
+    "museum": "Dr. Balasaheb Patil Museum",
+    "artifacts": "Satavahana coins & artifacts",
+    "models3d": "3D artifact models",
+    "history": "Ancient Pratishthana history",
+    "culturalHeritage": "Paithani sarees & Sant Eknath",
+    "jayakwadi": "Jayakwadi Dam",
+    "nathSagar": "Nath Sagar & bird sanctuary",
+    "placesToVisit": "Places to visit in Paithan",
+    "heritageSites": "Samadhi mandir & temples",
+    "routes": "1-day & pilgrim routes",
+    "map": "Tourist map & directions",
+    "noticesTenders": "Notices & Tenders",
+    "councilAdmin": "Council admin"
+  },
+  "chatbot": {
+    "title": "Paithan AI Assistant",
+    "titleMr": "पैठण AI नागरिक सहाय्यक",
+    "subtitle": "Official Municipal & Cultural Knowledge Base",
+    "subtitleMr": "अधिकृत पालिका व पर्यटन माहिती प्रणाली",
+    "placeholder": "Ask about municipal services, water supply, tax, pilgrimage...",
+    "placeholderMr": "पैठण पालिका, कर, पाणीपुरवठा, पर्यटन विषयी विचारा...",
+    "send": "Send",
+    "sendMr": "पाठवा",
+    "reset": "Reset conversation",
+    "welcome": "Namaskar! I am the AI Citizen & Pilgrim Assistant for Paithan Municipal Council (पैठण नगर परिषद). How can I assist you with municipal services, pilgrimage information, Jayakwadi tourism, or heritage archives today?",
+    "welcomeMr": "नमस्कार! मी पैठण नगर परिषदेचा AI नागरिक सहाय्यक आहे. मी आपणास पालिका सेवा, तीर्थक्षेत्र दर्शन, जायकवाडी पर्यटन किंवा वारसा माहितीबद्दल कशी मदत करू शकतो?",
+    "suggestionsTitle": "Popular Citizen Queries:",
+    "suggestionsTitleMr": "नेहमी विचारले जाणारे प्रश्न:",
+    "sources": "Verified Sources:",
+    "engine": "Live Civic RAG",
+    "thinking": "Retrieving official council records...",
+    "thinkingMr": "माहिती शोधत आहे...",
+    "error": "A temporary network error occurred. Please contact Paithan Municipal Council helpline at 02431-223010.",
+    "disclaimer": "Grounded with verified Paithan Municipal Council records (Est. 1854). Not a replacement for emergency 112 / 108.",
+    "languageEn": "EN",
+    "languageMr": "मराठी",
+    "languageHi": "हिंदी"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "contact": "Contact Us"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry"
+  }
+}
