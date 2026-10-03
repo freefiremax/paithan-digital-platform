@@ -44,19 +44,34 @@ export async function GET() {
     "/services",
   ];
 
-  // Fetch dynamic routes
-  const [sectors, works, notices, places, heritageItems, museumExhibits, historyEvents] = await Promise.all([
-    prisma.civicSectorInfo.findMany({ select: { sector: true, updatedAt: true } }),
-    prisma.developmentWork.findMany({ select: { id: true, updatedAt: true } }),
-    prisma.notification.findMany({
-      where: { publishedAt: { lte: new Date() } },
-      select: { id: true, updatedAt: true },
-    }),
-    prisma.touristPlace.findMany({ select: { id: true, updatedAt: true } }),
-    prisma.culturalHeritageItem.findMany({ select: { id: true, updatedAt: true } }),
-    prisma.museumExhibit.findMany({ select: { id: true, updatedAt: true } }),
-    prisma.historyEvent.findMany({ select: { id: true, updatedAt: true } }),
-  ]);
+  // Fetch dynamic routes. Prisma is reached at build time during prerender, so a
+  // missing/unreachable DATABASE_URL must degrade to static-only entries instead of
+  // failing the deployment.
+  let sectors: { sector: string; updatedAt: Date }[] = [];
+  let works: { id: string; updatedAt: Date }[] = [];
+  let notices: { id: string; updatedAt: Date }[] = [];
+  let places: { id: string; updatedAt: Date }[] = [];
+  let heritageItems: { id: string; updatedAt: Date }[] = [];
+  let museumExhibits: { id: string; updatedAt: Date }[] = [];
+  let historyEvents: { id: string; updatedAt: Date }[] = [];
+
+  try {
+    [sectors, works, notices, places, heritageItems, museumExhibits, historyEvents] =
+      await Promise.all([
+        prisma.civicSectorInfo.findMany({ select: { sector: true, updatedAt: true } }),
+        prisma.developmentWork.findMany({ select: { id: true, updatedAt: true } }),
+        prisma.notification.findMany({
+          where: { publishedAt: { lte: new Date() } },
+          select: { id: true, updatedAt: true },
+        }),
+        prisma.touristPlace.findMany({ select: { id: true, updatedAt: true } }),
+        prisma.culturalHeritageItem.findMany({ select: { id: true, updatedAt: true } }),
+        prisma.museumExhibit.findMany({ select: { id: true, updatedAt: true } }),
+        prisma.historyEvent.findMany({ select: { id: true, updatedAt: true } }),
+      ]);
+  } catch (error) {
+    console.error("Sitemap: dynamic routes unavailable, serving static entries only", error);
+  }
 
   const sitemapEntries: ISitemapField[] = [];
 
@@ -78,7 +93,7 @@ export async function GET() {
 
     // Dynamic sector pages
     for (const sector of sectors) {
-      const loc = `\${baseUrl}/${locale}/services/${sector.sector.toLowerCase().replace("_", "-")}`;
+      const loc = `${baseUrl}/${locale}/services/${sector.sector.toLowerCase().replace("_", "-")}`;
       sitemapEntries.push({
         loc,
         lastmod: sector.updatedAt.toISOString(),
@@ -93,7 +108,7 @@ export async function GET() {
 
     // Dynamic development work pages
     for (const work of works) {
-      const loc = `\${baseUrl}/${locale}/nagar-parishad/development-works/${work.id}`;
+      const loc = `${baseUrl}/${locale}/nagar-parishad/development-works/${work.id}`;
       sitemapEntries.push({
         loc,
         lastmod: work.updatedAt.toISOString(),
@@ -108,7 +123,7 @@ export async function GET() {
 
     // Dynamic notification pages
     for (const notice of notices) {
-      const loc = `\${baseUrl}/${locale}/nagar-parishad/notifications/${notice.id}`;
+      const loc = `${baseUrl}/${locale}/nagar-parishad/notifications/${notice.id}`;
       sitemapEntries.push({
         loc,
         lastmod: notice.updatedAt.toISOString(),
@@ -123,7 +138,7 @@ export async function GET() {
 
     // Dynamic tourist place pages
     for (const place of places) {
-      const loc = `\${baseUrl}/${locale}/tourism/places-to-visit/${place.id}`;
+      const loc = `${baseUrl}/${locale}/tourism/places-to-visit/${place.id}`;
       sitemapEntries.push({
         loc,
         lastmod: place.updatedAt.toISOString(),
@@ -138,7 +153,7 @@ export async function GET() {
 
     // Dynamic heritage item pages
     for (const item of heritageItems) {
-      const loc = `\${baseUrl}/${locale}/heritage/cultural-heritage/${item.id}`;
+      const loc = `${baseUrl}/${locale}/heritage/cultural-heritage/${item.id}`;
       sitemapEntries.push({
         loc,
         lastmod: item.updatedAt.toISOString(),
@@ -153,7 +168,7 @@ export async function GET() {
 
     // Dynamic museum exhibit pages
     for (const exhibit of museumExhibits) {
-      const loc = `\${baseUrl}/${locale}/heritage/museum/${exhibit.id}`;
+      const loc = `${baseUrl}/${locale}/heritage/museum/${exhibit.id}`;
       sitemapEntries.push({
         loc,
         lastmod: exhibit.updatedAt.toISOString(),
@@ -168,7 +183,7 @@ export async function GET() {
 
     // Dynamic history event pages
     for (const event of historyEvents) {
-      const loc = `\${baseUrl}/${locale}/heritage/history/${event.id}`;
+      const loc = `${baseUrl}/${locale}/heritage/history/${event.id}`;
       sitemapEntries.push({
         loc,
         lastmod: event.updatedAt.toISOString(),
