@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Mail, Phone, MapPin, Send, Loader2, AlertCircle, CheckCircle, Shield } from "lucide-react";
+import { Send, Loader2, AlertCircle, CheckCircle, Shield } from "lucide-react";
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 
 interface ContactFormProps {
   locale: "en" | "mr" | "hi";
@@ -251,10 +252,19 @@ export function ContactForm({ locale }: ContactFormProps) {
           <div className="border-t border-slate-200 pt-6">
             <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
               <Shield className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-              <div>
+              <div className="flex-1">
                 <p className="font-medium text-slate-900">{t("turnstileLabel")}</p>
-                <p className="text-sm text-slate-600">{t("turnstileNote")}</p>
-                <div id="turnstile-container" className="mt-3" />
+                <p className="text-sm text-slate-600 mb-2">{t("turnstileNote")}</p>
+                <TurnstileWidget
+                  onVerify={(token) => {
+                    setFormData((prev) => ({ ...prev, turnstileToken: token }));
+                    setErrors((prev) => {
+                      const next = { ...prev };
+                      delete next.turnstileToken;
+                      return next;
+                    });
+                  }}
+                />
               </div>
             </div>
           </div>

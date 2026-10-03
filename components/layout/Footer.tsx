@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Phone, MapPin, ExternalLink, Clock } from "lucide-react";
+import { Phone, MapPin, ExternalLink, Clock, ShieldCheck } from "lucide-react";
 import { StateEmblem } from "@/components/ui/StateEmblem";
 
 export default function Footer() {
@@ -264,9 +264,15 @@ export default function Footer() {
       {/* 3. STATUTORY FOOTER: Disclaimers & Copyright */}
       <div className="border-t border-[var(--on-vangi-rule)] px-4 py-4 text-[11px] lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
-          <p>
-            &copy; {new Date().getFullYear()} Paithan Municipal Council (पैठण नगर परिषद).
-          </p>
+          <div className="flex items-center gap-3">
+            <p>
+              &copy; {new Date().getFullYear()} Paithan Municipal Council (पैठण नगर परिषद).
+            </p>
+            <span className="inline-flex items-center gap-1 rounded bg-slate-800/80 px-2 py-0.5 text-[10px] text-emerald-400 border border-emerald-500/30 font-medium">
+              <ShieldCheck className="h-3 w-3" />
+              Protected by Cloudflare Turnstile &amp; SSL
+            </span>
+          </div>
           <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <Link href="/policies/privacy" className="hover:text-[var(--saffron-500)]">Privacy Policy</Link>
             <Link href="/policies/terms" className="hover:text-[var(--saffron-500)]">Terms & Conditions</Link>
