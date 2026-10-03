@@ -159,3 +159,23 @@ jobs:
           DIRECT_URL: "postgresql://test:test@localhost:5432/test"
           NEXTAUTH_SECRET: "test-secret-key-for-testing-only-32chars"
           NEXTAUTH_URL: "http://localhost:3000"
+
+      # Vercel builds run without a reachable database. This guards the exact
+      # condition that broke production: /sitemap.xml is prerendered at build
+      # time, so it must degrade to static entries instead of failing the build.
+      - name: Build without database (Vercel parity)
+        run: |
+          rm -rf .next
+          unset DATABASE_URL DIRECT_URL NEXTAUTH_SECRET NEXTAUTH_URL
+          npm run build
+          sitemap_body="$(find .next -name 'sitemap.xml.body' -print -quit)"
+          if [ -z "$sitemap_body" ]; then
+            echo "::error::No prerendered sitemap was generated."
+            exit 1
+          fi
+          grep -q 'https://paithan.gov.in' "$sitemap_body"
+          if grep -q '${baseUrl}' "$sitemap_body"; then
+            echo "::error::Sitemap contains an unrendered template placeholder."
+            exit 1
+          fi
+          echo "Build succeeded with no database configured."
