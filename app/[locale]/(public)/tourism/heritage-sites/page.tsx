@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = {
   title: "Historic Temples, Ghats & Archaeological Sites | Paithan Municipal Council",
   description:
-    "Pilgrim guide to Paithan's sacred sites: Sant Eknath Samadhi Mandir, Nagghat, Sant Eknath Wada, Apegaon Temple, and Brahmapuri archaeological mound.",
+    "Pilgrim guide to Paithan's sacred sites: Sant Eknath Samadhi Mandir, Nagghat, Sant Eknath Wada, Apegaon Temple, and the ancient Pratishthana archaeological mound.",
 };
 
 const HERITAGE_SITES = [
@@ -79,21 +79,21 @@ const HERITAGE_SITES = [
   },
   {
     id: "site-brahmapuri",
-    titleEn: "Brahmapuri Ancient Archaeological Mound",
-    titleMr: "ब्रह्मपुरी प्राचीन ऐतिहासिक टेकडी (सातवाहन राजधानी)",
+    titleEn: "Ancient Pratishthana Archaeological Mound (Brahmapuri)",
+    titleMr: "प्राचीन प्रतिष्ठान ऐतिहासिक टेकडी (सातवाहन राजधानी)",
     category: "Archaeological Excavation Site",
     era: "2nd Century BCE – 3rd Century CE",
     location: "Western periphery of Paithan near Godavari bend",
     visitingHours: "Sunrise to Sunset (06:00 AM – 06:30 PM)",
     aartiTimings: "Open Archaeological Area",
     imageUrl: "/images/sites/brahmapuri-mound.jpg",
-    imageAlt: "Archaeological excavation trenches at Brahmapuri mound exposing Satavahana brick foundations and terracotta ring wells",
+    imageAlt: "Archaeological mound on the periphery of Paithan, the ancient Satavahana capital of Pratishthana",
     description:
-      "The ancient stratified citadel mound of imperial Pratishthana, capital of the Satavahana Empire. Excavations by the Archaeological Survey of India (ASI) revealed Roman pottery, potin coins, terracotta beads, and brick structures.",
+      "Paithan is identified with ancient Pratishthana, capital of the Satavahana dynasty and a major early-historic trade town on the Dakshinapatha. Archaeological excavations at Paithan have revealed early-historic occupation layers; antiquities recovered locally are associated with the Dr. Balasaheb Patil Museum.",
     highlights: [
-      "Historical heart of Indo-Roman sea-and-river trade route mentioned in Periplus of the Erythraean Sea",
-      "Stratified layers of Satavahana, Vakataka, and Yadava urban civil planning",
-      "Excavated antiquities now preserved in the Dr. Balasaheb Patil Museum",
+      "Pratishthana is named as a leading Deccan trade centre in the Periplus of the Erythraean Sea and by Ptolemy",
+      "Successive occupation layers spanning the Satavahana and later Deccan periods",
+      "Recovered antiquities associated with the Dr. Balasaheb Patil Museum",
     ],
   },
 ];
@@ -136,7 +136,7 @@ export default function HeritageSitesPage() {
                 />
                 <div className="absolute top-3 left-3 bg-emerald-950/80 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded backdrop-blur-xs border border-emerald-500/30 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                  अधिकृत छायाचित्र
+                  छायाचित्र
                 </div>
               </div>
 

@@ -41,5 +41,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# local ide / tool wrappers
+.claude/
+powershell.cmd
+
+# local env files (can opt-in for committing if needed)
 .env.local
 .env

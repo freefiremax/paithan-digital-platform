@@ -51,7 +51,8 @@ export default function WardMapPage() {
             return (
               <article
                 key={ward.number}
-                className="border border-[var(--border-subtle)] bg-white p-5 flex flex-col justify-between"
+                id={`ward-${ward.number}`}
+                className="scroll-mt-32 border border-[var(--border-subtle)] bg-white p-5 flex flex-col justify-between target:border-[var(--portal-blue-700)] target:ring-2 target:ring-[var(--zari-gold-500)]"
               >
                 <div>
                   <div className="flex items-center justify-between">

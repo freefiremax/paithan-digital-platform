@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/HistoricMotifs";
 import { HomeVideoBand } from "@/components/layout/HomeVideoBand";
 import PaithanMapEmbed from "@/components/PaithanMapEmbed";
+import { PaithanWardMap } from "@/components/home/PaithanWardMap";
 import {
   councilProfile,
   developmentWorks,
@@ -138,6 +139,7 @@ export default function HomePage() {
         </div>
       </div>
 
+      <PaithanWardMap />
       <WardsOverview />
       <OfficialLandmarksShowcase />
       <PaithanMapEmbed />

@@ -24,8 +24,8 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
     category: "CIVIC",
     sourceTitle: "Paithan Municipal Council Profile",
     sourceUrl: "/nagar-parishad",
-    keywords: ["council", "nagar parishad", "office", "address", "phone", "email", "established", "1854", "chief officer", "santosh dagdu agle", "contact", "timing", "hours"],
-    content: `Paithan Municipal Council (पैठण नगर परिषद) was established in 1854 (Class 'C' council). It is situated in Paithan Taluka, Chhatrapati Sambhajinagar district, Maharashtra, PIN 431107. Main Office: Municipal Council Administrative Complex, Main Road, Paithan. Phone: 02431-223010, Email: munptn@gmail.com. Office hours: 09:45 AM to 06:15 PM (Monday to Saturday, closed 2nd/4th Saturdays & public holidays). Chief Officer: Shri Santosh Dagdu Agle. Official portal: https://paithanmahaulb.maharashtra.gov.in`,
+    keywords: ["council", "nagar parishad", "office", "address", "phone", "email", "chief officer", "administrator", "contact", "timing", "hours"],
+    content: `Paithan Municipal Council (पैठण नगर परिषद) is the urban local body for Paithan town in Paithan Taluka, Chhatrapati Sambhajinagar district, Maharashtra, PIN 431107. Main Office: Municipal Council Administrative Complex, Main Road, Paithan. Phone: 02431-223010, Email: munptn@gmail.com. Office hours: 09:45 AM to 06:15 PM (Monday to Saturday, closed 2nd/4th Saturdays & public holidays). The council is currently administered by a state-appointed Chief Officer (Administrator). Official portal: https://paithanmahaulb.maharashtra.gov.in (its council class and year of establishment should be confirmed with the DMA / Nagar Parishad).`,
   },
   {
     id: "kb-demographics",
@@ -33,15 +33,15 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
     sourceTitle: "Paithan Demographics & Census 2011",
     sourceUrl: "/nagar-parishad",
     keywords: ["population", "demographics", "census", "literacy", "sex ratio", "households", "male", "female", "area"],
-    content: `According to the Census of India, Paithan Municipal Council has a total population of 41,536 (21,269 males, 20,267 females). Sex ratio is 953 females per 1,000 males. Child population (0-6 yrs) is 5,467 (13.16%). Total households: 8,134. Overall literacy rate is 70.85% (Male literacy: 78.42%, Female literacy: 62.91%). Total municipal area: 18.5 sq km with 17 administrative wards.`,
+    content: `According to the Census of India 2011, Paithan town has a total population of 41,536 (21,269 males, 20,267 females). Sex ratio is 953 females per 1,000 males. Child population (0-6 yrs) is about 5,467 (13.16%). Total households: about 8,134. Overall literacy rate is about 70.85% (Male: 78.42%, Female: 62.91%). Total municipal area is about 18.5 sq km. The last elected council body (2016) had 23 delimited seats; ward count should be confirmed with the Nagar Parishad.`,
   },
   {
     id: "kb-representatives",
     category: "CIVIC",
     sourceTitle: "Public Representatives & Government Body",
     sourceUrl: "/nagar-parishad/representatives",
-    keywords: ["mla", "mp", "bhumre", "vilas", "sandipanrao", "representative", "lok sabha", "vidhan sabha", "elected"],
-    content: `Sitting Member of Legislative Assembly (MLA) for Paithan Assembly Constituency (No. 107) is Shri Vilas Sandipanrao Bhumre (elected Nov 2024 for 2024-2029 term). Sitting Member of Parliament (MP) for Jalna/Chhatrapati Sambhajinagar Lok Sabha is Shri Sandipanrao Bhumre (elected June 2024 for 2024-2029 term). Chief Officer is Santosh Dagdu Agle. Paithan has 17 administrative wards represented by municipal corporators (Nagar Sevaks).`,
+    keywords: ["mla", "mp", "bhumre", "vilas", "kale", "kalyan", "jalna", "representative", "lok sabha", "vidhan sabha", "elected"],
+    content: `The sitting Member of Legislative Assembly (MLA) for Paithan Assembly Constituency (No. 110) is Shri Vilas Sandipanrao Bhumre of Shiv Sena, elected in November 2024 (2024–2029 term). Paithan is a segment of the Jalna Lok Sabha constituency, whose Member of Parliament is Shri Kalyan Vaijinathrao Kale (Indian National Congress), elected in June 2024 — Paithan does NOT fall under the Chhatrapati Sambhajinagar (Aurangabad) Lok Sabha seat. The council's executive is headed by a state-appointed Chief Officer (Administrator); the specific officer's name should be confirmed with the Nagar Parishad. Paithan Municipal Council had 23 delimited seats in its last elected body (2016) and currently functions under Administrator rule pending fresh elections.`,
   },
   {
     id: "kb-emergency",
@@ -65,8 +65,8 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
     category: "TOURISIM",
     sourceTitle: "Jayakwadi Project (Nath Sagar Dam) Engineering Datasheet",
     sourceUrl: "/tourism/places-to-visit",
-    keywords: ["jayakwadi", "dam", "nath sagar", "godavari", "gates", "capacity", "height", "length", "tmc", "canal", "irrigation", "indira gandhi"],
-    content: `Jayakwadi Dam (नाथ सागर) is one of Asia's largest earthen dams, commissioned in 1976 by Prime Minister Indira Gandhi on the sacred Godavari River. Total dam length: 9,998 meters (9.998 km). Maximum height: 41.30 meters. It features 27 radial flood spillway gates (each 12.5m x 7.9m). Gross storage capacity: 102.7 TMC (2,909 million m³); live storage: 76.6 TMC. Irrigates 2,40,000 hectares across 5 Marathwada districts via Left Bank Canal (208 km) and Majalgaon Right Canal (132 km). It provides drinking water to Chhatrapati Sambhajinagar City, Jalna MIDC, Waluj MIDC, and AURIC DMIC Mega City.`,
+    keywords: ["jayakwadi", "dam", "nath sagar", "godavari", "gates", "capacity", "height", "length", "tmc", "canal", "irrigation"],
+    content: `Jayakwadi Dam (नाथ सागर) is one of Asia's largest earthen dams, commissioned in 1976 on the Godavari River near Paithan. Total dam length: 9,998 meters (about 10 km). Maximum height: 41.30 meters. It features 27 radial flood spillway gates. Gross storage capacity: about 102.7 TMC (2,909 million m³); live storage about 77 TMC. It irrigates roughly 2.37 lakh hectares (about 2,37,452 ha) of Marathwada via the Left Bank Canal (208 km) and the Paithan Right Bank Canal (132 km), and supplies drinking water to Chhatrapati Sambhajinagar city and industrial areas including Jalna and Waluj MIDC.`,
   },
   {
     id: "kb-bird-sanctuary",
@@ -74,23 +74,23 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
     sourceTitle: "Jaikwadi Bird Sanctuary & Wetland",
     sourceUrl: "/tourism/places-to-visit",
     keywords: ["birds", "sanctuary", "jaikwadi bird sanctuary", "flamingos", "migratory", "wetland", "crane", "best time", "winter"],
-    content: `Jaikwadi Bird Sanctuary was declared a wildlife sanctuary in 1986 under the Wildlife Protection Act 1972, encompassing 341.05 sq km of the Nath Sagar reservoir. It hosts over 234 bird species, including 78 migratory species arriving via the Central Asian Flyway. Prominent winter visitors: Greater Flamingo (flocks of up to 10,000+), Demoiselle Crane (कुरोंच), Bar-headed Goose, Brahminy Shelduck (चक्रवाक), Northern Pintail, Glossy Ibis, and Osprey. Best visiting season is October to March (peak in December-February).`,
+    content: `Jaikwadi Bird Sanctuary was declared a wildlife sanctuary in 1986 under the Wildlife Protection Act 1972, encompassing 341.05 sq km of the Nath Sagar reservoir (as notified in the 2017 Government of India eco-sensitive-zone gazette). It supports 234 species of resident and migratory birds combined and is an important stopover on the migratory flyway; more than 50,000 waterbirds congregate here in winter, including over 10,000 Demoiselle Cranes (कुरोंच). Prominent winter visitors include Greater Flamingo, Bar-headed Goose, Demoiselle Crane, Northern Pintail, Common Teal, Northern Shoveler and Great White Pelican. Best visiting season is October to March (peak December–February; the annual bird census is held around 15 January).`,
   },
   {
     id: "kb-museum",
     category: "HERITAGE",
     sourceTitle: "Dr. Balasaheb Patil Government Archaeological Museum",
     sourceUrl: "/heritage/museum",
-    keywords: ["museum", "balasaheb patil", "archaeology", "coins", "satavahana", "antiquities", "artifacts", "shivaji rajpatra", "terracotta"],
-    content: `Dr. Balasaheb Patil Government Archaeological Museum is located inside the Sant Dnyaneshwar Udyan campus in Paithan. Inaugurated in 1997, it houses over 9,000 antiquities collected by Dr. Balasaheb Patil (1950-1987) and donated to the Maharashtra State Directorate of Archaeology. Highlights include: ancient Satavahana lead, potin and copper coins (King Simuka, Satakarni I, Gautamiputra Satakarni); Roman amphorae fragments demonstrating Greco-Roman trade with ancient Pratishthana; Megalithic carnelian beads; terracotta mother goddesses; an original 17th-century Rajpatra (royal edict) of Chhatrapati Shivaji Maharaj; and Maratha weaponry. Open 10:30 AM to 05:00 PM (closed Mondays). Entry: ₹10 (adults), ₹5 (children).`,
+    keywords: ["museum", "balasaheb patil", "archaeology", "coins", "satavahana", "antiquities", "artifacts"],
+    content: `Dr. Balasaheb Patil Archaeological Museum is located within the Sant Dnyaneshwar Udyan campus in Paithan. It is named after Dr. Balasaheb Patil, a researcher and collector who led several excavations at Paithan. Press reports (2023) indicate the museum holds close to 9,000 antiquities, many kept in storage for want of display space. Its collection is associated with the archaeology of ancient Pratishthana, including Satavahana-era coins and coin moulds. Specific holdings, visiting hours and entry fees should be confirmed with the Maharashtra archaeology authorities / Nagar Parishad before relying on them.`,
   },
   {
     id: "kb-satavahana",
     category: "HERITAGE",
     sourceTitle: "Ancient Pratishthana & Satavahana Empire",
     sourceUrl: "/heritage/history",
-    keywords: ["satavahana", "pratishthana", "history", "ancient", "hala", "gaha sattasai", "periplus", "roman trade", "capital"],
-    content: `Ancient Paithan was known as Pratishthana (प्रतिष्ठान). From the 2nd century BCE to 2nd century CE, it served as the glorious imperial capital of the Satavahana Empire (Andhrabhrityas). King Hala composed the celebrated Prakrit poetry anthology 'Gaha Sattasai' (गाथा सप्तशती) here. Greek geographical text 'Periplus of the Erythraean Sea' (1st century CE) mentions Pratishthana as a premier inland trade metropolis exporting onyx, fine muslins, and silks to Rome via ports at Kalyan, Sopara, and Bharuch.`,
+    keywords: ["satavahana", "pratishthana", "history", "ancient", "hala", "gaha sattasai", "periplus", "ptolemy", "simuka", "roman trade", "capital"],
+    content: `Ancient Paithan was known as Pratishthana (प्रतिष्ठान) and was a principal capital of the Satavahana Empire (roughly 2nd century BCE to the early 3rd century CE); the dynasty's traditional founder was Simuka. King Hala composed the celebrated Prakrit poetry anthology 'Gaha Sattasai' (Gatha Saptashati). The Greek text 'Periplus of the Erythraean Sea' (1st century CE) refers to the town as Paethana and records that carnelian (agate/onyx) was carried down from there to the western ports for trade with the Roman world — the Periplus attributes fine muslins and cloth to Tagara, not to Paithan. The 2nd-century geographer Ptolemy likewise names Pratishthana as a Satavahana capital.`,
   },
   {
     id: "kb-paithani-silk",
@@ -98,7 +98,7 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
     sourceTitle: "Paithani Saree GI Heritage & Weaving",
     sourceUrl: "/heritage/museum",
     keywords: ["paithani", "saree", "silk", "gi tag", "zari", "mor", "weaving", "handloom", "munia", "tradition"],
-    content: `Paithani Silk Sarees have a 2,000-year-old unbroken handloom heritage originating in Paithan and received Geographical Indication (GI Tag #84, Class 24 & 25) in 2010. Authentic Paithanis are woven with pure mulberry silk ('patt') and pure silver/gold electroplated zari. They use a unique tapestry weave (interlocking weft technique) without floats on the reverse side. Traditional motifs include: Bangadi Mor (peacock in bangle), Munia (parrot), Asavali (flowering vine), Kamal (lotus), Koyari (paisley/mango), and Narali (coconut) border. Paithan has a master weavers cluster with pit looms in Weavers Colony.`,
+    content: `Paithani silk sarees have a centuries-old handloom heritage originating in Paithan (and also woven in Yeola, Nashik district) and received a Geographical Indication (GI) tag in 2010. Authentic Paithanis are woven with pure silk ('patt') and real gold/silver zari, using a tapestry weave (interlocking weft) with no floats on the reverse. Verified traditional motifs include the peacock and the lotus, alongside designs commonly described as Bangadi Mor (peacock-in-bangle), Munia (parrot) and Asavali (flowering vine). Paithan retains a cluster of master weavers working on traditional pit looms.`,
   },
   {
     id: "kb-sant-eknath",
@@ -106,11 +106,11 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
     sourceTitle: "Sant Eknath Maharaj & Spiritual Heritage",
     sourceUrl: "/tourism/places-to-visit",
     keywords: ["eknath", "sant", "samadhi", "wada", "temple", "nath shashti", "varkari", "godavari", "nagghat", "dnyaneshwar", "apegaon"],
-    content: `Sant Eknath Maharaj (1533–1599 CE) lived and attained Jalsamadhi in Paithan on the banks of Godavari River. Major pilgrimage sites:
-1. Sant Eknath Samadhi Mandir: Sacred riverside samadhi temple at Nagghat.
-2. Sant Eknath Wada: Ancestral 400-year-old wooden residence in town; houses the pillar touched by Lord Krishna (in disguise as Shrikhandya), sacred manuscripts of Eknathi Bhagavata and Bhavartha Ramayana.
-3. Nath Shashti Mahotsav: Annual 3-day pilgrimage festival on Phalguna Vadya Shashti (March) attracting 500,000+ Varkari pilgrims.
-4. Sant Dnyaneshwar Birthplace at Apegaon: 12 km east of Paithan on the Godavari banks; where Dnyaneshwar Maharaj was born, later receiving his Shuddhipatra from Paithan's learned Brahmins.`,
+    content: `Sant Eknath Maharaj (c. 1533 – 1600 CE), a disciple of Janardan Swami, lived in Paithan and took Jalasamadhi in the Godavari here. Major pilgrimage sites:
+1. Sant Eknath Samadhi Mandir: the sacred riverside samadhi temple at Nagghat.
+2. Sant Eknath Wada: his ancestral residence in the town; according to tradition it is associated with the story of Lord Krishna serving Eknath in the guise of a servant named Shrikhandya. Eknath's major works include the Eknathi Bhagavata and the Bhavarth Ramayan.
+3. Nath Shashti (Paithan Yatra): the annual pilgrimage festival held in Phalgun (around March), which draws large numbers of Varkari pilgrims.
+4. Sant Dnyaneshwar's birthplace at Apegaon: about 12 km east of Paithan on the banks of the Godavari, where Sant Dnyaneshwar was born (1275 CE).`,
   },
   {
     id: "kb-connectivity",

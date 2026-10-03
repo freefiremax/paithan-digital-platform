@@ -16,7 +16,7 @@ interface RepresentativeCardProps {
  * name is pending is more use to a resident than omitting the row entirely.
  */
 export function RepresentativeCard({ representative }: RepresentativeCardProps) {
-  const hasNamedHolder = representative.dataStatus === "VERIFIED" || representative.slug === "chief-officer";
+  const hasNamedHolder = representative.dataStatus === "VERIFIED";
 
   return (
     <article className="flex h-full flex-col border border-[var(--border-subtle)] bg-white">

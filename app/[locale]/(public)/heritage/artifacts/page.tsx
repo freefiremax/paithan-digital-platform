@@ -9,6 +9,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { MUSEUM_EXHIBITS } from "@/lib/mock-data";
+import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
 
 
 export default function ArtifactsCatalogPage() {
@@ -41,7 +42,7 @@ export default function ArtifactsCatalogPage() {
               पुरातन वस्तू व अवशेष (Antiquities & Artifacts Catalog)
             </h1>
             <p className="text-sm text-slate-body mt-2 leading-relaxed">
-              Curated register of Satavahana numismatics, Roman Indo-Pacific trade relics, Modi script royal decrees, and historic Paithani golden textiles excavated from imperial Pratishthana.
+              An illustrative register spanning Satavahana numismatics, Indo-Roman trade relics, Modi-script manuscripts, and heritage Paithani textiles associated with ancient Pratishthana. Entries are indicative and should be confirmed with the museum before being cited.
             </p>
           </div>
         </div>
@@ -115,6 +116,8 @@ export default function ArtifactsCatalogPage() {
                   <strong className="text-slate-900">Historical Significance:</strong>{" "}
                   {item.significance}
                 </div>
+
+                <DataStatusBadge status={item.dataStatus} />
               </div>
 
               <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-muted">
