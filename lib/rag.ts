@@ -299,6 +299,15 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
   },
 ];
 
+const STOP_WORDS = new Set([
+  "hi", "hii", "hiii", "hey", "heyy", "hello", "is", "am", "are", "was", "were", "be",
+  "the", "a", "an", "to", "in", "at", "for", "of", "and", "or", "me", "my", "you", "your",
+  "what", "how", "when", "where", "who", "which", "why", "tell", "give", "can", "please",
+  "kya", "kaise", "hai", "hain", "karo", "kay", "aahe", "ahet", "sang", "sanga", "bol", "bola"
+]);
+
+const GREETING_REGEX = /^(hi|hii|hiii|hey|heyy|hello|namaste|namaskar|pranam|ram\s+krishna\s+hari|नमस्कार|प्रणाम|नमस्ते|राम\s+कृष्ण\s+हरी|शुभ\s+सकाळ|शुभ\s+संध्याकाळ)$/i;
+
 /**
  * Normalizes query string for enhanced multilingual (English, Marathi, Hindi) search.
  */
@@ -307,7 +316,7 @@ function tokenizeQuery(query: string): string[] {
     .toLowerCase()
     .replace(/[.,/#!$%^&*;:{}=\-_`~()?"'’]/g, " ")
     .split(/\s+/)
-    .filter((w) => w.length > 1);
+    .filter((w) => w.length >= 3 && !STOP_WORDS.has(w));
 }
 
 /**
@@ -315,37 +324,49 @@ function tokenizeQuery(query: string): string[] {
  */
 export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
   const normalizedQuery = query.toLowerCase().trim();
+
+  // If query is just a greeting, return no KB chunks so conversational AI handles it naturally
+  if (GREETING_REGEX.test(normalizedQuery)) {
+    return [];
+  }
+
   const tokens = tokenizeQuery(query);
+  if (tokens.length === 0 && normalizedQuery.length < 4) {
+    return [];
+  }
 
   const scoredDocs: RetrievedChunk[] = KNOWLEDGE_BASE.map((doc) => {
     let score = 0;
     const docText = (doc.sourceTitle + " " + doc.content).toLowerCase();
 
     // 1. Exact phrase match in source title or content
-    if (doc.sourceTitle.toLowerCase().includes(normalizedQuery)) {
+    if (normalizedQuery.length >= 4 && doc.sourceTitle.toLowerCase().includes(normalizedQuery)) {
       score += 40;
     }
-    if (docText.includes(normalizedQuery)) {
+    if (normalizedQuery.length >= 5 && docText.includes(normalizedQuery)) {
       score += 25;
     }
 
     // 2. Keyword matches
     for (const kw of doc.keywords) {
       const kwLower = kw.toLowerCase();
-      if (normalizedQuery.includes(kwLower)) {
+      if (kwLower.length >= 3 && normalizedQuery.includes(kwLower)) {
         score += 35;
       }
       for (const token of tokens) {
-        if (kwLower === token || (token.length > 3 && kwLower.includes(token))) {
+        if (kwLower === token || (token.length >= 4 && kwLower.includes(token))) {
           score += 15;
         }
       }
     }
 
-    // 3. Token matches in document text
+    // 3. Token matches in document text (whole word match)
     for (const token of tokens) {
-      if (docText.includes(token)) {
-        score += 8;
+      if (token.length >= 3) {
+        const regex = new RegExp(`\\b${token}\\b`, 'i');
+        if (regex.test(docText)) {
+          score += 8;
+        }
       }
     }
 
@@ -360,7 +381,7 @@ export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
   });
 
   return scoredDocs
-    .filter((doc) => doc.score > 0)
+    .filter((doc) => doc.score >= 15)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
