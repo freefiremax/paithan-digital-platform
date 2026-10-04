@@ -34,7 +34,7 @@ export async function GET(): Promise<NextResponse> {
 
     return NextResponse.json(facilities);
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }
 
@@ -123,6 +123,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json(facility, { status: 201 });
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }

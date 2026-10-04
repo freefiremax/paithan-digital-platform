@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
-import { AlertCircle, CheckCircle, Loader2, Shield } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader2, Shield, Camera, Image as ImageIcon } from "lucide-react";
 import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 
 interface GrievanceFormProps {
@@ -34,8 +34,48 @@ export function GrievanceForm({ }: GrievanceFormProps) {
     citizenName: "",
     citizenPhone: "",
     citizenEmail: "",
+    photoUrl: "",
     turnstileToken: "",
   });
+
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [photoUploadError, setPhotoUploadError] = useState<string | null>(null);
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setPhotoUploadError("Photo size must be less than 5MB");
+      return;
+    }
+
+    setPhotoUploadError(null);
+    setIsUploadingPhoto(true);
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ file: reader.result, folder: "grievances" }),
+        });
+
+        const data = await res.json();
+        if (res.ok && data.url) {
+          setFormData((prev) => ({ ...prev, photoUrl: data.url }));
+        } else {
+          setPhotoUploadError(data.error?.message || "Failed to upload photo to Cloudinary");
+        }
+      } catch {
+        setPhotoUploadError("Error uploading photo. Please try again.");
+      } finally {
+        setIsUploadingPhoto(false);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -125,6 +165,7 @@ export function GrievanceForm({ }: GrievanceFormProps) {
       citizenName: "",
       citizenPhone: "",
       citizenEmail: "",
+      photoUrl: "",
       turnstileToken: "",
     });
     setErrors({});
@@ -306,6 +347,58 @@ export function GrievanceForm({ }: GrievanceFormProps) {
                 placeholder={t("emailPlaceholder")}
               />
               {errors.citizenEmail && <p id="email-error" className="mt-1 text-sm text-red-600" role="alert">{errors.citizenEmail}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="photoUpload" className="block text-sm font-medium text-slate-700 mb-2">
+                Attachment / Photo (Optional - Pothole, Leakage, Garbage)
+              </label>
+              <div className="flex flex-col gap-3">
+                <label
+                  htmlFor="photoUpload"
+                  className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-slate-300 hover:border-amber-500 rounded-xl cursor-pointer bg-slate-50/70 hover:bg-amber-50/50 transition group"
+                >
+                  <Camera className="w-5 h-5 text-slate-500 group-hover:text-amber-600 transition" />
+                  <span className="text-sm font-medium text-slate-700 group-hover:text-amber-900">
+                    {isUploadingPhoto ? "Uploading to Cloudinary..." : formData.photoUrl ? "Change Photo" : "Upload Photo / Take Picture"}
+                  </span>
+                  <input
+                    id="photoUpload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    disabled={isUploadingPhoto}
+                    className="hidden"
+                  />
+                </label>
+
+                {isUploadingPhoto && (
+                  <div className="flex items-center gap-2 text-xs text-amber-600 font-medium">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Optimizing and saving photo to Cloudinary cloud...</span>
+                  </div>
+                )}
+
+                {formData.photoUrl && (
+                  <div className="flex items-center gap-3 p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
+                    <ImageIcon className="w-5 h-5 text-emerald-600 shrink-0" />
+                    <span className="text-xs text-emerald-800 font-medium truncate flex-1">
+                      Photo uploaded to Cloudinary: {formData.photoUrl}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, photoUrl: "" }))}
+                      className="text-xs text-red-600 hover:text-red-800 font-semibold px-2 py-1"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+
+                {photoUploadError && (
+                  <p className="text-xs text-red-600 font-medium">{photoUploadError}</p>
+                )}
+              </div>
             </div>
           </fieldset>
 

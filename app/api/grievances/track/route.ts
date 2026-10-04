@@ -70,6 +70,6 @@ export async function GET(req: NextRequest) {
       })),
     });
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }

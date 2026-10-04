@@ -69,7 +69,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       },
     });
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }
 
@@ -154,6 +154,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }

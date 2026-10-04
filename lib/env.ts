@@ -26,6 +26,7 @@ const envSchema = z.object({
   SENTRY_AUTH_TOKEN: z.string().optional(),
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().optional(),
   TURNSTILE_SECRET_KEY: z.string().optional(),
+  CSRF_SECRET: z.string().min(32, "CSRF_SECRET must be at least 32 characters").optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -56,6 +57,7 @@ export function getEnv(): Env {
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
+    CSRF_SECRET: process.env.CSRF_SECRET,
   };
 
   const parsed = envSchema.safeParse(envWithDefaults);

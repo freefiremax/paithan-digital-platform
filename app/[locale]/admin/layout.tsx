@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   BellRing,
@@ -17,43 +18,46 @@ import {
   User,
   BadgeAlert,
 } from "lucide-react";
-import { AdminUser, DEMO_ADMIN_USERS } from "@/lib/auth";
+
+interface AdminUser {
+  id: string;
+  name: string | null;
+  email: string;
+  role: "PUBLIC" | "EDITOR" | "ADMIN";
+  wardId: string | null;
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [currentUser, setCurrentUser] = useState<AdminUser>(() => DEMO_ADMIN_USERS.superadmin);
+  const { data: session, status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // If on /admin/login, don't show admin navigation chrome
   const isLoginPage = pathname === "/admin/login";
 
-  useEffect(() => {
-    if (!isLoginPage && typeof window !== "undefined") {
-      const stored = localStorage.getItem("paithan_admin_user");
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          queueMicrotask(() => setCurrentUser(parsed));
-        } catch {
-          // fallback remains default
-        }
-      }
-    }
-  }, [isLoginPage]);
-
-
-  const handleLogout = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("paithan_admin_user");
-      document.cookie = "paithan_admin_role=; path=/; max-age=0;";
-    }
-    router.push("/admin/login");
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/admin/login" });
   };
 
   if (isLoginPage) {
     return <>{children}</>;
   }
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+        <div className="animate-pulse text-slate-400">Loading session...</div>
+      </div>
+    );
+  }
+
+  if (!session?.user) {
+    router.push(`/admin/login?callbackUrl=${encodeURIComponent(pathname)}`);
+    return null;
+  }
+
+  const user = session.user as AdminUser;
+  const userRole = user.role;
 
   const navItems = [
     {
@@ -82,9 +86,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     },
   ];
 
+  const roleTitleMap: Record<string, { en: string; mr: string }> = {
+    ADMIN: { en: "Chief Officer", mr: "मुख्याधिकारी" },
+    EDITOR: { en: "Municipal Editor", mr: "नगरपालिका संपादक" },
+    PUBLIC: { en: "Citizen", mr: "नागरिक" },
+  };
+
+  const roleTitle = roleTitleMap[userRole]?.en || userRole;
+  const roleTitleMr = roleTitleMap[userRole]?.mr || userRole;
+
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">
-      {/* Mobile Header Bar */}
       <div className="md:hidden bg-[#071224] text-white px-4 py-3 flex items-center justify-between border-b border-slate-800">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-bold">
@@ -103,13 +115,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </button>
       </div>
 
-      {/* Sidebar Navigation */}
       <aside
         className={`${
           mobileMenuOpen ? "block" : "hidden"
         } md:flex flex-col w-full md:w-64 bg-[#071224] text-white border-r border-slate-800 shrink-0 z-40`}
       >
-        {/* Brand Header */}
         <div className="p-5 border-b border-slate-800/80 hidden md:block">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-amber-500/20">
@@ -122,23 +132,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </div>
 
-        {/* Current User Role Pill */}
         <div className="px-5 py-3 bg-slate-900/60 border-b border-slate-800 flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-amber-400 border border-slate-700">
             <User className="w-4 h-4" />
           </div>
           <div className="overflow-hidden">
             <div className="text-xs font-semibold text-white truncate">
-              {currentUser?.name || "Santosh Dagdu Agle"}
+              {user.name || user.email}
             </div>
             <div className="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" />
-              <span>{currentUser?.roleTitle || "Chief Officer"}</span>
+              <span>{roleTitle}</span>
             </div>
           </div>
         </div>
 
-        {/* Nav Links */}
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -164,7 +172,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
 
-        {/* Footer Actions */}
         <div className="p-3 border-t border-slate-800 space-y-2">
           <Link
             href="/"
@@ -182,14 +189,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-red-400 hover:bg-red-950/40 hover:text-red-300 transition"
           >
             <LogOut className="w-4 h-4" />
-            <span>Sign Out Session</span>
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <main className="flex-1 min-w-0 flex flex-col overflow-y-auto">
-        {/* Top Notification Warning banner for unconfirmed records (rules.md §2) */}
         <div className="bg-amber-50 border-b border-amber-200 px-6 py-2 text-xs text-amber-900 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BadgeAlert className="w-4 h-4 text-amber-700 shrink-0" />

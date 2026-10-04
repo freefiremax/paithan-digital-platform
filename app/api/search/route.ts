@@ -249,6 +249,6 @@ export async function GET(req: NextRequest) {
       query: q,
     });
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }

@@ -15,6 +15,6 @@ export async function GET(): Promise<NextResponse> {
     );
     return response;
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }

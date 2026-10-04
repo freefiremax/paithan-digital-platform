@@ -1,3 +1,6 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+
 export class AppError extends Error {
   constructor(
     public readonly code: string,
@@ -20,7 +23,7 @@ export const ERROR_CODES = {
   INTERNAL_ERROR: "INTERNAL_ERROR",
 } as const;
 
-export function createErrorResponse(error: unknown): { error: { code: string; message: string }; status: number } {
+export async function createErrorResponse(error: unknown): Promise<{ error: { code: string; message: string }; status: number }> {
   if (error instanceof AppError) {
     return {
       error: { code: error.code, message: error.message },
@@ -66,16 +69,19 @@ export function createErrorResponse(error: unknown): { error: { code: string; me
   }
 
   console.error("Unhandled error:", error);
+  try {
+    const Sentry = await import("@sentry/nextjs");
+    Sentry.captureException(error);
+  } catch {
+    // Sentry optional in local test run
+  }
   return {
     error: { code: ERROR_CODES.INTERNAL_ERROR, message: "An unexpected error occurred" },
     status: 500,
   };
 }
 
-import { NextResponse } from "next/server";
-import { z } from "zod";
-
-export function handleApiError(error: unknown): NextResponse {
-  const { error: errorBody, status } = createErrorResponse(error);
+export async function handleApiError(error: unknown): Promise<NextResponse> {
+  const { error: errorBody, status } = await createErrorResponse(error);
   return NextResponse.json(errorBody, { status });
 }

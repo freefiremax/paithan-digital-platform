@@ -385,21 +385,22 @@ model AuditLog {
 }
 
 model Grievance {
-  id          String           @id @default(cuid())
-  ticketNo    String           @unique
-  sector      CivicSector
-  wardId      String?
-  ward        Ward?            @relation(fields: [wardId], references: [id])
-  title       String
-  description String
-  citizenName String
+  id           String           @id @default(cuid())
+  ticketNo     String           @unique
+  sector       CivicSector
+  wardId       String?
+  ward         Ward?            @relation(fields: [wardId], references: [id])
+  title        String
+  description  String
+  citizenName  String
   citizenPhone String
   citizenEmail String?
-  photoUrl    String?
-  status      GrievanceStatus  @default(SUBMITTED)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  updates     StatusUpdate[]
+  photoUrl     String?
+  photoPublicId String?
+  status       GrievanceStatus  @default(SUBMITTED)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  updates      StatusUpdate[]
 }
 
 model StatusUpdate {

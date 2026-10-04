@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { buildChatbotContext, queryKnowledgeBase } from "@/lib/rag";
+import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
+import { handleApiError } from "@/lib/errors";
 
 export const runtime = "nodejs";
 
@@ -66,6 +68,15 @@ function handleConversationalAI(query: string, language: Language, contextText: 
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    const rateLimit = await checkRateLimit(`chatbot:${ip}`, RATE_LIMIT_CONFIGS.apiRead);
+    if (rateLimit && !rateLimit.success) {
+      return NextResponse.json(
+        { error: { code: "RATE_LIMITED", message: "Too many chatbot requests. Please wait a moment." } },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const query: string = body.message || body.query || "";
     const language: Language = (body.language === "mr" ? "mr" : body.language === "hi" ? "hi" : "en");
@@ -102,7 +113,7 @@ ${contextText}`;
 
     // 3. Try Gemini API models if key exists
     if (hasValidGeminiKey) {
-      const candidateModels = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"];
+      const candidateModels = ["gemini-1.5-flash", "gemini-1.5-pro"];
       
       for (const model of candidateModels) {
         try {
@@ -122,20 +133,26 @@ ${contextText}`;
             parts: [{ text: `${systemPrompt}\n\nUser Question: ${query}` }],
           });
 
-          const geminiRes = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                contents,
-                generationConfig: {
-                  temperature: hasRelevantKBContext ? 0.3 : 0.7,
-                  maxOutputTokens: 1200,
-                },
-              }),
-            }
-          );
+          const geminiController = new AbortController();
+            const geminiTimeout = setTimeout(() => geminiController.abort(), 30000);
+
+            const geminiRes = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  contents,
+                  generationConfig: {
+                    temperature: hasRelevantKBContext ? 0.3 : 0.7,
+                    maxOutputTokens: 1200,
+                  },
+                }),
+                signal: geminiController.signal,
+              }
+            );
+
+            clearTimeout(geminiTimeout);
 
           if (geminiRes.ok) {
             const data = await geminiRes.json();
@@ -149,6 +166,17 @@ ${contextText}`;
                 engine: model,
               });
             }
+          } else if (geminiRes.status === 429 || geminiRes.status === 503) {
+            const errData = await geminiRes.json().catch(() => ({}));
+            console.warn(`Gemini API rate limited or unavailable (${geminiRes.status}):`, errData.error?.message);
+            // Fall through to local fallback
+          } else if (geminiRes.status === 401 || geminiRes.status === 403) {
+            const errData = await geminiRes.json().catch(() => ({}));
+            console.error(`Gemini API auth error (${geminiRes.status}):`, errData.error?.message);
+            // Fall through to local fallback
+          } else {
+            const errData = await geminiRes.json().catch(() => ({}));
+            console.warn(`Gemini API error (${geminiRes.status}):`, errData.error?.message);
           }
         } catch {
           // try next model

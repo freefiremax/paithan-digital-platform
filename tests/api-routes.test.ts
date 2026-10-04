@@ -23,57 +23,57 @@ describe("Error Handling", () => {
   });
 
   describe("createErrorResponse", () => {
-    it("should handle AppError", () => {
+    it("should handle AppError", async () => {
       const error = new AppError("CUSTOM_ERROR", "Custom message", 422);
-      const { error: errorBody, status } = createErrorResponse(error);
+      const { error: errorBody, status } = await createErrorResponse(error);
       expect(errorBody).toEqual({ code: "CUSTOM_ERROR", message: "Custom message" });
       expect(status).toBe(422);
     });
 
-    it("should handle ZodError", () => {
+    it("should handle ZodError", async () => {
       const schema = z.object({ email: z.string().email() });
       const result = schema.safeParse({ email: "invalid" });
-      const { error: errorBody, status } = createErrorResponse(result.error!);
+      const { error: errorBody, status } = await createErrorResponse(result.error!);
       expect(errorBody.code).toBe(ERROR_CODES.VALIDATION_ERROR);
       expect(errorBody.message).toBe("Invalid input");
       expect(status).toBe(400);
     });
 
-    it("should handle UNAUTHENTICATED error", () => {
+    it("should handle UNAUTHENTICATED error", async () => {
       const error = new Error("UNAUTHENTICATED");
-      const { error: errorBody, status } = createErrorResponse(error);
+      const { error: errorBody, status } = await createErrorResponse(error);
       expect(errorBody.code).toBe(ERROR_CODES.UNAUTHENTICATED);
       expect(errorBody.message).toBe("Authentication required");
       expect(status).toBe(401);
     });
 
-    it("should handle FORBIDDEN error", () => {
+    it("should handle FORBIDDEN error", async () => {
       const error = new Error("FORBIDDEN");
-      const { error: errorBody, status } = createErrorResponse(error);
+      const { error: errorBody, status } = await createErrorResponse(error);
       expect(errorBody.code).toBe(ERROR_CODES.FORBIDDEN);
       expect(errorBody.message).toBe("Insufficient permissions");
       expect(status).toBe(403);
     });
 
-    it("should handle unique constraint error", () => {
+    it("should handle unique constraint error", async () => {
       const error = new Error("Unique constraint failed on field email");
-      const { error: errorBody, status } = createErrorResponse(error);
+      const { error: errorBody, status } = await createErrorResponse(error);
       expect(errorBody.code).toBe(ERROR_CODES.CONFLICT);
       expect(errorBody.message).toBe("Resource already exists");
       expect(status).toBe(409);
     });
 
-    it("should handle not found error", () => {
+    it("should handle not found error", async () => {
       const error = new Error("Record to delete does not exist");
-      const { error: errorBody, status } = createErrorResponse(error);
+      const { error: errorBody, status } = await createErrorResponse(error);
       expect(errorBody.code).toBe(ERROR_CODES.NOT_FOUND);
       expect(errorBody.message).toBe("Resource not found");
       expect(status).toBe(404);
     });
 
-    it("should handle unknown errors", () => {
+    it("should handle unknown errors", async () => {
       const error = new Error("Some random error");
-      const { error: errorBody, status } = createErrorResponse(error);
+      const { error: errorBody, status } = await createErrorResponse(error);
       expect(errorBody.code).toBe(ERROR_CODES.INTERNAL_ERROR);
       expect(errorBody.message).toBe("An unexpected error occurred");
       expect(status).toBe(500);
@@ -83,7 +83,7 @@ describe("Error Handling", () => {
   describe("handleApiError", () => {
     it("should return NextResponse with correct status and body", async () => {
       const error = new AppError("TEST_ERROR", "Test message", 400);
-      const response = handleApiError(error);
+      const response = await handleApiError(error);
       expect(response.status).toBe(400);
       const body = await response.json();
       expect(body).toEqual({ code: "TEST_ERROR", message: "Test message" });

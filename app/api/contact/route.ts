@@ -46,6 +46,6 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }

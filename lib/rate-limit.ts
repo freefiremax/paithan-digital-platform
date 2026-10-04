@@ -4,10 +4,11 @@ import { env } from "@/lib/env";
 
 type Duration = `${number} ${"ms" | "s" | "m" | "h" | "d" | "w"}` | `${number}${"ms" | "s" | "m" | "h" | "d" | "w"}`;
 
-let ratelimit: Ratelimit | null = null;
+let redisClient: Redis | null = null;
+const ratelimitCache = new Map<string, Ratelimit>();
 
-function getRatelimit(): Ratelimit | null {
-  if (ratelimit) return ratelimit;
+function getRedisClient(): Redis | null {
+  if (redisClient) return redisClient;
 
   const url = env.UPSTASH_REDIS_REST_URL;
   const token = env.UPSTASH_REDIS_REST_TOKEN;
@@ -17,48 +18,43 @@ function getRatelimit(): Ratelimit | null {
     return null;
   }
 
-  const redis = new Redis({ url, token });
-  ratelimit = new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(100, "1 m"),
-    analytics: true,
-    prefix: "paithan:ratelimit",
-  });
-
-  return ratelimit;
+  redisClient = new Redis({ url, token });
+  return redisClient;
 }
 
-function createRatelimit(limit: number, window: Duration): Ratelimit | null {
-  const url = env.UPSTASH_REDIS_REST_URL;
-  const token = env.UPSTASH_REDIS_REST_TOKEN;
+function getCacheKey(limit: number, window: Duration): string {
+  return `${limit}:${window}`;
+}
 
-  if (!url || !token) {
-    return null;
-  }
+function getOrCreateRatelimit(limit: number, window: Duration): Ratelimit | null {
+  const client = getRedisClient();
+  if (!client) return null;
 
-  const redis = new Redis({ url, token });
-  return new Ratelimit({
-    redis,
+  const cacheKey = getCacheKey(limit, window);
+  const cached = ratelimitCache.get(cacheKey);
+  if (cached) return cached;
+
+  const ratelimit = new Ratelimit({
+    redis: client,
     limiter: Ratelimit.slidingWindow(limit, window),
-    analytics: true,
     prefix: "paithan:ratelimit",
   });
+
+  ratelimitCache.set(cacheKey, ratelimit);
+  return ratelimit;
 }
 
 export async function checkRateLimit(
   identifier: string,
   options?: { limit?: number; window?: Duration }
 ): Promise<{ success: boolean; limit: number; remaining: number; reset: number } | null> {
-  const rl = getRatelimit();
-  if (!rl) return null;
-
   const limit = options?.limit ?? 100;
   const window = (options?.window ?? "1 m") as Duration;
 
-  const customRatelimit = createRatelimit(limit, window);
-  if (!customRatelimit) return null;
+  const ratelimit = getOrCreateRatelimit(limit, window);
+  if (!ratelimit) return null;
 
-  return customRatelimit.limit(identifier);
+  return ratelimit.limit(identifier);
 }
 
 export const RATE_LIMIT_CONFIGS = {

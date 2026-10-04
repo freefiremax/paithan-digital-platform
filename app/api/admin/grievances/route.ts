@@ -74,6 +74,6 @@ export async function GET(req: NextRequest) {
       pagination: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
     });
   } catch (error) {
-    return handleApiError(error);
+    return await handleApiError(error);
   }
 }
