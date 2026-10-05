@@ -16,15 +16,13 @@ function isApiAuthPath(pathname: string): boolean {
 }
 
 
-const isDev = process.env.NODE_ENV !== 'production';
-
 const CSP_DIRECTIVES = [
   "default-src 'self'",
-  `script-src 'self' 'nonce-{NONCE}'${isDev ? " 'unsafe-eval'" : ""} https://challenges.cloudflare.com https://static.cloudflareinsights.com`,
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https:",
-  "font-src 'self' data:",
-  "connect-src 'self' https://generativelanguage.googleapis.com https://*.upstash.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://challenges.cloudflare.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://va.vercel-scripts.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https: res.cloudinary.com",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "connect-src 'self' https://generativelanguage.googleapis.com https://*.upstash.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://challenges.cloudflare.com https://va.vercel-scripts.com https://vitals.vercel-insights.com",
   "frame-src 'self' https://challenges.cloudflare.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",
@@ -39,14 +37,11 @@ const intlMiddleware = createIntlMiddleware({
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   // Let next-intl handle internationalization routing first
   const response = intlMiddleware(request);
 
-  response.headers.set('x-nonce', nonce);
-  const csp = CSP_DIRECTIVES.replace('{NONCE}', nonce);
-  response.headers.set('Content-Security-Policy', csp);
+  response.headers.set('Content-Security-Policy', CSP_DIRECTIVES);
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
