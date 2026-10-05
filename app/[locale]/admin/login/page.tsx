@@ -11,8 +11,11 @@ function AdminLoginForm() {
   const router = useRouter();
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || `/${locale}`;
-  const googleCallbackUrl = callbackUrl && !callbackUrl.includes("/admin") ? callbackUrl : `/${locale}`;
+  const rawCallbackUrl = searchParams.get("callbackUrl");
+  const homePageUrl = `/${locale}`;
+  const targetCallbackUrl = rawCallbackUrl && !rawCallbackUrl.includes("/admin") && !rawCallbackUrl.includes("/login")
+    ? rawCallbackUrl
+    : homePageUrl;
   const emailParam = searchParams.get("email") || "";
   const isRegistered = searchParams.get("registered") === "1";
   const t = useTranslations("adminLogin");
@@ -32,7 +35,7 @@ function AdminLoginForm() {
         email,
         password,
         redirect: false,
-        callbackUrl,
+        callbackUrl: targetCallbackUrl,
       });
 
       if (result?.error) {
@@ -40,7 +43,7 @@ function AdminLoginForm() {
         return;
       }
 
-      window.location.assign(callbackUrl);
+      window.location.assign(targetCallbackUrl);
     } catch {
       setError(t("errorUnexpected"));
     } finally {
@@ -86,7 +89,7 @@ function AdminLoginForm() {
 
           <button
             type="button"
-            onClick={() => signIn("google", { callbackUrl: googleCallbackUrl })}
+            onClick={() => signIn("google", { callbackUrl: targetCallbackUrl })}
             disabled={isLoading}
             className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 rounded-xl py-3 px-4 text-sm font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer"
           >
