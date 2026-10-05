@@ -11,16 +11,19 @@ import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
+  trustHost: true,
+  secret: env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
   pages: { signIn: "/admin/login", error: "/admin/login" },
   providers: [
     Google({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
-          scope: "openid email profile",
+          prompt: "select_account",
           access_type: "offline",
-          prompt: "consent",
+          response_type: "code",
         },
       },
     }),
