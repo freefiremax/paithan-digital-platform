@@ -11,23 +11,25 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   useEffect(() => {
-    const verifiedInSession = typeof window !== "undefined" && sessionStorage.getItem("cf_portal_verified") === "true";
-    if (verifiedInSession) {
-      setIsVerified(true);
-      setHasMounted(true);
-      return;
-    }
-
     const timer = setTimeout(() => {
+      const verifiedInSession = typeof window !== "undefined" && sessionStorage.getItem("cf_portal_verified") === "true";
+      if (verifiedInSession) {
+        setIsVerified(true);
+        setHasMounted(true);
+        return;
+      }
+
       const randomRay = Math.random().toString(16).substring(2, 18);
       setRayId(`${randomRay}-BOM`);
       setHasMounted(true);
 
       if (!siteKey) {
         setIsVerified(true);
-        sessionStorage.setItem("cf_portal_verified", "true");
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("cf_portal_verified", "true");
+        }
       }
-    }, 1200);
+    }, 50);
 
     return () => clearTimeout(timer);
   }, [siteKey]);

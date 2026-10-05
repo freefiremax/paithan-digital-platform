@@ -17,7 +17,7 @@ const SUBJECT_OPTIONS = [
   { value: "other", labelKey: "subjectOther" },
 ];
 
-export function ContactForm({ locale: _locale }: ContactFormProps) {
+export function ContactForm(_props: ContactFormProps) {
   const t = useTranslations("contact");
 
   const [isLoading, setIsLoading] = useState(false);
