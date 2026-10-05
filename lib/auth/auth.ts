@@ -112,15 +112,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn() {
       return true;
     },
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, trigger, session, profile }) {
       if (user) {
         token.id = user.id;
         token.role = (user.role as Role) || Role.PUBLIC;
         token.wardId = user.wardId;
+        if (user.name) token.name = user.name;
+        if (user.email) token.email = user.email;
+        if (user.image) token.picture = user.image;
+      }
+      if (profile) {
+        if ((profile as { picture?: string }).picture) {
+          token.picture = (profile as { picture?: string }).picture;
+        }
+        if ((profile as { name?: string }).name) {
+          token.name = (profile as { name?: string }).name;
+        }
       }
       if (trigger === "update" && session) {
         token.role = (session.role as Role) ?? token.role;
         token.wardId = (session.wardId as string | null | undefined) ?? token.wardId;
+        if (session.name) token.name = session.name;
+        if (session.image) token.picture = session.image;
       }
       return token;
     },
@@ -129,6 +142,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.wardId = token.wardId ?? undefined;
+        if (token.name) session.user.name = token.name;
+        if (token.email) session.user.email = token.email;
+        if (token.picture) session.user.image = token.picture;
       }
       return session;
     },

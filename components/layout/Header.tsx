@@ -199,7 +199,15 @@ export default function Header() {
 
               {session?.user ? (
                 <div className="flex items-center gap-2 border-l border-[var(--on-vangi-rule)] pl-3">
-                  <span className="text-[11px] text-[var(--saffron-100)] font-medium truncate max-w-[120px]">
+                  {session.user.image ? (
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || "User"}
+                      className="h-4 w-4 rounded-full object-cover shrink-0 border border-amber-400/60"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : null}
+                  <span className="text-[11px] text-[var(--saffron-100)] font-medium truncate max-w-[130px]">
                     {session.user.name || session.user.email}
                   </span>
                   {(session.user as { role?: string })?.role === "ADMIN" || (session.user as { role?: string })?.role === "EDITOR" ? (
@@ -216,7 +224,7 @@ export default function Header() {
                     title="Sign Out"
                   >
                     <LogOut className="h-3 w-3" />
-                    <span>Sign Out</span>
+                    <span>Logout</span>
                   </button>
                 </div>
               ) : (
@@ -429,22 +437,67 @@ export default function Header() {
               );
             })}
 
-            <div className="flex items-center justify-between gap-3 pt-3">
-              <Link
-                href={`/${locale}/chatbot`}
-                onClick={() => setMobileMenuOpen(false)}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--saffron-700)]"
-              >
-                <Bot className="h-4 w-4" aria-hidden="true" />
-                <span>Ask AI Assistant</span>
-              </Link>
-              <Link
-                href={`/${locale}/admin/login`}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-xs font-semibold text-[var(--portal-blue-700)]"
-              >
-                {t('councilAdmin')}
-              </Link>
+            <div className="flex flex-col gap-2 pt-3 border-t border-[var(--border-subtle)] mt-2">
+              <div className="flex items-center justify-between gap-3">
+                <Link
+                  href={`/${locale}/chatbot`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--saffron-700)]"
+                >
+                  <Bot className="h-4 w-4" aria-hidden="true" />
+                  <span>Ask AI Assistant</span>
+                </Link>
+                {session?.user && ((session.user as { role?: string })?.role === "ADMIN" || (session.user as { role?: string })?.role === "EDITOR") ? (
+                  <Link
+                    href={`/${locale}/admin/dashboard`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-xs font-semibold text-amber-600"
+                  >
+                    Admin CMS
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/${locale}/admin/login`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-xs font-semibold text-[var(--portal-blue-700)]"
+                  >
+                    {t('councilAdmin')}
+                  </Link>
+                )}
+              </div>
+
+              {session?.user ? (
+                <div className="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)]">
+                  <div className="flex items-center gap-2">
+                    {session.user.image ? (
+                      <img
+                        src={session.user.image}
+                        alt={session.user.name || "User"}
+                        className="h-6 w-6 rounded-full object-cover border border-amber-500/50"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : null}
+                    <div className="flex flex-col">
+                      <span className="text-xs font-semibold text-[var(--portal-blue-900)]">
+                        {session.user.name || session.user.email}
+                      </span>
+                      <span className="text-[10px] text-[var(--civic-slate-500)]">
+                        {session.user.email}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      signOut({ callbackUrl: `/${locale}` });
+                    }}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 hover:text-red-700 p-1"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              ) : null}
             </div>
           </nav>
         </div>
