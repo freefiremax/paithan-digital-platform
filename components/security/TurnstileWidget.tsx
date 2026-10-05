@@ -40,7 +40,6 @@ export function TurnstileWidget({
 }: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
 
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -81,7 +80,6 @@ export function TurnstileWidget({
       renderWidget();
     } else {
       window.onTurnstileLoaded = () => {
-        setIsLoaded(true);
         renderWidget();
       };
     }
@@ -110,9 +108,6 @@ export function TurnstileWidget({
           <Script
             src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoaded&render=explicit"
             strategy="afterInteractive"
-            onLoad={() => {
-              setIsLoaded(true);
-            }}
           />
           <div className="flex flex-col gap-2">
             <div ref={containerRef} className="min-h-[65px] flex items-center" />

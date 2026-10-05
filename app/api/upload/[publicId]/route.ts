@@ -20,7 +20,6 @@ export async function DELETE(
     // Optional: Verify the publicId belongs to the user (if we track ownership)
     // For now, allow any authenticated user to delete (admin-only in future if needed)
 
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
     const rateLimit = await checkRateLimit(`delete-upload:${user.id}`, RATE_LIMIT_CONFIGS.apiMutation);
     if (rateLimit && !rateLimit.success) {
       return NextResponse.json(

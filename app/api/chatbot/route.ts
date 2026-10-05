@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { buildChatbotContext, queryKnowledgeBase } from "@/lib/rag";
 import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
-import { handleApiError } from "@/lib/errors";
 
 export const runtime = "nodejs";
 

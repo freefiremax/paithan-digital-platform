@@ -5,14 +5,9 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 const ADMIN_PATHS = ['/admin'];
-const API_AUTH_PATHS = ['/api/auth'];
 
 function isAdminPath(pathname: string): boolean {
   return ADMIN_PATHS.some((p) => pathname.startsWith(p) || /^\/(en|mr|hi)\/admin/.test(pathname));
-}
-
-function isApiAuthPath(pathname: string): boolean {
-  return API_AUTH_PATHS.some((p) => pathname.startsWith(p));
 }
 
 

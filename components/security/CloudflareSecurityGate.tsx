@@ -6,28 +6,30 @@ import { ShieldCheck, Lock, Globe } from "lucide-react";
 
 export function CloudflareSecurityGate({ children }: { children: React.ReactNode }) {
   const [isVerified, setIsVerified] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [rayId, setRayId] = useState("");
+  const [hasMounted, setHasMounted] = useState(false);
+  const [rayId, setRayId] = useState("8c91a0298b42-BOM");
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   useEffect(() => {
-    setIsMounted(true);
-    const randomRay = Math.random().toString(16).substring(2, 18);
-    setRayId(`${randomRay}-BOM`);
-
     const verifiedInSession = typeof window !== "undefined" && sessionStorage.getItem("cf_portal_verified") === "true";
     if (verifiedInSession) {
       setIsVerified(true);
+      setHasMounted(true);
       return;
     }
 
-    if (!siteKey) {
-      const timer = setTimeout(() => {
+    const timer = setTimeout(() => {
+      const randomRay = Math.random().toString(16).substring(2, 18);
+      setRayId(`${randomRay}-BOM`);
+      setHasMounted(true);
+
+      if (!siteKey) {
         setIsVerified(true);
         sessionStorage.setItem("cf_portal_verified", "true");
-      }, 1400);
-      return () => clearTimeout(timer);
-    }
+      }
+    }, 1200);
+
+    return () => clearTimeout(timer);
   }, [siteKey]);
 
   const handleTurnstileSuccess = () => {
@@ -37,7 +39,7 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
     }
   };
 
-  if (!isMounted || isVerified) {
+  if (!hasMounted || isVerified) {
     return <>{children}</>;
   }
 

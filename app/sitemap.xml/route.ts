@@ -1,6 +1,4 @@
-import { Metadata } from "next";
 import { getServerSideSitemap, ISitemapField } from "next-sitemap";
-import { getMessages } from "@/i18n";
 import { prisma } from "@/lib/db";
 
 export const revalidate = 3600; // Revalidate every hour

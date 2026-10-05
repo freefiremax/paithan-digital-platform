@@ -56,7 +56,6 @@ describe("Backend Services & Database Verification", () => {
 
   describe("API Handlers Verification", () => {
     it("GET /api/sectors should return all 5 sectors", async () => {
-      const req = new NextRequest("http://localhost:3000/api/sectors");
       const res = await sectorsHandler();
       expect(res.status).toBe(200);
       const data = await res.json();

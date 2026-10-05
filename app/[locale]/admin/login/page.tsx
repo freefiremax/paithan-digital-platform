@@ -4,7 +4,7 @@ import React, { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle, Globe } from "lucide-react";
+import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 
 function AdminLoginForm() {
@@ -39,8 +39,9 @@ function AdminLoginForm() {
         return;
       }
 
-      window.location.href = callbackUrl;
-    } catch (err) {
+      router.push(callbackUrl);
+      router.refresh();
+    } catch {
       setError(t("errorUnexpected"));
     } finally {
       setIsLoading(false);

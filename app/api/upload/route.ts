@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
     const authResult = await requireAuth();
     const { user } = authResult;
 
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
     const rateLimit = await checkRateLimit(`upload:${user.id}`, RATE_LIMIT_CONFIGS.apiMutation);
     if (rateLimit && !rateLimit.success) {
       return NextResponse.json(

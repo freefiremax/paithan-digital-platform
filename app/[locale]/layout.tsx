@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { locales, defaultLocale, getMessages, type Locale } from "@/i18n";

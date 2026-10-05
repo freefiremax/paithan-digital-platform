@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -98,7 +98,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   const roleTitle = roleTitleMap[userRole]?.en || userRole;
-  const roleTitleMr = roleTitleMap[userRole]?.mr || userRole;
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">

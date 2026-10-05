@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/nextjs";
 
 export const runtime = "nodejs";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   if (process.env.NODE_ENV === "production") {
     return NextResponse.json(
       { error: "This endpoint is disabled in production" },
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       message: "Test events sent to Sentry",
       timestamp: new Date().toISOString(),
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Failed to send test event to Sentry" },
       { status: 500 }

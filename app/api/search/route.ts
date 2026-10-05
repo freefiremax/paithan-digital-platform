@@ -18,7 +18,7 @@ interface SearchResult {
   category?: string;
 }
 
-async function searchSectors(query: string, _locale: string): Promise<SearchResult[]> {
+async function searchSectors(query: string): Promise<SearchResult[]> {
   const sectors = await prisma.civicSectorInfo.findMany({
     where: {
       OR: [
@@ -42,7 +42,7 @@ async function searchSectors(query: string, _locale: string): Promise<SearchResu
   }));
 }
 
-async function searchDevelopmentWorks(query: string, _locale: string): Promise<SearchResult[]> {
+async function searchDevelopmentWorks(query: string): Promise<SearchResult[]> {
   const works = await prisma.developmentWork.findMany({
     where: {
       OR: [
@@ -68,7 +68,7 @@ async function searchDevelopmentWorks(query: string, _locale: string): Promise<S
   }));
 }
 
-async function searchNotices(query: string, _locale: string): Promise<SearchResult[]> {
+async function searchNotices(query: string): Promise<SearchResult[]> {
   const notices = await prisma.notification.findMany({
     where: {
       OR: [
@@ -95,7 +95,7 @@ async function searchNotices(query: string, _locale: string): Promise<SearchResu
   }));
 }
 
-async function searchTouristPlaces(query: string, _locale: string): Promise<SearchResult[]> {
+async function searchTouristPlaces(query: string): Promise<SearchResult[]> {
   const places = await prisma.touristPlace.findMany({
     where: {
       OR: [
@@ -120,7 +120,7 @@ async function searchTouristPlaces(query: string, _locale: string): Promise<Sear
   }));
 }
 
-async function searchHeritage(query: string, _locale: string): Promise<SearchResult[]> {
+async function searchHeritage(query: string): Promise<SearchResult[]> {
   const items = await prisma.culturalHeritageItem.findMany({
     where: {
       OR: [
@@ -145,7 +145,7 @@ async function searchHeritage(query: string, _locale: string): Promise<SearchRes
   }));
 }
 
-async function searchMuseum(query: string, _locale: string): Promise<SearchResult[]> {
+async function searchMuseum(query: string): Promise<SearchResult[]> {
   const exhibits = await prisma.museumExhibit.findMany({
     where: {
       OR: [
@@ -170,7 +170,7 @@ async function searchMuseum(query: string, _locale: string): Promise<SearchResul
   }));
 }
 
-async function searchHistory(query: string, _locale: string): Promise<SearchResult[]> {
+async function searchHistory(query: string): Promise<SearchResult[]> {
   const events = await prisma.historyEvent.findMany({
     where: {
       OR: [
@@ -208,20 +208,19 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const q = searchParams.get("q")?.trim();
-    const locale = searchParams.get("locale") || "en";
 
     if (!q || q.length < 2) {
       return NextResponse.json({ results: [], total: 0 });
     }
 
     const [sectors, works, notices, places, heritage, museum, history] = await Promise.all([
-      searchSectors(q, locale),
-      searchDevelopmentWorks(q, locale),
-      searchNotices(q, locale),
-      searchTouristPlaces(q, locale),
-      searchHeritage(q, locale),
-      searchMuseum(q, locale),
-      searchHistory(q, locale),
+      searchSectors(q),
+      searchDevelopmentWorks(q),
+      searchNotices(q),
+      searchTouristPlaces(q),
+      searchHeritage(q),
+      searchMuseum(q),
+      searchHistory(q),
     ]);
 
     const allResults = [

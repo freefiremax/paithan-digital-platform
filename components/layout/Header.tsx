@@ -17,7 +17,6 @@ import {
   ChevronDown,
   Globe,
   AlertCircle,
-  User,
   LogOut,
   ShieldCheck,
   LogIn,

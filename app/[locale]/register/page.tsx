@@ -59,10 +59,10 @@ function RegisterForm() {
       });
 
       if (signInResult?.ok && !signInResult?.error) {
-        window.location.href = callbackUrl;
+        router.push(callbackUrl);
+        router.refresh();
       } else {
-        // Fallback gracefully to login page with notice
-        window.location.href = `/${locale}/admin/login?registered=1&email=${encodeURIComponent(email)}`;
+        router.push(`/${locale}/admin/login?registered=1&email=${encodeURIComponent(email)}`);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : t("submitError"));
