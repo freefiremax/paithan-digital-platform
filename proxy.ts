@@ -1,10 +1,9 @@
 import createIntlMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from './i18n';
-import { auth } from '@/lib/auth/auth';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { checkRateLimit, RATE_LIMIT_CONFIGS } from '@/lib/rate-limit';
-import { Role } from '@prisma/client';
 import { validateCsrfToken, getCsrfTokenFromRequest } from '@/lib/csrf';
 
 const ADMIN_PATHS = ['/admin'];
@@ -55,7 +54,7 @@ const intlMiddleware = createIntlMiddleware({
   localePrefix: 'as-needed',
 });
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const method = request.method;
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
@@ -107,16 +106,19 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  if (isAdminPath(pathname)) {
-    const session = await auth();
-    if (!session?.user) {
+  if (isAdminPath(pathname) && !pathname.includes('/admin/login')) {
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+
+    if (!token) {
       const signInUrl = new URL('/admin/login', request.url);
       signInUrl.searchParams.set('callbackUrl', pathname);
       return NextResponse.redirect(signInUrl);
     }
 
-    const userRole = (session.user as { role: Role }).role;
-    if (userRole === 'PUBLIC') {
+    if (token.role === 'PUBLIC') {
       return new NextResponse(null, { status: 403 });
     }
   }
@@ -129,5 +131,3 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.ico$|.*\\.webp$|.*\\.html$).*)',
   ],
 };
-
-export const runtime = 'nodejs';
