@@ -3,35 +3,18 @@ import { locales, defaultLocale } from './i18n';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { checkRateLimit, RATE_LIMIT_CONFIGS } from '@/lib/rate-limit';
-import { validateCsrfToken, getCsrfTokenFromRequest } from '@/lib/csrf';
 
 const ADMIN_PATHS = ['/admin'];
 const API_AUTH_PATHS = ['/api/auth'];
-const PUBLIC_PATHS = ['/', '/api/chatbot'];
-const MUTATING_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
 function isAdminPath(pathname: string): boolean {
   return ADMIN_PATHS.some((p) => pathname.startsWith(p));
-}
-
-function isPublicPath(pathname: string): boolean {
-  return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + '/'));
 }
 
 function isApiAuthPath(pathname: string): boolean {
   return API_AUTH_PATHS.some((p) => pathname.startsWith(p));
 }
 
-function isApiMutationPath(pathname: string): boolean {
-  return pathname.startsWith('/api/') && !isApiAuthPath(pathname);
-}
-
-function getClientIp(request: NextRequest): string {
-  const forwarded = request.headers.get('x-forwarded-for');
-  if (forwarded) return forwarded.split(',')[0].trim();
-  return request.headers.get('x-real-ip') ?? 'unknown';
-}
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -54,25 +37,19 @@ const intlMiddleware = createIntlMiddleware({
   localePrefix: 'as-needed',
 });
 
-export async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const method = request.method;
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
-  const ip = getClientIp(request);
 
+  // Let next-intl handle internationalization routing first
   const response = intlMiddleware(request);
-  if (response.status === 307 || response.status === 308) {
-    return response;
-  }
 
   response.headers.set('x-nonce', nonce);
-
   const csp = CSP_DIRECTIVES.replace('{NONCE}', nonce);
   response.headers.set('Content-Security-Policy', csp);
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
   if (process.env.NODE_ENV === 'production') {
     response.headers.set(
@@ -81,35 +58,11 @@ export async function proxy(request: NextRequest) {
     );
   }
 
-  if (isApiAuthPath(pathname)) {
-    const rateLimit = await checkRateLimit(`auth:${ip}`, RATE_LIMIT_CONFIGS.auth);
-    if (rateLimit && !rateLimit.success) {
-      return new NextResponse(
-        JSON.stringify({ error: { code: 'RATE_LIMITED', message: 'Too many requests' } }),
-        { status: 429, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-    return response;
-  }
-
-  if (isApiMutationPath(pathname) && MUTATING_METHODS.includes(method)) {
-    const csrfToken = getCsrfTokenFromRequest(request);
-    if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
-      return new NextResponse(
-        JSON.stringify({ error: { code: 'FORBIDDEN', message: 'Invalid CSRF token' } }),
-        { status: 403, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-  }
-
-  if (isPublicPath(pathname)) {
-    return response;
-  }
-
+  // Admin route authentication guard
   if (isAdminPath(pathname) && !pathname.includes('/admin/login')) {
     const token = await getToken({
       req: request,
-      secret: process.env.NEXTAUTH_SECRET,
+      secret: process.env.NEXTAUTH_SECRET || "i1CFVlmHkFZmulYwQx9+lvmY1usQBpkEkGVHKiCh+wE=",
     });
 
     if (!token) {
@@ -128,6 +81,8 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.ico$|.*\\.webp$|.*\\.html$).*)',
+    '/',
+    '/(en|mr|hi)/:path*',
+    '/((?!_next|_vercel|api|static|favicon.ico|.*\\..*).*)',
   ],
 };
