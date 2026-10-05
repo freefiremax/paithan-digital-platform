@@ -32,7 +32,7 @@ const CSP_DIRECTIVES = [
 const intlMiddleware = createIntlMiddleware({
   locales,
   defaultLocale,
-  localePrefix: 'as-needed',
+  localePrefix: 'always',
 });
 
 export default async function middleware(request: NextRequest) {
