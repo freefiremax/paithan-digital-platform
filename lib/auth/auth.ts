@@ -114,5 +114,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     },
   },
-  secret: env.NEXTAUTH_SECRET,
 } satisfies NextAuthConfig);
