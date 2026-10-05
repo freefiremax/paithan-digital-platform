@@ -22,7 +22,6 @@ import {
   FigureMount,
 } from "@/components/ui/HistoricMotifs";
 import { HomeVideoBand } from "@/components/layout/HomeVideoBand";
-import PaithanMapEmbed from "@/components/PaithanMapEmbed";
 import { PaithanWardMap } from "@/components/home/PaithanWardMap";
 import {
   councilProfile,
@@ -142,7 +141,6 @@ export default function HomePage() {
       <PaithanWardMap />
       <WardsOverview />
       <OfficialLandmarksShowcase />
-      <PaithanMapEmbed />
     </>
   );
 }
