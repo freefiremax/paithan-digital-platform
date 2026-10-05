@@ -11,7 +11,7 @@ function AdminLoginForm() {
   const router = useRouter();
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || `/${locale}/admin/dashboard`;
+  const callbackUrl = searchParams.get("callbackUrl") || `/${locale}`;
   const emailParam = searchParams.get("email") || "";
   const isRegistered = searchParams.get("registered") === "1";
   const t = useTranslations("adminLogin");

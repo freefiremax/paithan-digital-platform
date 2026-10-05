@@ -202,9 +202,17 @@ export default function Header() {
                   <span className="text-[11px] text-[var(--saffron-100)] font-medium truncate max-w-[120px]">
                     {session.user.name || session.user.email}
                   </span>
+                  {(session.user as { role?: string })?.role === "ADMIN" || (session.user as { role?: string })?.role === "EDITOR" ? (
+                    <Link
+                      href={`/${locale}/admin/dashboard`}
+                      className="inline-flex items-center gap-1 rounded-sm border border-amber-500/50 bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-300 hover:bg-amber-500/30 transition font-semibold"
+                    >
+                      <span>Admin CMS</span>
+                    </Link>
+                  ) : null}
                   <button
                     onClick={() => signOut({ callbackUrl: `/${locale}` })}
-                    className="inline-flex items-center gap-1 rounded-sm border border-red-500/40 bg-red-950/30 px-1.5 py-0.5 text-[10px] text-red-300 hover:bg-red-900/60 hover:border-red-400 transition"
+                    className="inline-flex items-center gap-1 rounded-sm border border-red-500/40 bg-red-950/30 px-1.5 py-0.5 text-[10px] text-red-300 hover:bg-red-900/60 hover:border-red-400 transition cursor-pointer"
                     title="Sign Out"
                   >
                     <LogOut className="h-3 w-3" />
