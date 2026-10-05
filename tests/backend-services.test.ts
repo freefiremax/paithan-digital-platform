@@ -31,7 +31,8 @@ describe("Backend Services & Database Verification", () => {
       const admin = await prisma.user.findFirst({ where: { role: "ADMIN" } });
       expect(admin).toBeDefined();
       expect(admin?.email).toBeDefined();
-      expect(admin?.passwordHash.length).toBeGreaterThan(20);
+      expect(admin?.passwordHash).toBeDefined();
+      expect(admin!.passwordHash!.length).toBeGreaterThan(20);
     });
   });
 
