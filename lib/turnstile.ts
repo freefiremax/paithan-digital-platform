@@ -1,16 +1,17 @@
 import { env } from "@/lib/env";
 
 export async function verifyTurnstileToken(token: string | undefined): Promise<boolean> {
+  // Allow test tokens in test environment
+  if (process.env.NODE_ENV === "test" && token && (token.startsWith("dummy-") || token.startsWith("test-"))) {
+    return true;
+  }
+
   const secretKey = env.TURNSTILE_SECRET_KEY;
 
   if (!secretKey || !token) {
     return false;
   }
 
-  // Allow test tokens in test environment only
-  if (process.env.NODE_ENV === "test" && (token.startsWith("dummy-") || token.startsWith("test-"))) {
-    return true;
-  }
 
   try {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {

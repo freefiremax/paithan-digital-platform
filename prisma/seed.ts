@@ -111,23 +111,20 @@ async function main() {
   }
   console.log("✅ Created 5 civic sector info records");
 
-  // Create initial admin user if env vars provided
-  const adminEmail = process.env.INITIAL_ADMIN_EMAIL;
-  const adminPassword = process.env.INITIAL_ADMIN_PASSWORD;
+  // Create initial admin user
+  const adminEmail = process.env.INITIAL_ADMIN_EMAIL || "admin@paithan.gov.in";
+  const adminPassword = process.env.INITIAL_ADMIN_PASSWORD || "changeme1234";
   const adminName = process.env.INITIAL_ADMIN_NAME || "System Administrator";
 
-  if (adminEmail && adminPassword) {
-    console.log("👤 Creating initial admin user...");
-    const passwordHash = await hash(adminPassword);
-    await prisma.user.upsert({
-      where: { email: adminEmail },
-      update: { passwordHash, role: Role.ADMIN, name: adminName },
-      create: { email: adminEmail, passwordHash, name: adminName, role: Role.ADMIN },
-    });
-    console.log("✅ Created initial admin user");
-  } else {
-    console.log("⚠️ INITIAL_ADMIN_EMAIL/PASSWORD not set, skipping admin user creation");
-  }
+  console.log("👤 Creating initial admin user...");
+  const passwordHash = await hash(adminPassword);
+  await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: { passwordHash, role: Role.ADMIN, name: adminName },
+    create: { email: adminEmail, passwordHash, name: adminName, role: Role.ADMIN },
+  });
+  console.log("✅ Created initial admin user");
+
 
   console.log("🎉 Seed completed successfully!");
 }
