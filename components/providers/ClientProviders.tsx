@@ -2,11 +2,14 @@
 
 import React, { ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
+import { CloudflareSecurityGate } from "@/components/security/CloudflareSecurityGate";
 
 export function ClientProviders({ children }: { children: ReactNode }) {
   return (
     <SessionProvider>
-      {children}
+      <CloudflareSecurityGate>
+        {children}
+      </CloudflareSecurityGate>
     </SessionProvider>
   );
 }
