@@ -37,10 +37,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const status = sessionResult?.status ?? "loading";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const isLoginPage = pathname === "/admin/login";
+  const currentLocale = pathname?.split("/")[1] || "en";
+  const isLoginPage = pathname?.includes("/admin/login") || pathname?.endsWith("/login");
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/admin/login" });
+    await signOut({ callbackUrl: `/${currentLocale}/admin/login` });
   };
 
   if (isLoginPage) {
@@ -56,7 +57,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   if (!session?.user) {
-    router.push(`/admin/login?callbackUrl=${encodeURIComponent(pathname)}`);
+    router.push(`/${currentLocale}/admin/login?callbackUrl=${encodeURIComponent(pathname)}`);
     return null;
   }
 
@@ -154,11 +155,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href;
+            const fullHref = `/${currentLocale}${item.href}`;
+            const isActive = pathname === fullHref || pathname === item.href;
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={fullHref}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition ${
                   isActive
@@ -178,7 +180,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         <div className="p-3 border-t border-slate-800 space-y-2">
           <Link
-            href="/"
+            href={`/${currentLocale}`}
             target="_blank"
             className="flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-400 hover:bg-slate-800 hover:text-white transition"
           >

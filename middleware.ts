@@ -8,7 +8,7 @@ const ADMIN_PATHS = ['/admin'];
 const API_AUTH_PATHS = ['/api/auth'];
 
 function isAdminPath(pathname: string): boolean {
-  return ADMIN_PATHS.some((p) => pathname.startsWith(p));
+  return ADMIN_PATHS.some((p) => pathname.startsWith(p) || /^\/(en|mr|hi)\/admin/.test(pathname));
 }
 
 function isApiAuthPath(pathname: string): boolean {
@@ -61,7 +61,9 @@ export default async function middleware(request: NextRequest) {
     });
 
     if (!token) {
-      const signInUrl = new URL('/admin/login', request.url);
+      const match = pathname.match(/^\/(en|mr|hi)/);
+      const loc = match ? match[1] : defaultLocale;
+      const signInUrl = new URL(`/${loc}/admin/login`, request.url);
       signInUrl.searchParams.set('callbackUrl', pathname);
       return NextResponse.redirect(signInUrl);
     }
