@@ -12,6 +12,7 @@ function RegisterForm() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || `/${locale}`;
+  const googleCallbackUrl = callbackUrl && !callbackUrl.includes("/admin") ? callbackUrl : `/${locale}`;
   const t = useTranslations("register");
 
   const [email, setEmail] = useState("");
@@ -97,7 +98,7 @@ function RegisterForm() {
         <div className="bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8">
           <button
             type="button"
-            onClick={() => signIn("google", { callbackUrl })}
+            onClick={() => signIn("google", { callbackUrl: googleCallbackUrl })}
             disabled={isLoading}
             className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 rounded-xl py-3 px-4 text-sm font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer"
           >

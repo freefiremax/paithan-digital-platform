@@ -12,6 +12,7 @@ function AdminLoginForm() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || `/${locale}`;
+  const googleCallbackUrl = callbackUrl && !callbackUrl.includes("/admin") ? callbackUrl : `/${locale}`;
   const emailParam = searchParams.get("email") || "";
   const isRegistered = searchParams.get("registered") === "1";
   const t = useTranslations("adminLogin");
@@ -85,7 +86,7 @@ function AdminLoginForm() {
 
           <button
             type="button"
-            onClick={() => signIn("google", { callbackUrl })}
+            onClick={() => signIn("google", { callbackUrl: googleCallbackUrl })}
             disabled={isLoading}
             className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 rounded-xl py-3 px-4 text-sm font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer"
           >

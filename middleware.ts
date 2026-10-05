@@ -52,7 +52,7 @@ export default async function middleware(request: NextRequest) {
   if (isAdminPath(pathname) && !pathname.includes('/admin/login')) {
     const token = await getToken({
       req: request,
-      secret: process.env.NEXTAUTH_SECRET || "i1CFVlmHkFZmulYwQx9+lvmY1usQBpkEkGVHKiCh+wE=",
+      secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || "i1CFVlmHkFZmulYwQx9+lvmY1usQBpkEkGVHKiCh+wE=",
     });
 
     if (!token) {

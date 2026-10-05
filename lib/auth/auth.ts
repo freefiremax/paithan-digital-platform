@@ -8,8 +8,41 @@ import { env } from "@/lib/env";
 import { generateCsrfToken, setCsrfCookie } from "@/lib/csrf";
 import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
 
+const baseAdapter = PrismaAdapter(prisma);
+
+const customAdapter = {
+  ...baseAdapter,
+  createUser: async (data: { email: string; name?: string | null; [key: string]: unknown }) => {
+    return prisma.user.create({
+      data: {
+        email: data.email,
+        name: data.name ?? null,
+        passwordHash: (data.passwordHash as string) || "",
+        role: "PUBLIC",
+      },
+    });
+  },
+  getUserByEmail: async (email: string) => {
+    return prisma.user.findUnique({
+      where: { email },
+    });
+  },
+  getUserByAccount: async ({ provider, providerAccountId }: { provider: string; providerAccountId: string }) => {
+    const account = await prisma.account.findUnique({
+      where: {
+        provider_providerAccountId: {
+          provider,
+          providerAccountId,
+        },
+      },
+      select: { user: true },
+    });
+    return (account?.user as typeof baseAdapter extends { createUser: (u: infer U) => infer R } ? R : never) ?? null;
+  },
+};
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: customAdapter as typeof baseAdapter,
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   trustHost: true,
   secret: env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
@@ -61,11 +94,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn() {
+      return true;
+    },
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
-        token.wardId = user.wardId;
+        token.role = (user as { role?: string }).role || "PUBLIC";
+        token.wardId = (user as { wardId?: string }).wardId;
       }
       if (trigger === "update" && session) {
         token.role = session.role ?? token.role;
@@ -75,9 +111,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.wardId = token.wardId ?? undefined;
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
+        session.user.wardId = (token.wardId as string) ?? undefined;
       }
       return session;
     },
