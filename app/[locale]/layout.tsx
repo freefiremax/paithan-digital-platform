@@ -18,15 +18,13 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  if (!locales.includes(locale as Locale)) {
-    notFound();
-  }
+  const safeLocale = locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale;
 
-  setRequestLocale(locale);
-  const messages = await getMessages(locale as Locale);
+  setRequestLocale(safeLocale);
+  const messages = await getMessages(safeLocale);
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider locale={safeLocale} messages={messages}>
       <ClientProviders>{children}</ClientProviders>
     </NextIntlClientProvider>
   );

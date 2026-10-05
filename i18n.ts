@@ -19,14 +19,24 @@ export const localeNativeNames: Record<Locale, string> = {
 };
 
 export async function getMessages(locale: Locale) {
+  const safeLocale = locales.includes(locale) ? locale : defaultLocale;
   try {
-    return (await import(`./messages/${locale}.json`)).default;
-  } catch {
-    notFound();
+    return (await import(`./messages/${safeLocale}.json`)).default;
+  } catch (err) {
+    console.error(`Failed to load messages for locale: ${locale}`, err);
+    return (await import(`./messages/en.json`)).default;
   }
 }
 
-export default getRequestConfig(async ({ locale }) => {
-  const messages = await getMessages(locale as Locale);
-  return { locale: locale as string, messages };
+export default getRequestConfig(async ({ requestLocale }) => {
+  let locale = await requestLocale;
+
+  if (!locale || !locales.includes(locale as Locale)) {
+    locale = defaultLocale;
+  }
+
+  return {
+    locale,
+    messages: await getMessages(locale as Locale),
+  };
 });
