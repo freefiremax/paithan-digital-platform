@@ -5,12 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle, Globe } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 function AdminLoginForm() {
   const router = useRouter();
+  const locale = useLocale();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/admin/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") || `/${locale}/admin/dashboard`;
   const t = useTranslations("adminLogin");
 
   const [email, setEmail] = useState("");
@@ -169,13 +170,13 @@ function AdminLoginForm() {
 
           <div className="mt-6 pt-4 border-t border-slate-800 flex flex-col gap-2 text-center">
             <Link
-              href="/register"
+              href={`/${locale}/register`}
               className="text-xs text-amber-400 hover:text-amber-300 font-medium transition"
             >
               Need a citizen account? Register here →
             </Link>
             <Link
-              href="/"
+              href={`/${locale}`}
               className="text-xs text-slate-400 hover:text-white transition inline-flex items-center justify-center gap-1 mt-1"
             >
               ← {t("backToPublic")}

@@ -5,12 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { ShieldCheck, Lock, Mail, User, ArrowRight, Building2, AlertCircle, Eye, EyeOff } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 function RegisterForm() {
   const router = useRouter();
+  const locale = useLocale();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || `/${locale}`;
   const t = useTranslations("register");
 
   const [email, setEmail] = useState("");
@@ -225,12 +226,18 @@ function RegisterForm() {
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-slate-800 text-center">
+          <div className="mt-6 pt-4 border-t border-slate-800 flex flex-col gap-2 text-center">
             <Link
-              href="/admin/login"
-              className="text-xs text-slate-400 hover:text-amber-400 transition inline-flex items-center gap-1"
+              href={`/${locale}/admin/login`}
+              className="text-xs text-slate-400 hover:text-amber-400 transition inline-flex items-center justify-center gap-1"
             >
               ← {t("backToLogin")}
+            </Link>
+            <Link
+              href={`/${locale}`}
+              className="text-xs text-slate-500 hover:text-slate-300 transition inline-flex items-center justify-center gap-1"
+            >
+              ← Back to Public Portal
             </Link>
           </div>
         </div>
