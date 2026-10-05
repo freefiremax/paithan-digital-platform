@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMessages } from "@/i18n";
@@ -18,5 +19,15 @@ export default async function SearchPage({ params }: PageProps) {
   const messages = await getMessages(locale as "en" | "mr" | "hi");
   if (!messages.search) notFound();
 
-  return <SearchClient locale={locale as "en" | "mr" | "hi"} />;
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[50vh] flex items-center justify-center">
+          <div className="text-slate-400 animate-pulse text-sm">Loading search...</div>
+        </div>
+      }
+    >
+      <SearchClient locale={locale as "en" | "mr" | "hi"} />
+    </Suspense>
+  );
 }
