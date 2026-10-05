@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import {
   Phone,
   Mail,
@@ -16,6 +17,10 @@ import {
   ChevronDown,
   Globe,
   AlertCircle,
+  User,
+  LogOut,
+  ShieldCheck,
+  LogIn,
 } from 'lucide-react';
 import { CouncilSeal } from '@/components/layout/CouncilSeal';
 import { StateEmblem } from '@/components/ui/StateEmblem';
@@ -86,6 +91,7 @@ export default function Header() {
   const locale = useLocale() as Locale;
   const pathname = usePathname();
   const router = useRouter();
+  const { data: session } = useSession();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openWing, setOpenWing] = useState<string | null>(null);
@@ -191,6 +197,30 @@ export default function Header() {
                   </ul>
                 )}
               </div>
+
+              {session?.user ? (
+                <div className="flex items-center gap-2 border-l border-[var(--on-vangi-rule)] pl-3">
+                  <span className="text-[11px] text-[var(--saffron-100)] font-medium truncate max-w-[120px]">
+                    {session.user.name || session.user.email}
+                  </span>
+                  <button
+                    onClick={() => signOut({ callbackUrl: `/${locale}` })}
+                    className="inline-flex items-center gap-1 rounded-sm border border-red-500/40 bg-red-950/30 px-1.5 py-0.5 text-[10px] text-red-300 hover:bg-red-900/60 hover:border-red-400 transition"
+                    title="Sign Out"
+                  >
+                    <LogOut className="h-3 w-3" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href={`/${locale}/admin/login`}
+                  className="inline-flex items-center gap-1 rounded-sm border border-[var(--on-vangi-rule)] px-2 py-0.5 text-[10px] text-[var(--saffron-100)] hover:bg-[var(--portal-blue-50)] hover:text-white transition"
+                >
+                  <LogIn className="h-3 w-3 text-[var(--saffron-500)]" />
+                  <span>Sign In / Register</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -199,7 +229,7 @@ export default function Header() {
       <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-white)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4 py-3">
-            <Link href="/" className="flex items-center gap-3">
+            <Link href={`/${locale}`} className="flex items-center gap-3">
               <CouncilSeal size={56} />
               <span>
                 <span className="block text-[11px] font-medium text-[var(--civic-slate-500)] sm:text-xs">
@@ -216,11 +246,11 @@ export default function Header() {
 
             <div className="flex items-center gap-2">
               <Link
-                href="/chatbot"
+                href={`/${locale}/chatbot`}
                 className="hidden items-center gap-2 rounded-sm border border-[var(--portal-blue-700)] bg-[var(--bg-surface-white)] px-3.5 py-2 text-xs font-semibold text-[var(--portal-blue-800)] transition-colors hover:bg-[var(--portal-blue-800)] hover:text-[var(--saffron-100)] lg:inline-flex"
               >
                 <Bot className="h-4 w-4" aria-hidden="true" />
-                <span>{t('noticesTenders').replace('Notices & Tenders', 'Ask about Paithan')}</span>
+                <span>Ask AI Assistant</span>
               </Link>
 
               <a
@@ -231,7 +261,7 @@ export default function Header() {
                 <Phone className="h-4 w-4" aria-hidden="true" />
               </a>
               <Link
-                href="/chatbot"
+                href={`/${locale}/chatbot`}
                 aria-label="Ask about Paithan"
                 className="flex h-10 w-10 items-center justify-center rounded-sm bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)] transition-colors hover:bg-[var(--portal-blue-100)] lg:hidden"
               >
@@ -261,7 +291,7 @@ export default function Header() {
             <ul className="flex items-center">
               <li>
                 <Link
-                  href="/"
+                  href={`/${locale}`}
                   className="block border-b-2 border-transparent px-3.5 py-2.5 text-[var(--on-vangi)] transition-colors hover:border-[var(--saffron-500)] hover:bg-[var(--portal-blue-900)]"
                 >
                   {t('home')}
@@ -305,7 +335,7 @@ export default function Header() {
                       {wing.items.map((item, index) => (
                         <Link
                           key={item.href}
-                          href={item.href}
+                          href={`/${locale}${item.href}`}
                           onClick={() => setOpenWing(null)}
                           className={`block border-l-2 px-4 py-2 text-[13px] text-[var(--civic-slate-700)] transition-colors hover:border-[var(--saffron-500)] hover:bg-[var(--portal-blue-50)] hover:text-[var(--portal-blue-900)] ${
                             index === 0
@@ -323,7 +353,7 @@ export default function Header() {
 
               <li>
                 <Link
-                  href="/nagar-parishad/notifications"
+                  href={`/${locale}/nagar-parishad/notifications`}
                   className="inline-flex items-center gap-1.5 border-b-2 border-transparent px-3.5 py-2.5 text-[var(--on-vangi)] transition-colors hover:border-[var(--saffron-500)] hover:bg-[var(--portal-blue-900)]"
                 >
                   <FileText className="h-4 w-4" aria-hidden="true" />
@@ -332,12 +362,25 @@ export default function Header() {
               </li>
             </ul>
 
-            <Link
-              href="/admin/login"
-              className="rounded-sm border border-[var(--on-vangi-rule)] px-3 py-1.5 text-xs text-[var(--on-vangi-muted)] transition-colors hover:border-[var(--saffron-500)] hover:bg-[var(--saffron-500)] hover:text-[var(--portal-blue-900)]"
-            >
-              {t('councilAdmin')}
-            </Link>
+            <div className="flex items-center gap-2">
+              {session?.user && (session.user as { role?: string }).role !== 'PUBLIC' ? (
+                <Link
+                  href={`/${locale}/admin/dashboard`}
+                  className="rounded-sm border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs text-amber-300 transition-colors hover:bg-amber-500 hover:text-slate-950 flex items-center gap-1.5 font-semibold"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  <span>Admin Dashboard</span>
+                </Link>
+              ) : (
+                <Link
+                  href={`/${locale}/admin/login`}
+                  className="rounded-sm border border-[var(--on-vangi-rule)] px-3 py-1.5 text-xs text-[var(--on-vangi-muted)] transition-colors hover:border-[var(--saffron-500)] hover:bg-[var(--saffron-500)] hover:text-[var(--portal-blue-900)] flex items-center gap-1.5"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  <span>{t('councilAdmin')}</span>
+                </Link>
+              )}
+            </div>
           </div>
         </nav>
         <div className="zari-rule" aria-hidden="true" />
@@ -347,7 +390,7 @@ export default function Header() {
         <div className="max-h-[70vh] overflow-y-auto border-t border-[var(--border-subtle)] bg-white lg:hidden">
           <nav aria-label="Mobile" className="px-4 py-3">
             <Link
-              href="/"
+              href={`/${locale}`}
               onClick={() => setMobileMenuOpen(false)}
               className="block border-b border-[var(--border-subtle)] py-2.5 text-sm font-semibold text-[var(--portal-blue-900)]"
             >
@@ -366,7 +409,7 @@ export default function Header() {
                     {wing.items.map((item) => (
                       <li key={item.href}>
                         <Link
-                          href={item.href}
+                          href={`/${locale}${item.href}`}
                           onClick={() => setMobileMenuOpen(false)}
                           className="block py-1.5 text-[13px] text-[var(--civic-slate-700)]"
                         >
@@ -381,15 +424,15 @@ export default function Header() {
 
             <div className="flex items-center justify-between gap-3 pt-3">
               <Link
-                href="/chatbot"
+                href={`/${locale}/chatbot`}
                 onClick={() => setMobileMenuOpen(false)}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--saffron-700)]"
               >
                 <Bot className="h-4 w-4" aria-hidden="true" />
-                <span>{t('noticesTenders').replace('Notices & Tenders', 'Ask about Paithan')}</span>
+                <span>Ask AI Assistant</span>
               </Link>
               <Link
-                href="/admin/login"
+                href={`/${locale}/admin/login`}
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-xs font-semibold text-[var(--portal-blue-700)]"
               >
