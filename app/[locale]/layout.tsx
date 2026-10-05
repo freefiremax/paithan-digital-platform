@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { locales, getMessages, type Locale } from "@/i18n";
+import { locales, defaultLocale, getMessages, type Locale } from "@/i18n";
 import { ClientProviders } from "@/components/providers/ClientProviders";
 
 export function generateStaticParams() {
