@@ -59,8 +59,7 @@ function RegisterForm() {
       });
 
       if (signInResult?.ok && !signInResult?.error) {
-        router.push(callbackUrl);
-        router.refresh();
+        window.location.assign(callbackUrl);
       } else {
         router.push(`/${locale}/admin/login?registered=1&email=${encodeURIComponent(email)}`);
       }

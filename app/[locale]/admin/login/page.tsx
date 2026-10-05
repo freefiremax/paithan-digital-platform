@@ -39,8 +39,7 @@ function AdminLoginForm() {
         return;
       }
 
-      router.push(callbackUrl);
-      router.refresh();
+      window.location.assign(callbackUrl);
     } catch {
       setError(t("errorUnexpected"));
     } finally {
