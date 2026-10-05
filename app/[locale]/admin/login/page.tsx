@@ -12,9 +12,11 @@ function AdminLoginForm() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || `/${locale}/admin/dashboard`;
+  const emailParam = searchParams.get("email") || "";
+  const isRegistered = searchParams.get("registered") === "1";
   const t = useTranslations("adminLogin");
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(emailParam);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -37,8 +39,7 @@ function AdminLoginForm() {
         return;
       }
 
-      router.push(callbackUrl);
-      router.refresh();
+      window.location.href = callbackUrl;
     } catch (err) {
       setError(t("errorUnexpected"));
     } finally {
@@ -109,6 +110,13 @@ function AdminLoginForm() {
           </div>
 
           <div>
+            {isRegistered && (
+              <div className="mb-4 flex items-center gap-2 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 p-3 rounded-xl">
+                <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
+                <span>Account created successfully! Please enter your password to sign in.</span>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-medium text-slate-300 mb-1">

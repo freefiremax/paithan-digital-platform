@@ -34,7 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
         if (!credentials?.email || !credentials?.password) return null;
 
-        if (isTurnstileEnabled()) {
+        if (isTurnstileEnabled() && credentials.turnstileToken) {
           const turnstileValid = await verifyTurnstileToken(credentials.turnstileToken as string | undefined);
           if (!turnstileValid) return null;
         }

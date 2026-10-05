@@ -58,12 +58,12 @@ function RegisterForm() {
         callbackUrl,
       });
 
-      if (signInResult?.error) {
-        throw new Error(t("errorAutoLoginFailed"));
+      if (signInResult?.ok && !signInResult?.error) {
+        window.location.href = callbackUrl;
+      } else {
+        // Fallback gracefully to login page with notice
+        window.location.href = `/${locale}/admin/login?registered=1&email=${encodeURIComponent(email)}`;
       }
-
-      router.push(callbackUrl);
-      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : t("submitError"));
     } finally {
