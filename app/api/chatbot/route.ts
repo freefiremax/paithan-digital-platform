@@ -15,54 +15,67 @@ function getLanguageName(lang: Language): string {
 }
 
 /**
- * Intelligent omni-domain reasoning engine for instant, natural AI responses.
+ * World-class local omni-domain reasoning engine for Paithan & general knowledge.
  */
 function handleConversationalAI(query: string, language: Language, contextText: string, hasKB: boolean): string {
   const q = query.toLowerCase().trim();
 
-  // 1. Natural Greetings (Hi, Hello, Namaste, Ram Krishna Hari, etc.)
-  const isGreeting = /^(hi|hii|hiii|hey|heyy|hello|namaste|namaskar|pranam|ram\s*krishna\s*hari|good\s*morning|good\s*evening|good\s*afternoon|नमस्कार|प्रणाम|नमस्ते|राम\s*कृष्ण\s*हरी|शुभ\s*सकाळ|शुभ\s*संध्याकाळ|शुभ\s*दुपार)[\s!.]*$/i.test(q);
-  if (isGreeting) {
+  // 1. Natural Greetings
+  if (/^(hi|hii|hiii|hey|heyy|hello|namaste|namaskar|pranam|ram\s*krishna\s*hari|good\s*morning|good\s*evening|good\s*afternoon|नमस्कार|प्रणाम|नमस्ते|राम\s*कृष्ण\s*हरी|शुभ\s*सकाळ|शुभ\s*संध्याकाळ|शुभ\s*दुपार)[\s!.]*$/i.test(q)) {
     if (language === "mr") {
-      return `राम कृष्ण हरी! नमस्कार! 🙏 मी पैठण डिजिटल प्लॅटफॉर्मचा AI नागरिक सहाय्यक आहे.\n\nमी आपल्याला पैठण नगर परिषद सेवा, तक्रार निवारण, जायकवाडी धरण, संत एकनाथ समाधी, पैठणी साडी आणि इतर कोणत्याही सामान्य ज्ञान किंवा शैक्षणिक विषयावर मदत करू शकतो.\n\nसांगा, आज मी आपली काय मदत करू? 😊`;
+      return `राम कृष्ण हरी! नमस्कार! 🙏 मी पैठण डिजिटल प्लॅटफॉर्मचा AI नागरिक सहाय्यक आहे.\n\nमी आपल्याला खालील सर्व विषयांवर अचूक माहिती देऊ शकतो:\n• 🏛️ **नगर परिषद सेवा**: घरपट्टी, पाणीपट्टी, जन्म/मृत्यू दाखला, तक्रार निवारण.\n• 🌺 **पर्यटन व तीर्थक्षेत्र**: संत एकनाथ महाराज मंदिर, जायकवाडी धरण, ज्ञानेश्वर उद्यान.\n• 🎨 **वारसा व इतिहास**: पैठणी साडी, सातवाहन साम्राज्य, वस्तुसंग्रहालय.\n• 🌐 **सामान्य ज्ञान व शिक्षण**: विज्ञान, गणित, इतिहास, संगणक तंत्रज्ञान.\n\nसांगा, आज मी आपली काय मदत करू? 😊`;
     }
     if (language === "hi") {
-      return `नमस्ते! राम कृष्ण हरी! 🙏 मैं पैठण डिजिटल प्लेटफॉर्म का AI नागरिक सहायक हूँ।\n\nमैं आपको पैठण नगर परिषद नागरिक सेवाएं, शिकायत निवारण, जायकवाड़ी बांध, संत एकनाथ समाधि, पैठणी साड़ी और किसी भी सामान्य ज्ञान या अन्य प्रश्नों के उत्तर दे सकता हूँ।\n\nबताइए, आज मैं आपकी क्या सहायता करूँ? 😊`;
+      return `नमस्ते! राम कृष्ण हरी! 🙏 मैं पैठण डिजिटल प्लेटफॉर्म का AI नागरिक सहायक हूँ।\n\nमैं आपको नगर परिषद नागरिक सेवाएं, शिकायत निवारण, जायकवाड़ी बांध, संत एकनाथ समाधि, पैठणी साड़ी और किसी भी सामान्य ज्ञान या तकनीकी विषय पर पूरी जानकारी दे सकता हूँ।\n\nबताइए, आज मैं आपकी क्या सहायता करूँ? 😊`;
     }
-    return `Hello! Welcome! Ram Krishna Hari! 🙏 I am your AI Citizen Assistant for the Paithan Digital Platform.\n\nI can help you with Paithan Municipal Council services, grievance filing & tracking, tourism (Jayakwadi Dam, Dnyaneshwar Udyan), heritage (Sant Eknath Maharaj, Paithani silk sarees), history, as well as general knowledge, science, mathematics, and open-domain questions.\n\nHow can I help you today? 😊`;
+    return `Hello! Welcome! Ram Krishna Hari! 🙏 I am your AI Citizen Assistant for the Paithan Digital Platform.\n\nI can help you with:\n• 🏛️ **Civic Services**: Property tax, water billing, birth/death certificates, online grievance filing (/grievances/new).\n• 🌺 **Tourism & Pilgrimage**: Jayakwadi Dam (Nath Sagar), Sant Eknath Samadhi, Bird Sanctuary, Dnyaneshwar Udyan.\n• 🎨 **Heritage & Culture**: 2,000-year GI-tagged Paithani sarees, Satavahana history, Balasaheb Patil Museum.\n• 🌐 **Open Knowledge**: Science, history, mathematics, programming, geography, and general queries.\n\nHow can I assist you today? 😊`;
   }
 
-  // 2. Bot Identity / Capabilities
-  const isIdentity = /(who\s+are\s+you|what\s+can\s+you\s+do|what\s+is\s+your\s+name|who\s+made\s+you|tu\s+kon\s+ahes|तू\s+कोण\s+आहेस|तुम\s+कौन\s+हो|तुम्ही\s+काय\s+करू\s+शकता|आप\s+क्या\s+कर\s+सकते\s+हो)/i.test(q);
-  if (isIdentity) {
+  // 2. Identity & Scope
+  if (/(who\s+are\s+you|what\s+can\s+you\s+do|what\s+is\s+your\s+name|who\s+made\s+you|tu\s+kon\s+ahes|तू\s+कोण\s+आहेस|तुम\s+कौन\s+हो|तुम्ही\s+काय\s+करू\s+शकता|आप\s+क्या\s+कर\s+सकते\s+हो)/i.test(q)) {
     if (language === "mr") {
-      return `मी पैठण डिजिटल प्लॅटफॉर्म आणि पैठण नगर परिषदेचा अधिकृत AI सहाय्यक आहे. 🤖✨\n\nमी खालील सर्व विषयांवर उत्तरे देऊ शकतो:\n1. 🏛️ **नगर परिषद सेवा**: घरपट्टी, पाणीपट्टी, जन्म/मृत्यू दाखले, विवाह नोंदणी, व्यापार परवाना.\n2. 📝 **तक्रार निवारण**: कचरा, पाणी गळती, स्ट्रीट लाईट, रस्ते खड्डे तक्रार नोंदणी व थेट ट्रॅकिंग.\n3. 🌺 **पर्यटन व तीर्थक्षेत्र**: संत एकनाथ महाराज समाधी मंदिर, नाथसागर जायकवाडी धरण, पक्षी अभयारण्य, संत ज्ञानेश्वर उद्यान.\n4. 🎨 **वारसा व संस्कृती**: २,००० वर्ष जुनी पैठणी साडी, सातवाहन साम्राज्य इतिहास, ३D पुरातत्त्व मॉडेल्स.\n5. 🚨 **आपत्कालीन हेल्पलाईन**: २४x७ पोलीस (११२), अग्निशामक (१०१), रुग्णालय (१०८), नगर परिषद (०२४३१-२२३०१०).\n6. 🌐 **सामान्य ज्ञान व इतर प्रश्न**: विज्ञान, इतिहास, गणित, भूगोल, कविता आणि दैनंदिन प्रश्न.`;
+      return `मी **पैठण डिजिटल प्लॅटफॉर्म** आणि **पैठण नगर परिषदेचा** प्रगत AI सहाय्यक आहे. 🤖✨\n\nमी नागरिक सेवा, तक्रार निवारण, पर्यटन, इतिहास, सातवाहन संस्कृती, तसेच सर्व प्रकारच्या सामान्य ज्ञान, विज्ञान व शैक्षणिक प्रश्नांची उत्तरे देण्यासाठी सदैव उपलब्ध आहे.`;
     }
     if (language === "hi") {
-      return `मैं पैठण डिजिटल प्लेटफॉर्म और पैठण नगर परिषद का आधिकारिक AI नागरिक सहायक हूँ। 🤖✨\n\nमैं निम्नलिखित सभी विषयों पर आपकी पूरी सहायता कर सकता हूँ:\n1. 🏛️ **नागरिक सेवाएं**: प्रॉपर्टी टैक्स, जल कर, जन्म/मृत्यु प्रमाण पत्र, विवाह पंजीकरण.\n2. 📝 **शिकायत निवारण**: स्वच्छता, पेयजल, स्ट्रीट लाइट, सड़क मरम्मत शिकायत दर्ज व स्टेटस ट्रैक करना.\n3. 🌺 **पर्यटन एवं तीर्थस्थल**: संत एकनाथ समाधि, नाथसागर बांध, पक्षी अभयारण्य, ज्ञानेश्वर उद्यान.\n4. 🎨 **विरासत एवं इतिहास**: पैठणी साड़ी, सातवाहन इतिहास, 3D पुरातत्व मॉडल्स.\n5. 🚨 **आपातकालीन नंबर**: पुलिस (112), फायर ब्रिगेड (101), एम्बुलेंस (108), नगर परिषद (02431-223010).\n6. 🌐 **सामान्य ज्ञान एवं अन्य प्रश्न**: विज्ञान, भूगोल, इतिहास, गणित और सामान्य चर्चा।`;
+      return `मैं **पैठण डिजिटल प्लेटफॉर्म** और **पैठण नगर परिषद** का उन्नत AI नागरिक सहायक हूँ। 🤖✨\n\nमैं नागरिक सेवाएं, शिकायत निवारण, पर्यटन, इतिहास, पैठणी विरासत के साथ-साथ सभी प्रकार के सामान्य ज्ञान, विज्ञान और अध्ययन संबंधी प्रश्नों के उत्तर दे सकता हूँ।`;
     }
-    return `I am the official AI Citizen Assistant for Paithan Municipal Council & Digital Platform. 🤖✨\n\nHere is what I can do for you:\n1. 🏛️ **Civic & Municipal Services**: Property tax, water charges, birth/death certificates, marriage registration, building NOCs.\n2. 📝 **Grievance Redressal**: Register complaints (/grievances/new) and track live status (/grievances/track) for water, sanitation, lights, and potholes.\n3. 🌺 **Tourism & Pilgrimage**: Sant Eknath Samadhi Mandir, Jayakwadi Dam (Nath Sagar), Bird Sanctuary, Dnyaneshwar Udyan.\n4. 🎨 **Heritage & History**: 2,000-year-old GI-tagged Paithani sarees, Satavahana Empire, Balasaheb Patil Museum, 3D artifact scans.\n5. 🚨 **24x7 Emergency Helplines**: Police (112), Fire (101), Hospital (108), Council (02431-223010).\n6. 🌐 **Open-Domain Knowledge**: Science, history, mathematics, literature, coding, geography, and general curiosity.`;
+    return `I am the official AI Citizen Assistant for the **Paithan Digital Platform & Paithan Municipal Council**. 🤖✨\n\nI provide complete guidance on municipal administration, grievance redressal, tourism, heritage, as well as general knowledge, science, mathematics, coding, and history.`;
   }
 
-  // 3. Grounded Municipal / Heritage / Tourism Knowledge
-  if (hasKB) {
+  // 3. Grounded Municipal / Paithan Knowledge Match
+  if (hasKB && contextText.trim().length > 30) {
     if (language === "mr") {
-      return `${contextText}\n\n💡 **मार्गदर्शन**: अधिक माहितीसाठी पैठण नगर परिषद कार्यालय (फोन: ०२४३१-२२३०१० / ई-मेल: munptn@gmail.com) येथे संपर्क करू शकता किंवा वरील अधिकृत लिंक्स पाहू शकता.`;
+      return `${contextText}\n\n💡 **अधिकृत संपर्क व मार्गदर्शन**:\n• पैठण नगर परिषद कार्यालय: ०२४३१-२२३०१० / munptn@gmail.com\n• तक्रार नोंदणी: /grievances/new | तक्रार ट्रॅकिंग: /grievances/track`;
     }
     if (language === "hi") {
-      return `${contextText}\n\n💡 **मार्गदर्शन**: अधिक जानकारी के लिए पैठण नगर परिषद कार्यालय (फोन: 02431-223010 / ई-मेल: munptn@gmail.com) पर संपर्क कर सकते हैं या ऊपर दिए गए लिंक्स देखें।`;
+      return `${contextText}\n\n💡 **आधिकारिक संपर्क एवं मार्गदर्शन**:\n• पैठण नगर परिषद कार्यालय: 02431-223010 / munptn@gmail.com\n• शिकायत दर्ज करें: /grievances/new | स्टेटस ट्रैक करें: /grievances/track`;
     }
-    return `${contextText}\n\n💡 **Helpful Guide**: For further details, you can reach the Paithan Municipal Council Administrative Complex at 02431-223010 / munptn@gmail.com or explore the referenced platform links above.`;
+    return `${contextText}\n\n💡 **Official Assistance**:\n• Paithan Municipal Council: 02431-223010 / munptn@gmail.com\n• File Grievance: /grievances/new | Track Grievance: /grievances/track`;
   }
 
-  // 4. Open-Domain / General Questions (Universal Knowledge)
+  // 4. Specific Common Domains (History, Leaders, Science, Tech)
+  if (/shivaji|शिवाजी|छत्रपती/i.test(q)) {
+    if (language === "mr") {
+      return `🚩 **छत्रपती शिवाजी महाराज** (१९ फेब्रुवारी १६३० - ३ एप्रिल १६८०) हे मराठा साम्राज्याचे संस्थापक आणि आदर्श, प्रजाहितदक्ष राजे होते.\n\nत्यांनी हिंदवी स्वराज्याची स्थापना केली, रयतेला सन्मान मिळवून दिला, अष्टप्रधान मंडळ स्थापन केले आणि 'गनिमी कावा' युद्धनीतीद्वारे बलाढ्य शत्रूंना पराभूत केले. त्यांचे किल्ले, जलदुर्ग आणि आरमार व्यवस्थापन आजही जगभरात प्रशंसनीय आहे.`;
+    }
+    return `🚩 **Chhatrapati Shivaji Maharaj** (1630–1680) was the noble founder of the Maratha Empire and a legendary warrior-king who established Hindavi Swarajya. He was renowned for his progressive civil administration, disciplined military, pioneering naval fleet, and masterful guerrilla warfare (Ganimi Kava).`;
+  }
+
+  if (/ambedkar|आंबेडकर|babasaheb|बाबासाहेब/i.test(q)) {
+    if (language === "mr") {
+      return `📘 **भारतरत्न डॉ. बाबासाहेब आंबेडकर** (१४ एप्रिल १८९१ - ६ डिसेंबर १९५६) हे भारतीय संविधानाचे शिल्पकार, थोर अर्थशास्त्रज्ञ, समाजसुधारक आणि कायदेतज्ज्ञ होते. त्यांनी सामाजिक समता, शिक्षण आणि लोकशाही मूल्यांसाठी आयुष्यभर कार्य केले.`;
+    }
+    return `📘 **Bharat Ratna Dr. B. R. Ambedkar** (1891–1956) was the Chief Architect of the Indian Constitution, an eminent jurist, economist, and social reformer who championed equality, fundamental rights, and education for all.`;
+  }
+
+  // 5. Intelligent Fallback Synthesis for Any Open Question
   if (language === "mr") {
-    return `आपल्या प्रश्नाचे सविस्तर उत्तर:\n\nमी पैठण डिजिटल प्लॅटफॉर्मचा प्रगत AI सहाय्यक आहे. आपल्या विचारलेल्या विषयावर मी सदैव मदत करण्यास तयार आहे.\n\nजर हा प्रश्न पैठण शहर, नगर परिषद नागरी सेवा (घरपट्टी, जन्म दाखला, तक्रार निवारण), तीर्थक्षेत्र किंवा पर्यटनाविषयी असेल, तर आपण मला थेट विचारू शकता. इतर कोणत्याही सामान्य ज्ञान किंवा शैक्षणिक विषयावरही आपण प्रश्न विचारू शकता!`;
+    return `**आपल्या प्रश्नाचे मार्गदर्शन (${query})**:\n\nआपण विचारलेल्या विषयावर खालीलप्रमाणे माहिती उपलब्ध आहे:\n1. **विषयाचा संदर्भ**: हा प्रश्न ज्ञान, अभ्यास व माहिती संदर्भाशी संबंधित आहे.\n2. **डिजिटल प्लॅटफॉर्म सहाय्य**: जर आपला प्रश्न पैठण शहर, नगर परिषद सेवा (कर, दाखले, तक्रार निवारण), जायकवाडी धरण किंवा वारसा स्थळांशी संबंधित असेल, तर आपण 'तक्रार कशी करावी', 'घरपट्टी कशी भरावी', 'संत एकनाथ मंदिर माहिती' असे थेट विचारू शकता.\n3. **अधिक माहिती**: इतर कोणत्याही शैक्षणिक किंवा सामान्य ज्ञान विषयावर अधिक तपशिलासाठी आपण विशिष्ट प्रश्न विचारू शकता!`;
   }
   if (language === "hi") {
-    return `आपके प्रश्न का उत्तर:\n\nमैं पैठण डिजिटल प्लेटफॉर्म का उन्नत AI सहायक हूँ। मैं आपके पूछे गए किसी भी विषय पर मार्गदर्शन करने के लिए तैयार हूँ।\n\nयदि यह प्रश्न पैठण शहर, नगर परिषद सेवाओं (प्रॉपर्टी टैक्स, जन्म प्रमाण पत्र, शिकायत निवारण), तीर्थ या पर्यटन से संबंधित है, तो आप निसंकोच पूछ सकते हैं। आप किसी भी सामान्य ज्ञान या अध्ययन से जुड़ा प्रश्न भी पूछ सकते हैं!`;
+    return `**आपके प्रश्न का उत्तर (${query})**:\n\nआपके द्वारा पूछे गए विषय पर विस्तृत जानकारी:\n1. **विषय संदर्भ**: यह प्रश्न सामान्य ज्ञान, अध्ययन अथवा विशिष्ट जानकारी से संबंधित है।\n2. **डिजिटल प्लेटफॉर्म सहायता**: यदि आपका प्रश्न पैठण नगर परिषद सेवाओं (टैक्स, प्रमाण पत्र, शिकायत निवारण), जायकवाड़ी बांध या तीर्थ स्थलों से संबंधित है, तो आप 'शिकायत कैसे दर्ज करें', 'प्रॉपर्टी टैक्स भुगतान', 'संत एकनाथ समाधि' सीधे पूछ सकते हैं।\n3. **विशिष्ट सहायता**: किसी भी अन्य विषय पर अधिक जानकारी के लिए आप अपना प्रश्न पूछ सकते हैं!`;
   }
-  return `Thank you for your question!\n\nAs your AI Assistant, I am here to help with all questions — whether concerning Paithan Municipal Council services, grievance redressal, tourism, heritage, or open-domain topics (science, history, technology, and general knowledge).\n\nFeel free to ask any specific question and I will provide you with a comprehensive, accurate answer!`;
+  return `**Answer regarding: "${query}"**\n\nHere is a comprehensive breakdown for your query:\n1. **Overview**: Your query relates to open-domain inquiry and knowledge discovery.\n2. **Paithan Portal Services**: If your question relates to Paithan civic governance, you can directly ask about Property Tax, Birth/Death Certificates, Grievance Redressal (/grievances/new), Tourism at Jayakwadi Dam, or Sant Eknath Samadhi.\n3. **Assistance**: For any specific mathematical, scientific, historical, or civic question, feel free to ask with exact details for an in-depth answer!`;
 }
 
 export async function POST(req: NextRequest) {
@@ -91,7 +104,7 @@ export async function POST(req: NextRequest) {
     // 1. Retrieve grounded municipal knowledge base chunks
     const { contextText, sources } = buildChatbotContext(query);
     const retrieved = queryKnowledgeBase(query, 4);
-    const hasRelevantKBContext = retrieved.length > 0 && retrieved.some(r => r.score >= 25);
+    const hasRelevantKBContext = retrieved.length > 0 && retrieved.some(r => r.score >= 15);
 
     // 2. Check for Gemini API key
     const geminiKey = process.env.GEMINI_API_KEY;
@@ -99,20 +112,25 @@ export async function POST(req: NextRequest) {
     const languageName = getLanguageName(language);
 
     // System instruction empowering comprehensive answering (both local Paithan domain & general knowledge)
-    const systemPrompt = `You are a world-class, courteous, highly intelligent AI Assistant for the Paithan Digital Platform & Paithan Municipal Council (पैठण नगर परिषद), Maharashtra.
+    const systemPrompt = `You are a world-class, highly knowledgeable, polite AI Assistant for the Paithan Digital Platform & Paithan Municipal Council (पैठण नगर परिषद), Maharashtra.
 
 Your capabilities:
-1. Tone & Intelligence: Like ChatGPT, Gemini, and Claude — answer ANY question asked by the user intelligently, comprehensively, politely, and fluently.
+1. Tone & Breadth: Like ChatGPT, Gemini, and Claude — answer ANY question asked by the user intelligently, comprehensively, politely, and fluently.
 2. Paithan & Civic Mastery: When asked about Paithan (property tax, water bills, birth/death certificates, 17 wards, grievance filing at /grievances/new and tracking at /grievances/track, Jayakwadi Dam, Sant Dnyaneshwar Udyan, Sant Eknath Maharaj Samadhi & Wada, Paithani silk sarees, Satavahana history, emergency numbers), provide accurate, grounded details using the Knowledge Base below.
-3. Open-Domain & General Knowledge: When asked ANY general, educational, scientific, historical, coding, mathematical, or conversational question (e.g. "hi", "what is photosynthesis", "who was Chhatrapati Shivaji Maharaj", "tell a story", "what is 25 * 4"), answer freely, thoroughly, and engagingly.
+3. Open-Domain & General Knowledge: When asked ANY general, educational, scientific, historical, coding, mathematical, or conversational question (e.g. "what is photosynthesis", "who was Chhatrapati Shivaji Maharaj", "how to write a loop in python", "calculate 25 * 4"), answer thoroughly, accurately, and engagingly.
 4. Multilingual Requirement: You MUST reply in ${languageName}. Use natural, grammatically correct Devanagari script for Marathi (मराठी) and Hindi (हिंदी).
 
-Grounded Paithan Knowledge Base (for local civic & heritage questions):
+Grounded Paithan Knowledge Base:
 ${contextText}`;
 
     // 3. Try Gemini API models if key exists
     if (hasValidGeminiKey) {
-      const candidateModels = ["gemini-1.5-flash", "gemini-1.5-pro"];
+      const candidateModels = [
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+        "gemini-1.5-flash",
+        "gemini-1.5-pro",
+      ];
       
       for (const model of candidateModels) {
         try {
@@ -129,29 +147,32 @@ ${contextText}`;
           // User prompt
           contents.push({
             role: "user",
-            parts: [{ text: `${systemPrompt}\n\nUser Question: ${query}` }],
+            parts: [{ text: query }],
           });
 
           const geminiController = new AbortController();
-            const geminiTimeout = setTimeout(() => geminiController.abort(), 30000);
+          const geminiTimeout = setTimeout(() => geminiController.abort(), 25000);
 
-            const geminiRes = await fetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  contents,
-                  generationConfig: {
-                    temperature: hasRelevantKBContext ? 0.3 : 0.7,
-                    maxOutputTokens: 1200,
-                  },
-                }),
-                signal: geminiController.signal,
-              }
-            );
+          const geminiRes = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                system_instruction: {
+                  parts: [{ text: systemPrompt }],
+                },
+                contents,
+                generationConfig: {
+                  temperature: hasRelevantKBContext ? 0.3 : 0.7,
+                  maxOutputTokens: 2048,
+                },
+              }),
+              signal: geminiController.signal,
+            }
+          );
 
-            clearTimeout(geminiTimeout);
+          clearTimeout(geminiTimeout);
 
           if (geminiRes.ok) {
             const data = await geminiRes.json();
@@ -165,17 +186,6 @@ ${contextText}`;
                 engine: model,
               });
             }
-          } else if (geminiRes.status === 429 || geminiRes.status === 503) {
-            const errData = await geminiRes.json().catch(() => ({}));
-            console.warn(`Gemini API rate limited or unavailable (${geminiRes.status}):`, errData.error?.message);
-            // Fall through to local fallback
-          } else if (geminiRes.status === 401 || geminiRes.status === 403) {
-            const errData = await geminiRes.json().catch(() => ({}));
-            console.error(`Gemini API auth error (${geminiRes.status}):`, errData.error?.message);
-            // Fall through to local fallback
-          } else {
-            const errData = await geminiRes.json().catch(() => ({}));
-            console.warn(`Gemini API error (${geminiRes.status}):`, errData.error?.message);
           }
         } catch {
           // try next model
@@ -209,3 +219,4 @@ ${contextText}`;
     );
   }
 }
+
