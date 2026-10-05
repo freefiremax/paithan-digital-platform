@@ -2,6 +2,8 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { Adapter, AdapterUser } from "@auth/core/adapters";
+import { Role } from "@prisma/client";
 import { verify } from "@node-rs/argon2";
 import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
@@ -10,22 +12,31 @@ import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
 
 const baseAdapter = PrismaAdapter(prisma);
 
-const customAdapter = {
+const customAdapter: Adapter = {
   ...baseAdapter,
-  createUser: async (data: { email: string; name?: string | null; [key: string]: unknown }) => {
-    return prisma.user.create({
+  createUser: async (data: AdapterUser) => {
+    const user = await prisma.user.create({
       data: {
         email: data.email,
         name: data.name ?? null,
-        passwordHash: (data.passwordHash as string) || "",
-        role: "PUBLIC",
+        passwordHash: "",
+        role: Role.PUBLIC,
       },
     });
+    return {
+      ...user,
+      emailVerified: null,
+    } as unknown as AdapterUser;
   },
   getUserByEmail: async (email: string) => {
-    return prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
     });
+    if (!user) return null;
+    return {
+      ...user,
+      emailVerified: null,
+    } as unknown as AdapterUser;
   },
   getUserByAccount: async ({ provider, providerAccountId }: { provider: string; providerAccountId: string }) => {
     const account = await prisma.account.findUnique({
@@ -37,12 +48,16 @@ const customAdapter = {
       },
       select: { user: true },
     });
-    return (account?.user as typeof baseAdapter extends { createUser: (u: infer U) => infer R } ? R : never) ?? null;
+    if (!account?.user) return null;
+    return {
+      ...account.user,
+      emailVerified: null,
+    } as unknown as AdapterUser;
   },
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: customAdapter as typeof baseAdapter,
+  adapter: customAdapter,
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   trustHost: true,
   secret: env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
@@ -100,20 +115,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as { role?: string }).role || "PUBLIC";
-        token.wardId = (user as { wardId?: string }).wardId;
+        token.role = (user.role as Role) || Role.PUBLIC;
+        token.wardId = user.wardId;
       }
       if (trigger === "update" && session) {
-        token.role = session.role ?? token.role;
-        token.wardId = session.wardId ?? token.wardId;
+        token.role = (session.role as Role) ?? token.role;
+        token.wardId = (session.wardId as string | null | undefined) ?? token.wardId;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-        session.user.wardId = (token.wardId as string) ?? undefined;
+        session.user.id = token.id;
+        session.user.role = token.role;
+        session.user.wardId = token.wardId ?? undefined;
       }
       return session;
     },
