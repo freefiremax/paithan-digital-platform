@@ -6,6 +6,16 @@
     "email": "munptn@gmail.com",
     "language": "Language"
   },
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "toolbarLabel": "Accessibility toolbar",
+    "toolbarTitle": "Accessibility",
+    "resetAll": "Reset all settings",
+    "decreaseFont": "Decrease font size",
+    "increaseFont": "Increase font size",
+    "resetFont": "Reset font size",
+    "highContrast": "High contrast mode"
+  },
   "nav": {
     "home": "Home",
     "nagarParishad": "Nagar Parishad",
