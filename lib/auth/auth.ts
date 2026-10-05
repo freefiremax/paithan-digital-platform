@@ -2,7 +2,7 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { Adapter, AdapterUser } from "@auth/core/adapters";
+import type { Adapter, AdapterUser, AdapterAccount } from "@auth/core/adapters";
 import { Role } from "@prisma/client";
 import { verify } from "@node-rs/argon2";
 import { prisma } from "@/lib/db";
@@ -23,6 +23,16 @@ const customAdapter: Adapter = {
         role: Role.PUBLIC,
       },
     });
+    return {
+      ...user,
+      emailVerified: null,
+    } as unknown as AdapterUser;
+  },
+  getUser: async (id: string) => {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+    if (!user) return null;
     return {
       ...user,
       emailVerified: null,
@@ -51,6 +61,37 @@ const customAdapter: Adapter = {
     if (!account?.user) return null;
     return {
       ...account.user,
+      emailVerified: null,
+    } as unknown as AdapterUser;
+  },
+  linkAccount: async (account: AdapterAccount) => {
+    await prisma.account.create({
+      data: {
+        userId: account.userId,
+        type: account.type,
+        provider: account.provider,
+        providerAccountId: account.providerAccountId,
+        refresh_token: account.refresh_token,
+        access_token: account.access_token,
+        expires_at: account.expires_at,
+        token_type: account.token_type,
+        scope: account.scope,
+        id_token: account.id_token,
+        session_state: account.session_state as string | undefined,
+      },
+    });
+    return account;
+  },
+  updateUser: async ({ id, ...data }: Partial<AdapterUser> & { id: string }) => {
+    const updateData: { name?: string | null; email?: string } = {};
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.email !== undefined) updateData.email = data.email;
+    const user = await prisma.user.update({
+      where: { id },
+      data: updateData,
+    });
+    return {
+      ...user,
       emailVerified: null,
     } as unknown as AdapterUser;
   },
@@ -149,13 +190,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
+      if (url.includes("/admin/login") || url.includes("/login") || url.includes("/api/auth")) {
+        return `${baseUrl}/en`;
+      }
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       try {
         if (new URL(url).origin === baseUrl) return url;
       } catch {
         // fallback
       }
-      return baseUrl;
+      return `${baseUrl}/en`;
     },
   },
   events: {
