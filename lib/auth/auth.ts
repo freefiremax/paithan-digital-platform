@@ -1,5 +1,6 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { verify } from "@node-rs/argon2";
 import { prisma } from "@/lib/db";
@@ -12,6 +13,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   pages: { signIn: "/admin/login", error: "/admin/login" },
   providers: [
+    Google({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: "openid email profile",
+          access_type: "offline",
+          prompt: "consent",
+        },
+      },
+    }),
     Credentials({
       name: "Credentials",
       credentials: {

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle } from "lucide-react";
+import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle, Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export default function AdminLoginPage() {
@@ -70,7 +70,29 @@ export default function AdminLoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4 sm:px-0">
         <div className="bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8">
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-700" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-slate-900/90 px-2 text-slate-500 font-medium">
+                {t("orContinueWith")}
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => signIn("google", { callbackUrl })}
+            disabled={isLoading}
+            className="w-full flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 border border-slate-700 hover:border-amber-500/50 rounded-xl py-3 px-4 text-sm font-medium text-slate-300 transition-all disabled:opacity-50"
+          >
+            <Globe className="w-5 h-5" />
+            <span>{t("continueWithGoogle")}</span>
+          </button>
+
+          <div className="mt-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-medium text-slate-300 mb-1">
                 {t("emailLabel")}
@@ -127,6 +149,7 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
+          </div>
 
           <div className="mt-6 pt-4 border-t border-slate-800 text-center">
             <Link

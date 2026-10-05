@@ -498,6 +498,8 @@
     "backToPublic": "Back to Paithan Public Platform",
     "disclaimer": "For authorized municipal council officers only. Audit logging is active under IT Act 2000.",
     "errorInvalidCredentials": "Invalid email or password",
-    "errorUnexpected": "An unexpected error occurred. Please try again."
+    "errorUnexpected": "An unexpected error occurred. Please try again.",
+    "orContinueWith": "or continue with",
+    "continueWithGoogle": "Continue with Google"
   }
 }
