@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.0",
+    "@emnapi/core": "1.11.3",
+    "@emnapi/runtime": "1.11.3",
     "@node-rs/argon2": "^2.0.0",
     "@prisma/client": "^6.4.1",
     "@sentry/nextjs": "^11.1.0",
@@ -36,10 +38,6 @@
     "tailwind-merge": "^3.7.0",
     "zod": "^4.6.5"
   },
-  "optionalDependencies": {
-    "@emnapi/core": "1.11.3",
-    "@emnapi/runtime": "1.11.3"
-  },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
@@ -54,9 +52,5 @@
     "tsx": "^4.19.0",
     "typescript": "^5",
     "vitest": "^3.0.0"
-  },
-  "optionalDependencies": {
-    "@emnapi/core": "1.11.3",
-    "@emnapi/runtime": "1.11.3"
   }
 }
