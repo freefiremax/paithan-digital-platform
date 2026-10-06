@@ -1,5 +1,6 @@
+"use client";
+
 import React from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -8,13 +9,7 @@ import {
   Clock,
   ArrowRight,
 } from "lucide-react";
-
-
-export const metadata: Metadata = {
-  title: "Historic Temples, Ghats & Archaeological Sites | Paithan Municipal Council",
-  description:
-    "Pilgrim guide to Paithan's sacred sites: Sant Eknath Samadhi Mandir, Nagghat, Sant Eknath Wada, Apegaon Temple, and the ancient Pratishthana archaeological mound.",
-};
+import { useTranslations, useLocale } from "next-intl";
 
 const HERITAGE_SITES = [
   {
@@ -39,7 +34,7 @@ const HERITAGE_SITES = [
   },
   {
     id: "site-eknath-wada",
-    titleEn: "Sant Eknath Ancestral Wada (संत एकनाथ वाडा)",
+    titleEn: "Sant Eknath Ancestral Wada",
     titleMr: "संत एकनाथ महाराज यांचे मूळ निवासस्थान (वाडा)",
     category: "Historic Residence",
     era: "16th Century CE",
@@ -99,6 +94,11 @@ const HERITAGE_SITES = [
 ];
 
 export default function HeritageSitesPage() {
+  const t = useTranslations("tourism");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -107,114 +107,115 @@ export default function HeritageSitesPage() {
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 mb-3">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Sacred Shrines & Historic Pratishthana</span>
+              <span>{t("heritageSitesTitle")}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              ऐतिहासिक मंदिरे, समाधी व घाट (Heritage Sites & Temples)
+              {t("heritageSitesTitle")}
             </h1>
             <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-              Complete pilgrim directory to the sanctified temples, riverside ghats, and archaeological excavation mounds of Paithan on the holy Godavari with official location photography.
+              {t("heritageSitesSubtitle")}
             </p>
           </div>
         </div>
 
         {/* Sites List */}
         <div className="space-y-8">
-          {HERITAGE_SITES.map((site) => (
-            <div
-              key={site.id}
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:border-amber-400/80 transition-all flex flex-col lg:flex-row"
-            >
-              {/* Official Photo Column */}
-              <div className="relative w-full lg:w-80 h-64 lg:h-auto shrink-0 bg-slate-100">
-                <Image
-                  src={site.imageUrl}
-                  alt={site.imageAlt}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 320px"
-                  className="object-cover"
-                />
-                <div className="absolute top-3 left-3 bg-emerald-950/80 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded backdrop-blur-xs border border-emerald-500/30 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                  छायाचित्र
+          {HERITAGE_SITES.map((site) => {
+            const siteTitle = isMr && site.titleMr ? site.titleMr : site.titleEn;
+            return (
+              <div
+                key={site.id}
+                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:border-amber-400/80 transition-all flex flex-col lg:flex-row"
+              >
+                {/* Official Photo Column */}
+                <div className="relative w-full lg:w-80 h-64 lg:h-auto shrink-0 bg-slate-100">
+                  <Image
+                    src={site.imageUrl}
+                    alt={site.imageAlt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 320px"
+                    className="object-cover"
+                  />
                 </div>
-              </div>
 
-              <div className="p-6 sm:p-8 flex-1 flex flex-col lg:flex-row gap-6">
-                <div className="flex-1 space-y-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
-                      {site.category}
-                    </span>
-                    <span className="text-xs font-semibold text-slate-muted bg-slate-100 px-2.5 py-1 rounded-full">
-                      {site.era}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h2 className="text-xl font-bold text-slate-900 leading-snug">{site.titleEn}</h2>
-                    <p className="text-sm text-slate-600 font-marathi mt-0.5">{site.titleMr}</p>
-                  </div>
-
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    {site.description}
-                  </p>
-
-                  <div className="pt-2">
-                    <div className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
-                      Key Highlights & Shrines:
+                <div className="p-6 sm:p-8 flex-1 flex flex-col lg:flex-row gap-6">
+                  <div className="flex-1 space-y-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                        {site.category}
+                      </span>
+                      <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                        {site.era}
+                      </span>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
-                      {site.highlights.map((h, idx) => (
-                        <div key={idx} className="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                          <span>{h}</span>
+
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-900 leading-snug">{siteTitle}</h2>
+                      {!isMr && site.titleMr ? (
+                        <p className="text-sm text-slate-500 font-marathi mt-0.5">{site.titleMr}</p>
+                      ) : null}
+                    </div>
+
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {site.description}
+                    </p>
+
+                    <div className="pt-2">
+                      <div className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+                        {tCommon("overview")}:
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+                        {site.highlights.map((h, idx) => (
+                          <div key={idx} className="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                            <span>{h}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Visiting & Aarti Card */}
+                  <div className="w-full lg:w-72 bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col justify-between space-y-4 shrink-0">
+                    <div className="space-y-3 text-xs">
+                      <div>
+                        <span className="text-slate-500 text-[11px] font-medium uppercase block">{t("timings")}</span>
+                        <div className="font-bold text-slate-900 mt-0.5 flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-amber-600" />
+                          <span>{site.visitingHours}</span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                      </div>
 
-                {/* Right: Visiting & Aarti Card */}
-                <div className="w-full lg:w-72 bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col justify-between space-y-4 shrink-0">
-                  <div className="space-y-3 text-xs">
-                    <div>
-                      <span className="text-slate-body text-[11px] font-medium uppercase block">Darshan Timings</span>
-                      <div className="font-bold text-slate-900 mt-0.5 flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-amber-600" />
-                        <span>{site.visitingHours}</span>
+                      <div>
+                        <span className="text-slate-500 text-[11px] font-medium uppercase block">{tCommon("details")}</span>
+                        <div className="text-slate-700 mt-0.5 leading-relaxed font-medium">
+                          {site.aartiTimings}
+                        </div>
+                      </div>
+
+                      <div>
+                        <span className="text-slate-500 text-[11px] font-medium uppercase block">{tCommon("address")}</span>
+                        <div className="text-slate-700 mt-0.5 flex items-start gap-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                          <span>{site.location}</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div>
-                      <span className="text-slate-body text-[11px] font-medium uppercase block">Aarti & Worship Schedule</span>
-                      <div className="text-slate-700 mt-0.5 leading-relaxed font-medium">
-                        {site.aartiTimings}
-                      </div>
+                    <div className="pt-3 border-t border-slate-200">
+                      <Link
+                        href={`/tourism/map`}
+                        className="w-full inline-flex items-center justify-center gap-1.5 bg-teal-700 hover:bg-teal-900 text-white py-2.5 rounded-xl text-xs font-semibold shadow-xs transition"
+                      >
+                        <span>{t("mapTitle")}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
                     </div>
-
-                    <div>
-                      <span className="text-slate-body text-[11px] font-medium uppercase block">Location & Distance</span>
-                      <div className="text-slate-700 mt-0.5 flex items-start gap-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                        <span>{site.location}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-200">
-                    <Link
-                      href={`/tourism/map`}
-                      className="w-full inline-flex items-center justify-center gap-1.5 bg-teal-700 hover:bg-teal-900 text-white py-2.5 rounded-xl text-xs font-semibold shadow-xs transition"
-                    >
-                      <span>View on Tourist Map</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

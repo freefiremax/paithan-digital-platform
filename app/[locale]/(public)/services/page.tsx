@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
@@ -21,23 +22,26 @@ async function getAllSectors() {
   return sectors;
 }
 
-export default async function ServicesIndexPage() {
+export default async function ServicesIndexPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const tServices = await getTranslations({ locale, namespace: "services" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
   const sectors = await getAllSectors();
 
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Services" },
+          { label: tNav("home"), href: `/${locale}` },
+          { label: tNav("civicServices") },
         ]}
       />
 
       <div className="mx-auto max-w-[1180px] px-4 py-11">
         <SectionHeading
           as="h1"
-          title="Civic Services & Sectors"
-          description="Paithan Municipal Council delivers essential services across five key sectors. Each sector page shows live data on development works, public facilities, and departmental information."
+          title={tServices("title")}
+          description={tServices("subtitle")}
         />
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -50,36 +54,36 @@ export default async function ServicesIndexPage() {
           ].map((sector) => {
             const sectorInfo = sectors.find((s) => s.sector === sector);
             const slug = getSlugFromSector(sector);
+            const title = locale === "mr" 
+              ? (sectorInfo?.titleMr || SECTOR_LABELS_MR[sector])
+              : (sectorInfo?.titleEn || SECTOR_LABELS_EN[sector]);
+            const tagline = locale === "mr"
+              ? (sectorInfo?.taglineMr || "माहिती अधिकृत पडताळणीनंतर प्रसिद्ध केली जाईल.")
+              : (sectorInfo?.taglineEn || "Sector information will be published once verified.");
 
             return (
               <Link
                 key={sector}
-                href={`/services/${slug}`}
+                href={`/${locale}/services/${slug}`}
                 className="group border border-slate-200 bg-white p-5 rounded-2xl hover:border-amber-400 hover:shadow-lg transition-all duration-200"
               >
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <span className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">
-                    {SECTOR_LABELS_EN[sector]}
+                    {locale === "mr" ? SECTOR_LABELS_MR[sector] : SECTOR_LABELS_EN[sector]}
                   </span>
                   <DataStatusBadge status={(sectorInfo?.dataStatus as "VERIFIED" | "SAMPLE_TBD") || "SAMPLE_TBD"} showVerified />
                 </div>
 
                 <h3 className="text-lg font-semibold text-slate-900 group-hover:text-amber-700 transition-colors mb-1">
-                  {sectorInfo?.titleEn || SECTOR_LABELS_EN[sector]}
+                  {title}
                 </h3>
-                <p lang="mr" className="text-xs text-slate-500 font-marathi mb-3">
-                  {sectorInfo?.titleMr || SECTOR_LABELS_MR[sector]}
-                </p>
 
                 <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                  {sectorInfo?.taglineEn || "Sector information will be published once verified."}
-                </p>
-                <p lang="mr" className="text-xs text-slate-400 font-marathi mb-4">
-                  {sectorInfo?.taglineMr || "माहिती अधिकृत पडताळनीनंतर प्रसिद्ध केली जाईल."}
+                  {tagline}
                 </p>
 
                 <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                  <span className="text-xs font-semibold text-slate-700">Explore Sector →</span>
+                  <span className="text-xs font-semibold text-slate-700">{tServices("exploreSector")} →</span>
                 </div>
               </Link>
             );
@@ -88,13 +92,13 @@ export default async function ServicesIndexPage() {
 
         {/* Data Integrity Notice */}
         <div className="mt-12 border-l-[3px] border-amber-500 bg-amber-50/40 px-4 py-4">
-          <h4 className="text-xs font-semibold text-slate-900 mb-2">Data Integrity Commitment</h4>
+          <h4 className="text-xs font-semibold text-slate-900 mb-2">{tServices("dataIntegrityTitle")}</h4>
           <ul className="text-xs text-slate-700 space-y-1">
-            <li>• All sector data is sourced from official Nagar Parishad records.</li>
-            <li>• Records marked <DataStatusBadge status="SAMPLE_TBD" /> are illustrative samples awaiting official verification.</li>
-            <li>• Records marked <DataStatusBadge status="VERIFIED" /> have been confirmed against gazetted/departmental sources.</li>
-            <li>• Empty sectors indicate no verified records have been published yet — never fabricated data.</li>
-            <li>• Census 2011 statistics are explicitly labeled where used.</li>
+            <li>• {tServices("dataIntegrityPoint1")}</li>
+            <li>• {tServices("dataIntegrityPoint2")}</li>
+            <li>• {tServices("dataIntegrityPoint3")}</li>
+            <li>• {tServices("dataIntegrityPoint4")}</li>
+            <li>• {tServices("dataIntegrityPoint5")}</li>
           </ul>
         </div>
       </div>

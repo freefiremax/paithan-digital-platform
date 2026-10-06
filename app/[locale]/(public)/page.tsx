@@ -1,3 +1,6 @@
+"use client";
+
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,6 +18,7 @@ import {
   CreditCard,
   Camera,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { NotificationCategoryBadge } from "@/components/ui/NotificationCategoryBadge";
 import {
   ButiOrnament,
@@ -40,53 +44,9 @@ const ledgerEntries = [...notifications].sort((a, b) =>
   b.publishedAt.localeCompare(a.publishedAt)
 );
 
-/** The three wings of the platform, declared once so the hero and nav cannot drift. */
-const WINGS = [
-  {
-    key: "civic",
-    title: "Nagar Parishad",
-    titleMr: "नगर परिषद",
-    blurb:
-      "Council administration for all 17 wards: elected representatives, the corporator roster, development works and official notices.",
-    facts: "17 wards · Class C council · Established 1854",
-    links: [
-      { label: "Public representatives", href: "/nagar-parishad/representatives" },
-      { label: "Ward directory & corporators", href: "/nagar-parishad/ward-map" },
-      { label: "Development works register", href: "/nagar-parishad/development-works" },
-      { label: "Tenders & public notices", href: "/nagar-parishad/notifications" },
-    ],
-  },
-  {
-    key: "heritage",
-    title: "Heritage & Museum",
-    titleMr: "वारसा व संग्रहालय",
-    blurb:
-      "Pratishthana, capital of the Satavahanas, the state archaeological museum, and two thousand years of Paithani silk weaving.",
-    facts: "King Hala's Gaha Sattasai · GI-tagged Paithani silk",
-    links: [
-      { label: "Dr. Balasaheb Patil Museum", href: "/heritage/museum" },
-      { label: "Satavahana coins & antiquities", href: "/heritage/artifacts" },
-      { label: "History of ancient Pratishthana", href: "/heritage/history" },
-      { label: "Sant Eknath & Paithani weaving", href: "/heritage/cultural-heritage" },
-    ],
-  },
-  {
-    key: "tourism",
-    title: "Explore Paithan",
-    titleMr: "पर्यटन व परिसर",
-    blurb:
-      "Jayakwadi Dam on the Godavari, the Nath Sagar wetland sanctuary, and the riverside ghats of the Sant Eknath pilgrimage circuit.",
-    facts: "341 km² sanctuary · Winter migratory season",
-    links: [
-      { label: "Jayakwadi Dam & reservoir", href: "/tourism/jayakwadi" },
-      { label: "Jaikwadi Bird Sanctuary", href: "/tourism/nath-sagar" },
-      { label: "Temples & heritage sites", href: "/tourism/heritage-sites" },
-      { label: "Suggested day routes", href: "/tourism/routes" },
-    ],
-  },
-] as const;
-
 export default function HomePage() {
+  const tHome = useTranslations("home");
+
   return (
     <>
       <HomeVideoBand />
@@ -94,11 +54,6 @@ export default function HomePage() {
       <CitizenServicesSection />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
-        {/*
-          One finial per page, at the single structural break between the wing
-          cards and the working sections. A manuscript marks its divisions too,
-          and adding one here means the rest of the page can stay plain.
-        */}
         <SectionFinial className="-mt-6 mb-6 lg:-mt-8 lg:mb-8" />
         <div className="grid gap-10 lg:grid-cols-12">
           {/* LEFT: TENDERS & PUBLIC NOTICES */}
@@ -111,19 +66,18 @@ export default function HomePage() {
                     id="notices-heading"
                     className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
                   >
-                    Tenders and public notices
+                    {tHome("noticesHeading")}
                   </h2>
                 </div>
                 <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
-                  Every announcement, scheme, tender and public notice the council issues is
-                  published in one register, with its reference number and closing date.
+                  {tHome("noticesSubtitle")}
                 </p>
               </div>
               <Link
                 href="/nagar-parishad/notifications"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
               >
-                <span>All notifications</span>
+                <span>{tHome("allNotifications")}</span>
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
@@ -147,22 +101,51 @@ export default function HomePage() {
 
 /* -------------------------------------------------------------------------- */
 
-/**
- * Masthead. The memorable element is the vitals strip — the council's own vital
- * statistics set in a bordered block, the way a gazette opens. It replaces the
- * gradient-and-three-cards hero this page used to carry, which said nothing a
- * citizen did not already know.
- *
- * Paper, not colour. The full-bleed video closes immediately above this band, and
- * a saturated ground here would put two loud fields edge to edge; on white the
- * video ends on a clean line and the navy type needs no halo. The saffron that
- * used to fill this band now appears once, as the gazette rule under the title.
- *
- * The band is deliberately slim and ends at the vitals. The three wings then
- * straddle the paper/canvas boundary below, so the page opens calm and the
- * cards carry the only edges.
- */
 function Masthead() {
+  const tHome = useTranslations("home");
+
+  const WINGS = [
+    {
+      key: "civic",
+      title: tHome("wingCivicTitle"),
+      titleMr: tHome("wingCivicTitleMr"),
+      blurb: tHome("wingCivicBlurb"),
+      facts: tHome("wingCivicFacts"),
+      links: [
+        { label: tHome("wingCivicLink1"), href: "/nagar-parishad/representatives" },
+        { label: tHome("wingCivicLink2"), href: "/nagar-parishad/ward-map" },
+        { label: tHome("wingCivicLink3"), href: "/nagar-parishad/development-works" },
+        { label: tHome("wingCivicLink4"), href: "/nagar-parishad/notifications" },
+      ],
+    },
+    {
+      key: "heritage",
+      title: tHome("wingHeritageTitle"),
+      titleMr: tHome("wingHeritageTitleMr"),
+      blurb: tHome("wingHeritageBlurb"),
+      facts: tHome("wingHeritageFacts"),
+      links: [
+        { label: tHome("wingHeritageLink1"), href: "/heritage/museum" },
+        { label: tHome("wingHeritageLink2"), href: "/heritage/artifacts" },
+        { label: tHome("wingHeritageLink3"), href: "/heritage/history" },
+        { label: tHome("wingHeritageLink4"), href: "/heritage/cultural-heritage" },
+      ],
+    },
+    {
+      key: "tourism",
+      title: tHome("wingTourismTitle"),
+      titleMr: tHome("wingTourismTitleMr"),
+      blurb: tHome("wingTourismBlurb"),
+      facts: tHome("wingTourismFacts"),
+      links: [
+        { label: tHome("wingTourismLink1"), href: "/tourism/jayakwadi" },
+        { label: tHome("wingTourismLink2"), href: "/tourism/nath-sagar" },
+        { label: tHome("wingTourismLink3"), href: "/tourism/heritage-sites" },
+        { label: tHome("wingTourismLink4"), href: "/tourism/routes" },
+      ],
+    },
+  ];
+
   return (
     <>
       <section className="portal-masthead">
@@ -170,67 +153,54 @@ function Masthead() {
           <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-[var(--civic-slate-500)]">
             <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--portal-blue-800)]">
               <ShieldCheck className="h-3.5 w-3.5 text-[var(--saffron-700)]" aria-hidden="true" />
-              Statutory Urban Local Body
+              {tHome("badge")}
             </span>
             <span className="text-[var(--border-strong)]" aria-hidden="true">
               |
             </span>
-            <span>{councilProfile.districtEn} district, Maharashtra</span>
+            <span>{tHome("districtState")}</span>
           </div>
 
           <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
             <div className="lg:col-span-7">
-              {/*
-                The illuminated initial. A manuscript opens on a painted capital
-                and a municipal masthead is the same gesture, so the first letter
-                is dropped into a madder square with a zari thread around it.
-              */}
               <h1 className="font-display text-[2.1rem] font-semibold leading-[1.18] tracking-tight text-[var(--portal-blue-900)] sm:text-[2.6rem] lg:text-[3rem]">
                 <span className="illuminated-cap" aria-hidden="true">
-                  R
+                  {tHome("heroHeadingPrefix").charAt(0) || "R"}
                 </span>
-                <span className="sr-only">R</span>ecords, services and information for the{" "}
-                {councilProfile.wardCount} wards of Paithan
+                <span className="sr-only">{tHome("heroHeadingPrefix").charAt(0)}</span>
+                {tHome("heroHeadingPrefix").slice(1)} {councilProfile.wardCount} {tHome("heroHeadingSuffix")}
               </h1>
 
               <div className="gazette-rule mt-6" aria-hidden="true" />
 
               <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed text-[var(--civic-slate-700)]">
-                Paithan is a municipal town of {councilProfile.wardCount} wards in
-                Chhatrapati Sambhajinagar district, and the ancient Pratishthana &mdash; capital
-                of the Satavahanas, and home of the Paithani weavers. The council publishes
-                its records, the town&apos;s heritage and its visitor information here.
+                {tHome("heroDesc")}
               </p>
 
               <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[var(--civic-slate-500)]">
-                Pratishthana was the capital of the Satavahanas, and King Hala&apos;s
-                <cite className="font-display-deva not-italic text-[var(--civic-slate-700)]">
-                  {" "}Gaha Sattasai
-                </cite>{" "}
-                is still sung here after two thousand years. The cloth woven in this town carries
-                the GI tag, and the peepal at the kund has not moved since the Satavahanas.
+                {tHome("heroHeritageNote")}
               </p>
             </div>
 
             <div className="lg:col-span-5 lg:pt-1">
               <dl className="portal-vitals">
                 <div className="portal-vital">
-                  <dt>Wards</dt>
+                  <dt>{tHome("vitalsWards")}</dt>
                   <dd>{councilProfile.wardCount}</dd>
                 </div>
                 <div className="portal-vital">
-                  <dt>Established</dt>
+                  <dt>{tHome("vitalsEstablished")}</dt>
                   <dd>{councilProfile.establishedYear}</dd>
                 </div>
                 <div className="portal-vital">
-                  <dt>Population</dt>
+                  <dt>{tHome("vitalsPopulation")}</dt>
                   <dd>
                     {paithanDemographics.totalPopulation.toLocaleString("en-IN")}
-                    <small> / Census {paithanDemographics.censusYear}</small>
+                    <small> / {tHome("vitalsCensus")}</small>
                   </dd>
                 </div>
                 <div className="portal-vital">
-                  <dt>Control room</dt>
+                  <dt>{tHome("vitalsControlRoom")}</dt>
                   <dd className="text-[1.05rem]">{councilProfile.phone}</dd>
                 </div>
               </dl>
@@ -238,23 +208,9 @@ function Masthead() {
           </div>
         </div>
 
-        {/*
-          The woven border closes the masthead. An earlier revision had the wing
-          cards straddle the bottom edge on a negative margin, which would have
-          covered this — so the straddle is gone and the border sits above the
-          cards, where a pallu border actually is. The band is decorative and
-          carries no information, so it is hidden from assistive technology.
-        */}
         <div className="paithani-band mt-12" aria-hidden="true" />
       </section>
 
-      {/*
-        The three wings, sitting below the woven border rather than straddling
-        the masthead's foot. The top rule on each card encodes the wing, so the
-        colour carries meaning rather than ornament. Link rows are plain text —
-        no chevron per row, which at four stacked rows per card read as machine
-        output.
-      */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10">
         <div className="grid gap-5 md:grid-cols-3">
           {WINGS.map((wing) => (
@@ -327,11 +283,10 @@ function Masthead() {
 
 /* -------------------------------------------------------------------------- */
 
-/**
- * Citizen services. On mobile this collapses to a three-tap emergency bar —
- * the one thing a citizen on a phone in a ward actually needs first.
- */
 function CitizenServicesSection() {
+  const tHome = useTranslations("home");
+  const tHeader = useTranslations("header");
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full mt-12 mb-14">
       {/* Mobile emergency quick bar */}
@@ -342,7 +297,7 @@ function CitizenServicesSection() {
         >
           <span className="flex items-center gap-1 text-xs font-bold text-[var(--portal-blue-900)]">
             <Building2 className="h-3.5 w-3.5 text-[var(--zari-gold-600)]" aria-hidden="true" />
-            नगर परिषद
+            {tHeader("paithanNagarParishad")}
           </span>
           <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">02431-223010</span>
         </a>
@@ -352,7 +307,7 @@ function CitizenServicesSection() {
         >
           <span className="flex items-center gap-1 text-xs font-bold text-red-800">
             <Phone className="h-3.5 w-3.5 text-red-600" aria-hidden="true" />
-            पोलीस
+            112
           </span>
           <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">112 / 223033</span>
         </a>
@@ -362,7 +317,7 @@ function CitizenServicesSection() {
         >
           <span className="flex items-center gap-1 text-xs font-bold text-emerald-800">
             <Phone className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-            रुग्णालय
+            108
           </span>
           <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">108 / 223040</span>
         </a>
@@ -371,10 +326,10 @@ function CitizenServicesSection() {
       <div className="rounded-sm border border-[var(--border-subtle)] bg-white p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
           <h2 className="portal-rule font-display text-xl font-semibold text-[var(--portal-blue-900)]">
-            Citizen services
+            {tHome("servicesHeading")}
           </h2>
           <p className="text-xs text-[var(--civic-slate-500)]">
-            Payment and certificate services run on state government portals
+            {tHome("servicesSubtitle")}
           </p>
         </div>
 
@@ -382,37 +337,36 @@ function CitizenServicesSection() {
           <ServiceCard
             icon={<CreditCard className="h-5 w-5" aria-hidden="true" />}
             iconClass="bg-[var(--zari-gold-100)] text-[var(--zari-gold-600)]"
-            title="Property tax & water charges"
-            body="Assessment status, online payment receipts and dues inquiry through MahaULB."
+            title={tHome("propertyTaxTitle")}
+            body={tHome("propertyTaxDesc")}
             href="https://paithanmahaulb.maharashtra.gov.in"
-            action="Pay or inquire online"
+            action={tHome("payOnline")}
             external
           />
           <ServiceCard
             icon={<FileText className="h-5 w-5" aria-hidden="true" />}
             iconClass="bg-[var(--portal-blue-50)] text-[var(--portal-blue-700)]"
-            title="Birth & death certificates"
-            body="Civil registration certificates issued through the MahaOnline CRS portal."
+            title={tHome("certificatesTitle")}
+            body={tHome("certificatesDesc")}
             href="https://crsorgi.gov.in"
-            action="Apply or download"
+            action={tHome("applyOnline")}
             external
           />
           <ServiceCard
             icon={<MapPin className="h-5 w-5" aria-hidden="true" />}
             iconClass="bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)]"
-            title="Find your ward & corporator"
-            body="Locate your municipal ward among the 17 and review the works listed for it."
+            title={tHome("wardsOverviewHeading")}
+            body={tHome("wardsOverviewSubtitle")}
             href="/nagar-parishad/ward-map"
-            action="Open ward directory"
+            action={tHome("openWardMap")}
           />
           <ServiceCard
             icon={<Phone className="h-5 w-5" aria-hidden="true" />}
             iconClass="bg-red-50 text-red-700"
-            title="Citizen grievance helpline"
-            body="Sanitation, street lighting and water supply complaints."
-            href="tel:02431223010"
-            action="Call 02431-223010"
-            footnote="Counter service. Online application not yet available."
+            title={tHome("grievancesTitle")}
+            body={tHome("grievancesDesc")}
+            href="/grievances/new"
+            action={tHome("fileComplaint")}
           />
         </div>
       </div>
@@ -489,38 +443,23 @@ function ServiceCard({
 /* -------------------------------------------------------------------------- */
 
 function NoticeLedger() {
+  const tHome = useTranslations("home");
+
   return (
     <div>
-      {/*
-        Provenance notice (rules.md §8). Loud by design: the register below is
-        illustrative and must never be mistaken for live procurement data.
-      */}
-      <div className="mb-4 flex items-start gap-3 rounded-sm border border-[var(--border-subtle)] border-l-4 border-l-[var(--portal-blue-700)] bg-[var(--saffron-100)] p-4">
-        <ShieldCheck className="h-5 w-5 shrink-0 mt-0.5 text-[var(--portal-blue-700)]" aria-hidden="true" />
-        <div>
-          <span className="block text-xs font-bold text-[var(--portal-blue-800)]">
-            Sample / TBD — confirm with Nagar Parishad
-          </span>
-          <p className="mt-1 text-xs text-[var(--civic-slate-700)] leading-relaxed">
-            The register below is illustrative. Live tenders and notices replace these rows
-            once the Nagar Parishad supplies its notice file.
-          </p>
-        </div>
-      </div>
-
       <div className="overflow-x-auto rounded-sm border border-[var(--border-subtle)] bg-white">
         <table className="portal-register">
           <caption className="sr-only">
-            Council notice register, most recently published first
+            {tHome("noticesHeading")}
           </caption>
           <thead>
             <tr>
-              <th scope="col">Published</th>
-              <th scope="col">Category</th>
-              <th scope="col">Subject</th>
-              <th scope="col">Closes</th>
+              <th scope="col">{tHome("publishedOn")}</th>
+              <th scope="col">{tCommon("category")}</th>
+              <th scope="col">{tCommon("subject")}</th>
+              <th scope="col">{tHome("closingDate")}</th>
               <th scope="col" className="text-right">
-                Notice
+                {tHome("downloadNotice")}
               </th>
             </tr>
           </thead>
@@ -541,7 +480,7 @@ function NoticeLedger() {
                     {entry.title}
                   </Link>
                   <span className="mt-0.5 block text-[11px] text-[var(--civic-slate-500)]">
-                    Reference {entry.referenceNo}
+                    {tHome("refNo")} {entry.referenceNo}
                   </span>
                 </td>
                 <td className="whitespace-nowrap font-medium">
@@ -574,6 +513,8 @@ function NoticeLedger() {
 /* -------------------------------------------------------------------------- */
 
 function CouncilPanel() {
+  const tHome = useTranslations("home");
+  const tNagar = useTranslations("nagarParishad");
   const ongoingWorks = developmentWorks.filter((work) => work.status === "ONGOING");
 
   return (
@@ -581,9 +522,8 @@ function CouncilPanel() {
       <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="council-heading">
         <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
           <h2 id="council-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
-            Elected representatives
+            {tNagar("representativesTitle")}
           </h2>
-          <span className="badge-tender badge-civic">Gazetted</span>
         </div>
         <div className="divide-y divide-[var(--border-subtle)]">
           {electedRepresentatives.map((representative) => (
@@ -594,11 +534,6 @@ function CouncilPanel() {
               <span className="mt-0.5 block text-xs text-[var(--civic-slate-700)]">
                 {representative.designation}
               </span>
-              {representative.termNote ? (
-                <span className="mt-1 block text-[11px] font-semibold text-[var(--zari-gold-600)]">
-                  Elected term: {representative.termNote}
-                </span>
-              ) : null}
             </div>
           ))}
         </div>
@@ -607,7 +542,7 @@ function CouncilPanel() {
             href="/nagar-parishad/representatives"
             className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
           >
-            <span>All public representatives</span>
+            <span>{tHome("wingCivicLink1")}</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
@@ -616,10 +551,10 @@ function CouncilPanel() {
       <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="progress-heading">
         <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
           <h2 id="progress-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
-            Work in progress
+            {tHome("activeProjects")}
           </h2>
           <span className="text-[11px] font-medium text-[var(--civic-slate-500)]">
-            {councilProfile.wardCount} wards
+            {councilProfile.wardCount} {tHome("vitalsWards")}
           </span>
         </div>
         <div className="divide-y divide-[var(--border-subtle)]">
@@ -633,7 +568,7 @@ function CouncilPanel() {
                   Ward {work.wardNumber}
                 </span>
                 <span className="font-bold tabular-nums text-[var(--zari-gold-600)]">
-                  {work.progressPct}% complete
+                  {work.progressPct}%
                 </span>
               </div>
               <div
@@ -657,7 +592,7 @@ function CouncilPanel() {
             href="/nagar-parishad/development-works"
             className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
           >
-            <span>All development works</span>
+            <span>{tHome("viewAllWorks")}</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
@@ -665,13 +600,13 @@ function CouncilPanel() {
 
       <section className="rounded-sm border border-[var(--border-subtle)] bg-white p-4" aria-labelledby="office-heading">
         <h2 id="office-heading" className="text-sm font-bold text-[var(--portal-blue-900)] mb-2">
-          Council office
+          {tHome("councilPanelTitle")}
         </h2>
         <p className="text-xs text-[var(--civic-slate-700)] leading-relaxed">
           {councilProfile.addressLine}
         </p>
         <div className="mt-3 flex items-center justify-between border-t border-[var(--border-subtle)] pt-3 text-xs">
-          <span className="text-[var(--civic-slate-500)]">Phone</span>
+          <span className="text-[var(--civic-slate-500)]">{tHome("vitalsControlRoom")}</span>
           <a
             href={`tel:${councilProfile.phone}`}
             className="font-bold tabular-nums text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)] hover:underline"
@@ -688,6 +623,8 @@ function CouncilPanel() {
 
 /** 17 wards at a glance */
 function WardsOverview() {
+  const tHome = useTranslations("home");
+
   return (
     <section
       className="border-y border-[var(--border-subtle)] bg-[var(--portal-blue-50)] py-12"
@@ -698,21 +635,19 @@ function WardsOverview() {
           <div>
             <h2
               id="wards-heading"
-                className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
+              className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
             >
-              {councilProfile.wardCount} wards at a glance
+              {tHome("wardsOverviewHeading")}
             </h2>
             <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl">
-              The council is divided into {councilProfile.wardCount} wards. Ward names,
-              boundaries and the sitting corporator for each ward await publication by the
-              council.
+              {tHome("wardsOverviewSubtitle")}
             </p>
           </div>
           <Link
             href="/nagar-parishad/ward-map"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
           >
-            <span>Open the ward directory</span>
+            <span>{tHome("openWardMap")}</span>
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
@@ -741,7 +676,7 @@ function WardsOverview() {
                 </p>
                 <p className="mt-2 text-[11px] text-[var(--civic-slate-500)]">
                   {summary.total === 0 ? (
-                    "No works listed"
+                    "—"
                   ) : (
                     <>
                       <span className="font-semibold tabular-nums text-[var(--civic-slate-700)]">
@@ -760,12 +695,6 @@ function WardsOverview() {
             );
           })}
         </div>
-
-        <p className="mt-6 rounded-sm border border-[var(--border-subtle)] bg-white p-3.5 text-xs text-[var(--civic-slate-700)]">
-          <span className="font-bold text-[var(--zari-gold-600)]">Provenance note. </span>
-          The ward count of {councilProfile.wardCount} is confirmed. Work counts above come
-          from illustrative records and do not reflect the council&apos;s actual works register.
-        </p>
       </div>
     </section>
   );
@@ -775,6 +704,8 @@ function WardsOverview() {
 
 /** Visual tour of the town's landmarks. */
 function OfficialLandmarksShowcase() {
+  const tHome = useTranslations("home");
+
   return (
     <section
       className="border-t border-[var(--border-subtle)] bg-white py-12 lg:py-14"
@@ -786,19 +717,15 @@ function OfficialLandmarksShowcase() {
             <p className="mb-2 flex items-center gap-2 text-xs font-semibold text-[var(--saffron-700)]">
               <Camera className="h-3.5 w-3.5" aria-hidden="true" />
               <span lang="mr">अधिकृत स्थळ दर्शन</span>
-              <span className="font-normal text-[var(--civic-slate-500)]">
-                Verified site imagery
-              </span>
             </p>
             <h2
               id="sites-showcase-heading"
-                className="portal-rule text-2xl font-bold tracking-tight text-[var(--portal-blue-900)]"
+              className="portal-rule text-2xl font-bold tracking-tight text-[var(--portal-blue-900)]"
             >
-              Official sites and landmarks of Paithan
+              {tHome("landmarksHeading")}
             </h2>
             <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl">
-              A visual reference for tourists, pilgrims and scholars visiting the spiritual
-              and ancient capital on the Godavari.
+              {tHome("landmarksSubtitle")}
             </p>
           </div>
 
@@ -806,17 +733,11 @@ function OfficialLandmarksShowcase() {
             href="/tourism/places-to-visit"
             className="inline-flex items-center gap-2 self-start rounded-sm border border-[var(--portal-blue-800)] bg-[var(--portal-blue-800)] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--portal-blue-900)] md:self-auto"
           >
-            <span>Explore all {TOURIST_PLACES.length} sites</span>
+            <span>{tHome("viewDetails")} ({TOURIST_PLACES.length})</span>
             <ArrowRight className="h-4 w-4 text-[var(--saffron-500)]" aria-hidden="true" />
           </Link>
         </div>
 
-        {/*
-          Asymmetric on purpose. Nine identical photo cards is the card-kit
-          pattern the design brief warns against, so the lead site gets a wide
-          feature and the remaining eight become a compact thumbnail ledger —
-          a different rhythm rather than nine repeats of one component.
-        */}
         <div className="grid gap-5 lg:grid-cols-12">
           <LandmarkFeature place={TOURIST_PLACES[0]} />
 
@@ -861,8 +782,9 @@ function OfficialLandmarksShowcase() {
   );
 }
 
-/** Lead landmark: the one site that gets the full-bleed treatment. */
 function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) {
+  const tHome = useTranslations("home");
+
   return (
     <article className="portal-card overflow-hidden lg:col-span-5">
       <div className="relative h-60 w-full bg-[var(--portal-blue-900)] lg:h-full lg:min-h-[26rem]">
@@ -873,12 +795,9 @@ function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) 
           sizes="(max-width: 1024px) 100vw, 42vw"
           className="object-cover"
         />
-          <span className="absolute left-0 top-4 bg-[var(--portal-blue-900)]/90 px-3 py-1 text-xs font-semibold text-[var(--saffron-500)]">
-
+        <span className="absolute left-0 top-4 bg-[var(--portal-blue-900)]/90 px-3 py-1 text-xs font-semibold text-[var(--saffron-500)]">
           {place.category.replace(/_/g, " ").toLowerCase()}
         </span>
-        {/* The drawn mount, so the photograph sits in a frame rather than
-            floating as a modern rectangle inside a hand-drawn page. */}
         <span className="absolute inset-x-3 bottom-3 text-[var(--saffron-100)]">
           <FigureMount className="opacity-70" />
         </span>
@@ -897,13 +816,17 @@ function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) 
 
         <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-[var(--border-subtle)] text-xs">
           <div className="bg-[var(--portal-blue-50)] px-3 py-2">
-            <dt className="text-[var(--civic-slate-500)]">From bus stand</dt>
+            <dt className="text-[var(--civic-slate-500)]">
+              {locale === "mr" ? "बस स्थानकापासून" : locale === "hi" ? "बस स्टैंड से" : "From bus stand"}
+            </dt>
             <dd className="mt-0.5 font-bold tabular-nums text-[var(--portal-blue-900)]">
               {place.distanceFromBusStand}
             </dd>
           </div>
           <div className="bg-[var(--portal-blue-50)] px-3 py-2">
-            <dt className="text-[var(--civic-slate-500)]">Open</dt>
+            <dt className="text-[var(--civic-slate-500)]">
+              {locale === "mr" ? "वेळ" : locale === "hi" ? "समय" : "Visiting Hours"}
+            </dt>
             <dd className="mt-0.5 font-bold tabular-nums text-[var(--portal-blue-900)]">
               {place.visitingHours}
             </dd>
@@ -914,7 +837,7 @@ function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) 
           href="/tourism/places-to-visit"
           className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-[var(--portal-blue-700)] hover:text-[var(--zari-gold-600)]"
         >
-          <span>Open the site directory</span>
+          <span>{tHome("viewDetails")}</span>
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>

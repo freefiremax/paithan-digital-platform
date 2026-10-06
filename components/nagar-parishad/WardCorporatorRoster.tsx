@@ -1,4 +1,7 @@
+"use client";
+
 import { Phone } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { WardCorporator } from "@/lib/mock-data";
 import { RepresentativePortrait } from "./RepresentativePortrait";
 
@@ -6,37 +9,27 @@ interface WardCorporatorRosterProps {
   readonly corporators: readonly WardCorporator[];
 }
 
-/**
- * The 17-ward corporator register.
- *
- * Rendered as a ruled table on wider screens and as stacked ruled rows on phones — a
- * five-column table pushed into a horizontal scroller is close to unusable on the devices
- * most residents will read this on (prd.md §8).
- *
- * Names are not filled in. rules.md §8 forbids inventing official-looking names, and the
- * sitting roster depends on an unresolved question about whether the council currently has
- * an elected body or a State-appointed Administrator, so every row routes to the council
- * office until the official list arrives.
- */
 export function WardCorporatorRoster({ corporators }: WardCorporatorRosterProps) {
+  const t = useTranslations("nagarParishad");
+
   return (
     <>
       <div className="hidden overflow-x-auto border border-[var(--border-subtle)] bg-white md:block">
         <table className="gov-table">
           <caption className="sr-only">
-            Ward corporators of Paithan Municipal Council, wards 1 to {corporators.length}
+            {t("corporatorsTitle")}
           </caption>
           <thead>
             <tr>
               <th scope="col" className="w-20">
-                Ward
+                {t("wardTableWard")}
               </th>
               <th scope="col" className="w-44">
-                Ward name
+                {t("wardTableWardName")}
               </th>
-              <th scope="col">Corporator</th>
+              <th scope="col">{t("wardTableCorporator")}</th>
               <th scope="col" className="w-52">
-                Contact
+                {t("wardTableContact")}
               </th>
             </tr>
           </thead>
@@ -70,7 +63,7 @@ export function WardCorporatorRoster({ corporators }: WardCorporatorRosterProps)
                     <span className="text-[var(--civic-slate-500)]">&mdash;</span>
                   )}
                   <span className="mt-0.5 block text-[0.75rem] text-[var(--civic-slate-500)]">
-                    Council office
+                    {t("wardTableOffice")}
                   </span>
                 </td>
               </tr>

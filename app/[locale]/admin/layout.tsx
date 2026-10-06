@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   LayoutDashboard,
   BellRing,
@@ -16,8 +17,8 @@ import {
   X,
   ShieldCheck,
   User,
-  BadgeAlert,
 } from "lucide-react";
+import { councilProfile } from "@/lib/mock-data";
 
 interface AdminUser {
   id: string;
@@ -30,6 +31,11 @@ interface AdminUser {
 export const dynamic = "force-dynamic";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const t = useTranslations("admin");
+  const tNav = useTranslations("nav");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   const pathname = usePathname();
   const router = useRouter();
   const sessionResult = useSession();
@@ -51,7 +57,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (status === "loading") {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-        <div className="animate-pulse text-slate-400">Loading session...</div>
+        <div className="animate-pulse text-slate-400">
+          {currentLocale === "mr" ? "लोड होत आहे..." : currentLocale === "hi" ? "लोड हो रहा है..." : "Loading..."}
+        </div>
       </div>
     );
   }
@@ -66,38 +74,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     {
-      label: "Dashboard & KPIs",
-      mr: "डॅशबोर्ड व आढावा",
+      label: t("dashboardTitle"),
       href: "/admin/dashboard",
       icon: LayoutDashboard,
     },
     {
-      label: "Tenders & Circulars",
-      mr: "निविदा व अधिसूचना",
+      label: t("tendersCirculars"),
       href: "/admin/notifications",
       icon: BellRing,
     },
     {
-      label: "Development Works",
-      mr: "वॉर्ड विकास कामे",
+      label: t("developmentWorks"),
       href: "/admin/development-works",
       icon: Pickaxe,
     },
     {
-      label: "Wards & Corporators",
-      mr: "प्रभाग व नगरसेवक",
+      label: t("wardsCorporators"),
       href: "/admin/wards",
       icon: Map,
     },
   ];
-
-  const roleTitleMap: Record<string, { en: string; mr: string }> = {
-    ADMIN: { en: "Chief Officer", mr: "मुख्याधिकारी" },
-    EDITOR: { en: "Municipal Editor", mr: "नगरपालिका संपादक" },
-    PUBLIC: { en: "Citizen", mr: "नागरिक" },
-  };
-
-  const roleTitle = roleTitleMap[userRole]?.en || userRole;
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">
@@ -107,8 +103,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Building2 className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-sm font-bold leading-tight">पैठण नगर परिषद</div>
-            <div className="text-[10px] text-amber-400">Admin Governance CMS</div>
+            <div className="text-sm font-bold leading-tight">{isMr ? councilProfile.nameMr : councilProfile.nameEn}</div>
+            <div className="text-[10px] text-amber-400">{t("cmsHeading")}</div>
           </div>
         </div>
         <button
@@ -130,8 +126,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="font-bold text-sm tracking-tight text-white">पैठण नगर परिषद</h2>
-              <div className="text-[11px] text-amber-400 font-medium">Administration CMS</div>
+              <h2 className="font-bold text-sm tracking-tight text-white">{isMr ? councilProfile.nameMr : councilProfile.nameEn}</h2>
+              <div className="text-[11px] text-amber-400 font-medium">{t("cmsHeading")}</div>
             </div>
           </div>
         </div>
@@ -146,73 +142,52 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             <div className="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" />
-              <span>{roleTitle}</span>
+              <span>{userRole}</span>
             </div>
           </div>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        <nav className="flex-1 p-3 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const fullHref = `/${currentLocale}${item.href}`;
-            const isActive = pathname === fullHref || pathname === item.href;
+            const isActive = pathname === item.href || pathname?.endsWith(item.href);
             return (
               <Link
                 key={item.href}
-                href={fullHref}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition ${
+                href={item.href}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold transition ${
                   isActive
-                    ? "bg-amber-500 text-slate-950 font-bold shadow-md"
-                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                    ? "bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20"
+                    : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
                 }`}
               >
                 <Icon className={`w-4 h-4 ${isActive ? "text-slate-950" : "text-amber-400"}`} />
-                <div className="flex flex-col">
-                  <span>{item.label}</span>
-                  <span className="text-[10px] opacity-75">{item.mr}</span>
-                </div>
+                <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-3 border-t border-slate-800 space-y-2">
+        <div className="p-4 border-t border-slate-800 space-y-2">
           <Link
-            href={`/${currentLocale}`}
-            target="_blank"
-            className="flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-400 hover:bg-slate-800 hover:text-white transition"
+            href="/"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition"
           >
-            <span className="flex items-center gap-2">
-              <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
-              <span>View Public Portal</span>
-            </span>
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>{t("viewPortal")}</span>
           </Link>
-
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-red-400 hover:bg-red-950/40 hover:text-red-300 transition"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition"
           >
-            <LogOut className="w-4 h-4" />
-            <span>Sign Out</span>
+            <LogOut className="w-3.5 h-3.5" />
+            <span>{t("logout")}</span>
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0 flex flex-col overflow-y-auto">
-        <div className="bg-amber-50 border-b border-amber-200 px-6 py-2 text-xs text-amber-900 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BadgeAlert className="w-4 h-4 text-amber-700 shrink-0" />
-            <span>
-              <strong>Official Compliance Mode:</strong> Content updates directly publish to the public Paithan Digital Portal. Ensure all tenders adhere to Maharashtra Nagar Parishad Act 1965.
-            </span>
-          </div>
-          <span className="text-[11px] font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded border border-amber-300 hidden sm:inline-block">
-            Audit Active
-          </span>
-        </div>
-
-        <div className="p-4 sm:p-6 lg:p-8 flex-1">{children}</div>
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl">
+        {children}
       </main>
     </div>
   );

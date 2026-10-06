@@ -23,7 +23,9 @@ export default async function SearchPage({ params }: PageProps) {
     <Suspense
       fallback={
         <div className="min-h-[50vh] flex items-center justify-center">
-          <div className="text-slate-400 animate-pulse text-sm">Loading search...</div>
+          <div className="text-slate-400 animate-pulse text-sm">
+            {locale === "mr" ? "शोध लोड होत आहे..." : locale === "hi" ? "खोज लोड हो रही है..." : "Loading search..."}
+          </div>
         </div>
       }
     >

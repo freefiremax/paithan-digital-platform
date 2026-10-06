@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import type { Representative } from "@/lib/mock-data";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
 import { RepresentativePortrait } from "./RepresentativePortrait";
+import { useLocale } from "next-intl";
 
 interface RepresentativeCardProps {
   readonly representative: Representative;
@@ -10,13 +13,15 @@ interface RepresentativeCardProps {
 
 /**
  * Profile card for one office holder. Links to the detail page at
- * /nagar-parishad/representatives/[slug] (architecture.md §2).
- *
- * Offices whose holder is unconfirmed still get a card: showing the office and saying the
- * name is pending is more use to a resident than omitting the row entirely.
+ * /nagar-parishad/representatives/[slug].
  */
 export function RepresentativeCard({ representative }: RepresentativeCardProps) {
+  const locale = useLocale();
   const hasNamedHolder = representative.dataStatus === "VERIFIED";
+  const isMr = locale === "mr";
+
+  const displayName = isMr && representative.nameMr ? representative.nameMr : representative.name;
+  const displayDesignation = isMr && representative.designationMr ? representative.designationMr : representative.designation;
 
   return (
     <article className="flex h-full flex-col border border-[var(--border-subtle)] bg-white">
@@ -28,18 +33,18 @@ export function RepresentativeCard({ representative }: RepresentativeCardProps) 
               href={`/nagar-parishad/representatives/${representative.slug}`}
               className="hover:underline"
             >
-              {representative.name}
+              {displayName}
             </Link>
           </h3>
-          {representative.nameMr ? (
+          {!isMr && representative.nameMr ? (
             <p lang="mr" className="text-sm text-[var(--civic-slate-500)]">
               {representative.nameMr}
             </p>
           ) : null}
           <p className="mt-1.5 text-sm font-medium leading-snug text-[var(--gov-navy-700)]">
-            {representative.designation}
+            {displayDesignation}
           </p>
-          {representative.designationMr ? (
+          {!isMr && representative.designationMr ? (
             <p lang="mr" className="text-[0.8125rem] text-[var(--civic-slate-500)]">
               {representative.designationMr}
             </p>

@@ -106,7 +106,7 @@ function RegisterForm() {
               <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z" />
               <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z" />
             </svg>
-            <span>Sign up with Google</span>
+            <span>{t("signUpWithGoogle")}</span>
           </button>
 
           <div className="relative my-6">
@@ -115,7 +115,7 @@ function RegisterForm() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-slate-900/90 px-3 text-slate-400 font-medium">
-                Or register with email
+                {t("orRegisterWithEmail")}
               </span>
             </div>
           </div>
@@ -235,7 +235,7 @@ function RegisterForm() {
               href={`/${locale}`}
               className="text-xs text-slate-500 hover:text-slate-300 transition inline-flex items-center justify-center gap-1"
             >
-              ← Back to Public Portal
+              ← {t("backToPublic")}
             </Link>
           </div>
         </div>
@@ -255,7 +255,7 @@ export default function RegisterPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#071224] flex items-center justify-center">
-          <div className="text-amber-400 animate-pulse text-sm">Loading...</div>
+          <div className="text-amber-400 animate-pulse text-sm">...</div>
         </div>
       }
     >

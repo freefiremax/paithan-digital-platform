@@ -1,11 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { getSectorFromSlug, SECTOR_LABELS_EN, FACILITY_TYPE_LABELS_EN, FACILITY_TYPE_LABELS_MR } from "@/lib/auth/permissions";
+import { getSectorFromSlug, SECTOR_LABELS_EN, SECTOR_LABELS_MR, FACILITY_TYPE_LABELS_EN, FACILITY_TYPE_LABELS_MR } from "@/lib/auth/permissions";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { WorkStatusBadge } from "@/components/ui/WorkStatusBadge";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
@@ -36,26 +37,24 @@ async function getSectorData(sectorSlug: string) {
   return { sector, sectorInfo, works, facilities };
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ sector: string }> }): Promise<Metadata> {
-  const { sector: sectorSlug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ sector: string; locale: string }> }): Promise<Metadata> {
+  const { sector: sectorSlug, locale } = await params;
   const sector = getSectorFromSlug(sectorSlug);
   if (!sector) return { title: "Sector Not Found" };
 
   const data = await getSectorData(sectorSlug);
-  const titleEn = data?.sectorInfo?.titleEn || SECTOR_LABELS_EN[sector];
+  const title = locale === "mr" 
+    ? (data?.sectorInfo?.titleMr || SECTOR_LABELS_MR[sector])
+    : (data?.sectorInfo?.titleEn || SECTOR_LABELS_EN[sector]);
 
   return {
-    title: `${titleEn} | Paithan Municipal Council`,
-    description: data?.sectorInfo?.taglineEn || `Information about ${titleEn} sector in Paithan`,
-    openGraph: {
-      title: `${titleEn} | Paithan Municipal Council`,
-      description: data?.sectorInfo?.taglineEn || `Information about ${titleEn} sector in Paithan`,
-    },
+    title: `${title} | Paithan Municipal Council`,
+    description: data?.sectorInfo?.taglineEn || `Information about ${title} sector in Paithan`,
   };
 }
 
-export default async function SectorPage({ params }: { params: Promise<{ sector: string }> }) {
-  const { sector: sectorSlug } = await params;
+export default async function SectorPage({ params }: { params: Promise<{ sector: string; locale: string }> }) {
+  const { sector: sectorSlug, locale } = await params;
   const sector = getSectorFromSlug(sectorSlug);
 
   if (!sector) notFound();
@@ -64,14 +63,19 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
   if (!data?.sectorInfo) notFound();
 
   const { sectorInfo, works, facilities } = data;
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const tNagar = await getTranslations({ locale, namespace: "nagarParishad" });
+
+  const sectorTitle = locale === "mr" ? (sectorInfo.titleMr || SECTOR_LABELS_MR[sector]) : sectorInfo.titleEn;
+  const sectorTagline = locale === "mr" ? (sectorInfo.taglineMr || sectorInfo.taglineEn) : sectorInfo.taglineEn;
 
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Services", href: "/services" },
-          { label: SECTOR_LABELS_EN[sector] },
+          { label: tNav("home"), href: `/${locale}` },
+          { label: tNav("civicServices"), href: `/${locale}/services` },
+          { label: locale === "mr" ? SECTOR_LABELS_MR[sector] : SECTOR_LABELS_EN[sector] },
         ]}
       />
 
@@ -93,18 +97,20 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
 
         <SectionHeading
           as="h1"
-          title={sectorInfo.titleEn}
-          description={sectorInfo.taglineEn}
+          title={sectorTitle}
+          description={sectorTagline}
         />
 
         <div className="prose prose-sm max-w-none text-slate-700 mb-12">
-          <p>{sectorInfo.overviewEn}</p>
-          <p className="font-marathi text-slate-500 mt-4">{sectorInfo.overviewMr}</p>
+          <p>{locale === "mr" && sectorInfo.overviewMr ? sectorInfo.overviewMr : sectorInfo.overviewEn}</p>
+          {locale !== "mr" && sectorInfo.overviewMr && (
+            <p className="font-marathi text-slate-500 mt-4">{sectorInfo.overviewMr}</p>
+          )}
         </div>
 
         {/* Department & Contact Info */}
         <div className="mb-12 p-5 bg-slate-50 border border-slate-200 rounded-xl">
-          <h3 className="text-sm font-semibold text-slate-900 mb-3">Department & Contact</h3>
+          <h3 className="text-sm font-semibold text-slate-900 mb-3">Department &amp; Contact</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
               <span className="font-semibold text-slate-900">Department:</span>{" "}
@@ -125,8 +131,8 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
         <section className="mb-12">
           <SectionHeading
             as="h2"
-            title="Development Works"
-            description={`Ongoing, planned, and completed ${SECTOR_LABELS_EN[sector].toLowerCase()} projects across Paithan's wards.`}
+            title={tNagar("devWorksTitle")}
+            description={tNagar("devWorksSubtitle")}
           />
 
           {works.length === 0 ? (
@@ -155,60 +161,37 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
                     </div>
 
                     <h2 className="mt-2 text-[0.9375rem] font-semibold text-slate-900 leading-snug">
-                      {work.title}
+                      {locale === "mr" && work.titleMr ? work.titleMr : work.title}
                     </h2>
-                    {work.titleMr && (
+                    {locale !== "mr" && work.titleMr && (
                       <p lang="mr" className="text-xs text-slate-500 mt-0.5">
                         {work.titleMr}
                       </p>
                     )}
 
                     <p className="mt-2.5 text-xs text-slate-700 leading-relaxed">
-                      {work.description}
+                      {locale === "mr" && work.descriptionMr ? work.descriptionMr : work.description}
                     </p>
-                    {work.descriptionMr && (
-                      <p lang="mr" className="mt-2 text-xs text-slate-500 font-marathi leading-relaxed">
-                        {work.descriptionMr}
-                      </p>
-                    )}
                   </div>
 
                   <div className="mt-5 pt-4 border-t border-slate-200 space-y-3">
                     <div>
                       <div className="flex justify-between text-[11px] font-medium text-slate-600 mb-1">
-                        <span>Progress</span>
+                        <span>{t("progress")}</span>
                         <span>{work.progressPct}%</span>
                       </div>
-                      <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-slate-100 rounded-full h-1.5">
                         <div
-                          className="bg-slate-800 h-full rounded-full transition-all duration-300"
+                          className="bg-amber-500 h-1.5 rounded-full"
                           style={{ width: `${work.progressPct}%` }}
                         />
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
-                      {work.budget !== null && (
-                        <span className="font-semibold text-slate-800">
-                          Budget: ₹{work.budget.toFixed(1)} Lakhs
-                        </span>
-                      )}
-                      <span>Dept: {work.department}</span>
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <span>{tNagar("projectBudget")}: ₹{work.budgetInLakhs} {locale === "mr" ? "लाख" : locale === "hi" ? "लाख" : "Lakhs"}</span>
+                      {work.contractor && <span>{tNagar("contractor")}: {work.contractor}</span>}
                     </div>
-
-                    {(work.startDate || work.expectedCompletion) && (
-                      <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
-                        <span>
-                          Timeline:{" "}
-                          {work.startDate ? work.startDate.toLocaleDateString("en-IN") : "—"} to{" "}
-                          {work.expectedCompletion
-                            ? work.expectedCompletion.toLocaleDateString("en-IN")
-                            : "—"}
-                        </span>
-                      </div>
-                    )}
-
-                    <DataStatusBadge status={work.dataStatus as "VERIFIED" | "SAMPLE_TBD"} showVerified />
                   </div>
                 </article>
               ))}
@@ -220,79 +203,56 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
         <section>
           <SectionHeading
             as="h2"
-            title="Public Facilities"
-            description={`Schools, health centers, water works, and community facilities in the ${SECTOR_LABELS_EN[sector].toLowerCase()} sector.`}
+            title="Public Facilities &amp; Infrastructure"
+            description={`Key municipal facilities and assets in the ${SECTOR_LABELS_EN[sector].toLowerCase()} sector.`}
           />
 
           {facilities.length === 0 ? (
             <div className="border border-slate-200 bg-white p-12 text-center">
               <DataStatusBadge status={sectorInfo.dataStatus as "VERIFIED" | "SAMPLE_TBD"} showVerified />
-              <p className="mt-3 text-sm font-semibold text-slate-700">No facilities published yet.</p>
+              <p className="mt-3 text-sm font-semibold text-slate-700">No public facilities published yet.</p>
               <p className="mt-1 text-xs text-slate-500">
-                Facility records will appear here once verified by the Nagar Parishad.
+                Facility directory will be populated following departmental survey verification.
               </p>
             </div>
           ) : (
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {facilities.map((facility) => (
-                <article
+                <div
                   key={facility.id}
-                  className="border border-slate-200 bg-white p-5 flex flex-col"
+                  className="border border-slate-200 bg-white p-4 flex flex-col justify-between"
                 >
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <span
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
-                        facility.isOperational
-                          ? "bg-emerald-50 text-emerald-800"
-                          : "bg-red-50 text-red-800"
-                      }`}
-                    >
-                      {facility.isOperational ? "Operational" : "Non-Operational"}
-                    </span>
-                    <DataStatusBadge status={facility.dataStatus as "VERIFIED" | "SAMPLE_TBD"} showVerified />
-                  </div>
-
-                  <h3 className="font-semibold text-slate-900">{facility.nameEn}</h3>
-                  {facility.nameMr && (
-                    <p lang="mr" className="text-xs text-slate-500 font-marathi mt-0.5">
-                      {facility.nameMr}
-                    </p>
-                  )}
-
-                  <div className="mt-3 text-xs text-slate-600 space-y-1">
-                    <div className="flex items-center gap-1">
-                      <span className="font-medium text-slate-800">Type:</span>
-                      <span>
+                  <div>
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded">
                         {FACILITY_TYPE_LABELS_EN[facility.type] || facility.type}
-                        {facility.type && FACILITY_TYPE_LABELS_MR[facility.type] && (
-                          <span className="font-marathi text-slate-400 ml-1">
-                            ({FACILITY_TYPE_LABELS_MR[facility.type]})
-                          </span>
-                        )}
                       </span>
+                      {facility.ward && (
+                        <span className="text-[10px] font-semibold text-slate-600">
+                          Ward {facility.ward.number}
+                        </span>
+                      )}
                     </div>
-                    <div className="flex items-center gap-1">
-                      <span className="font-medium text-slate-800">Address:</span>
-                      <span>{facility.address}</span>
-                    </div>
-                    {facility.ward && (
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium text-slate-800">Ward:</span>
-                        <span>Ward {facility.ward.number} — {facility.ward.name}</span>
-                      </div>
+
+                    <h4 className="text-sm font-semibold text-slate-900 mb-1">
+                      {locale === "mr" && facility.nameMr ? facility.nameMr : facility.name}
+                    </h4>
+                    {locale !== "mr" && facility.nameMr && (
+                      <p lang="mr" className="text-xs text-slate-500 font-marathi mb-2">
+                        {facility.nameMr}
+                      </p>
                     )}
-                    {facility.contactJson && (
-                      <details className="mt-2">
-                        <summary className="cursor-pointer text-slate-500 hover:text-slate-700">
-                          Contact Details
-                        </summary>
-                        <pre className="mt-1 text-[10px] text-slate-600 font-mono bg-slate-50 p-2 rounded border border-slate-200 overflow-x-auto">
-                          {JSON.stringify(facility.contactJson, null, 2)}
-                        </pre>
-                      </details>
-                    )}
+
+                    <p className="text-xs text-slate-600 mb-2">
+                      {facility.address}
+                    </p>
                   </div>
-                </article>
+
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>Capacity: {facility.capacity || "N/A"}</span>
+                    <span>Status: {facility.operationalStatus}</span>
+                  </div>
+                </div>
               ))}
             </div>
           )}

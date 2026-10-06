@@ -11,12 +11,17 @@ import {
   PlusCircle,
   ShieldCheck,
   Building2,
-  Clock,
 } from "lucide-react";
-import { notifications, developmentWorks, wards } from "@/lib/mock-data";
-
+import { useTranslations, useLocale } from "next-intl";
+import { notifications, developmentWorks, wards, councilProfile } from "@/lib/mock-data";
 
 export default function AdminDashboardPage() {
+  const t = useTranslations("admin");
+  const tNagar = useTranslations("nagarParishad");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   const activeTenders = notifications.filter((n) => n.category === "TENDER").length;
   const activeWorks = developmentWorks.length;
   const totalBudgetLakhs = developmentWorks.reduce((acc, curr) => acc + curr.budgetInLakhs, 0);
@@ -28,13 +33,13 @@ export default function AdminDashboardPage() {
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">
             <Building2 className="w-4 h-4" />
-            <span>Paithan Municipal Council (Class &apos;C&apos; Council)</span>
+            <span>{isMr ? councilProfile.nameMr : councilProfile.nameEn} ({tNagar("councilClassValue")})</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#071224] tracking-tight">
-            प्रशासकीय डॅशबोर्ड (Administrative Dashboard)
+            {t("dashboardTitle")}
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Executive oversight of tenders, public infrastructure expenditures, and ward governance.
+            {t("dashboardSubtitle")}
           </p>
         </div>
 
@@ -44,14 +49,14 @@ export default function AdminDashboardPage() {
             className="inline-flex items-center gap-1.5 bg-[#0C1E3C] hover:bg-[#071224] text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition"
           >
             <PlusCircle className="w-3.5 h-3.5 text-amber-400" />
-            <span>New Tender / Notice</span>
+            <span>{t("newTender")}</span>
           </Link>
           <Link
             href="/admin/development-works"
             className="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition"
           >
             <Pickaxe className="w-3.5 h-3.5" />
-            <span>Update Works</span>
+            <span>{t("updateWorks")}</span>
           </Link>
         </div>
       </div>
@@ -60,7 +65,7 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Tenders</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t("activeTenders")}</span>
             <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
               <BellRing className="w-4 h-4" />
             </div>
@@ -69,14 +74,14 @@ export default function AdminDashboardPage() {
             <div className="text-3xl font-extrabold text-[#071224]">{activeTenders}</div>
             <div className="text-[11px] text-emerald-600 font-medium flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3" />
-              <span>e-Tendering portal live</span>
+              <span>{t("tendersCirculars")}</span>
             </div>
           </div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ward Projects</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t("activeWorks")}</span>
             <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
               <Pickaxe className="w-4 h-4" />
             </div>
@@ -84,29 +89,29 @@ export default function AdminDashboardPage() {
           <div className="mt-3">
             <div className="text-3xl font-extrabold text-[#071224]">{activeWorks}</div>
             <div className="text-[11px] text-blue-600 font-medium mt-1">
-              Sanctioned Value: ₹{(totalBudgetLakhs / 100).toFixed(2)} Cr
+              {t("sanctionedBudget")}: ₹{(totalBudgetLakhs / 100).toFixed(2)} Cr
             </div>
           </div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Wards & Electors</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t("totalWards")}</span>
             <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
               <MapPin className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-3xl font-extrabold text-[#071224]">{wards.length} Wards</div>
+            <div className="text-3xl font-extrabold text-[#071224]">{wards.length} {tNagar("civicWards")}</div>
             <div className="text-[11px] text-slate-500 font-medium mt-1">
-              Pop: 41,536 | 18.5 sq.km
+              {tNagar("totalPopulation")}: 41,536
             </div>
           </div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">RAG Knowledge Sync</span>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{tCommon("verified")}</span>
             <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <ShieldCheck className="w-4 h-4" />
             </div>
@@ -114,7 +119,7 @@ export default function AdminDashboardPage() {
           <div className="mt-3">
             <div className="text-3xl font-extrabold text-emerald-600">100%</div>
             <div className="text-[11px] text-slate-500 font-medium mt-1">
-              Grounding & Zero Hallucination
+              {tCommon("verifiedRecord")}
             </div>
           </div>
         </div>
@@ -122,18 +127,18 @@ export default function AdminDashboardPage() {
 
       {/* Main Grid: Active Tenders Queue & Ward Works Progress */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Tenders Queue (7 cols) */}
+        {/* Left: Tenders Queue */}
         <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
           <div className="flex items-center justify-between pb-4 border-b border-slate-100">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Active Public Tenders & Notifications</h2>
-              <p className="text-xs text-slate-500">Official notices currently live on public portal</p>
+              <h2 className="text-base font-bold text-slate-900">{t("tendersCirculars")}</h2>
+              <p className="text-xs text-slate-500">{tNagar("noticesSubtitle")}</p>
             </div>
             <Link
               href="/admin/notifications"
               className="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1"
             >
-              <span>Manage All</span>
+              <span>{tCommon("viewAll")}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -148,62 +153,39 @@ export default function AdminDashboardPage() {
                     </span>
                     <span className="text-xs font-mono text-slate-400">{notice.referenceNo}</span>
                   </div>
-                  <h3 className="text-xs font-semibold text-slate-800 line-clamp-1">
-                    {notice.title}
-                  </h3>
-                  <p className="text-[11px] text-slate-500 font-marathi line-clamp-1">
-                    {notice.titleMr}
-                  </p>
-                </div>
-
-                <div className="text-right shrink-0">
-                  <div className="text-[11px] font-medium text-slate-600 flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-slate-400" />
-                    <span>Closes: {notice.closingAt || "Open"}</span>
-                  </div>
-                  <span className="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-1">
-                    Published
-                  </span>
+                  <h3 className="text-xs font-bold text-slate-900">{isMr && notice.titleMr ? notice.titleMr : notice.title}</h3>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right: Ward Development Status (5 cols) */}
+        {/* Right: Ward Works Progress */}
         <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
           <div className="flex items-center justify-between pb-4 border-b border-slate-100">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Ward Infrastructure Tracker</h2>
-              <p className="text-xs text-slate-500">AMRUT 2.0 & Municipal capital works</p>
+              <h2 className="text-base font-bold text-slate-900">{t("developmentWorks")}</h2>
+              <p className="text-xs text-slate-500">{tNagar("devWorksSubtitle")}</p>
             </div>
             <Link
               href="/admin/development-works"
               className="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1"
             >
-              <span>View Ledger</span>
+              <span>{tCommon("viewAll")}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="space-y-3 mt-3">
-            {developmentWorks.map((work) => (
-              <div key={work.id} className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-slate-900 line-clamp-1">{work.title}</span>
-                  <span className="font-extrabold text-[#0C1E3C] shrink-0">₹{work.budgetInLakhs} L</span>
+          <div className="divide-y divide-slate-100 mt-2">
+            {developmentWorks.slice(0, 4).map((work) => (
+              <div key={work.id} className="py-3 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-900">{isMr && work.titleMr ? work.titleMr : work.title}</span>
+                  <span className="text-[10px] font-bold text-amber-700">{work.status}</span>
                 </div>
                 <div className="flex items-center justify-between text-[11px] text-slate-500">
-                  <span>Ward {work.wardNumber} ({work.wardName})</span>
-                  <span className="font-semibold text-amber-700">{work.status}</span>
-                </div>
-                <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                  <div
-                    className="bg-amber-500 h-full rounded-full"
-                    style={{
-                      width: work.status === "COMPLETED" ? "100%" : work.status === "ONGOING" ? "65%" : "15%",
-                    }}
-                  />
+                  <span>{tCommon("ward")} #{work.wardNumber}</span>
+                  <span>₹{work.budgetInLakhs} Lakhs</span>
                 </div>
               </div>
             ))}
@@ -213,4 +195,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-

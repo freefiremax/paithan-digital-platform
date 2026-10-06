@@ -1,34 +1,37 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Clock, MapPin, Tag, ShieldCheck, Sparkles } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { MUSEUM_EXHIBITS } from "@/lib/mock-data";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
 
-export const metadata: Metadata = {
-  title: "Dr. Balasaheb Patil Government Museum",
-  description:
-    "Official guide to the Dr. Balasaheb Patil Government Archaeological Museum in Paithan, which preserves Satavahana-era coins, coin-moulds and antiquities of ancient Pratishthana.",
-};
-
 export default function MuseumPage() {
+  const t = useTranslations("heritage");
+  const tNav = useTranslations("nav");
+  const tCommon = useTranslations("common");
+  const tTourism = useTranslations("tourism");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Heritage", href: "/heritage/museum" },
-          { label: "Dr. Balasaheb Patil Museum" },
+          { label: tNav("home"), href: "/" },
+          { label: tNav("heritage"), href: "/heritage/museum" },
+          { label: t("museumTitle") },
         ]}
       />
 
       <div className="mx-auto max-w-[1180px] px-4 py-11">
         <SectionHeading
           as="h1"
-          title="Dr. Balasaheb Patil Government Archaeological Museum"
-          description="Located within the Sant Dnyaneshwar Garden campus in Paithan, this state museum is administered by the Directorate of Archaeology and Museums, Government of Maharashtra. It preserves rare antiquities donated by late scholar Dr. Balasaheb Patil."
+          title={t("museumTitle")}
+          description={t("museumSubtitle")}
         />
 
         {/* Official Museum Gallery Photography */}
@@ -47,16 +50,16 @@ export default function MuseumPage() {
             <div className="absolute top-4 right-4">
               <span className="inline-flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md border border-emerald-500/40">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                शासकीय पुरातत्व वस्तुसंग्रहालय, पैठण
+                {t("museumTitle")}
               </span>
             </div>
 
             <div className="absolute bottom-4 left-4 right-4 text-white">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-300">
-                Satavahana Imperial Gallery
+                {t("artifactsTitle")}
               </span>
               <p className="text-sm sm:text-base font-semibold text-slate-100">
-                Satavahana-era coins and coin-moulds, terracotta figurines, and antiquities of ancient Pratishthana
+                {t("artifactsSubtitle")}
               </p>
             </div>
           </div>
@@ -67,36 +70,33 @@ export default function MuseumPage() {
           <div className="flex items-start gap-2.5">
             <Clock className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0 mt-0.5" />
             <div>
-              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Visiting Hours</p>
+              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">{tTourism("timings")}</p>
               <p className="text-xs text-slate-600">10:30 AM – 05:00 PM</p>
-              <p className="text-[10px] text-slate-body">Closed Mondays &amp; public holidays · confirm before visit</p>
+              <p className="text-[10px] text-slate-500">{t("closedMondays")}</p>
             </div>
           </div>
 
           <div className="flex items-start gap-2.5">
             <Tag className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0 mt-0.5" />
             <div>
-              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Admission Fee</p>
+              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">{tTourism("entryFee")}</p>
               <p className="text-xs text-slate-600">₹10 (Adults) • ₹5 (Children)</p>
-              <p className="text-[10px] text-slate-body">Indicative — confirm current fees before visit</p>
             </div>
           </div>
 
           <div className="flex items-start gap-2.5">
             <MapPin className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0 mt-0.5" />
             <div>
-              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Location</p>
-              <p className="text-xs text-slate-600">Sant Dnyaneshwar Udyan Campus</p>
-              <p className="text-[10px] text-slate-body">Main Road, Paithan - 431107</p>
+              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">{tCommon("address")}</p>
+              <p className="text-xs text-slate-600">{t("locationAddress")}</p>
             </div>
           </div>
 
           <div className="flex items-start gap-2.5">
             <ShieldCheck className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0 mt-0.5" />
             <div>
-              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">Authority</p>
-              <p className="text-xs text-slate-600">Directorate of Archaeology</p>
-              <p className="text-[10px] text-slate-body">Government of Maharashtra</p>
+              <p className="text-xs font-semibold text-[var(--gov-navy-900)]">{tCommon("department")}</p>
+              <p className="text-xs text-slate-600">{t("archaeologyDept")}</p>
             </div>
           </div>
         </div>
@@ -104,12 +104,10 @@ export default function MuseumPage() {
         {/* 2. BACKGROUND STORY */}
         <section className="mt-12 border border-[var(--border-subtle)] bg-[var(--bg-surface-slate)] p-6">
           <h2 className="text-base font-semibold text-[var(--gov-navy-900)] font-serif">
-            The Vision of Late Dr. Balasaheb Patil
+            {t("historyTitle")}
           </h2>
           <p className="mt-2 text-xs text-slate-700 leading-relaxed max-w-4xl">
-            Set within the Sant Dnyaneshwar Udyan campus, the museum honors the lifetime research of local antiquarian <strong>Dr. Balasaheb Patil</strong>.
-            Over several decades, Dr. Patil gathered a large body of artifacts from explorations around ancient Pratishthana (Paithan) and the Godavari riverbed.
-            Recognizing their historical value, the collection is preserved with the Maharashtra State Directorate of Archaeology &amp; Museums so that future generations can study Paithan&apos;s heritage.
+            {t("museumSubtitle")}
           </p>
         </section>
 
@@ -117,57 +115,56 @@ export default function MuseumPage() {
         <section className="mt-12" aria-labelledby="exhibits-heading">
           <SectionHeading
             id="exhibits-heading"
-            title="Featured Permanent Gallery Exhibits"
-            description="Artifacts from ancient Pratishthana's Satavahana era, Roman trade emporium period, and Maratha historical records."
+            title={t("museumHeading")}
+            description={t("museumSubtitle")}
           />
 
-          <p className="mt-4 border border-amber-600/30 bg-amber-50/60 px-4 py-3 text-[11px] leading-relaxed text-amber-900">
-            <strong>Note:</strong> The exhibit entries below are illustrative of the collection&apos;s themes. Specific items,
-            catalogue references, dates and attributions are indicative and should be confirmed with the Directorate of
-            Archaeology &amp; Museums, Maharashtra, before being cited.
-          </p>
-
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {MUSEUM_EXHIBITS.map((exhibit) => (
-              <article
-                key={exhibit.id}
-                className="border border-[var(--border-subtle)] bg-white p-5 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-[var(--zari-gold-600)] uppercase tracking-wider">
-                      {exhibit.category} • Ref: {exhibit.accessionRef}
-                    </span>
-                    <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
-                      {exhibit.period}
-                    </span>
+            {MUSEUM_EXHIBITS.map((exhibit) => {
+              const exhibitName = isMr && exhibit.nameMr ? exhibit.nameMr : exhibit.nameEn;
+              return (
+                <article
+                  key={exhibit.id}
+                  className="border border-[var(--border-subtle)] bg-white p-5 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-[var(--zari-gold-600)] uppercase tracking-wider">
+                        {exhibit.category} • Ref: {exhibit.accessionRef}
+                      </span>
+                      <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">
+                        {exhibit.period}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-3 text-[0.9375rem] font-semibold text-[var(--gov-navy-900)] leading-snug">
+                      {exhibitName}
+                    </h3>
+                    {!isMr && exhibit.nameMr ? (
+                      <p lang="mr" className="text-xs text-slate-500 mt-0.5">
+                        {exhibit.nameMr}
+                      </p>
+                    ) : null}
+
+                    <p className="mt-3 text-xs text-slate-700 leading-relaxed">
+                      {exhibit.description}
+                    </p>
                   </div>
 
-                  <h3 className="mt-3 text-[0.9375rem] font-semibold text-[var(--gov-navy-900)] leading-snug">
-                    {exhibit.nameEn}
-                  </h3>
-                  <p lang="mr" className="text-xs text-slate-muted mt-0.5">
-                    {exhibit.nameMr}
-                  </p>
-
-                  <p className="mt-3 text-xs text-slate-700 leading-relaxed">
-                    {exhibit.description}
-                  </p>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-[var(--border-subtle)]">
-                  <p className="text-[11px] text-[var(--gov-navy-800)] font-medium">
-                    Historical Value:
-                  </p>
-                  <p className="text-[11px] text-slate-muted mt-0.5 leading-snug">
-                    {exhibit.significance}
-                  </p>
-                  <div className="mt-3">
-                    <DataStatusBadge status={exhibit.dataStatus} />
+                  <div className="mt-4 pt-3 border-t border-[var(--border-subtle)]">
+                    <p className="text-[11px] text-[var(--gov-navy-800)] font-medium">
+                      {tCommon("overview")}:
+                    </p>
+                    <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                      {exhibit.significance}
+                    </p>
+                    <div className="mt-3">
+                      <DataStatusBadge status={exhibit.dataStatus} />
+                    </div>
                   </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              );
+            })}
           </div>
         </section>
 
@@ -177,10 +174,10 @@ export default function MuseumPage() {
             <Sparkles className="w-8 h-8 text-[var(--zari-gold-600)] shrink-0" />
             <div>
               <h3 className="text-sm font-bold text-[var(--gov-navy-900)]">
-                Interactive 3D Artifact Virtual Viewer
+                {t("modelsTitle")}
               </h3>
               <p className="text-xs text-slate-600 mt-0.5">
-                Rotate, inspect, and examine high-fidelity 3D digital scans of Satavahana sculptures and coins using your mobile or desktop browser.
+                {t("modelsSubtitle")}
               </p>
             </div>
           </div>
@@ -188,7 +185,7 @@ export default function MuseumPage() {
             href="/heritage/3d-models"
             className="px-4 py-2 bg-[var(--gov-navy-900)] hover:bg-[var(--gov-navy-800)] text-white text-xs font-semibold rounded shrink-0 transition-colors"
           >
-            Launch 3D Models
+            {t("explore3d")}
           </Link>
         </div>
       </div>

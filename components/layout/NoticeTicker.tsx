@@ -1,9 +1,13 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Bell, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { OFFICIAL_NOTIFICATIONS } from "@/lib/mock-data";
 
 export default function NoticeTicker() {
+  const tHome = useTranslations("home");
   const pinnedNotices = OFFICIAL_NOTIFICATIONS.filter((n) => n.isPinned);
 
   return (
@@ -14,7 +18,7 @@ export default function NoticeTicker() {
       <div className="mx-auto flex h-9 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
         <div className="flex shrink-0 items-center gap-1.5 border-r border-[var(--border-strong)] pr-3 text-[11px] font-bold tracking-wider text-[var(--portal-blue-900)]">
           <Bell className="h-3.5 w-3.5 text-[var(--saffron-700)]" aria-hidden="true" />
-          <span>Notice Ticker</span>
+          <span>{tHome("noticesHeading")}</span>
         </div>
         <div className="flex-1 overflow-hidden whitespace-nowrap px-3">
           <div className="inline-flex items-center gap-8">
@@ -41,7 +45,7 @@ export default function NoticeTicker() {
           href="/nagar-parishad/notifications"
           className="inline-flex shrink-0 items-center gap-0.5 border-l border-[var(--border-strong)] pl-3 font-semibold text-[var(--saffron-700)] hover:underline"
         >
-          <span>All Notices</span>
+          <span>{tHome("allNotifications")}</span>
           <ChevronRight className="h-3 w-3" aria-hidden="true" />
         </Link>
       </div>
@@ -50,4 +54,5 @@ export default function NoticeTicker() {
 }
 
 export { NoticeTicker };
+
 

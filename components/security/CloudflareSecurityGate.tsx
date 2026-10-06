@@ -3,8 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Script from "next/script";
 import { ShieldCheck, Lock, Globe } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function CloudflareSecurityGate({ children }: { children: React.ReactNode }) {
+  const t = useTranslations("security");
+  const tHeader = useTranslations("header");
   const [isVerified, setIsVerified] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [rayId, setRayId] = useState("8c91a0298b42-BOM");
@@ -77,8 +80,8 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
             PMC
           </div>
           <div>
-            <h1 className="text-base font-bold text-white tracking-wide">Paithan Municipal Council</h1>
-            <p className="text-xs text-slate-400">Government of Maharashtra • Official Digital Portal</p>
+            <h1 className="text-base font-bold text-white tracking-wide">{tHeader("paithanMunicipalCouncil")}</h1>
+            <p className="text-xs text-slate-400">{tHeader("governmentOfMaharashtra")}</p>
           </div>
         </div>
 
@@ -102,10 +105,10 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
             </div>
             <div>
               <h2 className="text-lg font-bold text-white">
-                {isPassed ? "Connection Verified" : "Checking your connection"}
+                {isPassed ? t("connectionVerified") : t("checkingConnection")}
               </h2>
               <p className="text-xs text-slate-400">
-                {isPassed ? "Browser integrity confirmed secure" : "Verifying browser integrity before portal access"}
+                {isPassed ? t("browserConfirmed") : t("verifyingBrowser")}
               </p>
             </div>
           </div>
@@ -120,9 +123,9 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-emerald-400 tracking-wide flex items-center justify-center gap-1.5">
-                    <span>Verified by Cloudflare</span>
+                    <span>{t("verifiedByCloudflare")}</span>
                   </h3>
-                  <p className="text-xs text-emerald-200/80 mt-1">Connecting to Paithan Digital Portal...</p>
+                  <p className="text-xs text-emerald-200/80 mt-1">{t("connecting")}</p>
                 </div>
               </div>
             ) : siteKey ? (
@@ -155,14 +158,14 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
             ) : (
               <div className="flex flex-col items-center gap-3 py-2">
                 <div className="w-9 h-9 border-3 border-amber-400 border-t-transparent rounded-full animate-spin" />
-                <p className="text-xs font-medium text-amber-300">Securing connection via Cloudflare Edge Network...</p>
+                <p className="text-xs font-medium text-amber-300">{t("verifyingBrowser")}</p>
               </div>
             )}
           </div>
 
           <div className="text-center space-y-3">
             <p className="text-xs text-slate-400 leading-relaxed">
-              Paithan Municipal Council utilizes Cloudflare DDoS and automated threat mitigation to protect citizen services.
+              {t("protectedNotice")}
             </p>
             {!isPassed && (
               <button
@@ -170,7 +173,7 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
                 onClick={handleTurnstileSuccess}
                 className="text-xs text-amber-400 hover:text-amber-300 underline font-medium transition cursor-pointer"
               >
-                Click here to proceed immediately →
+                {t("proceedImmediately")}
               </button>
             )}
           </div>
@@ -180,12 +183,13 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
       <div className="max-w-4xl w-full mx-auto pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
         <div className="flex items-center gap-2">
           <Lock className="w-3.5 h-3.5 text-amber-400" />
-          <span>Cloudflare Turnstile & SSL 256-bit Encrypted</span>
+          <span>Cloudflare Turnstile &amp; SSL 256-bit Encrypted</span>
         </div>
         <div>
-          <span>Ray ID: <code className="text-slate-400 font-mono">{rayId || "8c91a0298b42-BOM"}</code> • Performance & Security by Cloudflare</span>
+          <span>Ray ID: <code className="text-slate-400 font-mono">{rayId || "8c91a0298b42-BOM"}</code> • Performance &amp; Security by Cloudflare</span>
         </div>
       </div>
     </div>
   );
 }
+

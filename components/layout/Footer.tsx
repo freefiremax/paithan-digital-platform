@@ -1,34 +1,38 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Phone, MapPin, ExternalLink, Clock, ShieldCheck } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { StateEmblem } from "@/components/ui/StateEmblem";
 
 export default function Footer() {
+  const t = useTranslations("footer");
+  const tHeader = useTranslations("header");
+
   return (
     <footer className="border-t-[3px] border-[var(--saffron-500)] bg-[var(--footer-bg)] text-[var(--on-vangi-muted)]">
-      {/* 1. TOP STATUTORY BAR: Emergency Helplines. One step off the footer
-          ground, so the bar reads as a separate band rather than the page
-          running on. Saffron is the only warm note down here. */}
+      {/* 1. TOP STATUTORY BAR: Emergency Helplines */}
       <div className="border-b border-[var(--on-vangi-rule)] bg-[var(--vangi-850)] px-4 py-2.5 text-xs sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 font-semibold text-[var(--saffron-500)]">
             <Phone className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Emergency Services &amp; Helplines (Paithan)</span>
+            <span>{t("emergencyServices")}</span>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px]">
             <span>
-              Municipal Office:{" "}
+              {t("municipalOffice")}:{" "}
               <strong className="text-white tabular-nums">02431-223010</strong>
             </span>
             <span>
-              Water Supply:{" "}
+              {t("waterSupply")}:{" "}
               <strong className="text-white tabular-nums">02431-223015</strong>
             </span>
             <span>
-              Police: <strong className="text-white tabular-nums">112 / 02431-223033</strong>
+              {t("police")}: <strong className="text-white tabular-nums">112 / 02431-223033</strong>
             </span>
             <span>
-              Hospital: <strong className="text-white tabular-nums">108 / 02431-223040</strong>
+              {t("hospital")}: <strong className="text-white tabular-nums">108 / 02431-223040</strong>
             </span>
           </div>
         </div>
@@ -46,15 +50,14 @@ export default function Footer() {
               <span lang="mr">पै</span>
             </span>
             <div>
-              <h3 className="text-sm font-bold text-white">Paithan Municipal Council</h3>
+              <h3 className="text-sm font-bold text-white">{tHeader("paithanMunicipalCouncil")}</h3>
               <p lang="mr" className="text-[11px] text-[var(--saffron-500)]">
-                पैठण नगर परिषद
+                {tHeader("paithanNagarParishad")}
               </p>
             </div>
           </div>
           <p className="leading-relaxed text-[var(--on-vangi-muted)]">
-            Local self-government urban local body providing civic amenities, infrastructure,
-            and heritage preservation for the historic town of Paithan.
+            {t("councilDesc")}
           </p>
           <div className="space-y-1.5 pt-1 text-[var(--on-vangi-muted)]">
             <div className="flex items-start gap-2">
@@ -63,8 +66,7 @@ export default function Footer() {
                 aria-hidden="true"
               />
               <span>
-                Municipal Council Administrative Complex, Main Road, Tq. Paithan, Dist.
-                Chhatrapati Sambhajinagar, Maharashtra - 431107
+                {t("address")}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -72,7 +74,7 @@ export default function Footer() {
                 className="h-3.5 w-3.5 shrink-0 text-[var(--saffron-500)]"
                 aria-hidden="true"
               />
-              <span>Office Hours: 09:45 AM to 06:15 PM (Mon&ndash;Sat)</span>
+              <span>{t("officeHours")}</span>
             </div>
           </div>
         </div>
@@ -83,7 +85,7 @@ export default function Footer() {
             id="footer-services"
             className="border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
           >
-            Civic Services &amp; e-Governance
+            {t("civicServicesTitle")}
           </h4>
           <ul className="space-y-2">
             <li>
@@ -93,7 +95,7 @@ export default function Footer() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
-                <span>Online Property Tax Payment</span>
+                <span>{t("onlineTax")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
@@ -104,7 +106,7 @@ export default function Footer() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
-                <span>Birth &amp; Death Registration (CRS)</span>
+                <span>{t("crsRegistration")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
@@ -113,7 +115,7 @@ export default function Footer() {
                 href="/nagar-parishad/development-works"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Ward-wise Development Works Status
+                {t("devWorksStatus")}
               </Link>
             </li>
             <li>
@@ -121,7 +123,7 @@ export default function Footer() {
                 href="/nagar-parishad/ward-map"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Paithan 17 Wards Directory &amp; Map
+                {t("wardMapDir")}
               </Link>
             </li>
             <li>
@@ -129,7 +131,7 @@ export default function Footer() {
                 href="/nagar-parishad/notifications"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                E-Tenders &amp; Municipal Notices
+                {t("eTenders")}
               </Link>
             </li>
           </ul>
@@ -141,7 +143,7 @@ export default function Footer() {
             id="footer-heritage"
             className="border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
           >
-            Heritage &amp; Tourism Portals
+            {t("heritagePortalsTitle")}
           </h4>
           <ul className="space-y-2">
             <li>
@@ -149,7 +151,7 @@ export default function Footer() {
                 href="/heritage/museum"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Dr. Balasaheb Patil Archaeological Museum
+                {t("museumLink")}
               </Link>
             </li>
             <li>
@@ -157,7 +159,7 @@ export default function Footer() {
                 href="/heritage/history"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Ancient Pratishthana &amp; Satavahana Dynasty
+                {t("historyLink")}
               </Link>
             </li>
             <li>
@@ -165,7 +167,7 @@ export default function Footer() {
                 href="/heritage/cultural-heritage"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Paithani Sarees GI Weaving Legacy
+                {t("paithaniLink")}
               </Link>
             </li>
             <li>
@@ -173,7 +175,7 @@ export default function Footer() {
                 href="/tourism/jayakwadi"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Jayakwadi Dam &amp; Reservoir Engineering
+                {t("jayakwadiLink")}
               </Link>
             </li>
             <li>
@@ -181,7 +183,7 @@ export default function Footer() {
                 href="/tourism/nath-sagar"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Nath Sagar &amp; Jaikwadi Bird Sanctuary
+                {t("nathSagarLink")}
               </Link>
             </li>
             <li>
@@ -189,7 +191,7 @@ export default function Footer() {
                 href="/tourism/routes"
                 className="transition-colors hover:text-[var(--saffron-500)]"
               >
-                Pilgrim &amp; Heritage Tourist Itineraries
+                {t("routesLink")}
               </Link>
             </li>
           </ul>
@@ -202,7 +204,7 @@ export default function Footer() {
             className="flex items-center gap-2 border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
           >
             <StateEmblem size={16} invert />
-            <span>Government Links</span>
+            <span>{t("govLinksTitle")}</span>
           </h4>
           <ul className="space-y-2">
             <li>
@@ -212,7 +214,7 @@ export default function Footer() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
-                <span>Aaple Sarkar Citizen Services</span>
+                <span>{t("aapleSarkar")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
@@ -223,7 +225,7 @@ export default function Footer() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
-                <span>Government of Maharashtra</span>
+                <span>{t("mahaGov")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
@@ -234,7 +236,7 @@ export default function Footer() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
-                <span>Chhatrapati Sambhajinagar District Portal</span>
+                <span>{t("districtPortal")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
@@ -245,7 +247,7 @@ export default function Footer() {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
               >
-                <span>MahaTenders e-Procurement</span>
+                <span>{t("mahaTenders")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
@@ -254,7 +256,7 @@ export default function Footer() {
                 href="/chatbot"
                 className="font-semibold text-[var(--saffron-500)] transition-colors hover:text-[var(--saffron-600)]"
               >
-                AI Citizen Assistant
+                {t("aiAssistant")}
               </Link>
             </li>
           </ul>
@@ -266,22 +268,22 @@ export default function Footer() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
           <div className="flex items-center gap-3">
             <p>
-              &copy; {new Date().getFullYear()} Paithan Municipal Council (पैठण नगर परिषद).
+              &copy; {new Date().getFullYear()} {t("copyrightText")}
             </p>
             <span className="inline-flex items-center gap-1 rounded bg-slate-800/80 px-2 py-0.5 text-[10px] text-emerald-400 border border-emerald-500/30 font-medium">
               <ShieldCheck className="h-3 w-3" />
-              Protected by Cloudflare Turnstile &amp; SSL
+              {t("protectedBy")}
             </span>
           </div>
           <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <Link href="/policies/privacy" className="hover:text-[var(--saffron-500)]">Privacy Policy</Link>
-            <Link href="/policies/terms" className="hover:text-[var(--saffron-500)]">Terms & Conditions</Link>
-            <Link href="/policies/copyright" className="hover:text-[var(--saffron-500)]">Copyright Policy</Link>
-            <Link href="/policies/hyperlinking" className="hover:text-[var(--saffron-500)]">Hyperlinking Policy</Link>
-            <Link href="/policies/disclaimer" className="hover:text-[var(--saffron-500)]">Disclaimer</Link>
-            <Link href="/policies/accessibility" className="hover:text-[var(--saffron-500)]">Accessibility Statement</Link>
-            <span>Right to Information (RTI)</span>
-            <span>Citizen Charter</span>
+            <Link href="/policies/privacy" className="hover:text-[var(--saffron-500)]">{t("privacyPolicy")}</Link>
+            <Link href="/policies/terms" className="hover:text-[var(--saffron-500)]">{t("termsConditions")}</Link>
+            <Link href="/policies/copyright" className="hover:text-[var(--saffron-500)]">{t("copyrightPolicy")}</Link>
+            <Link href="/policies/hyperlinking" className="hover:text-[var(--saffron-500)]">{t("hyperlinkingPolicy")}</Link>
+            <Link href="/policies/disclaimer" className="hover:text-[var(--saffron-500)]">{t("disclaimer")}</Link>
+            <Link href="/policies/accessibility" className="hover:text-[var(--saffron-500)]">{t("accessibilityStatement")}</Link>
+            <span>{t("rti")}</span>
+            <span>{t("citizenCharter")}</span>
           </nav>
         </div>
       </div>
@@ -290,3 +292,4 @@ export default function Footer() {
 }
 
 export { Footer };
+

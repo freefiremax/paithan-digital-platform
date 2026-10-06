@@ -30,39 +30,39 @@ interface Message {
 
 const PROMPT_SUGGESTIONS = [
   {
-    en: 'What are Paithan Municipal Council\'s office hours and contact numbers?',
-    mr: 'पैठण नगर परिषदेची कार्यालयीन वेळ आणि संपर्क क्रमांक काय आहेत?',
-    hi: 'पैठण नगर परिषद के कार्यालय समय और संपर्क नंबर क्या हैं?',
+    en: 'How do I pay property tax?',
+    mr: 'घरपट्टी कशी भरावी?',
+    hi: 'प्रॉपर्टी टैक्स कैसे भरें?',
     category: 'Civic',
     icon: Building2,
   },
   {
-    en: 'Tell me about Sant Eknath Maharaj Samadhi Mandir and Paithani sarees.',
-    mr: 'संत एकनाथ महाराज समाधी मंदिर आणि पैठणी साडीबद्दल माहिती द्या.',
-    hi: 'संत एकनाथ महाराज समाधि मंदिर और पैठणी साड़ी के बारे में बताएं।',
-    category: 'Heritage',
-    icon: Compass,
+    en: 'How can I file a complaint?',
+    mr: 'तक्रार कशी नोंदवावी?',
+    hi: 'शिकायत कैसे दर्ज करें?',
+    category: 'Grievance',
+    icon: HelpCircle,
   },
   {
-    en: 'Jayakwadi Dam and Nath Sagar Bird Sanctuary visiting timings?',
-    mr: 'जायकवाडी धरण आणि नाथसागर पक्षी अभयारण्य भेटीची वेळ काय आहे?',
-    hi: 'जायकवाडी बांध और नाथसागर पक्षी अभयारण्य घूमने का समय क्या है?',
-    category: 'Tourism',
+    en: 'What are the office timings?',
+    mr: 'कार्यालयीन वेळ काय आहे?',
+    hi: 'कार्यालय का समय क्या है?',
+    category: 'Office',
     icon: Clock,
   },
   {
-    en: 'What are the emergency numbers for Paithan Fire, Police, and Hospital?',
-    mr: 'पैठण अग्निशामक, पोलीस आणि रुग्णालय आपत्कालीन क्रमांक कोणते?',
-    hi: 'पैठण फायर, पुलिस और अस्पताल के आपातकालीन नंबर क्या हैं?',
-    category: 'Emergency',
-    icon: PhoneCall,
+    en: 'What documents are required for a birth certificate?',
+    mr: 'जन्म दाखल्यासाठी कोणती कागदपत्रे लागतात?',
+    hi: 'जन्म प्रमाण पत्र के लिए क्या दस्तावेज चाहिए?',
+    category: 'Certificates',
+    icon: Compass,
   },
 ];
 
 const WELCOME_MESSAGES = {
-  en: "Hello and Welcome! Ram Krishna Hari! 🙏\n\nI am your AI Citizen Assistant for the Paithan Digital Platform. I can answer any questions about Paithan Municipal Council services, property tax, water bills, grievance filing & tracking, tourism (Jayakwadi Dam, Dnyaneshwar Udyan), heritage (Sant Eknath, Paithani sarees, Satavahana history), emergency numbers, and general knowledge.\n\nHow can I help you today?",
-  mr: "राम कृष्ण हरी! नमस्कार! 🙏\n\nमी पैठण डिजिटल प्लॅटफॉर्मचा AI नागरिक सहाय्यक आहे. मी आपल्याला पैठण नगर परिषद नागरी सेवा (घरपट्टी, पाणीपट्टी, जन्म/मृत्यू दाखले, तक्रार निवारण), पर्यटन (जायकवाडी धरण, ज्ञानेश्वर उद्यान, पक्षी अभयारण्य), वारसा (संत एकनाथ समाधी, पैठणी साडी, सातवाहन इतिहास) आणि इतर कोणत्याही सामान्य ज्ञान किंवा शैक्षणिक विषयावर मदत करू शकतो.\n\nमी आज आपली काय मदत करू?",
-  hi: "नमस्ते! राम कृष्ण हरी! 🙏\n\nमैं पैठण डिजिटल प्लेटफॉर्म का AI नागरिक सहायक हूँ। मैं आपको पैठण नगर परिषद नागरिक सेवाएं (प्रॉपर्टी टैक्स, पानी टैक्स, जन्म/मृत्यु प्रमाण पत्र, शिकायत दर्ज व ट्रैक करना), पर्यटन (जायकवाड़ी बांध, ज्ञानेश्वर उद्यान, पक्षी अभयारण्य), विरासत (संत एकनाथ समाधि, पैठणी साड़ी, सातवाहन इतिहास) एवं सामान्य ज्ञान से जुड़ी हर जानकारी दे सकता हूँ।\n\nबताइए, आज मैं आपकी क्या सहायता करूँ?",
+  en: "Hello! Welcome to Paithan Municipal Council Help Desk. How can I help you with civic services, property tax, complaints, or town information today?",
+  mr: "नमस्कार! पैठण नगर परिषद सहाय्य कक्षात आपले स्वागत आहे. मी आपणास कर भरणा, तक्रार नोंदणी, दाखले किंवा नागरी सेवांमध्ये कशी मदत करू?",
+  hi: "नमस्ते! पैठण नगर परिषद सहायता केंद्र में आपका स्वागत है। मैं आपको टैक्स भुगतान, शिकायत दर्ज करने, प्रमाण पत्र या नागरिक सेवाओं में कैसे सहायता करूँ?",
 };
 
 export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
@@ -302,7 +302,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
               {msg.role === 'assistant' && (
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-700 mb-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Paithan AI Knowledge Engine</span>
+                  <span>{t("aiEngine")}</span>
                 </div>
               )}
 
@@ -312,7 +312,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
                 <div className="mt-3 pt-2.5 border-t border-slate-100 flex flex-col gap-1">
                   <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1">
                     <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                    Official Verified Sources
+                    {t("sourcesTitle")}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {msg.sources.map((src, i) => (

@@ -9,8 +9,9 @@ import {
   ShieldAlert,
   Building2,
   UserCheck,
-  AlertTriangle,
 } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
+import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
 import { 
   wardCorporators, 
   electedRepresentatives, 
@@ -20,6 +21,11 @@ import {
 } from "@/lib/mock-data";
 
 export default function NagarSevakPage() {
+  const t = useTranslations("nagarParishad");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredCorporators = wardCorporators.filter(
@@ -39,31 +45,25 @@ export default function NagarSevakPage() {
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 mb-3">
               <Building2 className="w-3.5 h-3.5 text-amber-400" />
-              <span>Paithan Municipal Council (Class &apos;C&apos; Council)</span>
+              <span>{isMr ? councilProfile.nameMr : councilProfile.nameEn} ({t("councilClassValue")})</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              नगरसेवक व लोकप्रतिनिधी निर्देशिका (Elected Representatives)
+              {t("representativesTitle")}
             </h1>
             <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-              Official public representative roster for Paithan Assembly, Parliamentary constituency, and 17 Municipal Ward divisions.
+              {t("representativesSubtitle")}
             </p>
           </div>
         </div>
 
-        {/* SEC Gazette Advisory (Rules.md §2 & §8) */}
+        {/* SEC Gazette Advisory */}
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex items-start gap-4">
           <ShieldAlert className="w-6 h-6 text-amber-700 shrink-0 mt-0.5" />
           <div className="text-xs text-amber-950 leading-relaxed space-y-1">
             <div className="font-bold text-amber-900 text-sm">
-              State Election Commission (SEC) Maharashtra Advisory / वैधानिक सूचना
+              {t("secAdvisoryTitle")}
             </div>
-            <p>
-              Under Maharashtra Municipal Councils, Nagar Panchayats and Industrial Townships Act, 1965, the Paithan Municipal Council comprises 17 wards. Ward corporator entries marked with{" "}
-              <span className="font-semibold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">
-                Sample / TBD
-              </span>{" "}
-              are awaiting final gazette notification from the State Election Commission following recent ward delimitation. Contact the Council Administration directly at 02431-223010 for certified records.
-            </p>
+            <p>{t("secAdvisoryText")}</p>
           </div>
         </div>
 
@@ -71,7 +71,7 @@ export default function NagarSevakPage() {
         <div>
           <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
             <UserCheck className="w-5 h-5 text-amber-600" />
-            <span>Parliamentary, Legislative & Executive Leadership</span>
+            <span>{t("leadershipTitle")}</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -84,15 +84,19 @@ export default function NagarSevakPage() {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800 uppercase tracking-wider">
                     {rep.designation}
                   </span>
-                  <h3 className="text-lg font-bold text-slate-900 mt-2">{rep.name}</h3>
-                  <p className="text-xs text-slate-600 font-marathi">{rep.nameMr}</p>
+                  <h3 className="text-lg font-bold text-slate-900 mt-2">
+                    {isMr && rep.nameMr ? rep.nameMr : rep.name}
+                  </h3>
+                  {!isMr && rep.nameMr ? (
+                    <p className="text-xs text-slate-600 font-marathi">{rep.nameMr}</p>
+                  ) : null}
                   <p className="text-xs text-amber-800 font-semibold mt-1">{rep.constituency}</p>
-                  <p className="text-xs text-slate-muted mt-0.5">{rep.termNote}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{rep.termNote}</p>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 space-y-1">
-                  <div><strong>Phone:</strong> {rep.phone}</div>
-                  <div><strong>Office:</strong> {rep.officeAddress}</div>
+                  <div><strong>{tCommon("telephone")}:</strong> {rep.phone}</div>
+                  <div><strong>{tCommon("address")}:</strong> {rep.officeAddress}</div>
                 </div>
               </div>
             ))}
@@ -105,17 +109,25 @@ export default function NagarSevakPage() {
               >
                 <div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase tracking-wider">
-                    Executive Directorate
+                    {t("coTitle")}
                   </span>
-                  <h3 className="text-lg font-bold text-white mt-2">{rep.name}</h3>
-                  <p className="text-xs text-amber-200/80 font-marathi">{rep.nameMr}</p>
-                  <p className="text-xs text-slate-300 font-semibold mt-1">{rep.designation}</p>
-                  <p className="text-xs text-slate-300 mt-0.5">{councilProfile.nameEn}</p>
+                  <h3 className="text-lg font-bold text-white mt-2">
+                    {isMr && rep.nameMr ? rep.nameMr : rep.name}
+                  </h3>
+                  {!isMr && rep.nameMr ? (
+                    <p className="text-xs text-amber-200/80 font-marathi">{rep.nameMr}</p>
+                  ) : null}
+                  <p className="text-xs text-slate-300 font-semibold mt-1">
+                    {isMr && rep.designationMr ? rep.designationMr : rep.designation}
+                  </p>
+                  <p className="text-xs text-slate-300 mt-0.5">
+                    {isMr ? councilProfile.nameMr : councilProfile.nameEn}
+                  </p>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-slate-700/80 text-xs text-slate-300 space-y-1">
-                  <div><strong>Phone:</strong> {rep.phone}</div>
-                  <div><strong>Email:</strong> {rep.email}</div>
+                  <div><strong>{tCommon("telephone")}:</strong> {rep.phone}</div>
+                  <div><strong>{tCommon("email")}:</strong> {rep.email}</div>
                 </div>
               </div>
             ))}
@@ -127,20 +139,20 @@ export default function NagarSevakPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                17 प्रभागांचे नगरसेवक (Ward-Wise Corporators)
+                {t("wardCorporatorsTitle")}
               </h2>
-              <p className="text-xs text-slate-muted">
-                Direct contacts for civic grievances, water supply, and local ward maintenance
+              <p className="text-xs text-slate-500">
+                {t("wardCorporatorsSubtitle")}
               </p>
             </div>
 
             <div className="relative w-full sm:w-72">
-              <Search className="w-4 h-4 text-slate-body absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search ward or corporator..."
+                placeholder={t("searchRosterPlaceholder")}
                 className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:ring-2 focus:ring-amber-500/30"
               />
             </div>
@@ -149,6 +161,8 @@ export default function NagarSevakPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCorporators.map((ward) => {
               const wardInfo = wards.find((w) => w.number === ward.wardNumber);
+              const wardDisplayName = isMr ? ward.wardNameMr : ward.wardName;
+              const corporatorDisplayName = isMr && ward.nameMr ? ward.nameMr : ward.name;
               return (
                 <div
                   key={ward.wardNumber}
@@ -157,26 +171,21 @@ export default function NagarSevakPage() {
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-black bg-teal-800 text-white px-2.5 py-1 rounded-lg">
-                        Ward {ward.wardNumber}
+                        {tCommon("ward")} {ward.wardNumber}
                       </span>
-                      <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3 text-amber-600" />
-                        Sample / TBD
-                      </span>
+                      <DataStatusBadge status="SAMPLE_TBD" />
                     </div>
 
                     <div className="mt-3">
-                      <h3 className="font-bold text-base text-slate-900">{ward.wardName}</h3>
-                      <p className="text-xs text-slate-muted font-marathi">{ward.wardNameMr}</p>
+                      <h3 className="font-bold text-base text-slate-900">{wardDisplayName}</h3>
                     </div>
 
                     <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                      <div className="text-[11px] text-slate-body font-medium uppercase">Nagar Sevak / Corporator</div>
-                      <div className="font-bold text-sm text-slate-900 mt-0.5">{ward.name}</div>
-                      <div className="text-xs text-slate-600 font-marathi">{ward.nameMr}</div>
+                      <div className="text-[11px] text-slate-500 font-medium uppercase">{t("corporatorsTitle")}</div>
+                      <div className="font-bold text-sm text-slate-900 mt-0.5">{corporatorDisplayName}</div>
 
                       <div className="mt-2 pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                        <span className="text-slate-muted">Paithan Municipal Council</span>
+                        <span className="text-slate-500">{isMr ? councilProfile.nameMr : councilProfile.nameEn}</span>
                         <a
                           href={`tel:${(ward.phone || "02431223010").replace(/[^0-9]/g, "")}`}
                           className="font-mono text-amber-700 hover:text-amber-800 font-semibold flex items-center gap-1"
@@ -190,20 +199,20 @@ export default function NagarSevakPage() {
                     {wardInfo && (
                       <div className="mt-3 text-xs text-slate-600">
                         <div className="flex items-start gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-slate-body shrink-0 mt-0.5" />
-                          <span>Locality: {wardInfo.locality}</span>
+                          <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+                          <span>{tCommon("address")}: {wardInfo.locality}</span>
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-muted">
-                    <span>Census Ward #{ward.wardNumber}</span>
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span>{tCommon("ward")} #{ward.wardNumber}</span>
                     <Link
                       href={`/nagar-parishad/development-works`}
                       className="text-amber-700 hover:underline font-semibold"
                     >
-                      Ward Works →
+                      {t("devWorksTitle")} →
                     </Link>
                   </div>
                 </div>

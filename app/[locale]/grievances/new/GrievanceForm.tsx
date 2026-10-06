@@ -375,7 +375,7 @@ export function GrievanceForm({ }: GrievanceFormProps) {
                 {isUploadingPhoto && (
                   <div className="flex items-center gap-2 text-xs text-amber-600 font-medium">
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Optimizing and saving photo to Cloudinary cloud...</span>
+                    <span>{t("optimizingPhoto")}</span>
                   </div>
                 )}
 
@@ -383,7 +383,7 @@ export function GrievanceForm({ }: GrievanceFormProps) {
                   <div className="flex items-center gap-3 p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
                     <ImageIcon className="w-5 h-5 text-emerald-600 shrink-0" />
                     <span className="text-xs text-emerald-800 font-medium truncate flex-1">
-                      Photo uploaded to Cloudinary: {formData.photoUrl}
+                      ✓ {formData.photoUrl}
                     </span>
                     <button
                       type="button"

@@ -23,6 +23,7 @@ function AdminLoginForm() {
   const isRegistered = searchParams.get("registered") === "1";
   const errorParam = searchParams.get("error");
   const t = useTranslations("adminLogin");
+  const tLogin = useTranslations("login");
 
   const [email, setEmail] = useState(emailParam);
   const [password, setPassword] = useState("");
@@ -139,7 +140,7 @@ function AdminLoginForm() {
                 <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z" />
                 <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z" />
               </svg>
-              <span>Continue with Google</span>
+              <span>{tLogin("continueWithGoogle")}</span>
             </button>
           </form>
 
@@ -149,7 +150,7 @@ function AdminLoginForm() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-slate-900/90 px-3 text-slate-400 font-medium">
-                Or sign in with email
+                {tLogin("orSignInWithEmail")}
               </span>
             </div>
           </div>
@@ -158,7 +159,7 @@ function AdminLoginForm() {
             {isRegistered && (
               <div className="mb-4 flex items-center gap-2 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 p-3 rounded-xl">
                 <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
-                <span>Account created successfully! Please enter your password to sign in.</span>
+                <span>{tLogin("accountCreatedSuccess")}</span>
               </div>
             )}
 
@@ -226,7 +227,7 @@ function AdminLoginForm() {
               href={`/${locale}/register`}
               className="text-xs text-amber-400 hover:text-amber-300 font-medium transition"
             >
-              Need a citizen account? Register here →
+              {tLogin("needAccount")}
             </Link>
             <Link
               href={`/${locale}`}
@@ -252,7 +253,7 @@ export default function AdminLoginPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#071224] flex items-center justify-center">
-          <div className="text-amber-400 animate-pulse text-sm">Loading...</div>
+          <div className="text-amber-400 animate-pulse text-sm">...</div>
         </div>
       }
     >

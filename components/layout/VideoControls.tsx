@@ -22,10 +22,12 @@
  * cannot see the footage can still stop it moving.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 const VIDEO_ID = "home-band-video";
 
 export function VideoControls() {
+  const t = useTranslations("common");
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playing, setPlaying] = useState(true);
 
@@ -34,19 +36,11 @@ export function VideoControls() {
     videoRef.current = el;
     if (!el) return;
 
-    // Listeners only. Nothing here sets state directly: `set-state-in-effect`
-    // is a real hazard when a synchronous call in the effect body disagrees with
-    // the value the events are about to report, and there is nothing to read
-    // before the first event anyway. The reduced-motion `pause()` below fires
-    // `pause`, which is how the label corrects itself.
     const sync = () => setPlaying(!el.paused);
     el.addEventListener("play", sync);
     el.addEventListener("pause", sync);
     el.addEventListener("ended", sync);
 
-    // A reduced-motion visitor should not get moving scenery at all. The markup
-    // says autoPlay, so it has to be stopped here; a stylesheet cannot stop a
-    // video element.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) el.pause();
 
     return () => {
@@ -79,13 +73,14 @@ export function VideoControls() {
         type="button"
         onClick={toggle}
         className="video-controls__toggle"
-        aria-label={playing ? "Pause background footage" : "Play background footage"}
+        aria-label={playing ? t("pauseBg") : t("playBg")}
       >
         <span className="video-controls__glyph" aria-hidden="true">
           {playing ? "❙❙" : "▶"}
         </span>
-        <span className="video-controls__label">{playing ? "Pause" : "Play"}</span>
+        <span className="video-controls__label">{playing ? t("pause") : t("play")}</span>
       </button>
     </div>
   );
 }
+

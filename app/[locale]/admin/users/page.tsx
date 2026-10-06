@@ -2,21 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { Trash2, Edit, X, Search, UserPlus, Key } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
-
-const ROLE_LABELS: Record<string, string> = {
-  ADMIN: "Administrator",
-  EDITOR: "Editor",
-  PUBLIC: "Public",
-};
-
-const ROLE_COLORS: Record<string, string> = {
-  ADMIN: "bg-red-50 text-red-800",
-  EDITOR: "bg-amber-50 text-amber-800",
-  PUBLIC: "bg-slate-50 text-slate-800",
-};
 
 interface User {
   id: string;
@@ -35,7 +24,23 @@ interface Ward {
   name: string;
 }
 
+const ROLE_COLORS: Record<string, string> = {
+  ADMIN: "bg-red-50 text-red-800",
+  EDITOR: "bg-amber-50 text-amber-800",
+  PUBLIC: "bg-slate-50 text-slate-800",
+};
+
 export default function AdminUsersPage() {
+  const t = useTranslations("adminUsers");
+  const tNav = useTranslations("nav");
+  const locale = useLocale();
+
+  const ROLE_LABELS: Record<string, string> = {
+    ADMIN: t("roleAdmin"),
+    EDITOR: t("roleEditor"),
+    PUBLIC: t("rolePublic"),
+  };
+
   const [users, setUsers] = useState<User[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -144,7 +149,7 @@ export default function AdminUsersPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete user");
@@ -175,17 +180,17 @@ export default function AdminUsersPage() {
     <div className="space-y-6">
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Admin", href: "/admin/dashboard" },
-          { label: "User Management" },
+          { label: tNav("home"), href: `/${locale}` },
+          { label: tNav("adminDashboard"), href: `/${locale}/admin/dashboard` },
+          { label: t("title") },
         ]}
       />
 
       <div className="mx-auto max-w-[1180px] px-4 py-11">
         <SectionHeading
           as="h1"
-          title="User Management"
-          description="Manage admin users, editors, and ward officers. Only Admins can create, edit, or delete users and change roles."
+          title={t("title")}
+          description={t("description")}
         />
 
         {/* Filters */}
@@ -195,7 +200,7 @@ export default function AdminUsersPage() {
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search users by email, name..."
+                placeholder={t("searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500"
@@ -208,10 +213,10 @@ export default function AdminUsersPage() {
                 onChange={(e) => setSelectedRole(e.target.value)}
                 className="border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800 bg-white"
               >
-                <option value="ALL">All Roles</option>
-                <option value="ADMIN">Administrator</option>
-                <option value="EDITOR">Editor</option>
-                <option value="PUBLIC">Public</option>
+                <option value="ALL">{t("allRoles")}</option>
+                <option value="ADMIN">{t("roleAdmin")}</option>
+                <option value="EDITOR">{t("roleEditor")}</option>
+                <option value="PUBLIC">{t("rolePublic")}</option>
               </select>
 
               <button
@@ -219,7 +224,7 @@ export default function AdminUsersPage() {
                 className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition"
               >
                 <UserPlus className="w-3.5 h-3.5" />
-                <span>Add User</span>
+                <span>{t("addUser")}</span>
               </button>
             </div>
           </div>
@@ -228,22 +233,22 @@ export default function AdminUsersPage() {
         {/* Users Table */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           {isLoading ? (
-            <div className="p-12 text-center text-slate-500">Loading users...</div>
+            <div className="p-12 text-center text-slate-500">{t("loading")}</div>
           ) : filteredUsers.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-sm font-semibold text-slate-700">No users match your filter criteria.</p>
-              <p className="mt-1 text-xs text-slate-500">Try adjusting your filters or add a new user.</p>
+              <p className="text-sm font-semibold text-slate-700">{t("noMatch")}</p>
+              <p className="mt-1 text-xs text-slate-500">{t("noMatchHint")}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs text-slate-700">
                 <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
                   <tr>
-                    <th className="py-3.5 px-4">User</th>
-                    <th className="py-3.5 px-4">Role</th>
-                    <th className="py-3.5 px-4">Ward</th>
-                    <th className="py-3.5 px-4">Created</th>
-                    <th className="py-3.5 px-4 text-right">Actions</th>
+                    <th className="py-3.5 px-4">{t("colUser")}</th>
+                    <th className="py-3.5 px-4">{t("colRole")}</th>
+                    <th className="py-3.5 px-4">{t("colWard")}</th>
+                    <th className="py-3.5 px-4">{t("colCreated")}</th>
+                    <th className="py-3.5 px-4 text-right">{t("colActions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -270,7 +275,7 @@ export default function AdminUsersPage() {
                       <td className="py-3.5 px-4">
                         {user.ward ? (
                           <span className="text-[11px] font-semibold text-slate-700">
-                            Ward {user.ward.number} — {user.ward.name}
+                            {locale === "mr" ? `प्रभाग ${user.ward.number} — ${user.ward.name}` : locale === "hi" ? `वार्ड ${user.ward.number} — ${user.ward.name}` : `Ward ${user.ward.number} — ${user.ward.name}`}
                           </span>
                         ) : (
                           <span className="text-[11px] text-slate-400">—</span>
@@ -278,7 +283,7 @@ export default function AdminUsersPage() {
                       </td>
 
                       <td className="py-3.5 px-4 text-slate-500">
-                        {new Date(user.createdAt).toLocaleDateString("en-IN", {
+                        {new Date(user.createdAt).toLocaleDateString(locale === "mr" ? "mr-IN" : locale === "hi" ? "hi-IN" : "en-IN", {
                           day: "numeric",
                           month: "short",
                           year: "numeric",
@@ -290,7 +295,7 @@ export default function AdminUsersPage() {
                           <button
                             onClick={() => handleEdit(user)}
                             className="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-blue-50"
-                            title="Edit User"
+                            title={t("modalEditTitle")}
                           >
                             <Edit className="w-4 h-4" />
                           </button>
@@ -298,7 +303,7 @@ export default function AdminUsersPage() {
                             <button
                               onClick={() => handleDelete(user.id)}
                               className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50"
-                              title="Delete User"
+                              title={t("deleteConfirm")}
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -319,7 +324,7 @@ export default function AdminUsersPage() {
             <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <h2 className="font-bold text-slate-900 text-base">
-                  {editingUser ? "Edit User" : "Add New User"}
+                  {editingUser ? t("modalEditTitle") : t("modalAddTitle")}
                 </h2>
                 <button
                   onClick={() => {
@@ -342,7 +347,7 @@ export default function AdminUsersPage() {
               <form onSubmit={handleSubmit} className="mt-4 space-y-3.5">
                 {!editingUser && (
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Email *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldEmail")}</label>
                     <input
                       type="email"
                       required
@@ -356,12 +361,12 @@ export default function AdminUsersPage() {
 
                 {editingUser && (
                   <div className="text-sm text-slate-600 bg-slate-50 p-2 rounded-xl">
-                    <span className="font-semibold">Email:</span> {editingUser.email}
+                    <span className="font-semibold">{t("fieldEmail")}</span> {editingUser.email}
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldFullName")}</label>
                   <input
                     type="text"
                     placeholder="Officer Name"
@@ -373,7 +378,7 @@ export default function AdminUsersPage() {
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    {editingUser ? "New Password (leave blank to keep current)" : "Password *"}
+                    {editingUser ? t("fieldNewPassword") : t("fieldPassword")}
                   </label>
                   <div className="relative">
                     <input
@@ -388,39 +393,39 @@ export default function AdminUsersPage() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     >
-                      {showPassword ? <Key className="w-4 h-4" /> : <Key className="w-4 h-4" />}
+                      <Key className="w-4 h-4" />
                     </button>
                   </div>
                   {!editingUser && (
-                    <p className="text-[10px] text-slate-500 mt-1">Minimum 12 characters required</p>
+                    <p className="text-[10px] text-slate-500 mt-1">{t("passwordMinLength")}</p>
                   )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Role *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldRole")}</label>
                     <select
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs"
                     >
-                      <option value="PUBLIC">Public (Read Only)</option>
-                      <option value="EDITOR">Editor (Create/Update)</option>
-                      <option value="ADMIN">Administrator (Full Access)</option>
+                      <option value="PUBLIC">{t("rolePublicDesc")}</option>
+                      <option value="EDITOR">{t("roleEditorDesc")}</option>
+                      <option value="ADMIN">{t("roleAdminDesc")}</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Assigned Ward</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldAssignedWard")}</label>
                     <select
                       value={formData.wardId}
                       onChange={(e) => setFormData({ ...formData, wardId: e.target.value })}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs"
                     >
-                      <option value="">No Ward Assignment</option>
+                      <option value="">{t("noWardAssignment")}</option>
                       {wards.map((w) => (
                         <option key={w.id} value={w.id}>
-                          Ward {w.number} — {w.name}
+                          {locale === "mr" ? `प्रभाग ${w.number} — ${w.name}` : locale === "hi" ? `वार्ड ${w.number} — ${w.name}` : `Ward ${w.number} — ${w.name}`}
                         </option>
                       ))}
                     </select>
@@ -437,14 +442,14 @@ export default function AdminUsersPage() {
                     }}
                     className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 text-xs font-bold rounded-xl shadow-md disabled:opacity-60"
                   >
-                    {isSubmitting ? "Saving..." : editingUser ? "Update User" : "Create User"}
+                    {isSubmitting ? t("saving") : editingUser ? t("update") : t("save")}
                   </button>
                 </div>
               </form>

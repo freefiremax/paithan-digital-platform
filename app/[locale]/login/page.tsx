@@ -117,7 +117,7 @@ function PublicLoginForm() {
             {isRegistered && (
               <div className="mb-4 flex items-center gap-2 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 p-3 rounded-xl">
                 <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
-                <span>Account created successfully! Please enter your password to sign in.</span>
+                <span>{t("accountCreatedSuccess")}</span>
               </div>
             )}
 
@@ -219,7 +219,7 @@ export default function PublicLoginPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#071224] flex items-center justify-center">
-          <div className="text-amber-400 animate-pulse text-sm">Loading...</div>
+          <div className="text-amber-400 animate-pulse text-sm">...</div>
         </div>
       }
     >

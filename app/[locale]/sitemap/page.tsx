@@ -138,7 +138,9 @@ export default async function SitemapPage({ params }: PageProps) {
 
           <div className="pt-6 border-t border-slate-200">
             <p className="text-sm text-slate-500 text-center">
-              {messages.sitemap?.xmlLink || 'View the <a href="/sitemap.xml" className="text-[var(--saffron-600)] hover:underline">XML Sitemap</a> for search engines.'}
+              <a href="/sitemap.xml" className="text-[var(--saffron-600)] hover:underline">
+                {messages.sitemap?.xmlSitemap || "XML Sitemap"}
+              </a>
             </p>
           </div>
         </div>

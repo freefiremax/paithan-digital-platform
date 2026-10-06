@@ -2,16 +2,17 @@
 
 import React, { useState } from "react";
 import { Bot, X, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { ChatInterface } from "./ChatInterface";
 
-import { usePathname } from "next/navigation";
-
 export function FloatingChatbotWidget() {
+  const t = useTranslations("chatbot");
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
   // Hide the floating widget on the dedicated chatbot page or inside admin
-  if (pathname === "/chatbot" || pathname.startsWith("/admin")) {
+  if (pathname?.includes("/chatbot") || pathname?.includes("/admin")) {
     return null;
   }
 
@@ -22,7 +23,7 @@ export function FloatingChatbotWidget() {
         {!isOpen ? (
           <button
             onClick={() => setIsOpen(true)}
-            aria-label="Open Paithan AI Civic Assistant"
+            aria-label={t("title")}
             className="group relative flex items-center gap-2.5 bg-gradient-to-r from-[var(--vangi-950)] to-[var(--vangi-850)] hover:from-[var(--vangi-850)] hover:to-[var(--vangi-950)] text-white pl-3.5 pr-4 py-3 rounded-full shadow-2xl border-2 border-amber-500/40 hover:border-amber-400 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
             <div className="relative">
@@ -35,11 +36,11 @@ export function FloatingChatbotWidget() {
 
             <div className="text-left hidden xs:block">
               <div className="text-xs font-bold tracking-tight text-white flex items-center gap-1">
-                <span>Ask Paithan AI</span>
+                <span>{t("askAi")}</span>
                 <Sparkles className="w-3 h-3 text-amber-400" />
               </div>
               <div className="text-[10px] text-amber-200/80 font-medium leading-none">
-                नागरिक AI सहाय्यक
+                {t("aiAssistantMarathi")}
               </div>
             </div>
           </button>
@@ -47,7 +48,7 @@ export function FloatingChatbotWidget() {
           <div className="flex flex-col items-end">
             <button
               onClick={() => setIsOpen(false)}
-              aria-label="Close Chatbot"
+              aria-label={t("closeChatbot")}
               className="mb-2 w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center shadow-lg transition"
             >
               <X className="w-5 h-5" />
@@ -61,3 +62,4 @@ export function FloatingChatbotWidget() {
     </>
   );
 }
+

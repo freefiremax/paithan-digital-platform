@@ -1,7 +1,9 @@
+"use client";
+
 import React from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ChatInterface } from "@/components/chatbot/ChatInterface";
+import { useTranslations } from "next-intl";
 import { 
   Bot, 
   ShieldCheck, 
@@ -11,14 +13,12 @@ import {
   ExternalLink 
 } from "lucide-react";
 
-
-export const metadata: Metadata = {
-  title: "AI Citizen Assistant | Paithan Municipal Council (पैठण नगर परिषद)",
-  description:
-    "Ask questions about municipal civic services, property taxes, Jayakwadi dam, Sant Eknath pilgrimage, and heritage sites with grounded official records.",
-};
-
 export default function ChatbotPage() {
+  const t = useTranslations("chatbot");
+  const tHome = useTranslations("home");
+  const tNav = useTranslations("nav");
+  const tHeader = useTranslations("header");
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,20 +27,20 @@ export default function ChatbotPage() {
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-600 mb-1">
               <Bot className="w-4 h-4" />
-              <span>Civic Artificial Intelligence</span>
+              <span>{t("civicAi")}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-oxide-700 tracking-tight">
-              Paithan Citizen AI Assistant (पैठण AI सहाय्यक)
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0C1E3C] tracking-tight">
+              {t("title")}
             </h1>
             <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-              24/7 AI-powered municipal, tourist, and pilgrimage inquiry desk grounded in verified Paithan Municipal Council records and official Maharashtra gazettes.
+              {t("subtitle")}
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-300">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              Live Council RAG Engine
+              <span>{t("disclaimer")}</span>
             </span>
           </div>
         </div>
@@ -58,47 +58,47 @@ export default function ChatbotPage() {
             <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <ShieldCheck className="w-5 h-5 text-amber-600" />
-                <h2 className="font-bold text-slate-900 text-base">Knowledge Guarantee</h2>
+                <h2 className="font-bold text-slate-900 text-base">{t("sourcesTitle")}</h2>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
-                This civic assistant retrieves answers exclusively from verified databases and official municipal notifications of Paithan Municipal Council:
+                {t("disclaimer")}
               </p>
 
               <ul className="mt-3 space-y-2 text-xs text-slate-700">
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                  <span><strong>17 Administrative Wards:</strong> Population, corporators, and ongoing development works.</span>
+                  <span><strong>{tNav("wards")}:</strong> {tHome("wardsOverviewSubtitle")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                  <span><strong>Pilgrimage & Temples:</strong> Sant Eknath Maharaj Samadhi Mandir, Nath Shashti timings.</span>
+                  <span><strong>{tNav("heritageSites")}:</strong> {tHome("wingHeritageBlurb")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                  <span><strong>Tourism & Ecology:</strong> Jayakwadi Dam (Nath Sagar) & Bird Sanctuary visiting guide.</span>
+                  <span><strong>{tNav("tourismPlaces")}:</strong> {tHome("wingTourismBlurb")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                  <span><strong>Paithani Silk & Heritage:</strong> GI-tagged weaving heritage, Dr. Balasaheb Patil Museum.</span>
+                  <span><strong>{tNav("culturalHeritage")}:</strong> {tHome("wingHeritageFacts")}</span>
                 </li>
               </ul>
             </div>
 
             {/* Direct Official Escalation Card */}
-            <div className="bg-gradient-to-br from-oxide-800 to-teal-900 text-white rounded-2xl p-6 border border-amber-500/20 shadow-lg">
+            <div className="bg-gradient-to-br from-[#0C1E3C] to-[#071224] text-white rounded-2xl p-6 border border-amber-500/20 shadow-lg">
               <h2 className="font-bold text-white text-base mb-1 flex items-center gap-2">
                 <Building2Icon className="w-4 h-4 text-amber-400" />
-                <span>Municipal Headquarters</span>
+                <span>{tHome("councilPanelTitle")}</span>
               </h2>
-              <p className="text-xs text-slate-body mb-4">
-                For legal certificates, RTI, and formal complaints:
+              <p className="text-xs text-slate-300 mb-4">
+                {tHome("councilPanelSubtitle")}
               </p>
 
               <div className="space-y-3 text-xs text-slate-200">
                 <div className="flex items-center gap-2.5">
                   <PhoneCall className="w-4 h-4 text-amber-400 shrink-0" />
                   <div>
-                    <div className="text-[11px] text-slate-body">Civic Phone Line</div>
+                    <div className="text-[11px] text-slate-400">{tHome("vitalsControlRoom")}</div>
                     <a href="tel:02431223010" className="font-semibold text-white hover:text-amber-300">
                       02431-223010
                     </a>
@@ -108,8 +108,8 @@ export default function ChatbotPage() {
                 <div className="flex items-center gap-2.5">
                   <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
                   <div>
-                    <div className="text-[11px] text-slate-body">Office Location</div>
-                    <span>Municipal Council Complex, Main Road, Paithan 431107</span>
+                    <div className="text-[11px] text-slate-400">{tHeader("district")}</div>
+                    <span>{tHome("councilPanelSubtitle")}</span>
                   </div>
                 </div>
               </div>
@@ -117,16 +117,16 @@ export default function ChatbotPage() {
               <div className="mt-5 pt-4 border-t border-slate-700/80 flex items-center justify-between text-xs">
                 <Link
                   href="/nagar-parishad"
-                  className="text-amber-600 hover:text-amber-700 font-medium inline-flex items-center gap-1"
+                  className="text-amber-400 hover:text-amber-300 font-medium inline-flex items-center gap-1"
                 >
-                  <span>Council Directory</span>
+                  <span>{tNav("nagarParishad")}</span>
                   <ExternalLink className="w-3 h-3" />
                 </Link>
                 <Link
                   href="/nagar-parishad/development-works"
-                  className="text-slate-body hover:text-white font-medium inline-flex items-center gap-1"
+                  className="text-slate-300 hover:text-white font-medium inline-flex items-center gap-1"
                 >
-                  <span>Development Works</span>
+                  <span>{tNav("developmentWorks")}</span>
                   <ExternalLink className="w-3 h-3" />
                 </Link>
               </div>
@@ -136,7 +136,7 @@ export default function ChatbotPage() {
             <div className="p-4 bg-red-50 border border-red-200 rounded-2xl">
               <div className="text-xs font-bold text-red-900 mb-2 flex items-center gap-1.5">
                 <PhoneCall className="w-3.5 h-3.5 text-red-600" />
-                <span>Urgent Emergency Numbers</span>
+                <span>{tHome("emergencyControl")}</span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-center">
                 <a

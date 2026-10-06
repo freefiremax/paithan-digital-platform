@@ -1,5 +1,6 @@
+"use client";
+
 import React from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Sparkles,
@@ -9,13 +10,7 @@ import {
   Feather,
   ArrowRight,
 } from "lucide-react";
-
-
-export const metadata: Metadata = {
-  title: "Cultural Heritage & Traditions | Paithan Municipal Council (पैठण नगर परिषद)",
-  description:
-    "Living cultural traditions of Paithan: Sant Eknath Bhakti movement, Nath Shashti Fair, GI-tagged Paithani Silk Handlooms, and Sanskrit scholarship.",
-};
+import { useTranslations, useLocale } from "next-intl";
 
 const TRADITIONS = [
   {
@@ -84,6 +79,12 @@ const TRADITIONS = [
 ];
 
 export default function CulturalHeritagePage() {
+  const t = useTranslations("heritage");
+  const tCommon = useTranslations("common");
+  const tTourism = useTranslations("tourism");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -92,13 +93,13 @@ export default function CulturalHeritagePage() {
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 mb-3">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Living Culture & Sacred Traditions of Pratishthana</span>
+              <span>{t("title")}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              पैठणची सांस्कृतिक व आध्यात्मिक परंपरा (Cultural Heritage)
+              {t("culturalTitle")}
             </h1>
-            <p className="text-sm text-slate-body mt-2 leading-relaxed">
-              Explore the rich spiritual literature of Sant Eknath, the vibrant devotion of the annual Nath Shashti fair, and the exquisite craftsmanship of GI-tagged Paithani silk.
+            <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+              {t("culturalSubtitle")}
             </p>
           </div>
         </div>
@@ -107,6 +108,7 @@ export default function CulturalHeritagePage() {
         <div className="space-y-6">
           {TRADITIONS.map((tradition) => {
             const Icon = tradition.icon;
+            const traditionTitle = isMr && tradition.titleMr ? tradition.titleMr : tradition.titleEn;
             return (
               <div
                 key={tradition.id}
@@ -129,11 +131,13 @@ export default function CulturalHeritagePage() {
 
                     <div>
                       <h2 className="text-xl font-bold text-slate-900 leading-snug">
-                        {tradition.titleEn}
+                        {traditionTitle}
                       </h2>
-                      <p className="text-sm text-slate-600 font-marathi mt-1">
-                        {tradition.titleMr}
-                      </p>
+                      {!isMr && tradition.titleMr ? (
+                        <p className="text-sm text-slate-500 font-marathi mt-1">
+                          {tradition.titleMr}
+                        </p>
+                      ) : null}
                     </div>
 
                     <p className="text-xs text-slate-600 leading-relaxed">
@@ -142,7 +146,7 @@ export default function CulturalHeritagePage() {
 
                     <div className="pt-2">
                       <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
-                        Key Historical & Cultural Pillars:
+                        {tCommon("overview")}:
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
                         {tradition.keyPoints.map((point, idx) => (
@@ -163,16 +167,16 @@ export default function CulturalHeritagePage() {
         {/* Tourism Route Callout */}
         <div className="bg-gradient-to-br from-oxide-800 to-teal-900 text-white rounded-2xl p-6 sm:p-8 border border-amber-500/20 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <h2 className="text-lg font-bold text-white">Experience Living Paithan Heritage In Person</h2>
-            <p className="text-xs text-slate-body mt-1">
-              Follow our curated 1-Day Pilgrim & Varkari Heritage Route to visit all historic shrines and weaving ateliers.
+            <h2 className="text-lg font-bold text-white">{tTourism("routesTitle")}</h2>
+            <p className="text-xs text-slate-300 mt-1">
+              {tTourism("routesSubtitle")}
             </p>
           </div>
           <Link
             href="/tourism/routes"
             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-3 rounded-xl text-xs transition shadow-md shrink-0"
           >
-            <span>View Curated Tourist Routes</span>
+            <span>{tTourism("routesTitle")}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

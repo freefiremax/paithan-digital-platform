@@ -9,7 +9,7 @@ import {
   Clock,
   Waves,
 } from "lucide-react";
-
+import { useTranslations, useLocale } from "next-intl";
 
 interface MapPoint {
   id: string;
@@ -88,7 +88,7 @@ const MAP_POINTS: MapPoint[] = [
     lng: 75.3905,
     distanceFromBusStand: "2.8 km",
     timings: "10:30 AM – 05:00 PM (Closed Mondays)",
-    description: "Rare Satavahana imperial coins and Shivaji Maharaj's Modi Rajpatra.",
+    description: "Rare Satavahana imperial coins and ancient terracotta artifacts.",
   },
   {
     id: "p-paithani-weavers",
@@ -108,7 +108,7 @@ const MAP_POINTS: MapPoint[] = [
     category: "PILGRIM",
     lat: 19.512,
     lng: 75.495,
-    distanceFromBusStand: "12 km (Paithan-Apegaon Rd)",
+    distanceFromBusStand: "12 km",
     timings: "05:30 AM – 09:00 PM",
     description: "Tranquil riverside shrine where Sant Dnyaneshwar and siblings were born.",
   },
@@ -137,12 +137,28 @@ const MAP_POINTS: MapPoint[] = [
 ];
 
 export default function TouristMapPage() {
+  const t = useTranslations("tourism");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   const [activeCategory, setActiveCategory] = useState<string>("ALL");
   const [selectedPoint, setSelectedPoint] = useState<MapPoint>(MAP_POINTS[0]);
 
   const filteredPoints = MAP_POINTS.filter(
     (p) => activeCategory === "ALL" || p.category === activeCategory
   );
+
+  const categoryLabels: Record<string, string> = {
+    ALL: tCommon("allCategories"),
+    PILGRIM: t("heritageSitesTitle"),
+    DAM_NATURE: t("jayakwadiTitle"),
+    GARDEN: t("udyanTitle"),
+    WEAVING: "Paithani Handlooms",
+    CIVIC: tCommon("overview"),
+  };
+
+  const selectedName = isMr && selectedPoint.nameMr ? selectedPoint.nameMr : selectedPoint.nameEn;
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
@@ -152,54 +168,45 @@ export default function TouristMapPage() {
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">
               <Compass className="w-4 h-4" />
-              <span>Geographic Information & Navigation</span>
+              <span>{t("mapTitle")}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-oxide-700 tracking-tight">
-              पैठण पर्यटन नकाशा व दिशानिर्देश (Interactive Tourist Map)
+              {t("mapHeading")}
             </h1>
-            <p className="text-xs text-slate-muted mt-1">
-              Explore key pilgrimage temples, Jayakwadi reservoir viewpoints, museums, and handloom clusters with GPS coordinates.
+            <p className="text-xs text-slate-500 mt-1">
+              {t("mapSubtitle")}
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="text-xs bg-blue-100 text-blue-800 font-medium px-3 py-1 rounded-full border border-blue-200">
-              10 Verified Geographic Coordinates
+              10 {tCommon("verified")} GPS Points
             </span>
           </div>
         </div>
 
         {/* Category Filter Pills */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
-          {[
-            { id: "ALL", label: "All Landmarks" },
-            { id: "PILGRIM", label: "Pilgrim Shrines" },
-            { id: "DAM_NATURE", label: "Dam & Wetlands" },
-            { id: "GARDEN", label: "Gardens & Parks" },
-            { id: "WEAVING", label: "Paithani Handlooms" },
-            { id: "CIVIC", label: "Civic & Transport" },
-          ].map((cat) => (
+          {["ALL", "PILGRIM", "DAM_NATURE", "GARDEN", "WEAVING", "CIVIC"].map((catId) => (
             <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
+              key={catId}
+              onClick={() => setActiveCategory(catId)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
-                activeCategory === cat.id
+                activeCategory === catId
                   ? "bg-amber-500 text-slate-950 font-bold shadow-sm"
                   : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
               }`}
             >
-              {cat.label}
+              {categoryLabels[catId] || catId}
             </button>
           ))}
         </div>
 
-        {/* Map Layout Grid: Left Stylized Interactive Map Canvas (8 cols), Right Point Inspector (4 cols) */}
+        {/* Map Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left: Interactive Map Simulation */}
           <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6 overflow-hidden">
-            {/* Map Area */}
             <div className="relative aspect-4/3 sm:aspect-16/10 bg-teal-800 rounded-2xl overflow-hidden shadow-inner flex flex-col justify-between p-4 sm:p-6">
-              {/* Godavari River Blue Gradient Flow Vector */}
               <div
                 className="absolute inset-0 opacity-25 pointer-events-none"
                 style={{
@@ -208,7 +215,6 @@ export default function TouristMapPage() {
                 }}
               />
 
-              {/* Waterway Vector Curve */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30">
                 <path
                   d="M 0,200 Q 250,150 450,280 T 900,220"
@@ -219,14 +225,10 @@ export default function TouristMapPage() {
                 />
               </svg>
 
-              {/* Map Title Tag */}
               <div className="z-10 flex items-center justify-between text-xs text-white">
                 <div className="bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 flex items-center gap-2">
                   <Waves className="w-3.5 h-3.5 text-sky-400" />
-                  <span className="font-semibold">Godavari River Basin & Nath Sagar</span>
-                </div>
-                <div className="text-[11px] text-slate-400 bg-slate-900/60 px-2.5 py-1 rounded-lg">
-                  Click a pin to view details
+                  <span className="font-semibold">{t("jayakwadiTitle")}</span>
                 </div>
               </div>
 
@@ -234,8 +236,6 @@ export default function TouristMapPage() {
               <div className="relative flex-1 my-4">
                 {filteredPoints.map((point) => {
                   const isSelected = selectedPoint.id === point.id;
-
-                  // Normalized positioning based on lat/lng range in Paithan
                   const topPercent = Math.max(15, Math.min(85, ((19.515 - point.lat) / 0.04) * 100));
                   const leftPercent = Math.max(12, Math.min(88, ((point.lng - 75.37) / 0.13) * 100));
 
@@ -258,15 +258,6 @@ export default function TouristMapPage() {
                       >
                         <MapPin className="w-4 h-4" />
                       </div>
-                      <span
-                        className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 text-[10px] font-bold whitespace-nowrap px-2 py-0.5 rounded-md shadow-md transition ${
-                          isSelected
-                            ? "bg-amber-400 text-slate-950"
-                            : "bg-slate-900/90 text-white opacity-0 group-hover:opacity-100"
-                        }`}
-                      >
-                        {point.nameEn.split(" ")[0]}
-                      </span>
                     </button>
                   );
                 })}
@@ -276,36 +267,35 @@ export default function TouristMapPage() {
               <div className="z-10 bg-slate-900/80 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-300">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-amber-400" /> Selected Pin
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-sky-400" /> Godavari River
+                    <span className="w-2 h-2 rounded-full bg-amber-400" /> {tCommon("overview")}
                   </span>
                 </div>
-                <span className="text-slate-body">Map Center: 19.48° N, 75.38° E</span>
+                <span className="text-slate-400">19.48° N, 75.38° E</span>
               </div>
             </div>
           </div>
 
-          {/* Right: Selected Landmark Inspector (4 cols) */}
+          {/* Right: Selected Landmark Inspector */}
           <div className="lg:col-span-4 space-y-4">
             <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 border border-blue-200">
                   {selectedPoint.category}
                 </span>
-                <span className="text-xs font-mono text-slate-muted">
+                <span className="text-xs font-mono text-slate-500">
                   {selectedPoint.distanceFromBusStand}
                 </span>
               </div>
 
               <div>
                 <h2 className="text-lg font-bold text-slate-900 leading-snug">
-                  {selectedPoint.nameEn}
+                  {selectedName}
                 </h2>
-                <p className="text-xs text-slate-600 font-marathi mt-0.5">
-                  {selectedPoint.nameMr}
-                </p>
+                {!isMr && selectedPoint.nameMr ? (
+                  <p className="text-xs text-slate-600 font-marathi mt-0.5">
+                    {selectedPoint.nameMr}
+                  </p>
+                ) : null}
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed">
@@ -315,11 +305,11 @@ export default function TouristMapPage() {
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-2 text-xs">
                 <div className="flex items-center gap-2 text-slate-700">
                   <Clock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                  <span>{selectedPoint.timings}</span>
+                  <span>{t("timings")}: {selectedPoint.timings}</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-700 font-mono text-[11px]">
                   <Compass className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                  <span>Lat: {selectedPoint.lat.toFixed(4)}°, Lng: {selectedPoint.lng.toFixed(4)}°</span>
+                  <span>{selectedPoint.lat.toFixed(4)}° N, {selectedPoint.lng.toFixed(4)}° E</span>
                 </div>
               </div>
 
@@ -331,16 +321,16 @@ export default function TouristMapPage() {
                 className="w-full inline-flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-900 text-white py-3 rounded-xl text-xs font-bold shadow-md transition"
               >
                 <Navigation className="w-4 h-4 text-amber-400" />
-                <span>Navigate in Google Maps</span>
+                <span>{t("googleMapsNavigation")}</span>
                 <ExternalLink className="w-3.5 h-3.5 opacity-70" />
               </a>
             </div>
 
             {/* Quick Distance Guide */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs text-xs space-y-2">
-              <h3 className="font-bold text-slate-900">Transit & Distance Reference</h3>
+              <h3 className="font-bold text-slate-900">{t("transportHeading")}</h3>
               <p className="text-slate-600">
-                All distances calculated from <strong>Paithan Central Bus Stand</strong>. Auto-rickshaws and municipal e-rickshaws operate along the Main Road to Jayakwadi and Nagghat.
+                {t("transportSubtitle")}
               </p>
             </div>
           </div>

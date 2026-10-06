@@ -1,5 +1,6 @@
+"use client";
+
 import React from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Building2,
@@ -10,13 +11,8 @@ import {
   Sparkles,
   Recycle,
 } from "lucide-react";
-
-
-export const metadata: Metadata = {
-  title: "Major Infrastructure Projects | Paithan Municipal Council (पैठण नगर परिषद)",
-  description:
-    "Flagship civic development schemes in Paithan: AMRUT 2.0 Underground Sewerage, PMAY Urban, Paithani Weavers Park, and Godavari Riverfront.",
-};
+import { useTranslations, useLocale } from "next-intl";
+import { councilProfile } from "@/lib/mock-data";
 
 const MAJOR_PROJECTS = [
   {
@@ -94,6 +90,11 @@ const MAJOR_PROJECTS = [
 ];
 
 export default function ProjectsPage() {
+  const t = useTranslations("nagarParishad");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,13 +103,13 @@ export default function ProjectsPage() {
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 mb-3">
               <Building2 className="w-3.5 h-3.5 text-amber-400" />
-              <span>Paithan Municipal Council (Est. 1854)</span>
+              <span>{isMr ? councilProfile.nameMr : councilProfile.nameEn} ({t("establishedYear")} {councilProfile.establishedYear})</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              महत्त्वाचे विकास प्रकल्प (Major Infrastructure Projects)
+              {t("majorProjectsTitle")}
             </h1>
-            <p className="text-sm text-slate-body mt-2 leading-relaxed">
-              Transparent tracking of central and state-assisted mega development works transforming Paithan&apos;s civic infrastructure, public sanitation, river rejuvenation, and handloom economy.
+            <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+              {t("majorProjectsSubtitle")}
             </p>
           </div>
         </div>
@@ -117,6 +118,7 @@ export default function ProjectsPage() {
         <div className="space-y-6">
           {MAJOR_PROJECTS.map((project) => {
             const Icon = project.icon;
+            const projectTitle = isMr && project.titleMr ? project.titleMr : project.titleEn;
             return (
               <div
                 key={project.id}
@@ -129,18 +131,18 @@ export default function ProjectsPage() {
                       <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${project.badgeColor}`}>
                         {project.category}
                       </span>
-                      <span className="text-xs font-medium text-slate-muted bg-slate-100 px-2.5 py-1 rounded-full">
+                      <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
                         {project.scheme}
                       </span>
                       {project.status === "COMPLETED" ? (
                         <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          Fully Operational
+                          {t("statusCompleted")}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
                           <Clock className="w-3.5 h-3.5" />
-                          In Execution (Target: {project.completionTarget})
+                          {t("statusOngoing")} ({t("completionDate")}: {project.completionTarget})
                         </span>
                       )}
                     </div>
@@ -148,20 +150,21 @@ export default function ProjectsPage() {
                     <div>
                       <h2 className="text-lg sm:text-xl font-bold text-slate-900 leading-snug flex items-center gap-2">
                         <Icon className="w-5 h-5 text-amber-600 shrink-0" />
-                        <span>{project.titleEn}</span>
+                        <span>{projectTitle}</span>
                       </h2>
-                      <p className="text-sm text-slate-600 font-marathi mt-1">
-
-                        {project.titleMr}
-                      </p>
+                      {!isMr && project.titleMr ? (
+                        <p className="text-sm text-slate-500 font-marathi mt-1">
+                          {project.titleMr}
+                        </p>
+                      ) : null}
                     </div>
 
                     <p className="text-xs text-slate-600 leading-relaxed">
                       {project.summary}
                     </p>
 
-                    <div className="pt-2 text-xs text-slate-muted">
-                      <strong>Executing Agency:</strong> {project.contractor}
+                    <div className="pt-2 text-xs text-slate-500">
+                      <strong>{t("projectAgency")}:</strong> {project.contractor}
                     </div>
                   </div>
 
@@ -169,18 +172,18 @@ export default function ProjectsPage() {
                   <div className="w-full lg:w-72 bg-slate-50 rounded-2xl p-4 border border-slate-100 flex flex-col justify-between space-y-4 shrink-0">
                     <div className="grid grid-cols-2 gap-3 text-center">
                       <div className="bg-white p-2.5 rounded-xl border border-slate-200">
-                        <div className="text-[10px] text-slate-body font-medium uppercase">Sanctioned</div>
+                        <div className="text-[10px] text-slate-500 font-medium uppercase">{t("projectBudget")}</div>
                         <div className="text-base font-extrabold text-teal-700 mt-0.5">{project.budgetCr}</div>
                       </div>
                       <div className="bg-white p-2.5 rounded-xl border border-slate-200">
-                        <div className="text-[10px] text-slate-body font-medium uppercase">Disbursed</div>
+                        <div className="text-[10px] text-slate-500 font-medium uppercase">{t("sanctionedAmount")}</div>
                         <div className="text-base font-extrabold text-blue-700 mt-0.5">{project.expenditureCr}</div>
                       </div>
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-700">Physical Progress:</span>
+                        <span className="font-semibold text-slate-700">{t("stage")}:</span>
                         <span className="font-bold text-slate-900">{project.physicalProgress}%</span>
                       </div>
                       <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
@@ -195,7 +198,7 @@ export default function ProjectsPage() {
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-slate-700">Financial Utilization:</span>
+                        <span className="font-semibold text-slate-700">{t("projectTimeline")}:</span>
                         <span className="font-bold text-slate-900">{project.financialProgress}%</span>
                       </div>
                       <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
@@ -214,11 +217,10 @@ export default function ProjectsPage() {
 
         {/* Footer Note */}
         <div className="mt-8 text-center text-xs text-slate-600">
-          For project tenders, bids, and technical estimates, consult the{" "}
           <Link href="/nagar-parishad/notifications" className="text-amber-700 font-bold hover:underline">
-            Tenders & Circulars Portal
+            {t("noticesTitle")}
           </Link>{" "}
-          or contact the Municipal Engineering Department at 02431-223010.
+          | {tCommon("telephone")}: 02431-223010
         </div>
       </div>
     </div>

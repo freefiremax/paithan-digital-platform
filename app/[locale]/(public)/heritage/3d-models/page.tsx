@@ -9,7 +9,7 @@ import {
   Info,
   ArrowRight,
 } from "lucide-react";
-
+import { useTranslations, useLocale } from "next-intl";
 
 interface ModelItem {
   id: string;
@@ -80,10 +80,17 @@ const MODELS_DATA: ModelItem[] = [
 ];
 
 export default function ThreeDModelsPage() {
+  const t = useTranslations("heritage");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const isMr = locale === "mr";
+
   const [activeModel, setActiveModel] = useState<ModelItem>(MODELS_DATA[0]);
   const [rotationAngle, setRotationAngle] = useState(45);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [wireframeMode, setWireframeMode] = useState(false);
+
+  const activeTitle = isMr && activeModel.titleMr ? activeModel.titleMr : activeModel.titleEn;
 
   return (
     <div className="min-h-screen bg-slate-900 text-white py-8 lg:py-12">
@@ -93,26 +100,26 @@ export default function ThreeDModelsPage() {
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">
               <Rotate3d className="w-4 h-4" />
-              <span>Digital Heritage & 3D Reconstructions</span>
+              <span>{t("title")}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              पैठण डिजिटल ३डी अवशेष दालन (3D Heritage Models)
+              {t("modelsTitle")}
             </h1>
             <p className="text-xs text-slate-300 mt-1">
-              Explore illustrative 3D reconstructions of Paithan&apos;s antiquities, numismatics, and temple architecture in an interactive 360-degree viewer.
+              {t("modelsSubtitle")}
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full font-medium">
-              WebXR / 3D Canvas Ready
+              WebXR / 3D Canvas
             </span>
           </div>
         </div>
 
         {/* Main 3D Simulator Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left: 3D Interactive Viewer Canvas (8 cols) */}
+          {/* Left: 3D Interactive Viewer Canvas */}
           <div className="lg:col-span-8 space-y-4">
             <div className="relative aspect-4/3 sm:aspect-16/10 bg-oxide-800 rounded-3xl border-2 border-slate-800 overflow-hidden shadow-2xl flex flex-col justify-between p-6">
               {/* Viewer Controls Top Overlay */}
@@ -131,7 +138,7 @@ export default function ThreeDModelsPage() {
                         : "bg-slate-800 text-slate-300 border-slate-700 hover:text-white"
                     }`}
                   >
-                    {wireframeMode ? "Wireframe Active" : "Shaded Mesh"}
+                    {wireframeMode ? "Wireframe" : "Shaded"}
                   </button>
                   <button
                     onClick={() => {
@@ -145,9 +152,8 @@ export default function ThreeDModelsPage() {
                 </div>
               </div>
 
-              {/* Central 3D Mesh Representation & Hologram */}
+              {/* Central 3D Mesh Representation */}
               <div className="flex-1 flex items-center justify-center relative my-4">
-                {/* Simulated 3D Interactive Holographic Display */}
                 <div
                   className={`relative w-48 h-48 sm:w-64 sm:h-64 rounded-3xl bg-gradient-to-tr ${activeModel.colorScheme} flex flex-col items-center justify-center p-6 text-center shadow-2xl transition-all duration-700 border-2 ${
                     wireframeMode ? "border-amber-400 border-dashed bg-transparent" : "border-amber-500/40"
@@ -160,21 +166,17 @@ export default function ThreeDModelsPage() {
                     <Rotate3d className="w-8 h-8 text-amber-300 animate-spin" style={{ animationDuration: "12s" }} />
                   </div>
                   <div className="text-xs font-bold text-white uppercase tracking-wider">
-                    {activeModel.titleEn}
-                  </div>
-                  <div className="text-[11px] text-amber-200 font-marathi mt-1">
-                    {activeModel.titleMr}
+                    {activeTitle}
                   </div>
                   <div className="text-[10px] text-white/70 mt-2 font-mono">
                     {activeModel.dimensions}
                   </div>
                 </div>
 
-                {/* Grid Overlay for 3D measurement */}
                 <div className="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
               </div>
 
-              {/* Bottom Interactive Slider & Sliders */}
+              {/* Bottom Interactive Slider */}
               <div className="z-10 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                   <span className="text-slate-300 font-medium">Rotation:</span>
@@ -212,35 +214,36 @@ export default function ThreeDModelsPage() {
 
             {/* Model Metadata Banner */}
             <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700/80 space-y-2">
-              <h2 className="text-lg font-bold text-white">{activeModel.titleEn}</h2>
+              <h2 className="text-lg font-bold text-white">{activeTitle}</h2>
               <p className="text-xs text-slate-300 leading-relaxed">{activeModel.description}</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
                 <div>
-                  <span className="text-slate-300 text-[11px] block">Historical Period</span>
+                  <span className="text-slate-300 text-[11px] block">{t("period")}</span>
                   <span className="font-semibold text-amber-300">{activeModel.era}</span>
                 </div>
                 <div>
-                  <span className="text-slate-300 text-[11px] block">Material Composition</span>
+                  <span className="text-slate-300 text-[11px] block">{t("material")}</span>
                   <span className="font-semibold text-slate-200">{activeModel.material}</span>
                 </div>
                 <div>
-                  <span className="text-slate-300 text-[11px] block">Mesh Topology</span>
+                  <span className="text-slate-300 text-[11px] block">{tCommon("overview")}</span>
                   <span className="font-semibold text-slate-200">{activeModel.geometryType}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right: Model Selection Carousel (4 cols) */}
+          {/* Right: Model Selection List */}
           <div className="lg:col-span-4 space-y-4">
             <h2 className="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
               <Layers className="w-4 h-4 text-amber-400" />
-              <span>Select Heritage Artifact:</span>
+              <span>{t("modelsTitle")}:</span>
             </h2>
 
             <div className="space-y-3">
               {MODELS_DATA.map((model) => {
                 const isSelected = activeModel.id === model.id;
+                const mTitle = isMr && model.titleMr ? model.titleMr : model.titleEn;
                 return (
                   <button
                     key={model.id}
@@ -258,10 +261,12 @@ export default function ThreeDModelsPage() {
                       <span className="font-bold text-amber-400">{model.category}</span>
                       <span className="text-[10px] text-slate-300">{model.era}</span>
                     </div>
-                    <div className="font-bold text-sm text-white line-clamp-1">{model.titleEn}</div>
-                    <div className="text-xs text-slate-300 font-marathi line-clamp-1 mt-0.5">
-                      {model.titleMr}
-                    </div>
+                    <div className="font-bold text-sm text-white line-clamp-1">{mTitle}</div>
+                    {!isMr && model.titleMr ? (
+                      <div className="text-xs text-slate-400 font-marathi line-clamp-1 mt-0.5">
+                        {model.titleMr}
+                      </div>
+                    ) : null}
                   </button>
                 );
               })}
@@ -270,16 +275,16 @@ export default function ThreeDModelsPage() {
             <div className="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/60 text-xs text-slate-400 space-y-2">
               <div className="flex items-center gap-2 font-semibold text-slate-300">
                 <Info className="w-4 h-4 text-amber-400" />
-                <span>Museum Scanning Project</span>
+                <span>{t("museumTitle")}</span>
               </div>
               <p>
-                Models digitized under the Maharashtra Digital Heritage Conservation Initiative in collaboration with the Directorate of Archaeology & Museums.
+                {t("modelsSubtitle")}
               </p>
               <Link
                 href="/heritage/museum"
-                className="inline-flex items-center gap-1 text-amber-600 hover:text-amber-700 font-semibold pt-1"
+                className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold pt-1"
               >
-                <span>Visit Museum Guide</span>
+                <span>{t("museumTitle")}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>

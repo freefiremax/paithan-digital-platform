@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import {
   Building2,
@@ -13,6 +14,7 @@ import {
   CheckCircle2,
   PhoneCall,
 } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
@@ -22,13 +24,12 @@ import {
   paithanEmergencyDirectory,
 } from "@/lib/mock-data";
 
-export const metadata: Metadata = {
-  title: "About Paithan Municipal Council",
-  description:
-    "Official civic administration profile, municipal departments, history since 1854, and governance of Paithan Municipal Council.",
-};
-
 export default function AboutNagarParishadPage() {
+  const t = useTranslations("nagarParishad");
+  const tNav = useTranslations("nav");
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
+
   const ongoingCount = developmentWorks.filter((w) => w.status === "ONGOING").length;
   const completedCount = developmentWorks.filter((w) => w.status === "COMPLETED").length;
 
@@ -36,59 +37,59 @@ export default function AboutNagarParishadPage() {
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Nagar Parishad", href: "/nagar-parishad" },
-          { label: "About Council" },
+          { label: tNav("home"), href: "/" },
+          { label: tNav("nagarParishad"), href: "/nagar-parishad" },
+          { label: t("aboutCouncil") },
         ]}
       />
 
       <div className="mx-auto max-w-[1180px] px-4 py-11">
         <SectionHeading
           as="h1"
-          title="About Paithan Municipal Council"
-          description={`Established in ${councilProfile.establishedYear}, Paithan Municipal Council (पैठण नगर परिषद) provides essential civic infrastructure, public sanitation, drinking water supply, and urban planning services to the historical town of Paithan across its ${councilProfile.wardCount} administrative wards.`}
+          title={t("title")}
+          description={t("subtitle")}
         />
 
         {/* 1. KEY AT-A-GLANCE METRICS */}
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <div className="border border-[var(--border-subtle)] bg-white p-4">
             <span className="text-[0.75rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-              Establishment
+              {t("establishedYear")}
             </span>
             <p className="mt-1 text-2xl font-bold text-[var(--gov-navy-900)] font-serif">
               {councilProfile.establishedYear}
             </p>
-            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">170+ years of civic service</p>
+            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">{t("yearsOfService")}</p>
           </div>
 
           <div className="border border-[var(--border-subtle)] bg-white p-4">
             <span className="text-[0.75rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-              Civic Wards
+              {t("civicWards")}
             </span>
             <p className="mt-1 text-2xl font-bold text-[var(--gov-navy-900)] font-serif">
-              {councilProfile.wardCount} Wards
+              {t("wardsCount")}
             </p>
-            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">23 Delimited Seats</p>
+            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">{t("delimitedSeats")}</p>
           </div>
 
           <div className="border border-[var(--border-subtle)] bg-white p-4">
             <span className="text-[0.75rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-              Active Works
+              {t("activeWorks")}
             </span>
             <p className="mt-1 text-2xl font-bold text-amber-700 font-serif">
-              {ongoingCount} Ongoing
+              {ongoingCount} {t("ongoingWorks")}
             </p>
-            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">{completedCount} Recently Completed</p>
+            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">{completedCount} {t("completedWorks")}</p>
           </div>
 
           <div className="border border-[var(--border-subtle)] bg-white p-4">
             <span className="text-[0.75rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-              Council Class
+              {t("councilClass")}
             </span>
             <p className="mt-1 text-2xl font-bold text-[var(--gov-navy-900)] font-serif">
-              Class B / C
+              {t("councilClassValue")}
             </p>
-            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">Chhatrapati Sambhajinagar</p>
+            <p className="text-[0.75rem] text-[var(--civic-slate-500)]">{t("districtName")}</p>
           </div>
         </div>
 
@@ -96,68 +97,68 @@ export default function AboutNagarParishadPage() {
         <section className="mt-12" aria-labelledby="departments-heading">
           <SectionHeading
             id="departments-heading"
-            title="Municipal Departments & Citizen Services"
-            description="The administrative machinery of the Council is organized into specialized municipal departments operating under the Chief Officer."
+            title={t("departmentsHeading")}
+            description={t("departmentsSubtitle")}
           />
 
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <div className="border border-[var(--border-subtle)] bg-white p-5">
               <div className="flex items-center gap-2.5 text-[var(--gov-navy-900)] font-semibold text-[0.9375rem]">
                 <Building2 className="w-5 h-5 text-[var(--zari-gold-600)]" />
-                <span>General Administration</span>
+                <span>{t("generalAdmin")}</span>
               </div>
               <p className="mt-2 text-xs text-[var(--civic-slate-700)] leading-relaxed">
-                Council board meetings, municipal establishment, citizen grievance coordination, RTI disclosures, and public relations.
+                {t("generalAdminDesc")}
               </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-5">
               <div className="flex items-center gap-2.5 text-[var(--gov-navy-900)] font-semibold text-[0.9375rem]">
                 <ShieldCheck className="w-5 h-5 text-[var(--zari-gold-600)]" />
-                <span>Public Health & Sanitation</span>
+                <span>{t("publicHealth")}</span>
               </div>
               <p className="mt-2 text-xs text-[var(--civic-slate-700)] leading-relaxed">
-                Daily door-to-door solid waste collection across 17 wards, drain desilting, vector control, and public toilet maintenance.
+                {t("publicHealthDesc")}
               </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-5">
               <div className="flex items-center gap-2.5 text-[var(--gov-navy-900)] font-semibold text-[0.9375rem]">
                 <Award className="w-5 h-5 text-[var(--zari-gold-600)]" />
-                <span>Water Supply & Sewerage</span>
+                <span>{t("waterSupplyDept")}</span>
               </div>
               <p className="mt-2 text-xs text-[var(--civic-slate-700)] leading-relaxed">
-                Operation of the Godavari River water intake well, municipal filtration plant, pipeline distribution, and clean water ATMs.
+                {t("waterSupplyDeptDesc")}
               </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-5">
               <div className="flex items-center gap-2.5 text-[var(--gov-navy-900)] font-semibold text-[0.9375rem]">
                 <FileText className="w-5 h-5 text-[var(--zari-gold-600)]" />
-                <span>Town Planning & Public Works</span>
+                <span>{t("townPlanning")}</span>
               </div>
               <p className="mt-2 text-xs text-[var(--civic-slate-700)] leading-relaxed">
-                Construction and maintenance of municipal cement concrete roads, storm water drainage, street lighting, and building permissions.
+                {t("townPlanningDesc")}
               </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-5">
               <div className="flex items-center gap-2.5 text-[var(--gov-navy-900)] font-semibold text-[0.9375rem]">
                 <Users className="w-5 h-5 text-[var(--zari-gold-600)]" />
-                <span>Revenue & Property Tax</span>
+                <span>{t("revenueTax")}</span>
               </div>
               <p className="mt-2 text-xs text-[var(--civic-slate-700)] leading-relaxed">
-                Assessment of property tax, water usage billing, shop licenses, and integration with the state MahaULB digital payment gateway.
+                {t("revenueTaxDesc")}
               </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-5">
               <div className="flex items-center gap-2.5 text-[var(--gov-navy-900)] font-semibold text-[0.9375rem]">
                 <CheckCircle2 className="w-5 h-5 text-[var(--zari-gold-600)]" />
-                <span>Pilgrim & Tourism Welfare</span>
+                <span>{t("pilgrimWelfare")}</span>
               </div>
               <p className="mt-2 text-xs text-[var(--civic-slate-700)] leading-relaxed">
-                Special arrangements for the annual Nath Shashti fair, Godavari riverfront cleaning, visitor guidance, and cultural heritage support.
+                {t("pilgrimWelfareDesc")}
               </p>
             </div>
           </div>
@@ -167,64 +168,70 @@ export default function AboutNagarParishadPage() {
         <section className="mt-14" aria-labelledby="demographics-heading">
           <SectionHeading
             id="demographics-heading"
-            title="Town Demographics & Civic Indicators"
-            description="Official Census of India and Directorate of Municipal Administration statistics for Paithan Municipal Council."
+            title={t("demographicsHeading")}
+            description={t("demographicsSubtitle")}
           />
 
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             <div className="border border-[var(--border-subtle)] bg-white p-4">
               <span className="text-[0.6875rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-                Total Population
+                {t("totalPopulation")}
               </span>
               <p className="mt-1 text-xl font-bold text-[var(--gov-navy-900)] font-serif">
-                {paithanDemographics.totalPopulation.toLocaleString("en-IN")}
+                {paithanDemographics.totalPopulation.toLocaleString(locale === "mr" ? "mr-IN" : "en-IN")}
               </p>
-              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">Census of India baseline</p>
+              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">
+                {locale === "mr" ? "जनगणना २०११" : locale === "hi" ? "जनगणना 2011" : "Census 2011"}
+              </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-4">
               <span className="text-[0.6875rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-                Male Population
+                {t("malePopulation")}
               </span>
               <p className="mt-1 text-xl font-bold text-[var(--gov-navy-900)] font-serif">
-                {paithanDemographics.malePopulation.toLocaleString("en-IN")}
+                {paithanDemographics.malePopulation.toLocaleString(locale === "mr" ? "mr-IN" : "en-IN")}
               </p>
-              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">51.2% of total</p>
+              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">51.2%</p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-4">
               <span className="text-[0.6875rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-                Female Population
+                {t("femalePopulation")}
               </span>
               <p className="mt-1 text-xl font-bold text-[var(--gov-navy-900)] font-serif">
-                {paithanDemographics.femalePopulation.toLocaleString("en-IN")}
+                {paithanDemographics.femalePopulation.toLocaleString(locale === "mr" ? "mr-IN" : "en-IN")}
               </p>
-              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">48.8% of total</p>
+              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">48.8%</p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-4">
               <span className="text-[0.6875rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-                Sex Ratio
+                {t("sexRatio")}
               </span>
               <p className="mt-1 text-xl font-bold text-emerald-800 font-serif">
                 {paithanDemographics.sexRatio}
               </p>
-              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">Females per 1,000 males</p>
+              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">
+                {locale === "mr" ? "स्त्री / १००० पुरुष" : locale === "hi" ? "महिला / 1000 पुरुष" : "F / 1000 M"}
+              </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-4">
               <span className="text-[0.6875rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-                Total Households
+                {t("totalHouseholds")}
               </span>
               <p className="mt-1 text-xl font-bold text-[var(--gov-navy-900)] font-serif">
-                {paithanDemographics.totalHouseholds.toLocaleString("en-IN")}
+                {paithanDemographics.totalHouseholds.toLocaleString(locale === "mr" ? "mr-IN" : "en-IN")}
               </p>
-              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">Occupied residential units</p>
+              <p className="text-[0.6875rem] text-[var(--civic-slate-500)]">
+                {locale === "mr" ? "कुटुंबे" : locale === "hi" ? "इकाइयाँ" : "Units"}
+              </p>
             </div>
 
             <div className="border border-[var(--border-subtle)] bg-white p-4">
               <span className="text-[0.6875rem] font-medium uppercase tracking-wider text-[var(--civic-slate-500)]">
-                Literacy Rate
+                {t("literacyRate")}
               </span>
               <p className="mt-1 text-xl font-bold text-[var(--zari-gold-600)] font-serif">
                 {paithanDemographics.overallLiteracyRate}%
@@ -238,8 +245,8 @@ export default function AboutNagarParishadPage() {
         <section className="mt-14" aria-labelledby="emergency-heading">
           <SectionHeading
             id="emergency-heading"
-            title="Emergency & Civic Helpline Directory"
-            description="Verified contacts for essential municipal, public safety, medical, and utility helplines serving Paithan."
+            title={t("emergencyHeading")}
+            description={t("emergencySubtitle")}
           />
 
           <div className="mt-6 overflow-hidden border border-[var(--border-subtle)] bg-white">
@@ -247,52 +254,54 @@ export default function AboutNagarParishadPage() {
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="bg-[var(--gov-navy-900)] text-white font-serif uppercase tracking-wider text-[0.6875rem]">
-                    <th className="py-3 px-4">Department / Facility</th>
-                    <th className="py-3 px-4">Officer Role / Section</th>
-                    <th className="py-3 px-4">Direct Telephone</th>
-                    <th className="py-3 px-4">Location</th>
-                    <th className="py-3 px-4 text-center">Service Availability</th>
+                    <th className="py-3 px-4">{t("deptFacility")}</th>
+                    <th className="py-3 px-4">{t("officerRole")}</th>
+                    <th className="py-3 px-4">{t("directPhone")}</th>
+                    <th className="py-3 px-4">{t("location")}</th>
+                    <th className="py-3 px-4 text-center">{t("serviceAvailability")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--border-subtle)]">
-                  {paithanEmergencyDirectory.map((contact) => (
-                    <tr key={contact.id} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="py-3 px-4">
-                        <span className="font-semibold text-[var(--gov-navy-900)] block">
-                          {contact.departmentEn}
-                        </span>
-                        <span className="text-[0.6875rem] text-[var(--zari-gold-600)] font-medium">
-                          {contact.departmentMr}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-[var(--civic-slate-700)] font-medium">
-                        {contact.officerRole}
-                      </td>
-                      <td className="py-3 px-4">
-                        <a
-                          href={`tel:${contact.phone.replace(/[^0-9]/g, "")}`}
-                          className="inline-flex items-center gap-1.5 font-bold text-[var(--gov-navy-700)] hover:text-[var(--zari-gold-600)] hover:underline"
-                        >
-                          <PhoneCall className="w-3.5 h-3.5 text-[var(--zari-gold-600)]" />
-                          <span>{contact.phone}</span>
-                        </a>
-                      </td>
-                      <td className="py-3 px-4 text-[var(--civic-slate-500)]">
-                        {contact.address}
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        {contact.isAvailable24x7 ? (
-                          <span className="inline-block px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
-                            24×7 Available
+                  {paithanEmergencyDirectory.map((contact) => {
+                    const isMr = locale === "mr";
+                    const isHi = locale === "hi";
+                    const deptLabel = isMr ? contact.departmentMr : contact.departmentEn;
+                    return (
+                      <tr key={contact.id} className="hover:bg-slate-50/60 transition-colors">
+                        <td className="py-3 px-4">
+                          <span className="font-semibold text-[var(--gov-navy-900)] block">
+                            {deptLabel}
                           </span>
-                        ) : (
-                          <span className="inline-block px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
-                            Office Hours
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="py-3 px-4 text-[var(--civic-slate-700)] font-medium">
+                          {contact.officerRole}
+                        </td>
+                        <td className="py-3 px-4">
+                          <a
+                            href={`tel:${contact.phone.replace(/[^0-9]/g, "")}`}
+                            className="inline-flex items-center gap-1.5 font-bold text-[var(--gov-navy-700)] hover:text-[var(--zari-gold-600)] hover:underline"
+                          >
+                            <PhoneCall className="w-3.5 h-3.5 text-[var(--zari-gold-600)]" />
+                            <span>{contact.phone}</span>
+                          </a>
+                        </td>
+                        <td className="py-3 px-4 text-[var(--civic-slate-500)]">
+                          {contact.address}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          {contact.isAvailable24x7 ? (
+                            <span className="inline-block px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
+                              {t("available247")}
+                            </span>
+                          ) : (
+                            <span className="inline-block px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
+                              {t("officeHours")}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -303,16 +312,15 @@ export default function AboutNagarParishadPage() {
         <section className="mt-14" aria-labelledby="contact-heading">
           <SectionHeading
             id="contact-heading"
-            title="Council Secretariat & Helplines"
-            description="Citizens and visitors may contact the municipal administrative offices during government working hours."
+            title={t("contactHeading")}
+            description={t("contactSubtitle")}
           />
 
           <div className="mt-6 border border-[var(--border-subtle)] bg-white p-6 grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-base font-semibold text-[var(--gov-navy-900)] font-serif">
-                Paithan Municipal Council
+                {locale === "mr" ? councilProfile.nameMr : councilProfile.nameEn}
               </h3>
-              <p className="text-xs text-[var(--zari-gold-600)] font-medium">पैठण नगर परिषद कार्यालय</p>
               <div className="mt-4 space-y-2.5 text-xs text-[var(--civic-slate-700)]">
                 <div className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0 mt-0.5" />
@@ -320,22 +328,22 @@ export default function AboutNagarParishadPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0" />
-                  <span>Working Hours: 09:45 AM – 06:15 PM (Monday through Saturday)</span>
+                  <span>{t("officeHours")}: 09:45 AM – 06:15 PM</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0" />
-                  <span>Main Office Telephone: {councilProfile.phone}</span>
+                  <span>{t("directPhone")}: {councilProfile.phone}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-[var(--zari-gold-600)] shrink-0" />
-                  <span>Official Email: {councilProfile.email}</span>
+                  <span>{tCommon("email")}: {councilProfile.email}</span>
                 </div>
               </div>
             </div>
 
             <div className="border-t md:border-t-0 md:border-l border-[var(--border-subtle)] pt-6 md:pt-0 md:pl-8">
               <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--gov-navy-900)] mb-3">
-                Quick Portal Navigation
+                {t("quickNavigation")}
               </h4>
               <ul className="space-y-2 text-xs">
                 <li>
@@ -343,7 +351,7 @@ export default function AboutNagarParishadPage() {
                     href="/nagar-parishad/representatives"
                     className="text-[var(--gov-navy-700)] font-medium hover:underline flex items-center justify-between"
                   >
-                    <span>Elected Representatives (MLA, MP, CEO)</span>
+                    <span>{t("representativesTitle")}</span>
                     <span className="text-[var(--civic-slate-500)]">→</span>
                   </Link>
                 </li>
@@ -352,7 +360,7 @@ export default function AboutNagarParishadPage() {
                     href="/nagar-parishad/ward-map"
                     className="text-[var(--gov-navy-700)] font-medium hover:underline flex items-center justify-between"
                   >
-                    <span>17 Wards Directory & Locality Map</span>
+                    <span>{t("wardMapTitle")}</span>
                     <span className="text-[var(--civic-slate-500)]">→</span>
                   </Link>
                 </li>
@@ -361,7 +369,7 @@ export default function AboutNagarParishadPage() {
                     href="/nagar-parishad/development-works"
                     className="text-[var(--gov-navy-700)] font-medium hover:underline flex items-center justify-between"
                   >
-                    <span>Ward Development Works Registry</span>
+                    <span>{t("devWorksTitle")}</span>
                     <span className="text-[var(--civic-slate-500)]">→</span>
                   </Link>
                 </li>
@@ -370,7 +378,7 @@ export default function AboutNagarParishadPage() {
                     href="/nagar-parishad/notifications"
                     className="text-[var(--gov-navy-700)] font-medium hover:underline flex items-center justify-between"
                   >
-                    <span>Tenders & Official Gazette Notices</span>
+                    <span>{t("noticesTitle")}</span>
                     <span className="text-[var(--civic-slate-500)]">→</span>
                   </Link>
                 </li>

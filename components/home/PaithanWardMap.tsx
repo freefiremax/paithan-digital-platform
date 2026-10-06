@@ -2,21 +2,10 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 /**
  * The 17-ward constituency map for the homepage.
- *
- * The artwork is the exact clickable map supplied for Paithan: a raster base
- * (the drawn constituency with its boundaries, place labels, north arrow and
- * legend) with 17 pin hotspots laid over it. The raster is served as one cached
- * asset from `/maps` so it is never duplicated into the HTML or the JS bundle,
- * while the hotspots stay as inline SVG so each pin is a real, focusable link.
- *
- * Pin N links to Ward N in the existing ward directory
- * (`/nagar-parishad/ward-map#ward-N`) — no new route, and no second copy of the
- * map. Geometry (viewBox 1316×1195, and every `cx`/`cy`/`r`) is taken verbatim
- * from the source file: nothing is redrawn, moved or recoloured. The only
- * additions are the hover/focus halo and the keyboard (Space) handler.
  */
 
 // Pin centres, exactly as authored in the source SVG. Index + 1 === ward number.
@@ -45,6 +34,7 @@ const wardHref = (wardNumber: number) =>
 
 export function PaithanWardMap() {
   const router = useRouter();
+  const tNagar = useTranslations("nagarParishad");
 
   return (
     <section
@@ -57,10 +47,10 @@ export function PaithanWardMap() {
             id="ward-map-heading"
             className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
           >
-            Paithan&apos;s 17 Wards
+            {tNagar("wardMapTitle")}
           </h2>
           <p className="mt-1.5 max-w-2xl text-sm text-[var(--civic-slate-700)]">
-            Explore the wards and view detailed information for each area.
+            {tNagar("wardMapSubtitle")}
           </p>
         </div>
 
@@ -72,11 +62,10 @@ export function PaithanWardMap() {
             aria-labelledby="ward-map-svg-title ward-map-svg-desc"
           >
             <title id="ward-map-svg-title">
-              Paithan Assembly Constituency — 17 Ward map
+              {tNagar("wardMapTitle")}
             </title>
             <desc id="ward-map-svg-desc">
-              Map of the Paithan constituency with 17 pins. Each pin opens the
-              detailed information for that ward.
+              {tNagar("wardMapSubtitle")}
             </desc>
 
             <image
@@ -96,11 +85,9 @@ export function PaithanWardMap() {
                   <Link
                     key={wardNumber}
                     href={href}
-                    aria-label={`Open Ward ${wardNumber}`}
+                    aria-label={`Ward ${wardNumber}`}
                     className="ward-pin"
                     onKeyDown={(event) => {
-                      // Click and Enter already follow the link natively; add
-                      // Space so the pins match native button/link expectations.
                       if (event.key === " " || event.key === "Spacebar") {
                         event.preventDefault();
                         router.push(href);
@@ -113,7 +100,7 @@ export function PaithanWardMap() {
                       cy={pin.cy}
                       r={40}
                     />
-                    <title>{`Open Ward ${wardNumber}`}</title>
+                    <title>{`Ward ${wardNumber}`}</title>
                   </Link>
                 );
               })}
@@ -122,13 +109,6 @@ export function PaithanWardMap() {
         </div>
       </div>
 
-      {/*
-        SVG-scoped styling for the pins, namespaced under `.paithan-ward-map` so
-        nothing leaks into the rest of the page. The halo is invisible until the
-        pin is hovered or keyboard-focused, then it draws a soft ring around the
-        drawn pin and lifts it very slightly — polished feedback that never moves
-        or recolours the pin itself.
-      */}
       <style>{`
         .paithan-ward-map .ward-pin { cursor: pointer; }
         .paithan-ward-map .ward-pin:focus { outline: none; }
@@ -160,3 +140,4 @@ export function PaithanWardMap() {
     </section>
   );
 }
+

@@ -2,27 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { Plus, Trash2, Edit, X, ShieldCheck, Search } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
 import { cn } from "@/lib/utils";
-
-const FACILITY_TYPE_LABELS: Record<string, string> = {
-  SCHOOL: "School",
-  PHC: "Primary Health Center",
-  WATER_WORKS: "Water Works",
-  COMMUNITY_CENTER: "Community Center",
-  ANGANWADI: "Anganwadi",
-  OTHER: "Other",
-};
-
-const CIVIC_SECTOR_LABELS: Record<string, string> = {
-  ROADS_TRANSPORT: "Roads & Transport",
-  WATER_SANITATION: "Water & Sanitation",
-  EDUCATION: "Education",
-  HEALTH: "Health",
-  OTHER_CIVIC_WORKS: "Other Civic Works",
-};
 
 interface Facility {
   id: string;
@@ -48,6 +32,29 @@ interface Ward {
 }
 
 export default function AdminFacilitiesPage() {
+  const t = useTranslations("adminFacilities");
+  const tCommon = useTranslations("common");
+  const tNav = useTranslations("nav");
+  const tSector = useTranslations("services");
+  const locale = useLocale();
+
+  const FACILITY_TYPE_LABELS: Record<string, string> = {
+    SCHOOL: t("typeSchool"),
+    PHC: t("typePhc"),
+    WATER_WORKS: t("typeWaterWorks"),
+    COMMUNITY_CENTER: t("typeCommunityCenter"),
+    ANGANWADI: t("typeAnganwadi"),
+    OTHER: t("typeOther"),
+  };
+
+  const CIVIC_SECTOR_LABELS: Record<string, string> = {
+    ROADS_TRANSPORT: tSector("roads"),
+    WATER_SANITATION: tSector("water"),
+    EDUCATION: tSector("education"),
+    HEALTH: tSector("health"),
+    OTHER_CIVIC_WORKS: tSector("otherCivic"),
+  };
+
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -170,7 +177,7 @@ export default function AdminFacilitiesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this facility?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/facilities/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete facility");
@@ -214,18 +221,17 @@ export default function AdminFacilitiesPage() {
     <div className="space-y-6">
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Admin", href: "/admin/dashboard" },
-          { label: "Facilities Management" },
+          { label: tNav("home"), href: `/${locale}` },
+          { label: tNav("adminDashboard"), href: `/${locale}/admin/dashboard` },
+          { label: t("title") },
         ]}
       />
 
       <div className="mx-auto max-w-[1180px] px-4 py-11">
         <SectionHeading
           as="h1"
-          title="Facilities Management"
-          description="Manage public facilities across all civic sectors: schools, health centers, water works, community centers, and more."
-          action={{ label: "+ Add Facility", href: "#" }}
+          title={t("title")}
+          description={t("description")}
         />
 
         {/* Filters */}
@@ -235,7 +241,7 @@ export default function AdminFacilitiesPage() {
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search facilities by name, address..."
+                placeholder={t("searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500"
@@ -248,7 +254,7 @@ export default function AdminFacilitiesPage() {
                 onChange={(e) => setSelectedSector(e.target.value)}
                 className="border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800 bg-white"
               >
-                <option value="ALL">All Sectors</option>
+                <option value="ALL">{t("allSectors")}</option>
                 {Object.entries(CIVIC_SECTOR_LABELS).map(([key, label]) => (
                   <option key={key} value={key}>
                     {label}
@@ -261,7 +267,7 @@ export default function AdminFacilitiesPage() {
                 onChange={(e) => setSelectedType(e.target.value)}
                 className="border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800 bg-white"
               >
-                <option value="ALL">All Types</option>
+                <option value="ALL">{t("allTypes")}</option>
                 {Object.entries(FACILITY_TYPE_LABELS).map(([key, label]) => (
                   <option key={key} value={key}>
                     {label}
@@ -274,9 +280,9 @@ export default function AdminFacilitiesPage() {
                 onChange={(e) => setSelectedDataStatus(e.target.value)}
                 className="border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800 bg-white"
               >
-                <option value="ALL">All Status</option>
-                <option value="VERIFIED">Verified</option>
-                <option value="SAMPLE_TBD">Sample / TBD</option>
+                <option value="ALL">{t("allStatus")}</option>
+                <option value="VERIFIED">{t("verified")}</option>
+                <option value="SAMPLE_TBD">{t("sampleTbd")}</option>
               </select>
 
               <select
@@ -284,10 +290,10 @@ export default function AdminFacilitiesPage() {
                 onChange={(e) => setSelectedWard(e.target.value)}
                 className="border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-800 bg-white"
               >
-                <option value="ALL">All Wards</option>
+                <option value="ALL">{t("allWards")}</option>
                 {wards.map((w) => (
                   <option key={w.id} value={w.id}>
-                    Ward {w.number} — {w.name}
+                    {locale === "mr" ? `प्रभाग ${w.number} — ${w.name}` : locale === "hi" ? `वार्ड ${w.number} — ${w.name}` : `Ward ${w.number} — ${w.name}`}
                   </option>
                 ))}
               </select>
@@ -297,7 +303,7 @@ export default function AdminFacilitiesPage() {
                 className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Add Facility</span>
+                <span>{t("addFacility")}</span>
               </button>
             </div>
           </div>
@@ -306,32 +312,34 @@ export default function AdminFacilitiesPage() {
         {/* Facilities Table */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           {isLoading ? (
-            <div className="p-12 text-center text-slate-500">Loading facilities...</div>
+            <div className="p-12 text-center text-slate-500">{t("loading")}</div>
           ) : filteredFacilities.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-sm font-semibold text-slate-700">No facilities match your filter criteria.</p>
-              <p className="mt-1 text-xs text-slate-500">Try adjusting your filters or add a new facility.</p>
+              <p className="text-sm font-semibold text-slate-700">{t("noMatch")}</p>
+              <p className="mt-1 text-xs text-slate-500">{t("noMatchHint")}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs text-slate-700">
                 <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
                   <tr>
-                    <th className="py-3.5 px-4">Facility</th>
-                    <th className="py-3.5 px-4">Sector</th>
-                    <th className="py-3.5 px-4">Type</th>
-                    <th className="py-3.5 px-4">Ward</th>
-                    <th className="py-3.5 px-4">Status</th>
-                    <th className="py-3.5 px-4">Data Status</th>
-                    <th className="py-3.5 px-4 text-right">Actions</th>
+                    <th className="py-3.5 px-4">{t("colFacility")}</th>
+                    <th className="py-3.5 px-4">{t("colSector")}</th>
+                    <th className="py-3.5 px-4">{t("colType")}</th>
+                    <th className="py-3.5 px-4">{t("colWard")}</th>
+                    <th className="py-3.5 px-4">{t("colStatus")}</th>
+                    <th className="py-3.5 px-4">{t("colDataStatus")}</th>
+                    <th className="py-3.5 px-4 text-right">{t("colActions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredFacilities.map((facility) => (
                     <tr key={facility.id} className="hover:bg-slate-50/70 transition">
                       <td className="py-3.5 px-4 max-w-xs">
-                        <div className="font-bold text-slate-900">{facility.nameEn}</div>
-                        {facility.nameMr && (
+                        <div className="font-bold text-slate-900">
+                          {locale === "mr" && facility.nameMr ? facility.nameMr : facility.nameEn}
+                        </div>
+                        {facility.nameMr && locale !== "mr" && (
                           <div className="text-[11px] text-slate-500 font-marathi">{facility.nameMr}</div>
                         )}
                         <div className="text-[10px] text-slate-400 mt-0.5 truncate">{facility.address}</div>
@@ -352,7 +360,7 @@ export default function AdminFacilitiesPage() {
                       <td className="py-3.5 px-4">
                         {facility.ward ? (
                           <span className="text-[11px] font-semibold text-slate-700">
-                            Ward {facility.ward.number} — {facility.ward.name}
+                            {locale === "mr" ? `प्रभाग ${facility.ward.number} — ${facility.ward.name}` : locale === "hi" ? `वार्ड ${facility.ward.number} — ${facility.ward.name}` : `Ward ${facility.ward.number} — ${facility.ward.name}`}
                           </span>
                         ) : (
                           <span className="text-[11px] text-slate-400">—</span>
@@ -368,7 +376,7 @@ export default function AdminFacilitiesPage() {
                               : "bg-red-50 text-red-800"
                           )}
                         >
-                          {facility.isOperational ? "Operational" : "Non-Operational"}
+                          {facility.isOperational ? t("operational") : t("nonOperational")}
                         </span>
                       </td>
 
@@ -381,7 +389,7 @@ export default function AdminFacilitiesPage() {
                           <button
                             onClick={() => handleEdit(facility)}
                             className="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-blue-50"
-                            title="Edit Facility"
+                            title={t("modalEditTitle")}
                           >
                             <Edit className="w-4 h-4" />
                           </button>
@@ -389,7 +397,7 @@ export default function AdminFacilitiesPage() {
                             <button
                               onClick={() => handleVerify(facility.id)}
                               className="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-emerald-50"
-                              title="Verify Record"
+                              title={tCommon("verifyRecord")}
                             >
                               <ShieldCheck className="w-4 h-4" />
                             </button>
@@ -397,7 +405,7 @@ export default function AdminFacilitiesPage() {
                           <button
                             onClick={() => handleDelete(facility.id)}
                             className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50"
-                            title="Delete Facility"
+                            title={tCommon("delete")}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -417,7 +425,7 @@ export default function AdminFacilitiesPage() {
             <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-slate-200">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <h2 className="font-bold text-slate-900 text-base">
-                  {editingFacility ? "Edit Facility" : "Add New Facility"}
+                  {editingFacility ? t("modalEditTitle") : t("modalAddTitle")}
                 </h2>
                 <button
                   onClick={() => {
@@ -440,7 +448,7 @@ export default function AdminFacilitiesPage() {
               <form onSubmit={handleSubmit} className="mt-4 space-y-3.5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Facility Name (English) *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldNameEn")}</label>
                     <input
                       type="text"
                       required
@@ -452,7 +460,7 @@ export default function AdminFacilitiesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Facility Name (मराठी)</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldNameMr")}</label>
                     <input
                       type="text"
                       placeholder="उदा. प्राथमिक आरोग्य केंद्र ब्रह्मपुरी"
@@ -465,7 +473,7 @@ export default function AdminFacilitiesPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Sector *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldSector")}</label>
                     <select
                       value={formData.sector}
                       onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
@@ -480,7 +488,7 @@ export default function AdminFacilitiesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Type *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldType")}</label>
                     <select
                       value={formData.type}
                       onChange={(e) => setFormData({ ...formData, type: e.target.value })}
@@ -496,7 +504,7 @@ export default function AdminFacilitiesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Address *</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldAddress")}</label>
                   <input
                     type="text"
                     required
@@ -508,7 +516,7 @@ export default function AdminFacilitiesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Contact Info (JSON)</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldContact")}</label>
                   <textarea
                     placeholder='{"phone": "02431-223040", "email": "phc@paithan.gov.in"}'
                     value={formData.contactJson}
@@ -520,16 +528,16 @@ export default function AdminFacilitiesPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Ward</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldWard")}</label>
                     <select
                       value={formData.wardId}
                       onChange={(e) => setFormData({ ...formData, wardId: e.target.value })}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs"
                     >
-                      <option value="">No Ward</option>
+                      <option value="">{t("noWard")}</option>
                       {wards.map((w) => (
                         <option key={w.id} value={w.id}>
-                          Ward {w.number} — {w.name}
+                          {locale === "mr" ? `प्रभाग ${w.number} — ${w.name}` : locale === "hi" ? `वार्ड ${w.number} — ${w.name}` : `Ward ${w.number} — ${w.name}`}
                         </option>
                       ))}
                     </select>
@@ -544,20 +552,20 @@ export default function AdminFacilitiesPage() {
                       className="w-4 h-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500"
                     />
                     <label htmlFor="isOperational" className="text-xs font-medium text-slate-700 cursor-pointer">
-                      Operational
+                      {t("fieldOperational")}
                     </label>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Data Status</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldDataStatus")}</label>
                   <select
                     value={formData.dataStatus}
                     onChange={(e) => setFormData({ ...formData, dataStatus: e.target.value })}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs"
                   >
-                    <option value="SAMPLE_TBD">Sample / TBD</option>
-                    <option value="VERIFIED">Verified</option>
+                    <option value="SAMPLE_TBD">{t("sampleTbd")}</option>
+                    <option value="VERIFIED">{t("verified")}</option>
                   </select>
                 </div>
 
@@ -571,14 +579,14 @@ export default function AdminFacilitiesPage() {
                     }}
                     className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 text-xs font-bold rounded-xl shadow-md disabled:opacity-60"
                   >
-                    {isSubmitting ? "Saving..." : editingFacility ? "Update Facility" : "Save Facility"}
+                    {isSubmitting ? t("saving") : editingFacility ? t("update") : t("save")}
                   </button>
                 </div>
               </form>

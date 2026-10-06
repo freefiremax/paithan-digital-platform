@@ -2,25 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { Edit, ShieldCheck } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
-
-const CIVIC_SECTOR_LABELS: Record<string, string> = {
-  ROADS_TRANSPORT: "Roads & Transport",
-  WATER_SANITATION: "Water & Sanitation",
-  EDUCATION: "Education",
-  HEALTH: "Health",
-  OTHER_CIVIC_WORKS: "Other Civic Works",
-};
-
-const CIVIC_SECTOR_LABELS_MR: Record<string, string> = {
-  ROADS_TRANSPORT: "रस्ते व वाहतूक",
-  WATER_SANITATION: "पाणी व स्वच्छता",
-  EDUCATION: "शिक्षण",
-  HEALTH: "आरोग्य",
-  OTHER_CIVIC_WORKS: "इतर नागरी कामे",
-};
 
 interface SectorInfo {
   id: string;
@@ -39,6 +24,19 @@ interface SectorInfo {
 }
 
 export default function AdminSectorsPage() {
+  const t = useTranslations("adminSectors");
+  const tNav = useTranslations("nav");
+  const tSector = useTranslations("services");
+  const locale = useLocale();
+
+  const CIVIC_SECTOR_LABELS: Record<string, string> = {
+    ROADS_TRANSPORT: tSector("roads"),
+    WATER_SANITATION: tSector("water"),
+    EDUCATION: tSector("education"),
+    HEALTH: tSector("health"),
+    OTHER_CIVIC_WORKS: tSector("otherCivic"),
+  };
+
   const [sectors, setSectors] = useState<SectorInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingSector, setEditingSector] = useState<SectorInfo | null>(null);
@@ -142,21 +140,21 @@ export default function AdminSectorsPage() {
     <div className="space-y-6">
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Admin", href: "/admin/dashboard" },
-          { label: "Sector Management" },
+          { label: tNav("home"), href: `/${locale}` },
+          { label: tNav("adminDashboard"), href: `/${locale}/admin/dashboard` },
+          { label: t("title") },
         ]}
       />
 
       <div className="mx-auto max-w-[1180px] px-4 py-11">
         <SectionHeading
           as="h1"
-          title="Civic Sector Management"
-          description="Edit sector titles, taglines, overviews, and department information. Only Admins can verify sectors as official records."
+          title={t("title")}
+          description={t("description")}
         />
 
         {isLoading ? (
-          <div className="p-12 text-center text-slate-500">Loading sectors...</div>
+          <div className="p-12 text-center text-slate-500">{t("loading")}</div>
         ) : (
           <div className="space-y-6">
             {sectors.map((sector) => (
@@ -170,12 +168,13 @@ export default function AdminSectorsPage() {
                       <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">
                         {CIVIC_SECTOR_LABELS[sector.sector] || sector.sector}
                       </span>
-                      <span className="text-xs text-slate-500 font-marathi">
-                        {CIVIC_SECTOR_LABELS_MR[sector.sector] || sector.sector}
-                      </span>
                     </div>
-                    <h2 className="text-xl font-bold text-slate-900">{sector.titleEn}</h2>
-                    <p className="text-sm text-slate-500 font-marathi mt-0.5">{sector.titleMr}</p>
+                    <h2 className="text-xl font-bold text-slate-900">
+                      {locale === "mr" && sector.titleMr ? sector.titleMr : sector.titleEn}
+                    </h2>
+                    {sector.titleMr && locale !== "mr" && (
+                      <p className="text-sm text-slate-500 font-marathi mt-0.5">{sector.titleMr}</p>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
@@ -186,24 +185,28 @@ export default function AdminSectorsPage() {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition"
                       >
                         <ShieldCheck className="w-3.5 h-3.5" />
-                        <span>Verify Record</span>
+                        <span>{t("verifyRecord")}</span>
                       </button>
                     )}
                   </div>
                 </div>
 
                 <div className="prose prose-sm max-w-none text-slate-700 mb-4">
-                  <p className="text-sm">{sector.taglineEn}</p>
-                  <p className="text-sm text-slate-500 font-marathi mt-1">{sector.taglineMr}</p>
+                  <p className="text-sm">
+                    {locale === "mr" && sector.taglineMr ? sector.taglineMr : sector.taglineEn}
+                  </p>
+                  {sector.taglineMr && locale !== "mr" && (
+                    <p className="text-sm text-slate-500 font-marathi mt-1">{sector.taglineMr}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 text-xs text-slate-600">
                   <div>
-                    <span className="font-semibold text-slate-900">Department:</span>{" "}
+                    <span className="font-semibold text-slate-900">{t("labelDepartment")}</span>{" "}
                     {sector.department}
                   </div>
                   <div>
-                    <span className="font-semibold text-slate-900">Contact:</span>{" "}
+                    <span className="font-semibold text-slate-900">{t("labelContact")}</span>{" "}
                     {sector.contactJson ? JSON.stringify(sector.contactJson) : "—"}
                   </div>
                 </div>
@@ -213,7 +216,7 @@ export default function AdminSectorsPage() {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition"
                 >
                   <Edit className="w-3.5 h-3.5" />
-                  <span>Edit Details</span>
+                  <span>{t("editDetails")}</span>
                 </button>
 
                 {editingSector?.id === sector.id && (
@@ -228,7 +231,7 @@ export default function AdminSectorsPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                           <label className="block text-xs font-semibold text-slate-700 mb-1">
-                            Title (English)
+                            {t("fieldTitleEn")}
                           </label>
                           <input
                             type="text"
@@ -241,7 +244,7 @@ export default function AdminSectorsPage() {
 
                         <div>
                           <label className="block text-xs font-semibold text-slate-700 mb-1">
-                            Title (मराठी)
+                            {t("fieldTitleMr")}
                           </label>
                           <input
                             type="text"
@@ -255,7 +258,7 @@ export default function AdminSectorsPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                           <label className="block text-xs font-semibold text-slate-700 mb-1">
-                            Tagline (English)
+                            {t("fieldTaglineEn")}
                           </label>
                           <input
                             type="text"
@@ -267,7 +270,7 @@ export default function AdminSectorsPage() {
 
                         <div>
                           <label className="block text-xs font-semibold text-slate-700 mb-1">
-                            Tagline (मराठी)
+                            {t("fieldTaglineMr")}
                           </label>
                           <input
                             type="text"
@@ -280,7 +283,7 @@ export default function AdminSectorsPage() {
 
                       <div>
                         <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Overview (English)
+                          {t("fieldOverviewEn")}
                         </label>
                         <textarea
                           value={formData.overviewEn}
@@ -292,7 +295,7 @@ export default function AdminSectorsPage() {
 
                       <div>
                         <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Overview (मराठी)
+                          {t("fieldOverviewMr")}
                         </label>
                         <textarea
                           value={formData.overviewMr}
@@ -303,7 +306,7 @@ export default function AdminSectorsPage() {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">Department</label>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldDepartment")}</label>
                         <input
                           type="text"
                           value={formData.department}
@@ -314,7 +317,7 @@ export default function AdminSectorsPage() {
 
                       <div>
                         <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Contact Info (JSON)
+                          {t("fieldContact")}
                         </label>
                         <textarea
                           value={formData.contactJson}
@@ -325,14 +328,14 @@ export default function AdminSectorsPage() {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">Data Status</label>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">{t("fieldDataStatus")}</label>
                         <select
                           value={formData.dataStatus}
                           onChange={(e) => setFormData({ ...formData, dataStatus: e.target.value })}
                           className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs"
                         >
-                          <option value="SAMPLE_TBD">Sample / TBD</option>
-                          <option value="VERIFIED">Verified</option>
+                          <option value="SAMPLE_TBD">{locale === "mr" ? "नमुना / निश्चित करणे बाकी" : locale === "hi" ? "नमूना / तय होना बाकी" : "Sample / TBD"}</option>
+                          <option value="VERIFIED">{locale === "mr" ? "सत्यापित" : locale === "hi" ? "सत्यापित" : "Verified"}</option>
                         </select>
                       </div>
 
@@ -342,14 +345,14 @@ export default function AdminSectorsPage() {
                           onClick={() => setEditingSector(null)}
                           className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
                         >
-                          Cancel
+                          {t("cancel")}
                         </button>
                         <button
                           type="submit"
                           disabled={isSubmitting}
                           className="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 text-xs font-bold rounded-xl shadow-md disabled:opacity-60"
                         >
-                          {isSubmitting ? "Saving..." : "Save Changes"}
+                          {isSubmitting ? t("saving") : t("save")}
                         </button>
                       </div>
                     </form>
