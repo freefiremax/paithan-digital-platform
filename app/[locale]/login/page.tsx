@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { signIn, useSession, getCsrfToken } from "next-auth/react";
-import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 
-function AdminLoginForm() {
+function PublicLoginForm() {
   const router = useRouter();
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const { data: session, status } = useSession();
-
   const rawCallbackUrl = searchParams.get("callbackUrl");
   const homePageUrl = `/${locale}`;
   const targetCallbackUrl =
@@ -22,10 +20,11 @@ function AdminLoginForm() {
   const emailParam = searchParams.get("email") || "";
   const isRegistered = searchParams.get("registered") === "1";
   const errorParam = searchParams.get("error");
-  const t = useTranslations("adminLogin");
+  const t = useTranslations("login");
 
   const [email, setEmail] = useState(emailParam);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(
     errorParam
       ? errorParam === "OAuthCallback" || errorParam === "Callback"
@@ -34,34 +33,6 @@ function AdminLoginForm() {
       : ""
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [csrfToken, setCsrfToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    getCsrfToken().then((token) => {
-      if (token) setCsrfToken(token);
-    });
-  }, []);
-
-  const handleGoogleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = e.currentTarget;
-    const csrfInput = form.querySelector('input[name="csrfToken"]') as HTMLInputElement;
-    if (!csrfInput?.value) {
-      e.preventDefault();
-      return;
-    }
-  };
-
-  // If already authenticated, redirect immediately away from login page
-  useEffect(() => {
-    if (status === "authenticated" && session?.user) {
-      const userRole = (session.user as { role?: string })?.role;
-      if (userRole === "ADMIN" || userRole === "EDITOR") {
-        router.replace(`/${locale}/admin/dashboard`);
-      } else {
-        router.replace(targetCallbackUrl);
-      }
-    }
-  }, [status, session, locale, targetCallbackUrl, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,34 +85,23 @@ function AdminLoginForm() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4 sm:px-0">
         <div className="bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8">
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-700" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-slate-900/90 px-2 text-slate-500 font-medium">
-                {t("orContinueWith")}
-              </span>
-            </div>
-          </div>
-
-<form action="/api/auth/signin/google" method="POST" className="w-full mb-4" onSubmit={handleGoogleSubmit}>
-            <input type="hidden" name="callbackUrl" value={targetCallbackUrl} />
-            <input type="hidden" name="csrfToken" value={csrfToken || ""} />
-            <button
-              type="submit"
-              disabled={isLoading || !csrfToken}
-              className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 rounded-xl py-3 px-4 text-sm font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer"
-            >
-              <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z" />
-                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z" />
-                <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z" />
-                <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z" />
-              </svg>
-              <span>Continue with Google</span>
-            </button>
-          </form>
+          <button
+            type="button"
+            onClick={() => {
+              setIsLoading(true);
+              signIn("google", { callbackUrl: targetCallbackUrl });
+            }}
+            disabled={isLoading}
+            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 rounded-xl py-3 px-4 text-sm font-semibold transition-all shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer"
+          >
+            <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+              <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z" />
+              <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z" />
+              <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z" />
+              <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z" />
+            </svg>
+            <span>{t("continueWithGoogle")}</span>
+          </button>
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
@@ -149,7 +109,7 @@ function AdminLoginForm() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-slate-900/90 px-3 text-slate-400 font-medium">
-                Or sign in with email
+                {t("orSignInWithEmail")}
               </span>
             </div>
           </div>
@@ -187,13 +147,21 @@ function AdminLoginForm() {
                 <div className="relative">
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-slate-800/70 border border-slate-700 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500"
+                    className="w-full bg-slate-800/70 border border-slate-700 rounded-xl pl-9 pr-10 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500"
                     placeholder={t("passwordPlaceholder")}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-200 focus:outline-none"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
                 </div>
               </div>
 
@@ -226,7 +194,7 @@ function AdminLoginForm() {
               href={`/${locale}/register`}
               className="text-xs text-amber-400 hover:text-amber-300 font-medium transition"
             >
-              Need a citizen account? Register here →
+              {t("needAccount")}
             </Link>
             <Link
               href={`/${locale}`}
@@ -247,7 +215,7 @@ function AdminLoginForm() {
   );
 }
 
-export default function AdminLoginPage() {
+export default function PublicLoginPage() {
   return (
     <Suspense
       fallback={
@@ -256,7 +224,7 @@ export default function AdminLoginPage() {
         </div>
       }
     >
-      <AdminLoginForm />
+      <PublicLoginForm />
     </Suspense>
   );
 }

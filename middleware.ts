@@ -21,7 +21,7 @@ const CSP_DIRECTIVES = [
   "frame-src 'self' https://challenges.cloudflare.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",
-  "form-action 'self'",
+  "form-action *",
 ].join('; ');
 
 const intlMiddleware = createIntlMiddleware({

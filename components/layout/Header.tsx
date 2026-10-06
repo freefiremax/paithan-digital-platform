@@ -228,13 +228,21 @@ export default function Header() {
                   </button>
                 </div>
               ) : (
-                <Link
-                  href={`/${locale}/admin/login`}
-                  className="inline-flex items-center gap-1 rounded-sm border border-[var(--on-vangi-rule)] px-2 py-0.5 text-[10px] text-[var(--saffron-100)] hover:bg-[var(--portal-blue-50)] hover:text-white transition"
-                >
-                  <LogIn className="h-3 w-3 text-[var(--saffron-500)]" />
-                  <span>Sign In / Register</span>
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/${locale}/login`}
+                    className="inline-flex items-center gap-1 rounded-sm border border-[var(--on-vangi-rule)] px-2 py-0.5 text-[10px] text-[var(--saffron-100)] hover:bg-[var(--portal-blue-50)] hover:text-white transition"
+                  >
+                    <LogIn className="h-3 w-3 text-[var(--saffron-500)]" />
+                    <span>Sign In</span>
+                  </Link>
+                  <Link
+                    href={`/${locale}/register`}
+                    className="inline-flex items-center gap-1 rounded-sm border border-amber-500/50 bg-amber-500/20 px-2 py-0.5 text-[10px] text-amber-300 hover:bg-amber-500/30 transition font-medium"
+                  >
+                    <span>Register</span>
+                  </Link>
+                </div>
               )}
             </div>
           </div>
@@ -465,6 +473,27 @@ export default function Header() {
                   </Link>
                 )}
               </div>
+
+              {!session?.user ? (
+                <div className="flex items-center gap-2 pt-2 border-t border-[var(--border-subtle)]">
+                  <Link
+                    href={`/${locale}/login`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--portal-blue-700)]"
+                  >
+                    <LogIn className="h-3.5 w-3.5" />
+                    <span>Sign In</span>
+                  </Link>
+                  <span className="text-slate-300">|</span>
+                  <Link
+                    href={`/${locale}/register`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600"
+                  >
+                    <span>Register</span>
+                  </Link>
+                </div>
+              ) : null}
 
               {session?.user ? (
                 <div className="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)]">

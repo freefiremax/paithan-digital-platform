@@ -362,5 +362,24 @@
     "errorUnexpected": "अप्रत्याशित त्रुटी आली आहे. कृपया पुन्हा प्रयत्न करा.",
     "orContinueWith": "किंवा यथेच जारी राखा",
     "continueWithGoogle": "Google सह लॉगिन करा"
+  },
+  "login": {
+    "title": "आपल्या खात्यात लॉगिन करा",
+    "subtitle": "नागरी सेवांमध्ये प्रवेश मिळवा, तक्रारींचा मागोवा घ्या आणि आपले नागरिक प्रोफाइल व्यवस्थापित करा.",
+    "officialPlatform": "अधिकृत नगर परिषद मंच",
+    "emailLabel": "ई-मेल पत्ता",
+    "emailPlaceholder": "your@email.com",
+    "passwordLabel": "पासवर्ड",
+    "passwordPlaceholder": "आपला पासवर्ड टाइप करा",
+    "submitBtn": "साइन इन करा",
+    "signingIn": "साइन इन करत आहे...",
+    "continueWithGoogle": "Google सह सुरू ठेवा",
+    "orContinueWith": "किंवा यासह सुरू ठेवा",
+    "orSignInWithEmail": "किंवा ईमेलने साइन इन करा",
+    "needAccount": "नागरिक खाते हवे आहे का? येथे नोंदणी करा →",
+    "backToPublic": "सार्वजनिक मुख्यपृष्ठावर परत जा",
+    "disclaimer": "साइन इन करताना आपण आमच्या अटी व शर्ती आणि गोपनीयता धोरणाशी सहमत आहात.",
+    "errorInvalidCredentials": "अवैध ई-मेल किंवा पासवर्ड",
+    "errorUnexpected": "अप्रत्याशित त्रुटी आली आहे. कृपया पुन्हा प्रयत्न करा."
   }
 }

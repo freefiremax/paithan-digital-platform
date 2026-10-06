@@ -509,5 +509,24 @@
     "errorUnexpected": "An unexpected error occurred. Please try again.",
     "orContinueWith": "or continue with",
     "continueWithGoogle": "Continue with Google"
+  },
+  "login": {
+    "title": "Sign In to Your Account",
+    "subtitle": "Access civic services, track your grievances, and manage your citizen profile.",
+    "officialPlatform": "Official Municipal Council Platform",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "your@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submitBtn": "Sign In",
+    "signingIn": "Signing in...",
+    "continueWithGoogle": "Continue with Google",
+    "orContinueWith": "or continue with",
+    "orSignInWithEmail": "Or sign in with email",
+    "needAccount": "Need a citizen account? Register here →",
+    "backToPublic": "Back to Public Homepage",
+    "disclaimer": "By signing in, you agree to our Terms & Conditions and Privacy Policy.",
+    "errorInvalidCredentials": "Invalid email or password",
+    "errorUnexpected": "An unexpected error occurred. Please try again."
   }
 }

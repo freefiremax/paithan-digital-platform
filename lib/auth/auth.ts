@@ -14,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   trustHost: true,
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET,
-  pages: { signIn: "/admin/login", error: "/admin/login" },
+  pages: { signIn: "/login", error: "/login" },
   logger: {
     error: (error) => console.error("[NextAuth Error]", error),
     warn: (message) => console.warn("[NextAuth Warn]", message),
@@ -32,6 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         process.env.GOOGLE_CLIENT_SECRET ||
         process.env.GOOGLE_SECRET ||
         env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
           scope: "openid email profile",

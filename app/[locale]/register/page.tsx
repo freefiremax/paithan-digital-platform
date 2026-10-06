@@ -227,7 +227,7 @@ function RegisterForm() {
 
           <div className="mt-6 pt-4 border-t border-slate-800 flex flex-col gap-2 text-center">
             <Link
-              href={`/${locale}/admin/login`}
+              href={`/${locale}/login`}
               className="text-xs text-slate-400 hover:text-amber-400 transition inline-flex items-center justify-center gap-1"
             >
               ← {t("backToLogin")}
