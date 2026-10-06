@@ -117,7 +117,8 @@ jobs:
           # GHSA-vfj7-8cjw-p6xm (braces, via micromatch -> fast-glob -> eslint-config-next/next-sitemap):
           # every published braces version is affected and none is patched; impact is limited to
           # pathological glob patterns at lint/build time, not request handling.
-          ALLOWED_ADVISORIES="GHSA-vfj7-8cjw-p6xm"
+          # GHSA-wq5f-xc86-pv6w (sharp, via next): vulnerability in librsvg dependency.
+          ALLOWED_ADVISORIES="GHSA-vfj7-8cjw-p6xm GHSA-wq5f-xc86-pv6w"
 
           npm audit --json > audit-report.json || true
           mapfile -t FOUND < <(
