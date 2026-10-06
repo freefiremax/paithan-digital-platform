@@ -15,9 +15,11 @@ describe("Rate Limiter", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (Ratelimit as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => ({
-      limit: mockLimit,
-    }));
+    (Ratelimit as unknown as ReturnType<typeof vi.fn>).mockImplementation(function (this: unknown) {
+      return {
+        limit: mockLimit,
+      };
+    });
   });
 
   afterEach(() => {

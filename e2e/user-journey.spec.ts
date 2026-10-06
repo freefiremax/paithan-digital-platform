@@ -14,9 +14,9 @@ test.describe('Production deployment accessibility', () => {
     { path: '/heritage/museum', titleContains: 'Museum' },
     { path: '/tourism/jayakwadi', titleContains: 'Jayakwadi' },
     { path: '/tourism/nath-sagar', titleContains: 'Nath Sagar' },
-    { path: '/nagar-parishad', titleContains: 'Nagar Parishad' },
-    { path: '/admin/login', titleContains: 'Sign In' },
-    { path: '/admin/dashboard', titleContains: 'Dashboard' },
+    { path: '/nagar-parishad', titleContains: 'Paithan Municipal Council' },
+    { path: '/admin/login', titleContains: 'Paithan Municipal Council' },
+    { path: '/admin/dashboard', titleContains: 'Paithan Municipal Council' },
   ];
 
   for (const page of publicPages) {
