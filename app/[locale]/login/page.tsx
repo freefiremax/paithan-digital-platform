@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 
 function PublicLoginForm() {
-  const router = useRouter();
   const locale = useLocale();
   const searchParams = useSearchParams();
   const rawCallbackUrl = searchParams.get("callbackUrl");

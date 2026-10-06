@@ -2,7 +2,6 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { Adapter, AdapterUser, AdapterAccount } from "@auth/core/adapters";
 import { Role } from "@prisma/client";
 import { verify } from "@node-rs/argon2";
 import { prisma } from "@/lib/db";

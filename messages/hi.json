@@ -150,7 +150,6 @@
     "showing": "{start} से {end} दिखा रहे हैं {total} शिकायतों में से",
     "noGrievances": "कोई शिकायत नहीं मिली",
     "viewDetails": "विवरण देखें",
-    "descriptionLabel": "विवरण",
     "updateStatus": "स्थिति अपडेट करें",
     "newStatusLabel": "नई स्थिति",
     "noteLabel": "नोट (वैकल्पिक)",
@@ -319,8 +318,7 @@
     "webInfoManagerFieldEmail": "ईमेल",
     "webInfoManagerFieldPhone": "फोन",
     "webInfoManagerFieldAddress": "कार्यालय का पता",
-    "webInfoManagerLegalNote": "परिषद द्वारा वेब सूचना प्रबंधक नियुक्त करने के बाद GIGW दिशानिर्देशों के अनुसार यह जानकारी अपडेट की जाएगी।",
-    "title": "संपर्क और प्रतिक्रिया"
+    "webInfoManagerLegalNote": "परिषद द्वारा वेब सूचना प्रबंधक नियुक्त करने के बाद GIGW दिशानिर्देशों के अनुसार यह जानकारी अपडेट की जाएगी।"
   },
   "register": {
     "title": "अपना खाता बनाएं",

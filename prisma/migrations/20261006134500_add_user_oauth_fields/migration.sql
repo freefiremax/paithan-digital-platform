@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "passwordHash" DROP NOT NULL,
+ADD COLUMN "image" TEXT,
+ADD COLUMN "emailVerified" TIMESTAMP(3);
