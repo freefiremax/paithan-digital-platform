@@ -21,7 +21,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@prisma/client": ["./node_modules/.prisma/client"]
+      "@prisma/client": ["./node_modules/.prisma/client"],
+      "@upstash/ratelimit": ["./node_modules/@upstash/ratelimit/dist/index.d.ts"]
     }
   },
   "include": [
