@@ -7,7 +7,6 @@ import { Role } from "@prisma/client";
 import { verify } from "@node-rs/argon2";
 import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
-import { generateCsrfToken, setCsrfCookie } from "@/lib/csrf";
 import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
 
 const baseAdapter = PrismaAdapter(prisma);
@@ -15,6 +14,29 @@ const baseAdapter = PrismaAdapter(prisma);
 const customAdapter: Adapter = {
   ...baseAdapter,
   createUser: async (data: AdapterUser) => {
+    // Check if a user with this email already exists (e.g. from credentials or seed)
+    if (data.email) {
+      const existing = await prisma.user.findUnique({
+        where: { email: data.email },
+      });
+      if (existing) {
+        if (data.name && !existing.name) {
+          const updated = await prisma.user.update({
+            where: { id: existing.id },
+            data: { name: data.name },
+          });
+          return {
+            ...updated,
+            emailVerified: null,
+          } as unknown as AdapterUser;
+        }
+        return {
+          ...existing,
+          emailVerified: null,
+        } as unknown as AdapterUser;
+      }
+    }
+
     const user = await prisma.user.create({
       data: {
         email: data.email,
@@ -64,9 +86,37 @@ const customAdapter: Adapter = {
       emailVerified: null,
     } as unknown as AdapterUser;
   },
+  getAccount: async (providerAccountId: string, provider: string) => {
+    const account = await prisma.account.findUnique({
+      where: {
+        provider_providerAccountId: {
+          provider,
+          providerAccountId,
+        },
+      },
+    });
+    if (!account) return null;
+    return account as unknown as AdapterAccount;
+  },
   linkAccount: async (account: AdapterAccount) => {
-    await prisma.account.create({
-      data: {
+    await prisma.account.upsert({
+      where: {
+        provider_providerAccountId: {
+          provider: account.provider,
+          providerAccountId: account.providerAccountId,
+        },
+      },
+      update: {
+        userId: account.userId,
+        refresh_token: account.refresh_token,
+        access_token: account.access_token,
+        expires_at: account.expires_at,
+        token_type: account.token_type,
+        scope: account.scope,
+        id_token: account.id_token,
+        session_state: account.session_state as string | undefined,
+      },
+      create: {
         userId: account.userId,
         type: account.type,
         provider: account.provider,
@@ -101,12 +151,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: customAdapter,
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   trustHost: true,
-  secret: env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET,
   pages: { signIn: "/admin/login", error: "/admin/login" },
   providers: [
     Google({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      clientId: env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || process.env.AUTH_GOOGLE_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || process.env.AUTH_GOOGLE_SECRET,
       allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
@@ -180,57 +230,80 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.wardId = token.wardId ?? undefined;
-        if (token.name) session.user.name = token.name;
-        if (token.email) session.user.email = token.email;
-        if (token.picture) session.user.image = token.picture;
+        session.user.id = token.id as string;
+        session.user.role = (token.role as Role) || Role.PUBLIC;
+        session.user.wardId = (token.wardId as string | undefined) ?? undefined;
+        if (token.name) session.user.name = token.name as string;
+        if (token.email) session.user.email = token.email as string;
+        if (token.picture) session.user.image = token.picture as string;
       }
       return session;
     },
     async redirect({ url, baseUrl }) {
+      // 1. If destination is admin login, public login or api auth, redirect to the real public homepage with locale preserved
       if (url.includes("/admin/login") || url.includes("/login") || url.includes("/api/auth")) {
-        return `${baseUrl}/en`;
+        const match = url.match(/\/(en|mr|hi)(\/|$)/);
+        const loc = match ? match[1] : "en";
+        return `${baseUrl}/${loc}`;
       }
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
+
+      // 2. Relative URLs
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      // 3. Absolute URLs on same origin
       try {
-        if (new URL(url).origin === baseUrl) return url;
+        const parsed = new URL(url);
+        if (parsed.origin === baseUrl) {
+          if (parsed.pathname.includes("/admin/login") || parsed.pathname.includes("/login") || parsed.pathname.includes("/api/auth")) {
+            const match = parsed.pathname.match(/\/(en|mr|hi)(\/|$)/);
+            const loc = match ? match[1] : "en";
+            return `${baseUrl}/${loc}`;
+          }
+          return url;
+        }
       } catch {
-        // fallback
+        // invalid URL
       }
+
       return `${baseUrl}/en`;
     },
   },
   events: {
     async signIn({ user, isNewUser }) {
-      if (isNewUser) {
-        await prisma.auditLog.create({
-          data: {
-            actorId: user.id,
-            action: "CREATE",
-            entity: "User",
-            entityId: user.id,
-            after: { email: user.email, role: user.role },
-          },
-        });
+      try {
+        if (isNewUser && user?.id) {
+          await prisma.auditLog.create({
+            data: {
+              actorId: user.id,
+              action: "CREATE",
+              entity: "User",
+              entityId: user.id,
+              after: { email: user.email, role: user.role || Role.PUBLIC },
+            },
+          });
+        }
+      } catch (err) {
+        console.error("[auth][events.signIn] Failed to create audit log:", err);
       }
-      const csrfToken = await generateCsrfToken();
-      const response = new Response();
-      setCsrfCookie(response, csrfToken);
     },
     async signOut(message: { token?: { sub?: string } | null; session?: unknown }) {
-      const token = message.token;
-      if (token?.sub) {
-        await prisma.auditLog.create({
-          data: {
-            actorId: token.sub,
-            action: "UPDATE",
-            entity: "User",
-            entityId: token.sub,
-            after: { event: "signOut" },
-          },
-        });
+      try {
+        const token = message.token;
+        if (token?.sub) {
+          await prisma.auditLog.create({
+            data: {
+              actorId: token.sub,
+              action: "UPDATE",
+              entity: "User",
+              entityId: token.sub,
+              after: { event: "signOut" },
+            },
+          });
+        }
+      } catch (err) {
+        console.error("[auth][events.signOut] Failed to create audit log:", err);
       }
     },
   },

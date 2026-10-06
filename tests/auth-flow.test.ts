@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { Role } from "@prisma/client";
 
 describe("NextAuth Flow & Adapter Architecture", () => {
@@ -89,22 +89,36 @@ describe("NextAuth Flow & Adapter Architecture", () => {
 
     function safeRedirect(url: string, base: string): string {
       if (url.includes("/admin/login") || url.includes("/login") || url.includes("/api/auth")) {
-        return `${base}/en`;
+        const match = url.match(/\/(en|mr|hi)(\/|$)/);
+        const loc = match ? match[1] : "en";
+        return `${base}/${loc}`;
       }
-      if (url.startsWith("/")) return `${base}${url}`;
+      if (url.startsWith("/")) {
+        return `${base}${url}`;
+      }
       try {
-        if (new URL(url).origin === base) return url;
+        const parsed = new URL(url);
+        if (parsed.origin === base) {
+          if (parsed.pathname.includes("/admin/login") || parsed.pathname.includes("/login") || parsed.pathname.includes("/api/auth")) {
+            const match = parsed.pathname.match(/\/(en|mr|hi)(\/|$)/);
+            const loc = match ? match[1] : "en";
+            return `${base}/${loc}`;
+          }
+          return url;
+        }
       } catch {
         // fallback
       }
       return `${base}/en`;
     }
 
-    it("should never redirect back to /admin/login after OAuth", () => {
+    it("should redirect back to public home page with locale preserved when login path is provided", () => {
       expect(safeRedirect("/admin/login", baseUrl)).toBe(`${baseUrl}/en`);
       expect(safeRedirect("/en/admin/login", baseUrl)).toBe(`${baseUrl}/en`);
-      expect(safeRedirect("/mr/admin/login", baseUrl)).toBe(`${baseUrl}/en`);
+      expect(safeRedirect("/mr/admin/login", baseUrl)).toBe(`${baseUrl}/mr`);
+      expect(safeRedirect("/hi/admin/login", baseUrl)).toBe(`${baseUrl}/hi`);
       expect(safeRedirect(`${baseUrl}/en/admin/login`, baseUrl)).toBe(`${baseUrl}/en`);
+      expect(safeRedirect(`${baseUrl}/mr/admin/login`, baseUrl)).toBe(`${baseUrl}/mr`);
     });
 
     it("should safely redirect relative public paths with locale", () => {
@@ -117,6 +131,7 @@ describe("NextAuth Flow & Adapter Architecture", () => {
     it("should allow matching origin absolute URLs", () => {
       expect(safeRedirect(`${baseUrl}/mr`, baseUrl)).toBe(`${baseUrl}/mr`);
       expect(safeRedirect(`${baseUrl}/hi`, baseUrl)).toBe(`${baseUrl}/hi`);
+      expect(safeRedirect(`${baseUrl}/en/heritage/museum`, baseUrl)).toBe(`${baseUrl}/en/heritage/museum`);
     });
 
     it("should block open redirect attacks to external origins", () => {

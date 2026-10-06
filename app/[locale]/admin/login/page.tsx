@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 
@@ -11,6 +11,8 @@ function AdminLoginForm() {
   const router = useRouter();
   const locale = useLocale();
   const searchParams = useSearchParams();
+  const { data: session, status } = useSession();
+
   const rawCallbackUrl = searchParams.get("callbackUrl");
   const homePageUrl = `/${locale}`;
   const targetCallbackUrl = rawCallbackUrl && !rawCallbackUrl.includes("/admin") && !rawCallbackUrl.includes("/login")
@@ -18,12 +20,27 @@ function AdminLoginForm() {
     : homePageUrl;
   const emailParam = searchParams.get("email") || "";
   const isRegistered = searchParams.get("registered") === "1";
+  const errorParam = searchParams.get("error");
   const t = useTranslations("adminLogin");
 
   const [email, setEmail] = useState(emailParam);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    errorParam ? (errorParam === "OAuthCallback" || errorParam === "Callback" ? "Google sign-in encountered an issue. Please try again." : `Authentication error: ${errorParam}`) : ""
+  );
   const [isLoading, setIsLoading] = useState(false);
+
+  // If already authenticated, redirect immediately away from login page
+  useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      const userRole = (session.user as { role?: string })?.role;
+      if (userRole === "ADMIN" || userRole === "EDITOR") {
+        router.replace(`/${locale}/admin/dashboard`);
+      } else {
+        router.replace(targetCallbackUrl);
+      }
+    }
+  }, [status, session, locale, targetCallbackUrl, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
