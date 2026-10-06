@@ -5,11 +5,11 @@ import { useTranslations } from "next-intl";
 import { User, Mail, Phone, Building2, AlertTriangle } from "lucide-react";
 
 interface WebInfoManagerProps {
-  locale: "en" | "mr" | "hi";
-  messages: Record<string, string>;
+  locale?: "en" | "mr" | "hi";
+  messages?: Record<string, string>;
 }
 
-export function WebInfoManager() {
+export function WebInfoManager({ locale: _locale, messages: _messages }: WebInfoManagerProps = {}) {
   const t = useTranslations("contact");
 
   return (

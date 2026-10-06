@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import { Phone, Shield, HeartPulse, Flame, AlertTriangle, HelpCircle } from "lucide-react";
 
 interface HelplinesProps {
-  locale: "en" | "mr" | "hi";
-  messages: Record<string, string>;
+  locale?: "en" | "mr" | "hi";
+  messages?: Record<string, string>;
 }
 
 const NATIONAL_HELPLINES = [
@@ -25,7 +25,7 @@ const LOCAL_HELPLINES = [
   { key: "hospital", labelKey: "helplineHospital", number: "02431-223040", icon: Phone, color: "bg-slate-100 text-slate-700", noteKey: "helplineHospitalNote" },
 ];
 
-export function Helplines() {
+export function Helplines({ locale: _locale, messages: _messages }: HelplinesProps = {}) {
   const t = useTranslations("contact");
 
   return (

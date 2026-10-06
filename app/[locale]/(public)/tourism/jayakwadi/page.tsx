@@ -11,11 +11,12 @@ import {
   Compass,
   Droplets,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function JayakwadiPage() {
   const t = useTranslations("tourism");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const damSpecs = [
     { label: t("damLength"), value: "9,992 m (9.99 km)", subtext: "Asia's largest earthen dam" },

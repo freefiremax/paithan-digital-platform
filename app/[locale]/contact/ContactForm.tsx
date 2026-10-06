@@ -6,7 +6,7 @@ import { Send, Loader2, AlertCircle, CheckCircle, Shield } from "lucide-react";
 import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 
 interface ContactFormProps {
-  locale: "en" | "mr" | "hi";
+  locale?: "en" | "mr" | "hi";
 }
 
 const SUBJECT_OPTIONS = [
@@ -17,7 +17,7 @@ const SUBJECT_OPTIONS = [
   { value: "other", labelKey: "subjectOther" },
 ];
 
-export function ContactForm() {
+export function ContactForm({ locale: _locale }: ContactFormProps = {}) {
   const t = useTranslations("contact");
 
   const [isLoading, setIsLoading] = useState(false);
