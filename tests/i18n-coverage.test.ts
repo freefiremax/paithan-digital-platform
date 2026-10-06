@@ -2,12 +2,12 @@ import { describe, it, expect } from "vitest";
 import fs from "fs";
 import path from "path";
 
-function getAllKeys(obj: any, prefix = ""): string[] {
+function getAllKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   let keys: string[] = [];
   for (const k in obj) {
     const nextPrefix = prefix ? `${prefix}.${k}` : k;
     if (typeof obj[k] === "object" && obj[k] !== null && !Array.isArray(obj[k])) {
-      keys = keys.concat(getAllKeys(obj[k], nextPrefix));
+      keys = keys.concat(getAllKeys(obj[k] as Record<string, unknown>, nextPrefix));
     } else {
       keys.push(nextPrefix);
     }
@@ -47,10 +47,10 @@ describe("I18N Complete Translation Coverage", () => {
   });
 
   it("should not contain empty translation values", () => {
-    function checkNonEmpty(obj: any, locale: string) {
+    function checkNonEmpty(obj: Record<string, unknown>, locale: string) {
       for (const [key, value] of Object.entries(obj)) {
         if (typeof value === "object" && value !== null) {
-          checkNonEmpty(value, locale);
+          checkNonEmpty(value as Record<string, unknown>, locale);
         } else {
           expect(typeof value).toBe("string");
           expect((value as string).trim().length, `Empty string at ${key} in ${locale}`).toBeGreaterThan(0);

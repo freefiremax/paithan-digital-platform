@@ -32,7 +32,7 @@ export default function HistoryPage() {
 
         {/* TIMELINE NARRATIVE */}
         <div className="mt-12 space-y-12">
-          {HISTORY_TIMELINE.map((era, index) => {
+          {HISTORY_TIMELINE.map((era) => {
             const eraTitle = isMr && era.titleMr ? era.titleMr : era.titleEn;
             return (
               <section

@@ -31,7 +31,7 @@ export default function RoutesPage() {
 
         {/* ROUTES CONTAINER */}
         <div className="mt-10 space-y-10">
-          {CURATED_ROUTES.map((route, rIdx) => {
+          {CURATED_ROUTES.map((route) => {
             const routeName = isMr && route.nameMr ? route.nameMr : route.nameEn;
             return (
               <section

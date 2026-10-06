@@ -25,7 +25,7 @@ const LOCAL_HELPLINES = [
   { key: "hospital", labelKey: "helplineHospital", number: "02431-223040", icon: Phone, color: "bg-slate-100 text-slate-700", noteKey: "helplineHospitalNote" },
 ];
 
-export function Helplines(_props: HelplinesProps) {
+export function Helplines() {
   const t = useTranslations("contact");
 
   return (

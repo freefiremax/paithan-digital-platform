@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { getSectorFromSlug, SECTOR_LABELS_EN, SECTOR_LABELS_MR, FACILITY_TYPE_LABELS_EN, FACILITY_TYPE_LABELS_MR } from "@/lib/auth/permissions";
+import { getSectorFromSlug, SECTOR_LABELS_EN, SECTOR_LABELS_MR, FACILITY_TYPE_LABELS_EN } from "@/lib/auth/permissions";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { WorkStatusBadge } from "@/components/ui/WorkStatusBadge";

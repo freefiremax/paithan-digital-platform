@@ -9,7 +9,7 @@ interface WebInfoManagerProps {
   messages: Record<string, string>;
 }
 
-export function WebInfoManager(_props: WebInfoManagerProps) {
+export function WebInfoManager() {
   const t = useTranslations("contact");
 
   return (

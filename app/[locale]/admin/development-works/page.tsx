@@ -5,10 +5,9 @@ import {
   Pickaxe,
   Plus,
   Trash2,
-  X,
 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
-import { developmentWorks as initialWorks, DevelopmentWork, WorkStatus } from "@/lib/mock-data";
+import { developmentWorks as initialWorks, DevelopmentWork } from "@/lib/mock-data";
 
 export default function AdminDevelopmentWorksPage() {
   const t = useTranslations("admin");
@@ -19,66 +18,13 @@ export default function AdminDevelopmentWorksPage() {
 
   const [works, setWorks] = useState<DevelopmentWork[]>([...initialWorks]);
   const [selectedWard, setSelectedWard] = useState<string>("ALL");
-  const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [formData, setFormData] = useState({
-    title: "",
-    titleMr: "",
-    wardNumber: 1,
-    wardName: "Brahmapuri Archaeological Ward",
-    description: "",
-    department: "Civil Works & Roads",
-    budgetInLakhs: "",
-    progressPct: "40",
-    status: "ONGOING" as WorkStatus,
-    startDate: "2026-03-01",
-    expectedCompletion: "2026-09-30",
-  });
 
   const filteredWorks = works.filter((w) => {
     const matchesWard = selectedWard === "ALL" || w.wardNumber === Number(selectedWard);
-    const matchesStatus = selectedStatus === "ALL" || w.status === selectedStatus;
-    return matchesWard && matchesStatus;
+    return matchesWard;
   });
 
   const totalSanctioned = works.reduce((sum, w) => sum + w.budgetInLakhs, 0);
-
-  const handleCreate = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newId = `dev-${Math.random().toString(36).substring(2, 9)}`;
-    const newWork: DevelopmentWork = {
-      id: newId,
-      wardNumber: Number(formData.wardNumber),
-      wardName: formData.wardName || `Ward ${formData.wardNumber}`,
-      title: formData.title,
-      titleMr: formData.titleMr || formData.title,
-      description: formData.description || formData.title,
-      department: formData.department,
-      budgetInLakhs: Number(formData.budgetInLakhs || 0),
-      progressPct: Number(formData.progressPct || 0),
-      status: formData.status,
-      startDate: formData.startDate,
-      expectedCompletion: formData.expectedCompletion,
-      dataStatus: "SAMPLE_TBD",
-    };
-
-    setWorks([newWork, ...works]);
-    setIsModalOpen(false);
-    setFormData({
-      title: "",
-      titleMr: "",
-      wardNumber: 1,
-      wardName: "Brahmapuri Archaeological Ward",
-      description: "",
-      department: "Civil Works & Roads",
-      budgetInLakhs: "",
-      progressPct: "40",
-      status: "ONGOING",
-      startDate: "2026-03-01",
-      expectedCompletion: "2026-09-30",
-    });
-  };
 
   const handleDelete = (id: string) => {
     if (confirm(t("confirmDelete"))) {
@@ -104,7 +50,7 @@ export default function AdminDevelopmentWorksPage() {
         </div>
 
         <button
-          onClick={() => setIsModalOpen(true)}
+          type="button"
           className="inline-flex items-center gap-2 bg-[#0C1E3C] hover:bg-[#071224] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4 text-amber-400" />

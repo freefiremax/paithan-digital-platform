@@ -24,8 +24,8 @@ export default function RepresentativesPage() {
     <>
       <Breadcrumb
         items={[
-          { label: tNav("home"), href: "/" },
-          { label: tNav("nagarParishad"), href: "/nagar-parishad" },
+          { label: tNav("home"), href: `/${locale}` },
+          { label: tNav("nagarParishad"), href: `/${locale}/nagar-parishad` },
           { label: t("representativesTitle") },
         ]}
       />

@@ -15,7 +15,6 @@ import {
   Building2,
   Clock,
   Compass,
-  PhoneCall,
   Languages,
 } from 'lucide-react';
 

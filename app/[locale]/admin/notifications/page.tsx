@@ -19,38 +19,13 @@ export default function AdminNotificationsPage() {
 
   const [items, setItems] = useState<NotificationItem[]>([...initialNotifications]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<string>("ALL");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [formData, setFormData] = useState<{
-    title: string;
-    titleMr: string;
-    category: NotificationCategory;
-    department: string;
-    referenceNo: string;
-    publishedAt: string;
-    closingAt: string;
-    isPinned: boolean;
-    downloadUrl: string;
-  }>({
-    title: "",
-    titleMr: "",
-    category: "TENDER",
-    department: "General Administration",
-    referenceNo: "MC-PTN/ETEND/2026/06",
-    publishedAt: "2026-04-01",
-    closingAt: "2026-04-20",
-    isPinned: false,
-    downloadUrl: "https://mahatenders.gov.in",
-  });
 
   const filteredItems = items.filter((item) => {
     const matchesSearch =
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (item.titleMr && item.titleMr.toLowerCase().includes(searchTerm.toLowerCase())) ||
       item.referenceNo.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === "ALL" || item.category === categoryFilter;
-    return matchesSearch && matchesCategory;
+    return matchesSearch;
   });
 
   const handleDelete = (id: string) => {
@@ -77,7 +52,7 @@ export default function AdminNotificationsPage() {
         </div>
 
         <button
-          onClick={() => setIsModalOpen(true)}
+          type="button"
           className="inline-flex items-center gap-2 bg-[#0C1E3C] hover:bg-[#071224] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4 text-amber-400" />

@@ -264,7 +264,6 @@ export default function AboutNagarParishadPage() {
                 <tbody className="divide-y divide-[var(--border-subtle)]">
                   {paithanEmergencyDirectory.map((contact) => {
                     const isMr = locale === "mr";
-                    const isHi = locale === "hi";
                     const deptLabel = isMr ? contact.departmentMr : contact.departmentEn;
                     return (
                       <tr key={contact.id} className="hover:bg-slate-50/60 transition-colors">

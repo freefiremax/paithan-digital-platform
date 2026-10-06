@@ -32,7 +32,6 @@ export const dynamic = "force-dynamic";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const t = useTranslations("admin");
-  const tNav = useTranslations("nav");
   const locale = useLocale();
   const isMr = locale === "mr";
 

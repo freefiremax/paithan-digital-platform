@@ -20,7 +20,7 @@ export default function AdminWardsPage() {
   const locale = useLocale();
   const isMr = locale === "mr";
 
-  const [wardList, setWardList] = useState<WardItem[]>([...PAITHAN_WARDS]);
+  const wardList = PAITHAN_WARDS;
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredWards = wardList.filter(

@@ -258,16 +258,19 @@ export function HeaderGlobalSearch() {
 
   // Fetch API results with debounce
   useEffect(() => {
-    if (!query.trim() || query.length < 2) {
-      setApiResults([]);
-      setIsLoading(false);
-      return;
+    const trimmed = query.trim();
+    if (!trimmed || trimmed.length < 2) {
+      const resetTimer = setTimeout(() => {
+        setApiResults([]);
+        setIsLoading(false);
+      }, 0);
+      return () => clearTimeout(resetTimer);
     }
 
-    setIsLoading(true);
     const timeout = setTimeout(async () => {
+      setIsLoading(true);
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&locale=${locale}`);
+        const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}&locale=${locale}`);
         if (res.ok) {
           const data = await res.json();
           setApiResults(data.results || []);

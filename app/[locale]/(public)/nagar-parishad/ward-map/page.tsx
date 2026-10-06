@@ -6,7 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
-import { wards, getWardWorkSummary, councilProfile } from "@/lib/mock-data";
+import { wards, getWardWorkSummary } from "@/lib/mock-data";
 
 export default function WardMapPage() {
   const t = useTranslations("nagarParishad");
