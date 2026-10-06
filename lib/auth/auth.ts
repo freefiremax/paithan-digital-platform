@@ -9,174 +9,16 @@ import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
 import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
 
-const baseAdapter = PrismaAdapter(prisma);
-
-const customAdapter: Adapter = {
-  ...baseAdapter,
-  createUser: async (data: AdapterUser) => {
-    // Check if a user with this email already exists (e.g. from credentials or seed)
-    if (data.email) {
-      const existing = await prisma.user.findUnique({
-        where: { email: data.email },
-      });
-      if (existing) {
-        if (data.name && !existing.name) {
-          const updated = await prisma.user.update({
-            where: { id: existing.id },
-            data: { name: data.name },
-          });
-          return {
-            ...updated,
-            emailVerified: null,
-          } as unknown as AdapterUser;
-        }
-        return {
-          ...existing,
-          emailVerified: null,
-        } as unknown as AdapterUser;
-      }
-    }
-
-    const user = await prisma.user.create({
-      data: {
-        email: data.email,
-        name: data.name ?? null,
-        passwordHash: "",
-        role: Role.PUBLIC,
-      },
-    });
-    return {
-      ...user,
-      emailVerified: null,
-    } as unknown as AdapterUser;
-  },
-  getUser: async (id: string) => {
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
-    if (!user) return null;
-    return {
-      ...user,
-      emailVerified: null,
-    } as unknown as AdapterUser;
-  },
-  getUserByEmail: async (email: string) => {
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
-    if (!user) return null;
-    return {
-      ...user,
-      emailVerified: null,
-    } as unknown as AdapterUser;
-  },
-  getUserByAccount: async ({ provider, providerAccountId }: { provider: string; providerAccountId: string }) => {
-    const account = await prisma.account.findUnique({
-      where: {
-        provider_providerAccountId: {
-          provider,
-          providerAccountId,
-        },
-      },
-      select: { user: true },
-    });
-    if (!account?.user) return null;
-    return {
-      ...account.user,
-      emailVerified: null,
-    } as unknown as AdapterUser;
-  },
-  getAccount: async (providerAccountId: string, provider: string) => {
-    const account = await prisma.account.findUnique({
-      where: {
-        provider_providerAccountId: {
-          provider,
-          providerAccountId,
-        },
-      },
-    });
-    if (!account) return null;
-    return account as unknown as AdapterAccount;
-  },
-  linkAccount: async (account: AdapterAccount) => {
-    await prisma.account.upsert({
-      where: {
-        provider_providerAccountId: {
-          provider: account.provider,
-          providerAccountId: account.providerAccountId,
-        },
-      },
-      update: {
-        userId: account.userId,
-        refresh_token: account.refresh_token,
-        access_token: account.access_token,
-        expires_at: account.expires_at,
-        token_type: account.token_type,
-        scope: account.scope,
-        id_token: account.id_token,
-        session_state: account.session_state as string | undefined,
-      },
-      create: {
-        userId: account.userId,
-        type: account.type,
-        provider: account.provider,
-        providerAccountId: account.providerAccountId,
-        refresh_token: account.refresh_token,
-        access_token: account.access_token,
-        expires_at: account.expires_at,
-        token_type: account.token_type,
-        scope: account.scope,
-        id_token: account.id_token,
-        session_state: account.session_state as string | undefined,
-      },
-    });
-    return account;
-  },
-  updateUser: async ({ id, ...data }: Partial<AdapterUser> & { id: string }) => {
-    const updateData: { name?: string | null; email?: string } = {};
-    if (data.name !== undefined) updateData.name = data.name;
-    if (data.email !== undefined) updateData.email = data.email;
-    const user = await prisma.user.update({
-      where: { id },
-      data: updateData,
-    });
-    return {
-      ...user,
-      emailVerified: null,
-    } as unknown as AdapterUser;
-  },
-};
-
-// Ensure Auth.js v5 core finds the expected environment variables regardless of naming conventions
-if (!process.env.AUTH_SECRET && (process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET)) {
-  process.env.AUTH_SECRET = process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET;
-}
-if (!process.env.AUTH_GOOGLE_ID && (process.env.GOOGLE_CLIENT_ID || env.GOOGLE_CLIENT_ID || process.env.GOOGLE_ID)) {
-  process.env.AUTH_GOOGLE_ID = process.env.GOOGLE_CLIENT_ID || env.GOOGLE_CLIENT_ID || process.env.GOOGLE_ID;
-}
-if (!process.env.AUTH_GOOGLE_SECRET && (process.env.GOOGLE_CLIENT_SECRET || env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET)) {
-  process.env.AUTH_GOOGLE_SECRET = process.env.GOOGLE_CLIENT_SECRET || env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET;
-}
-if (!process.env.AUTH_URL && (process.env.NEXTAUTH_URL || env.NEXTAUTH_URL)) {
-  process.env.AUTH_URL = process.env.NEXTAUTH_URL || env.NEXTAUTH_URL;
-}
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: customAdapter,
+  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   trustHost: true,
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET,
   pages: { signIn: "/admin/login", error: "/admin/login" },
-  cookies: {
-    csrfToken: {
-      name: "authjs.csrf-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-      },
-    },
+  logger: {
+    error: (error) => console.error("[NextAuth Error]", error),
+    warn: (message) => console.warn("[NextAuth Warn]", message),
+    debug: (message) => console.debug("[NextAuth Debug]", message),
   },
   providers: [
     Google({
@@ -184,19 +26,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         process.env.AUTH_GOOGLE_ID ||
         process.env.GOOGLE_CLIENT_ID ||
         process.env.GOOGLE_ID ||
-        env.GOOGLE_CLIENT_ID ||
-        "",
+        env.GOOGLE_CLIENT_ID,
       clientSecret:
         process.env.AUTH_GOOGLE_SECRET ||
         process.env.GOOGLE_CLIENT_SECRET ||
         process.env.GOOGLE_SECRET ||
-        env.GOOGLE_CLIENT_SECRET ||
-        "",
-      allowDangerousEmailAccountLinking: true,
+        env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
-          prompt: "select_account",
+          scope: "openid email profile",
           access_type: "offline",
+          prompt: "select_account",
           response_type: "code",
         },
       },
