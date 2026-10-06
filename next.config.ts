@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   turbopack: {},
   webpack: async (config, { isServer }) => {
     if (!isServer) {
-      const { sentryWebpackPlugin } = await import('@sentry/webpack-plugin');
+      const { sentryWebpackPlugin } = (await import('@sentry/webpack-plugin')) as { sentryWebpackPlugin: (opts: Record<string, unknown>) => unknown };
       const options: Record<string, unknown> = {
         silent: true,
         org: process.env.SENTRY_ORG,
