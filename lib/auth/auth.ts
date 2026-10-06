@@ -230,7 +230,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
+        session.user.id = (token.id || token.sub) as string;
         session.user.role = (token.role as Role) || Role.PUBLIC;
         session.user.wardId = (token.wardId as string | undefined) ?? undefined;
         if (token.name) session.user.name = token.name as string;
@@ -240,25 +240,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // 1. If destination is admin login, public login or api auth, redirect to the real public homepage with locale preserved
-      if (url.includes("/admin/login") || url.includes("/login") || url.includes("/api/auth")) {
-        const match = url.match(/\/(en|mr|hi)(\/|$)/);
-        const loc = match ? match[1] : "en";
+      const getLocale = (str: string): string => {
+        const match = str.match(/\/(en|mr|hi)(\/|$)/);
+        return match ? match[1] : "en";
+      };
+
+      // 1. If destination is admin login, public login, register or api/auth, redirect to the real public homepage with locale preserved
+      if (
+        url.includes("/admin/login") ||
+        url.includes("/login") ||
+        url.includes("/register") ||
+        url.includes("/api/auth")
+      ) {
+        const loc = getLocale(url);
         return `${baseUrl}/${loc}`;
       }
 
       // 2. Relative URLs
       if (url.startsWith("/")) {
+        if (url === "/" || url === "") {
+          return `${baseUrl}/en`;
+        }
         return `${baseUrl}${url}`;
       }
 
       // 3. Absolute URLs on same origin
       try {
         const parsed = new URL(url);
-        if (parsed.origin === baseUrl) {
-          if (parsed.pathname.includes("/admin/login") || parsed.pathname.includes("/login") || parsed.pathname.includes("/api/auth")) {
-            const match = parsed.pathname.match(/\/(en|mr|hi)(\/|$)/);
-            const loc = match ? match[1] : "en";
+        if (parsed.origin === baseUrl || parsed.hostname === new URL(baseUrl).hostname) {
+          if (
+            parsed.pathname.includes("/admin/login") ||
+            parsed.pathname.includes("/login") ||
+            parsed.pathname.includes("/register") ||
+            parsed.pathname.includes("/api/auth") ||
+            parsed.pathname === "/" ||
+            parsed.pathname === ""
+          ) {
+            const loc = getLocale(parsed.pathname);
             return `${baseUrl}/${loc}`;
           }
           return url;
@@ -267,7 +285,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // invalid URL
       }
 
-      return `${baseUrl}/en`;
+      const loc = getLocale(url);
+      return `${baseUrl}/${loc}`;
     },
   },
   events: {

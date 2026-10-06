@@ -88,20 +88,40 @@ describe("NextAuth Flow & Adapter Architecture", () => {
     const baseUrl = "https://paithan-digital-platform.vercel.app";
 
     function safeRedirect(url: string, base: string): string {
-      if (url.includes("/admin/login") || url.includes("/login") || url.includes("/api/auth")) {
-        const match = url.match(/\/(en|mr|hi)(\/|$)/);
-        const loc = match ? match[1] : "en";
+      const getLocale = (str: string): string => {
+        const match = str.match(/\/(en|mr|hi)(\/|$)/);
+        return match ? match[1] : "en";
+      };
+
+      if (
+        url.includes("/admin/login") ||
+        url.includes("/admin") ||
+        url.includes("/login") ||
+        url.includes("/register") ||
+        url.includes("/api/auth")
+      ) {
+        const loc = getLocale(url);
         return `${base}/${loc}`;
       }
       if (url.startsWith("/")) {
+        if (url === "/" || url === "") {
+          return `${base}/en`;
+        }
         return `${base}${url}`;
       }
       try {
         const parsed = new URL(url);
-        if (parsed.origin === base) {
-          if (parsed.pathname.includes("/admin/login") || parsed.pathname.includes("/login") || parsed.pathname.includes("/api/auth")) {
-            const match = parsed.pathname.match(/\/(en|mr|hi)(\/|$)/);
-            const loc = match ? match[1] : "en";
+        if (parsed.origin === base || parsed.hostname === new URL(base).hostname) {
+          if (
+            parsed.pathname.includes("/admin/login") ||
+            parsed.pathname.includes("/admin") ||
+            parsed.pathname.includes("/login") ||
+            parsed.pathname.includes("/register") ||
+            parsed.pathname.includes("/api/auth") ||
+            parsed.pathname === "/" ||
+            parsed.pathname === ""
+          ) {
+            const loc = getLocale(parsed.pathname);
             return `${base}/${loc}`;
           }
           return url;
@@ -109,7 +129,8 @@ describe("NextAuth Flow & Adapter Architecture", () => {
       } catch {
         // fallback
       }
-      return `${base}/en`;
+      const loc = getLocale(url);
+      return `${base}/${loc}`;
     }
 
     it("should redirect back to public home page with locale preserved when login path is provided", () => {
