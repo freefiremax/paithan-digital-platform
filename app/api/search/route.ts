@@ -18,8 +18,69 @@ interface SearchResult {
   category?: string;
 }
 
+interface SectorRecord {
+  sector: string;
+  titleEn: string;
+  titleMr?: string | null;
+  overviewEn?: string | null;
+  overviewMr?: string | null;
+}
+
+interface WorkRecord {
+  id: string;
+  title: string;
+  titleMr?: string | null;
+  description?: string | null;
+  descriptionMr?: string | null;
+  sector: string;
+}
+
+interface NoticeRecord {
+  id: string;
+  title: string;
+  titleMr?: string | null;
+  body?: string | null;
+  bodyMr?: string | null;
+  category: string;
+}
+
+interface PlaceRecord {
+  id: string;
+  name: string;
+  nameMr?: string | null;
+  description?: string | null;
+  descriptionMr?: string | null;
+  category: string;
+}
+
+interface HeritageRecord {
+  id: string;
+  title: string;
+  titleMr?: string | null;
+  description?: string | null;
+  descriptionMr?: string | null;
+  category: string;
+}
+
+interface MuseumRecord {
+  id: string;
+  name: string;
+  nameMr?: string | null;
+  description?: string | null;
+  descriptionMr?: string | null;
+}
+
+interface HistoryRecord {
+  id: string;
+  title: string;
+  titleMr?: string | null;
+  description?: string | null;
+  descriptionMr?: string | null;
+  era: string;
+}
+
 async function searchSectors(query: string): Promise<SearchResult[]> {
-  const sectors = await prisma.civicSectorInfo.findMany({
+  const sectors = (await prisma.civicSectorInfo.findMany({
     where: {
       OR: [
         { titleEn: { contains: query, mode: "insensitive" } },
@@ -28,9 +89,9 @@ async function searchSectors(query: string): Promise<SearchResult[]> {
         { overviewMr: { contains: query, mode: "insensitive" } },
       ],
     },
-  });
+  })) as SectorRecord[];
 
-  return sectors.map((s) => ({
+  return sectors.map((s: SectorRecord) => ({
     type: "sector",
     id: s.sector,
     title: s.titleEn,
@@ -43,7 +104,7 @@ async function searchSectors(query: string): Promise<SearchResult[]> {
 }
 
 async function searchDevelopmentWorks(query: string): Promise<SearchResult[]> {
-  const works = await prisma.developmentWork.findMany({
+  const works = (await prisma.developmentWork.findMany({
     where: {
       OR: [
         { title: { contains: query, mode: "insensitive" } },
@@ -54,9 +115,9 @@ async function searchDevelopmentWorks(query: string): Promise<SearchResult[]> {
     },
     include: { ward: { select: { number: true, name: true } } },
     take: 20,
-  });
+  })) as unknown as WorkRecord[];
 
-  return works.map((w) => ({
+  return works.map((w: WorkRecord) => ({
     type: "development-work",
     id: w.id,
     title: w.title,
@@ -69,7 +130,7 @@ async function searchDevelopmentWorks(query: string): Promise<SearchResult[]> {
 }
 
 async function searchNotices(query: string): Promise<SearchResult[]> {
-  const notices = await prisma.notification.findMany({
+  const notices = (await prisma.notification.findMany({
     where: {
       OR: [
         { title: { contains: query, mode: "insensitive" } },
@@ -81,9 +142,9 @@ async function searchNotices(query: string): Promise<SearchResult[]> {
     },
     orderBy: { publishedAt: "desc" },
     take: 20,
-  });
+  })) as unknown as NoticeRecord[];
 
-  return notices.map((n) => ({
+  return notices.map((n: NoticeRecord) => ({
     type: "notice",
     id: n.id,
     title: n.title,
@@ -96,7 +157,7 @@ async function searchNotices(query: string): Promise<SearchResult[]> {
 }
 
 async function searchTouristPlaces(query: string): Promise<SearchResult[]> {
-  const places = await prisma.touristPlace.findMany({
+  const places = (await prisma.touristPlace.findMany({
     where: {
       OR: [
         { name: { contains: query, mode: "insensitive" } },
@@ -106,9 +167,9 @@ async function searchTouristPlaces(query: string): Promise<SearchResult[]> {
       ],
     },
     take: 20,
-  });
+  })) as unknown as PlaceRecord[];
 
-  return places.map((p) => ({
+  return places.map((p: PlaceRecord) => ({
     type: "tourist-place",
     id: p.id,
     title: p.name,
@@ -121,7 +182,7 @@ async function searchTouristPlaces(query: string): Promise<SearchResult[]> {
 }
 
 async function searchHeritage(query: string): Promise<SearchResult[]> {
-  const items = await prisma.culturalHeritageItem.findMany({
+  const items = (await prisma.culturalHeritageItem.findMany({
     where: {
       OR: [
         { title: { contains: query, mode: "insensitive" } },
@@ -131,9 +192,9 @@ async function searchHeritage(query: string): Promise<SearchResult[]> {
       ],
     },
     take: 20,
-  });
+  })) as unknown as HeritageRecord[];
 
-  return items.map((i) => ({
+  return items.map((i: HeritageRecord) => ({
     type: "heritage",
     id: i.id,
     title: i.title,
@@ -146,7 +207,7 @@ async function searchHeritage(query: string): Promise<SearchResult[]> {
 }
 
 async function searchMuseum(query: string): Promise<SearchResult[]> {
-  const exhibits = await prisma.museumExhibit.findMany({
+  const exhibits = (await prisma.museumExhibit.findMany({
     where: {
       OR: [
         { name: { contains: query, mode: "insensitive" } },
@@ -156,9 +217,9 @@ async function searchMuseum(query: string): Promise<SearchResult[]> {
       ],
     },
     take: 20,
-  });
+  })) as unknown as MuseumRecord[];
 
-  return exhibits.map((e) => ({
+  return exhibits.map((e: MuseumRecord) => ({
     type: "museum",
     id: e.id,
     title: e.name,
@@ -171,7 +232,7 @@ async function searchMuseum(query: string): Promise<SearchResult[]> {
 }
 
 async function searchHistory(query: string): Promise<SearchResult[]> {
-  const events = await prisma.historyEvent.findMany({
+  const events = (await prisma.historyEvent.findMany({
     where: {
       OR: [
         { title: { contains: query, mode: "insensitive" } },
@@ -181,9 +242,9 @@ async function searchHistory(query: string): Promise<SearchResult[]> {
       ],
     },
     take: 20,
-  });
+  })) as unknown as HistoryRecord[];
 
-  return events.map((e) => ({
+  return events.map((e: HistoryRecord) => ({
     type: "history",
     id: e.id,
     title: e.title,
