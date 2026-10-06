@@ -177,7 +177,7 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
                   <div className="mt-5 pt-4 border-t border-slate-200 space-y-3">
                     <div>
                       <div className="flex justify-between text-[11px] font-medium text-slate-600 mb-1">
-                        <span>{t("progress")}</span>
+                        <span>{tNagar("stage")}</span>
                         <span>{work.progressPct}%</span>
                       </div>
                       <div className="w-full bg-slate-100 rounded-full h-1.5">
@@ -189,8 +189,8 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
                     </div>
 
                     <div className="flex items-center justify-between text-xs text-slate-500">
-                      <span>{tNagar("projectBudget")}: ₹{work.budgetInLakhs} {locale === "mr" ? "लाख" : locale === "hi" ? "लाख" : "Lakhs"}</span>
-                      {work.contractor && <span>{tNagar("contractor")}: {work.contractor}</span>}
+                      <span>{tNagar("projectBudget")}: {work.budget ? `₹${work.budget} ${locale === "mr" ? "लाख" : locale === "hi" ? "लाख" : "Lakhs"}` : "—"}</span>
+                      {work.department && <span>{tNagar("department")}: {work.department}</span>}
                     </div>
                   </div>
                 </article>
@@ -235,7 +235,7 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
                     </div>
 
                     <h4 className="text-sm font-semibold text-slate-900 mb-1">
-                      {locale === "mr" && facility.nameMr ? facility.nameMr : facility.name}
+                      {locale === "mr" && facility.nameMr ? facility.nameMr : facility.nameEn}
                     </h4>
                     {locale !== "mr" && facility.nameMr && (
                       <p lang="mr" className="text-xs text-slate-500 font-marathi mb-2">
@@ -249,8 +249,7 @@ export default async function SectorPage({ params }: { params: Promise<{ sector:
                   </div>
 
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                    <span>Capacity: {facility.capacity || "N/A"}</span>
-                    <span>Status: {facility.operationalStatus}</span>
+                    <span>{facility.isOperational ? "Operational" : "Under Maintenance"}</span>
                   </div>
                 </div>
               ))}

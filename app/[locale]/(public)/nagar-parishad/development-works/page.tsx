@@ -133,7 +133,7 @@ export default function DevelopmentWorksPage() {
                 <div>
                   <div className="flex items-start justify-between gap-3">
                     <span className="text-[11px] font-bold text-[var(--zari-gold-600)] uppercase tracking-wider">
-                      Ward {work.wardNumber} • {work.locality}
+                      Ward {work.wardNumber} • {work.wardName}
                     </span>
                     <WorkStatusBadge status={work.status} />
                   </div>
@@ -176,13 +176,13 @@ export default function DevelopmentWorksPage() {
                     <div>
                       <span className="block text-[10px] text-slate-400 uppercase">{t("completionDate")}</span>
                       <span className="font-semibold text-slate-800 tabular-nums">
-                        {work.completionTarget}
+                        {work.expectedCompletion}
                       </span>
                     </div>
                   </div>
 
                   <div className="pt-2 border-t border-dashed border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
-                    <span>{t("contractor")}: <strong className="text-slate-800">{work.contractor}</strong></span>
+                    <span>{t("department")}: <strong className="text-slate-800">{work.department}</strong></span>
                   </div>
                 </div>
               </article>

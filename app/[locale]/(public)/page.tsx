@@ -444,6 +444,7 @@ function ServiceCard({
 
 function NoticeLedger() {
   const tHome = useTranslations("home");
+  const tCommon = useTranslations("common");
 
   return (
     <div>
@@ -784,6 +785,7 @@ function OfficialLandmarksShowcase() {
 
 function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) {
   const tHome = useTranslations("home");
+  const locale = useLocale();
 
   return (
     <article className="portal-card overflow-hidden lg:col-span-5">
