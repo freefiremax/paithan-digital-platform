@@ -1,5 +1,4 @@
 import type { NextConfig } from 'next';
-import type { SentryWebpackPluginOptions } from '@sentry/webpack-plugin';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./i18n.ts');
@@ -11,7 +10,7 @@ const nextConfig: NextConfig = {
   webpack: async (config, { isServer }) => {
     if (!isServer) {
       const { sentryWebpackPlugin } = await import('@sentry/webpack-plugin');
-      const options: SentryWebpackPluginOptions = {
+      const options: Record<string, unknown> = {
         silent: true,
         org: process.env.SENTRY_ORG,
         project: process.env.SENTRY_PROJECT,

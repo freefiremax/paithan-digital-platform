@@ -30,7 +30,7 @@ async function searchSectors(query: string): Promise<SearchResult[]> {
     },
   });
 
-  return sectors.map((s) => ({
+  return (sectors as Array<Record<string, any>>).map((s) => ({
     type: "sector",
     id: s.sector,
     title: s.titleEn,
@@ -56,7 +56,7 @@ async function searchDevelopmentWorks(query: string): Promise<SearchResult[]> {
     take: 20,
   });
 
-  return works.map((w) => ({
+  return (works as Array<Record<string, any>>).map((w) => ({
     type: "development-work",
     id: w.id,
     title: w.title,
@@ -83,7 +83,7 @@ async function searchNotices(query: string): Promise<SearchResult[]> {
     take: 20,
   });
 
-  return notices.map((n) => ({
+  return (notices as Array<Record<string, any>>).map((n) => ({
     type: "notice",
     id: n.id,
     title: n.title,
@@ -108,7 +108,7 @@ async function searchTouristPlaces(query: string): Promise<SearchResult[]> {
     take: 20,
   });
 
-  return places.map((p) => ({
+  return (places as Array<Record<string, any>>).map((p) => ({
     type: "tourist-place",
     id: p.id,
     title: p.name,
@@ -133,7 +133,7 @@ async function searchHeritage(query: string): Promise<SearchResult[]> {
     take: 20,
   });
 
-  return items.map((i) => ({
+  return (items as Array<Record<string, any>>).map((i) => ({
     type: "heritage",
     id: i.id,
     title: i.title,
@@ -158,7 +158,7 @@ async function searchMuseum(query: string): Promise<SearchResult[]> {
     take: 20,
   });
 
-  return exhibits.map((e) => ({
+  return (exhibits as Array<Record<string, any>>).map((e) => ({
     type: "museum",
     id: e.id,
     title: e.name,
@@ -183,7 +183,7 @@ async function searchHistory(query: string): Promise<SearchResult[]> {
     take: 20,
   });
 
-  return events.map((e) => ({
+  return (events as Array<Record<string, any>>).map((e) => ({
     type: "history",
     id: e.id,
     title: e.title,

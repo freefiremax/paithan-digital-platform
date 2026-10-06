@@ -160,7 +160,6 @@
     "showing": "Showing {start} to {end} of {total} grievances",
     "noGrievances": "No grievances found",
     "viewDetails": "View Details",
-    "descriptionLabel": "Description",
     "updateStatus": "Update Status",
     "newStatusLabel": "New Status",
     "noteLabel": "Note (optional)",
@@ -468,8 +467,7 @@
     "webInfoManagerFieldEmail": "Email",
     "webInfoManagerFieldPhone": "Phone",
     "webInfoManagerFieldAddress": "Office Address",
-    "webInfoManagerLegalNote": "This information will be updated once the Council appoints the Web Information Manager as per GIGW guidelines.",
-    "title": "Contact & Feedback"
+    "webInfoManagerLegalNote": "This information will be updated once the Council appoints the Web Information Manager as per GIGW guidelines."
   },
   "register": {
     "title": "Create Your Account",

@@ -20,7 +20,7 @@ describe("Backend Services & Database Verification", () => {
     it("should retrieve civic sectors from database", async () => {
       const sectors = await prisma.civicSectorInfo.findMany();
       expect(sectors.length).toBe(5);
-      const sectorNames = sectors.map((s) => s.sector);
+      const sectorNames = sectors.map((s: { sector: string }) => s.sector);
       expect(sectorNames).toContain("ROADS_TRANSPORT");
       expect(sectorNames).toContain("WATER_SANITATION");
       expect(sectorNames).toContain("EDUCATION");
