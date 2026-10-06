@@ -18,7 +18,7 @@ import {
   CreditCard,
   Camera,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { NotificationCategoryBadge } from "@/components/ui/NotificationCategoryBadge";
 import {
   ButiOrnament,
