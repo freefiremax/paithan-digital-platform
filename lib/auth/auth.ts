@@ -147,6 +147,20 @@ const customAdapter: Adapter = {
   },
 };
 
+// Ensure Auth.js v5 core finds the expected environment variables regardless of naming conventions
+if (!process.env.AUTH_SECRET && (process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET)) {
+  process.env.AUTH_SECRET = process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET;
+}
+if (!process.env.AUTH_GOOGLE_ID && (process.env.GOOGLE_CLIENT_ID || env.GOOGLE_CLIENT_ID || process.env.GOOGLE_ID)) {
+  process.env.AUTH_GOOGLE_ID = process.env.GOOGLE_CLIENT_ID || env.GOOGLE_CLIENT_ID || process.env.GOOGLE_ID;
+}
+if (!process.env.AUTH_GOOGLE_SECRET && (process.env.GOOGLE_CLIENT_SECRET || env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET)) {
+  process.env.AUTH_GOOGLE_SECRET = process.env.GOOGLE_CLIENT_SECRET || env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET;
+}
+if (!process.env.AUTH_URL && (process.env.NEXTAUTH_URL || env.NEXTAUTH_URL)) {
+  process.env.AUTH_URL = process.env.NEXTAUTH_URL || env.NEXTAUTH_URL;
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: customAdapter,
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
@@ -155,8 +169,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: { signIn: "/admin/login", error: "/admin/login" },
   providers: [
     Google({
-      clientId: env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || process.env.AUTH_GOOGLE_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || process.env.AUTH_GOOGLE_SECRET,
+      clientId:
+        process.env.AUTH_GOOGLE_ID ||
+        process.env.GOOGLE_CLIENT_ID ||
+        process.env.GOOGLE_ID ||
+        env.GOOGLE_CLIENT_ID ||
+        "",
+      clientSecret:
+        process.env.AUTH_GOOGLE_SECRET ||
+        process.env.GOOGLE_CLIENT_SECRET ||
+        process.env.GOOGLE_SECRET ||
+        env.GOOGLE_CLIENT_SECRET ||
+        "",
       allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
