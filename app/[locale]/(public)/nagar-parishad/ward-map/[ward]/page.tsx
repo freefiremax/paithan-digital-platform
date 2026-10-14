@@ -56,14 +56,14 @@ export default function WardDetailPage() {
   return (
     <>
       <Breadcrumb items={[
-        { label: tNav("home"), href: "/" },
-        { label: tNav("nagarParishad"), href: "/nagar-parishad" },
-        { label: t("wardMapTitle"), href: "/nagar-parishad/ward-map" },
+        { label: tNav("home"), href: `/${locale}` },
+        { label: tNav("nagarParishad"), href: `/${locale}/nagar-parishad` },
+        { label: t("wardMapTitle"), href: `/${locale}/nagar-parishad/ward-map` },
         { label: `${tCommon("ward")} ${ward.number}` },
       ]} />
 
       <main className="mx-auto max-w-[1180px] px-4 py-8 pb-14 sm:py-11">
-        <Link href="/nagar-parishad/ward-map" className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--gov-navy-800)] hover:text-[var(--portal-blue-700)]">
+        <Link href={`/${locale}/nagar-parishad/ward-map`} className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--gov-navy-800)] hover:text-[var(--portal-blue-700)]">
           <ArrowLeft className="h-4 w-4" /> {t("wardMapTitle")}
         </Link>
 
@@ -96,7 +96,7 @@ export default function WardDetailPage() {
             <ShieldCheck className="h-6 w-6 text-[var(--zari-gold-700)]" />
             <h2 className="mt-3 font-display text-xl font-semibold text-[var(--gov-navy-900)]">Ward information</h2>
             <p className="mt-3 text-sm leading-6 text-[var(--civic-slate-700)]">Ward boundaries, elected-member information and local work records are published as they are confirmed by the Municipal Council.</p>
-            <Link href="/contact" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[var(--gov-navy-800)] hover:underline"><Route className="h-4 w-4" />Contact the council</Link>
+            <Link href={`/${locale}/contact`} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[var(--gov-navy-800)] hover:underline"><Route className="h-4 w-4" />Contact the council</Link>
           </aside>
         </div>
 

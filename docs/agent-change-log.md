@@ -34,6 +34,11 @@ This is the handoff record for work performed by Codex, ChatGPT, Antigravity, an
 - Added the 17 supplied ward/place images under `public/images/wards/`, mapped in order to wards 1 through 17.
 - Updated the ward detail hero to use each ward's own image as a wide, responsive background with a navy readability gradient over the photograph.
 
+## 2026-10-14 — Codex — Ward map navigation and visual hierarchy
+
+- Preserved the active locale in map-pin, directory-card, breadcrumb, back, and contact links so navigation does not silently switch to English.
+- Added a visual map lead-in and compact image-backed directory cards to make the ward index feel like a complete civic locator rather than a plain list.
+
 ### Validation
 
 - Pending current Gemini recheck, Cloudinary account read, and static checks.

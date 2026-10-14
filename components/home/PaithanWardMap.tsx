@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 /**
  * The 17-ward constituency map for the homepage.
@@ -29,11 +29,9 @@ const WARD_PINS = [
   { cx: 730, cy: 885 }, // Ward 17
 ] as const;
 
-const wardHref = (wardNumber: number) =>
-  `/nagar-parishad/ward-map/${wardNumber}`;
-
 export function PaithanWardMap() {
   const router = useRouter();
+  const locale = useLocale();
   const tNagar = useTranslations("nagarParishad");
 
   return (
@@ -80,7 +78,7 @@ export function PaithanWardMap() {
             <g fill="transparent" stroke="none">
               {WARD_PINS.map((pin, index) => {
                 const wardNumber = index + 1;
-                const href = wardHref(wardNumber);
+                const href = `/${locale}/nagar-parishad/ward-map/${wardNumber}`;
                 return (
                   <Link
                     key={wardNumber}
