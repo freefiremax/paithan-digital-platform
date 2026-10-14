@@ -44,9 +44,12 @@ Built to comply with Maharashtra municipal portal standards (governed by informa
 * **Multilingual Intelligence:** English, Marathi, and Hindi support for Paithan civic questions and general-purpose assistance.
 * **Two Trust Modes:** Paithan-specific answers use the local verified knowledge base and show relevant source links; unrelated questions use Gemini's general knowledge without attaching misleading municipal citations.
 * **Controlled Output:** Structured Gemini responses, concise-answer instructions, bounded conversation history, response length limits, and normalized plain-text formatting keep replies focused and readable.
-* **Resilient Delivery:** Supported Gemini 2.5 Flash model fallbacks and a local Paithan fallback keep core municipal help available when the API key, quota, or upstream service is unavailable.
+* **Resilient Delivery:** Gemini 3.8 Flash with a 3.5 Flash-Lite fallback and a local Paithan fallback keep core municipal help available when the API key, quota, or upstream service is unavailable.
 * **Stable Chat View:** New messages scroll only inside the conversation panel, keeping the chatbot section fixed in the browser viewport.
 * **Focused Retrieval:** Conversational questions bypass civic search, town questions favor town records, and each local answer uses one strongest source. When Gemini is unavailable, short facts are selected from the matching record; unknown prices and general facts are never invented.
+* **Integration Audit:** The latest checked Neon connection was healthy and contained live portal records. Gemini verification must use the current configured models; see the agent change log for the tested result and deployment status.
+* **Rate-Limit Resilience:** The chatbot uses Upstash Redis through its REST pipeline. If that service is briefly unavailable, a bounded in-memory limiter protects the request path while the service recovers.
+* **Ward Detail Flow:** Every map pin and ward directory card now opens its own `/nagar-parishad/ward-map/[ward]` page with a place profile, visible local-work status, and a civic-information panel.
 
 ### 5. Admin Governance CMS (`/admin`)
 * **Role-Based Access Control (RBAC):** `SUPER_ADMIN`, `EDITOR`, and `WARD_EDITOR` tiers.

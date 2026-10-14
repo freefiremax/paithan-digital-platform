@@ -332,7 +332,7 @@ export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
   }
 
   // A town overview should start with the town, not a similarly named textile.
-  if (/^(what|where|tell me about|describe|about)\s+(is\s+)?paithan[?.!\s]*$/i.test(normalizedQuery)) {
+  if (/^(what|where|tell me about|describe|about)\s+(is\s+)?paithan[?.!\s]*$/i.test(normalizedQuery) || /^(mala\s+)?paithan\s+(baddal|vishayi)\s+sanga[?.!\s]*$/i.test(normalizedQuery)) {
     const town = KNOWLEDGE_BASE.find((doc) => doc.id === "kb-council");
     return town ? [{ id: town.id, sourceType: town.category, sourceTitle: town.sourceTitle, sourceUrl: town.sourceUrl, content: town.content, score: 100 }] : [];
   }

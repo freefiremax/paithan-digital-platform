@@ -1,8 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
-import { Ratelimit } from "@upstash/ratelimit";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@upstash/ratelimit");
 vi.mock("@/lib/env", () => ({
   env: {
     UPSTASH_REDIS_REST_URL: "https://test.upstash.io",
@@ -10,63 +7,44 @@ vi.mock("@/lib/env", () => ({
   },
 }));
 
+import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
+
 describe("Rate Limiter", () => {
-  const mockLimit = vi.fn();
+  afterEach(() => vi.unstubAllGlobals());
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-    (Ratelimit as unknown as ReturnType<typeof vi.fn>).mockImplementation(function (this: unknown) {
-      return {
-        limit: mockLimit,
-      };
+  it("uses the Upstash REST pipeline result", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify([{ result: 100 }, { result: 1 }, { result: 59 }]), { status: 200 })
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(checkRateLimit("test-identifier", { limit: 100, window: "1 m" })).resolves.toEqual({
+      success: true,
+      limit: 100,
+      remaining: 0,
+      reset: expect.any(Number),
+    });
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("uses a bounded local limiter when Upstash is unavailable", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+
+    await expect(checkRateLimit("offline-test", { limit: 1, window: "1 m" })).resolves.toMatchObject({
+      success: true,
+      limit: 1,
+      remaining: 0,
+    });
+    await expect(checkRateLimit("offline-test", { limit: 1, window: "1 m" })).resolves.toMatchObject({
+      success: false,
+      limit: 1,
+      remaining: 0,
     });
   });
 
-  afterEach(() => {
-    vi.resetModules();
-  });
-
-  describe("checkRateLimit", () => {
-    it("should return rate limit result when successful", async () => {
-      mockLimit.mockResolvedValue({
-        success: true,
-        limit: 100,
-        remaining: 99,
-        reset: Date.now() + 60000,
-      });
-
-      const result = await checkRateLimit("test-identifier", { limit: 100, window: "1 m" });
-      expect(result).toEqual({
-        success: true,
-        limit: 100,
-        remaining: 99,
-        reset: expect.any(Number),
-      });
-    });
-
-    it("should return rate limit result when limited", async () => {
-      mockLimit.mockResolvedValue({
-        success: false,
-        limit: 100,
-        remaining: 0,
-        reset: Date.now() + 60000,
-      });
-
-      const result = await checkRateLimit("test-identifier", { limit: 100, window: "1 m" });
-      expect(result).toEqual({
-        success: false,
-        limit: 100,
-        remaining: 0,
-        reset: expect.any(Number),
-      });
-    });
-  });
-
-  describe("RATE_LIMIT_CONFIGS", () => {
-    it("should have correct configs", () => {
-      expect(RATE_LIMIT_CONFIGS.auth).toEqual({ limit: 5, window: "1 m" });
-      expect(RATE_LIMIT_CONFIGS.apiMutation).toEqual({ limit: 30, window: "1 m" });
-      expect(RATE_LIMIT_CONFIGS.apiRead).toEqual({ limit: 100, window: "1 m" });
-    });
+  it("keeps the route policies stable", () => {
+    expect(RATE_LIMIT_CONFIGS.auth).toEqual({ limit: 5, window: "1 m" });
+    expect(RATE_LIMIT_CONFIGS.apiMutation).toEqual({ limit: 30, window: "1 m" });
+    expect(RATE_LIMIT_CONFIGS.apiRead).toEqual({ limit: 100, window: "1 m" });
   });
 });

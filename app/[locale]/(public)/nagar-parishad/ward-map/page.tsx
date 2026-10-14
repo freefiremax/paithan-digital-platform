@@ -89,7 +89,7 @@ export default function WardMapPage() {
                     ) : null}
                   </span>
                   <Link
-                    href={`/nagar-parishad/development-works`}
+                    href={`/nagar-parishad/ward-map/${ward.number}`}
                     className="text-[var(--gov-navy-700)] font-medium hover:underline inline-flex items-center gap-0.5"
                   >
                     <span>{t("viewDetails")}</span>

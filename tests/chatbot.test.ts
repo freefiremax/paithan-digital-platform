@@ -140,6 +140,16 @@ describe("Chatbot API Route Handler", () => {
     expect(data.sources).toEqual([]);
   });
 
+  it("answers Roman Marathi Paithan questions locally when the model is unavailable", async () => {
+    const res = await POST(new NextRequest("http://localhost:3000/api/chatbot", {
+      method: "POST",
+      body: JSON.stringify({ message: "mala paithan baddal sanga", language: "mr" }),
+    }));
+    const data = await res.json();
+    expect(data.reply).toContain("पैठण हे महाराष्ट्रातील");
+    expect(data.sources).toEqual([]);
+  });
+
   it("answers a town overview directly", async () => {
     const res = await POST(new NextRequest("http://localhost:3000/api/chatbot", {
       method: "POST",

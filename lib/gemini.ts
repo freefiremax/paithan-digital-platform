@@ -16,13 +16,14 @@ interface GeminiPayload {
   candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
 }
 
-const DEFAULT_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+const DEFAULT_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
 const MAX_HISTORY_ITEMS = 8;
 
 function configuredModels(): string[] {
   const configured = (process.env.GEMINI_MODEL || process.env.GEMINI_CHAT_MODEL)?.trim();
-  return configured
-    ? [configured, ...DEFAULT_MODELS.filter((model) => model !== configured)]
+  const supportedConfiguredModel = configured?.startsWith("gemini-3.") ? configured : undefined;
+  return supportedConfiguredModel
+    ? [supportedConfiguredModel, ...DEFAULT_MODELS.filter((model) => model !== supportedConfiguredModel)]
     : DEFAULT_MODELS;
 }
 

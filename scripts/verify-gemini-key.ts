@@ -9,17 +9,20 @@ if (!GEMINI_API_KEY) {
 }
 
 console.log(`🔑 GEMINI_API_KEY found (masked): ${GEMINI_API_KEY.slice(0, 4)}...`);
-console.log(`🔑 Key length: ${GEMINI_API_KEY.length}`);
 
 if (GEMINI_API_KEY.length < 10) {
   console.error('❌ GEMINI_API_KEY appears too short');
   process.exit(1);
 }
 
+const apiKey = GEMINI_API_KEY;
+
 async function testChatCompletion() {
-  console.log('\n📝 Testing chat completion (gemini-1.5-flash)...');
+  const configured = (process.env.GEMINI_MODEL || process.env.GEMINI_CHAT_MODEL || '').trim();
+  const model = configured.startsWith('gemini-3.') ? configured : 'gemini-3.8-flash';
+  console.log(`\n📝 Testing chat completion (${model})...`);
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,21 +47,22 @@ async function testChatCompletion() {
     console.log(`   ✅ Success! Reply: "${reply}"`);
     return true;
   } else if (status === 400) {
-    console.error(`   ❌ 400 Bad Request: ${JSON.stringify(data)}`);
+      console.error(`   ❌ 400 Bad Request: ${data.error?.message || 'Request rejected'}`);
   } else if (status === 401 || status === 403) {
     console.error(`   ❌ ${status} Unauthorized/Forbidden: Invalid API key`);
   } else if (status === 429) {
     console.error(`   ❌ 429 Too Many Requests: Quota exceeded`);
   } else {
-    console.error(`   ❌ ${status} Error: ${JSON.stringify(data)}`);
+    console.error(`   ❌ ${status} Error: ${data.error?.message || 'Unknown API error'}`);
   }
   return false;
 }
 
 async function testEmbedding() {
-  console.log('\n📝 Testing embedding (text-embedding-004)...');
+  const embeddingModel = process.env.GEMINI_EMBED_MODEL || 'gemini-embedding-001';
+  console.log(`\n📝 Testing embedding (${embeddingModel})...`);
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(embeddingModel)}:embedContent?key=${encodeURIComponent(apiKey)}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -80,13 +84,13 @@ async function testEmbedding() {
     }
     console.error(`   ❌ 200 but no embedding values in response`);
   } else if (status === 400) {
-    console.error(`   ❌ 400 Bad Request: ${JSON.stringify(data)}`);
+      console.error(`   ❌ 400 Bad Request: ${data.error?.message || 'Request rejected'}`);
   } else if (status === 401 || status === 403) {
     console.error(`   ❌ ${status} Unauthorized/Forbidden: Invalid API key`);
   } else if (status === 429) {
     console.error(`   ❌ 429 Too Many Requests: Quota exceeded`);
   } else {
-    console.error(`   ❌ ${status} Error: ${JSON.stringify(data)}`);
+    console.error(`   ❌ ${status} Error: ${data.error?.message || 'Unknown API error'}`);
   }
   return false;
 }
@@ -98,8 +102,8 @@ async function main() {
   const embedOk = await testEmbedding();
   
   console.log('\n📊 Summary:');
-  console.log(`   Chat (gemini-1.5-flash): ${chatOk ? '✅ PASS' : '❌ FAIL'}`);
-  console.log(`   Embedding (text-embedding-004): ${embedOk ? '✅ PASS' : '❌ FAIL'}`);
+  console.log(`   Chat: ${chatOk ? '✅ PASS' : '❌ FAIL'}`);
+  console.log(`   Embedding: ${embedOk ? '✅ PASS' : '❌ FAIL'}`);
   
   if (chatOk && embedOk) {
     console.log('\n🎉 All tests passed! Gemini API key is working correctly.');

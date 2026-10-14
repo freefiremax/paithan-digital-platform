@@ -2,6 +2,37 @@
 
 This is the handoff record for work performed by Codex, ChatGPT, Antigravity, and other coding agents. Add the newest entry at the top. Each entry must state the owner, affected files, final behavior, validation, and known limitations. Always inspect the live Git diff because this document does not replace version control.
 
+## 2026-10-14 — Codex — Backend integration audit and current Gemini model migration
+
+### Changed files
+
+- `lib/gemini.ts`, `app/api/chatbot/route.ts`
+- `scripts/verify-gemini-key.ts`, `.env.example`
+- `tests/chatbot.test.ts`, `README.md`
+
+### Audit results
+
+- Neon PostgreSQL passed a live read-only connection audit. It contains 17 wards, 4 users, 5 civic sectors, and 1 grievance.
+- Cloudinary and Cloudflare Turnstile credentials are configured locally. Cloudinary storage needs a read-only account check; Turnstile cannot be confirmed without a browser-issued token.
+- Gemini connectivity reached Google successfully, but the configured legacy model returned HTTP 404: this key cannot access Gemini 1.5 or 2.5 and must use Gemini 3.8 Flash. The old `text-embedding-004` model is also unavailable.
+
+### Final behavior
+
+- The chat client ignores legacy `GEMINI_CHAT_MODEL`/`GEMINI_MODEL` values and uses `gemini-3.8-flash`, then `gemini-3.5-flash-lite`.
+- The verification script now uses the current text and embedding model defaults.
+- Roman Marathi prompts such as “mala paithan baddal sanga” return a direct Marathi overview locally without depending on Gemini.
+- Rate limiting now uses Upstash's REST pipeline directly. If Upstash is unavailable, requests use a bounded in-memory limiter instead of emitting an exception for every chatbot request.
+
+## 2026-10-14 — Codex — Ward locator flow
+
+- Changed `components/home/PaithanWardMap.tsx`, the ward-map directory, and added `app/[locale]/(public)/nagar-parishad/ward-map/[ward]/page.tsx`.
+- Map pins and directory cards now route to a unique ward page instead of returning to the same anchored directory.
+- Each ward page provides a civic-style place profile, location, visible work status, a council-information notice, and uses the existing Brahmapuri visual as a temporary hero treatment. Replace that image with the supplied ward/place photography when it is available.
+
+### Validation
+
+- Pending current Gemini recheck, Cloudinary account read, and static checks.
+
 ## 2026-10-14 — Codex — Focused chatbot retrieval and answer fallbacks
 
 ### Changed files

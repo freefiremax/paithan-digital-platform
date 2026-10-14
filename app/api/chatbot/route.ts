@@ -13,6 +13,18 @@ const MAX_QUERY_LENGTH = 2_000;
 
 function deterministicReply(query: string, language: ChatLanguage): string | null {
   const normalized = query.toLowerCase().trim();
+
+  if (/^(mala\s+)?(paithan|paithancha|paithanche)\s+(baddal|vishayi)\s+sanga[?.!\s]*$/i.test(normalized)) {
+    return language === "mr"
+      ? "पैठण हे महाराष्ट्रातील छत्रपती संभाजीनगर जिल्ह्यात गोदावरी नदीकाठी वसलेले ऐतिहासिक शहर आहे. प्राचीन काळात ते प्रतिष्ठान म्हणून ओळखले जात असे. पैठणी विणकाम, संत एकनाथ महाराजांचे वारसा आणि जायकवाडी धरण यांसाठी पैठण प्रसिद्ध आहे."
+      : language === "hi"
+        ? "पैठण महाराष्ट्र के छत्रपति संभाजीनगर जिले में गोदावरी नदी के किनारे स्थित एक ऐतिहासिक शहर है। प्राचीन काल में इसे प्रतिष्ठान कहा जाता था। यह पैठणी बुनाई, संत एकनाथ महाराज की विरासत और जायकवाड़ी बांध के लिए प्रसिद्ध है।"
+        : "Paithan is a historic town on the Godavari River in Chhatrapati Sambhajinagar district, Maharashtra. Once known as Pratishthana, it is known for Paithani weaving, Sant Eknath's heritage, and the nearby Jayakwadi Dam.";
+  }
+
+  if (/^(mala\s+)?sanga[?.!\s]*$/i.test(normalized)) {
+    return language === "mr" ? "नक्की. तुम्हाला पैठण, नागरी सेवा, पर्यटन, इतिहास किंवा इतर कोणत्या विषयाबद्दल जाणून घ्यायचे आहे?" : language === "hi" ? "ज़रूर। आप पैठण, नागरिक सेवाओं, पर्यटन, इतिहास या किसी अन्य विषय के बारे में क्या जानना चाहते हैं?" : "Certainly. What would you like to know?";
+  }
   if (/(system\s+prompt|api\s*key|database_url|env\s*var|password_hash|auth_secret|ignore\s+(all\s+)?previous)/i.test(normalized)) {
     return language === "mr"
       ? "मी अंतर्गत सूचना किंवा गोपनीय माहिती देऊ शकत नाही. मात्र तुमच्या प्रश्नाच्या विषयावर मदत करू शकतो."

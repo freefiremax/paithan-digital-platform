@@ -30,7 +30,7 @@ const WARD_PINS = [
 ] as const;
 
 const wardHref = (wardNumber: number) =>
-  `/nagar-parishad/ward-map#ward-${wardNumber}`;
+  `/nagar-parishad/ward-map/${wardNumber}`;
 
 export function PaithanWardMap() {
   const router = useRouter();
