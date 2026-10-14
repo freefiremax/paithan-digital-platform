@@ -1,5 +1,11 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Operating cost PDF
+
+- Added `output/pdf/paithan-platform-cost-estimate.pdf` and reproducible ReportLab source `scripts/create-cost-estimate.py`. Inspected the existing public service configuration and researched official provider price pages, without reading credentials or changing subscriptions.
+- Eight pages cover Vercel, Neon, Cloudinary, Gemini, Upstash, Sentry, Cloudflare, proposed email/backup/monitoring, domain purchases, one-time setup, maintenance hours and three operating scenarios. Small-launch example: ₹5,157 infrastructure plus ₹6,000 maintenance; recommend ₹12,000/month allowance. USD conversion uses an explicit ₹90 planning assumption, not a live FX quote. Sentry's paid price is marked unverified; taxes are illustrative reserves.
+- Validation: rendered all eight pages and visually checked tables, page breaks, source links and INR glyphs; checked PDF text/page count. No application/runtime change. Actual vendor invoices and usage dashboards were not audited, and no paid tools were purchased.
+
 ## 2026-10-14 — Codex — Provider recovery and CI network resilience
 
 - Live current production deployment answered English photosynthesis, arithmetic and Hindi science through `gemini-3.5-flash-lite`. Provider access is now working in these probes; no credential value was revealed or committed.
