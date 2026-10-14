@@ -6,7 +6,8 @@ import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
-import { wards, getWardWorkSummary } from "@/lib/mock-data";
+import { wards, developmentWorks } from "@/lib/mock-data";
+import { getWardProfile } from "@/lib/ward-profiles";
 
 export default function WardMapPage() {
   const t = useTranslations("nagarParishad");
@@ -14,7 +15,6 @@ export default function WardMapPage() {
   const tCommon = useTranslations("common");
   const locale = useLocale();
   const isMr = locale === "mr";
-  const wardImages = ["ward-01.jpeg", "ward-02.jpeg", "ward-03.jpeg", "ward-04.jpeg", "ward-05.jpeg", "ward-06.jpeg"];
 
   return (
     <>
@@ -43,7 +43,7 @@ export default function WardMapPage() {
               </div>
             </div>
             <div className="flex flex-col justify-center border-t border-white/15 p-6 sm:p-8 lg:border-l lg:border-t-0">
-              <p className="text-sm leading-6 text-white/75">The directory below is the reliable way to open a ward page. Every card is linked to its own address, so the selected location does not fall back to the directory.</p>
+              <p className="text-sm leading-6 text-white/75">Explore local landmarks, find civic services and see confirmed updates for your area. Select a locality below to open its profile.</p>
               <div className="mt-5 flex items-center gap-3"><span className="text-3xl font-semibold text-[var(--zari-gold-300)]">17</span><span className="text-sm text-white/75">municipal wards<br />in this directory</span></div>
             </div>
           </div>
@@ -65,7 +65,8 @@ export default function WardMapPage() {
         {/* 17 WARDS DIRECTORY CARDS */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {wards.map((ward) => {
-            const summary = getWardWorkSummary(ward.number);
+            const confirmedWorks = developmentWorks.filter((work) => work.wardNumber === ward.number && work.dataStatus === "VERIFIED");
+            const profile = getWardProfile(ward.number);
             const wardDisplayName = isMr ? ward.nameMr : ward.name;
             return (
               <article
@@ -73,7 +74,7 @@ export default function WardMapPage() {
                 id={`ward-${ward.number}`}
                 className="scroll-mt-32 flex flex-col justify-between border border-[var(--border-subtle)] bg-white p-0 transition-shadow hover:shadow-md target:border-[var(--portal-blue-700)] target:ring-2 target:ring-[var(--zari-gold-500)]"
               >
-                <img src={`/images/wards/${wardImages[(ward.number - 1) % wardImages.length]}`} alt="" className="h-32 w-full object-cover" />
+                <img src={profile.image} alt="" className="h-44 w-full object-cover" />
                 <div className="p-5">
                 <div>
                   <div className="flex items-center justify-between">
@@ -102,10 +103,7 @@ export default function WardMapPage() {
 
                 <div className="mt-5 flex items-center justify-between border-t border-[var(--border-subtle)] pt-3 text-xs">
                   <span className="text-slate-500">
-                    {summary.total} {t("activeWorks")}{" "}
-                    {summary.ongoing > 0 ? (
-                      <strong className="text-amber-700">({summary.ongoing} {t("ongoingWorks")})</strong>
-                    ) : null}
+                    {confirmedWorks.length ? `${confirmedWorks.length} confirmed works` : "Updates awaiting verification"}
                   </span>
                   <Link
                     href={`/${locale}/nagar-parishad/ward-map/${ward.number}`}

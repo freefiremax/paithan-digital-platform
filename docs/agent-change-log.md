@@ -1,5 +1,14 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Ward content accuracy and layout
+
+- Added `lib/ward-profiles.ts` with descriptions for all 17 localities and shared imagery used by directory and detail pages.
+- Replaced repeating six-image card mapping and generic detail descriptions. Used existing named site assets where available; other supplied photographs are explicitly illustrative.
+- Removed sample project records from public work summaries and provided useful service navigation and a clear confirmed-data empty state.
+- Detail photography now spans the viewport width with constrained readable text and compact content below.
+- Limitation: municipal ward numbering/boundaries and unpublished project data still need official confirmation; this update does not invent records or modify the database.
+- Validation: TypeScript, ESLint, and whitespace checks run before commit.
+
 This is the handoff record for work performed by Codex, ChatGPT, Antigravity, and other coding agents. Add the newest entry at the top. Each entry must state the owner, affected files, final behavior, validation, and known limitations. Always inspect the live Git diff because this document does not replace version control.
 
 ## 2026-10-14 — Codex — Backend integration audit and current Gemini model migration

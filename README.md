@@ -1,5 +1,7 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
+Ward content maintenance: `lib/ward-profiles.ts` supplies locality-specific descriptions and a shared image mapping for directory cards and detail pages. Photos without confirmed locality provenance are labeled illustrative. Public ward project summaries include only records marked `VERIFIED`; sample projects do not count as completed or ongoing work. Boundary assignments still require council confirmation.
+
 > **Official Municipal, Heritage & Tourism Digital Platform for Paithan**  
 > *Chhatrapati Sambhajinagar District, Maharashtra, India*
 
