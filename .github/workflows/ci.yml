@@ -24,10 +24,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Generate Prisma Client
-        run: npm run db:generate
+        run: bash .github/scripts/install-dependencies.sh
 
       - name: Run ESLint
         run: npm run lint
@@ -63,10 +60,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Generate Prisma Client
-        run: npm run db:generate
+        run: bash .github/scripts/install-dependencies.sh
 
       - name: Run database migrations
         run: npx prisma migrate deploy
@@ -108,7 +102,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: bash .github/scripts/install-dependencies.sh
 
       - name: Run npm audit
         run: |
@@ -174,10 +168,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Generate Prisma Client
-        run: npm run db:generate
+        run: bash .github/scripts/install-dependencies.sh
 
       - name: Build Next.js application
         run: npm run build

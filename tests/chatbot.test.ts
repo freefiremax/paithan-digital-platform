@@ -149,7 +149,7 @@ describe("Chatbot API Route Handler", () => {
     }));
     const data = await res.json();
     expect(data.reply).toContain("पैठण हे महाराष्ट्रातील");
-    expect(data.sources).toEqual([]);
+    expect(data.sources).toEqual([{ title: "Paithan heritage", url: "/mr/heritage/cultural-heritage" }]);
   });
 
   it("answers a town overview directly", async () => {

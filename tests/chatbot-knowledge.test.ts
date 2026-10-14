@@ -37,6 +37,18 @@ describe("Automated public knowledge index", () => {
 
 describe("Retrieval evaluation", () => {
   it.each([
+    ["मला पैठण बद्दल सांगा", "mr", "गोदावरी"],
+    ["मला पैठणबद्दल माहिती सांगा", "mr", "प्रतिष्ठान"],
+    ["मुझे पैठण के बारे में बताओ", "hi", "गोदावरी"],
+    ["What is Paithan?", "en", "Godavari"],
+  ])("answers city overview without provider access: %s", async (message, language, expected) => {
+    const response = await POST(new NextRequest("http://localhost/api/chatbot", { method: "POST", body: JSON.stringify({ message, language }) }));
+    const data = await response.json();
+    expect(response.status).toBe(200);
+    expect(data.engine).toBe("local-reliable");
+    expect(data.reply).toContain(expected);
+  });
+  it.each([
     ["will you help me to knwo the cluture of paithan", "/heritage/cultural-heritage"],
     ["paithan culture", "/heritage/cultural-heritage"],
     ["पैठण संस्कृती", "/heritage/cultural-heritage"],

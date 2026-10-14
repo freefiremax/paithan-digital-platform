@@ -18,6 +18,10 @@ export const runtime = "nodejs";
 export const maxDuration = 40;
 const MAX_QUERY_LENGTH = 2_000;
 
+function isCityOverview(query: string): boolean {
+  return /^(?:(mala\s+)?(paithan|paithancha|paithanche)\s+(baddal|vishayi)\s+sanga|(?:मला\s+)?पैठण\s*(?:बद्दल|विषयी|बाबत)\s*(?:माहिती\s*)?सांगा|(?:मुझे\s+)?पैठण\s+के\s+बारे\s+में\s+बताओ|(?:what is|tell me about|describe)\s+paithan)[?.!\s]*$/iu.test(query.trim());
+}
+
 function deterministicReply(query: string, language: ChatLanguage): string | null {
   const normalized = query.toLowerCase().trim();
   if (/^(?:(?:hi+|hey+|hello)[,.!\s]+)?(how are you|how r u|कसे आहात|आप कैसे हैं)[?.!\s]*$/i.test(normalized)) return language === "mr" ? "मी मदतीसाठी तयार आहे! तुम्हाला काय जाणून घ्यायचे आहे?" : language === "hi" ? "मैं मदद के लिए तैयार हूँ! आप क्या जानना चाहेंगे?" : "I'm ready to help! What would you like to know?";
@@ -33,9 +37,9 @@ function deterministicReply(query: string, language: ChatLanguage): string | nul
     return language === "mr" ? "स्वागत आहे! आणखी काही मदत हवी आहे का?" : language === "hi" ? "आपका स्वागत है! और किस बारे में मदद चाहिए?" : "You're welcome! What else can I help with?";
   }
 
-  if (/^(mala\s+)?(paithan|paithancha|paithanche)\s+(baddal|vishayi)\s+sanga[?.!\s]*$/i.test(normalized)) {
+  if (isCityOverview(normalized)) {
     return language === "mr"
-      ? "पैठण हे महाराष्ट्रातील छत्रपती संभाजीनगर जिल्ह्यात गोदावरी नदीकाठी वसलेले ऐतिहासिक शहर आहे. प्राचीन काळात ते प्रतिष्ठान म्हणून ओळखले जात असे. पैठणी विणकाम, संत एकनाथ महाराजांचे वारसा आणि जायकवाडी धरण यांसाठी पैठण प्रसिद्ध आहे."
+      ? "पैठण हे महाराष्ट्रातील छत्रपती संभाजीनगर जिल्ह्यात गोदावरी नदीकाठी वसलेले ऐतिहासिक शहर आहे. प्राचीन काळात ते प्रतिष्ठान म्हणून ओळखले जात असे. पैठणी विणकाम, संत एकनाथ महाराजांचा वारसा आणि जायकवाडी धरण यांसाठी पैठण प्रसिद्ध आहे."
       : language === "hi"
         ? "पैठण महाराष्ट्र के छत्रपति संभाजीनगर जिले में गोदावरी नदी के किनारे स्थित एक ऐतिहासिक शहर है। प्राचीन काल में इसे प्रतिष्ठान कहा जाता था। यह पैठणी बुनाई, संत एकनाथ महाराज की विरासत और जायकवाड़ी बांध के लिए प्रसिद्ध है।"
         : "Paithan is a historic town on the Godavari River in Chhatrapati Sambhajinagar district, Maharashtra. Once known as Pratishthana, it is known for Paithani weaving, Sant Eknath's heritage, and the nearby Jayakwadi Dam.";
@@ -165,7 +169,10 @@ export async function POST(req: NextRequest) {
 
     const history = sanitizeChatHistory(body.history);
     const immediateReply = deterministicReply(query, language);
-    if (immediateReply) return respond({ reply: immediateReply, sources: [], grounded: false, engine: "local-reliable" });
+    if (immediateReply) {
+      const overview = isCityOverview(query);
+      return respond({ reply: immediateReply, sources: overview ? [{ title: "Paithan heritage", url: `/${language}/heritage/cultural-heritage` }] : [], grounded: overview, engine: "local-reliable" });
+    }
     const retrievalQuery = resolveConversationQuery(resolveHeritageQuery(query, history), history);
     const heritage = heritageAnswer(retrievalQuery, language);
     if (heritage) {

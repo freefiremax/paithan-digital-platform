@@ -1,5 +1,12 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Provider recovery and CI network resilience
+
+- Live current production deployment answered English photosynthesis, arithmetic and Hindi science through `gemini-3.5-flash-lite`. Provider access is now working in these probes; no credential value was revealed or committed.
+- A Marathi city overview reached the model but included an incorrect historical claim. Expanded the deterministic city overview to Devanagari Marathi, joined spellings, Hindi and English, with the existing local summary and a public heritage source link.
+- Added `.github/scripts/install-dependencies.sh` and used it in all four CI jobs. It retries npm installation and Prisma generation only for recognized transient network errors, up to three attempts with short backoff, preserving postinstall scripts and final failure status. No dependency versions or database records changed.
+- Updated chatbot regression coverage, README and this record. Deployment and final CI results are recorded after verification.
+
 ## 2026-10-14 — Codex — Existing Gemini key diagnosis correction
 
 - Refreshed and searched the owning Vercel project settings after a duplicate-variable error. `GEMINI_API_KEY` already exists as a Secret for Production and Preview, dated September 22. The earlier missing-key conclusion below was incorrect.

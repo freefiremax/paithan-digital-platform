@@ -2,6 +2,8 @@
 
 ### Chatbot knowledge upgrade — 2026-10-14
 
+Latest recovery verification: the current production deployment answered English photosynthesis, arithmetic and Hindi science through `gemini-3.5-flash-lite`. Provider access is working in these probes. City overview prompts in English, Marathi (including joined `पैठणबद्दल`), Hindi and Roman Marathi now use a concise local answer with a heritage source link, avoiding provider-dependent historical guesses. CI installation retries transient network errors up to three times while keeping lifecycle scripts enabled; permanent errors still fail. This handles Prisma engine-download `ECONNRESET` without suppressing generation or changing database data.
+
 The chatbot now has a build-refreshed public website index instead of relying only on fixed keyword FAQs. It ingests public page copy/translations, approved public data, navigation and all ward profiles, and retrieves multiple relevant chunks with typo and multilingual matching. The exact `cluture of paithan` query has a grounded local culture answer in English, Marathi and Hindi. Requests have bounded timeouts, request IDs, safe source attribution and controlled history; reset/duplicate-submit races and floating-panel history loss are fixed.
 
 Run `npm run chatbot:ingest` to refresh, `npm run chatbot:evaluate` for offline checks, and `npm run chatbot:verify-live` for explicit real-provider checks. Admins can use `/{locale}/admin/chatbot` for source metadata, diagnostics and protected Neon publishing. No new credentials are required for the bundled index. Semantic embeddings and live web search are not enabled automatically.
