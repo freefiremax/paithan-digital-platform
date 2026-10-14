@@ -10,26 +10,26 @@ import { useLocale, useTranslations } from "next-intl";
 
 // Pin centres, exactly as authored in the source SVG. Index + 1 === ward number.
 const WARD_PINS = [
-  // These coordinates are the tips of the numbered markers in the source map
-  // (1316 x 1195). Keeping the hit targets on the marker tips makes the map
-  // remain accurate when the image scales responsively.
-  { cx: 443, cy: 282 }, // Ward 1 — Babhulgaon/Jambhali
-  { cx: 664, cy: 282 }, // Ward 2 — Khodegaon
-  { cx: 926, cy: 278 }, // Ward 3 — Kolghar
-  { cx: 374, cy: 394 }, // Ward 4 — Islampur
-  { cx: 626, cy: 404 }, // Ward 5 — Nandalgaon
-  { cx: 820, cy: 396 }, // Ward 6 — Abdullapur
-  { cx: 1085, cy: 445 }, // Ward 7 — Adgaon
-  { cx: 397, cy: 582 }, // Ward 8 — Mankapur
-  { cx: 620, cy: 534 }, // Ward 9 — Balanagar
-  { cx: 956, cy: 575 }, // Ward 10 — Sultanpur
-  { cx: 355, cy: 706 }, // Ward 11 — Shevata
-  { cx: 576, cy: 715 }, // Ward 12 — Pimpalwadi
-  { cx: 809, cy: 718 }, // Ward 13 — Kasarpadli
-  { cx: 1140, cy: 734 }, // Ward 14 — Pachod
-  { cx: 468, cy: 810 }, // Ward 15 — Karanj Kheda
-  { cx: 959, cy: 791 }, // Ward 16 — Kutub Kheda
-  { cx: 737, cy: 896 }, // Ward 17 — Apegaon
+  // These coordinates are the small white town points in the source map
+  // (1316 x 1195). Keeping the numbered marker tips on those points makes
+  // the map remain accurate when the image scales responsively.
+  { cx: 514, cy: 259 }, // Ward 1 — Jambhali
+  { cx: 748, cy: 277 }, // Ward 2 — Khodegaon
+  { cx: 1092, cy: 232 }, // Ward 3 — Kolghar
+  { cx: 313, cy: 388 }, // Ward 4 — Islampur
+  { cx: 499, cy: 434 }, // Ward 5 — Nandalgaon
+  { cx: 859, cy: 396 }, // Ward 6 — Abdullapur
+  { cx: 1083, cy: 462 }, // Ward 7 — Adgaon
+  { cx: 441, cy: 519 }, // Ward 8 — Dhupkheda
+  { cx: 708, cy: 555 }, // Ward 9 — Balanagar
+  { cx: 862, cy: 551 }, // Ward 10 — Sultanpur
+  { cx: 255, cy: 720 }, // Ward 11 — Shevata
+  { cx: 558, cy: 764 }, // Ward 12 — Pimpalwadi
+  { cx: 718, cy: 632 }, // Ward 13 — Kasarpadli
+  { cx: 1090, cy: 684 }, // Ward 14 — Pachod
+  { cx: 658, cy: 808 }, // Ward 15 — Karanj Kheda
+  { cx: 870, cy: 815 }, // Ward 16 — Kutub Kheda
+  { cx: 780, cy: 976 }, // Ward 17 — Apegaon
 ] as const;
 
 export function PaithanWardMap() {

@@ -44,6 +44,10 @@ This is the handoff record for work performed by Codex, ChatGPT, Antigravity, an
 - Re-measured the 17 interactive SVG hit areas against the numbered marker tips in `public/maps/paithan-17-wards-base.png`.
 - Increased the hit target slightly and clarified accessible labels while preserving the map's embedded marker colors and branding.
 
+## 2026-10-14 — Codex — White map-point anchors
+
+- Repositioned all 17 interactive marker tips onto the small white town points in the source map. This corrects the visible offset shown at Nandalgaon and applies the same alignment to every marker.
+
 ## 2026-10-14 — Codex — Floating chatbot stability
 
 - Made the floating panel use viewport-aware height and width so it does not extend below the screen on mobile.
