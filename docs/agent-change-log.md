@@ -27,7 +27,12 @@ This is the handoff record for work performed by Codex, ChatGPT, Antigravity, an
 
 - Changed `components/home/PaithanWardMap.tsx`, the ward-map directory, and added `app/[locale]/(public)/nagar-parishad/ward-map/[ward]/page.tsx`.
 - Map pins and directory cards now route to a unique ward page instead of returning to the same anchored directory.
-- Each ward page provides a civic-style place profile, location, visible work status, a council-information notice, and uses the existing Brahmapuri visual as a temporary hero treatment. Replace that image with the supplied ward/place photography when it is available.
+- Each ward page provides a civic-style place profile, location, visible work status, and a council-information notice.
+
+## 2026-10-14 — Codex — Ward image gallery
+
+- Added the 17 supplied ward/place images under `public/images/wards/`, mapped in order to wards 1 through 17.
+- Updated the ward detail hero to use each ward's own image as a wide, responsive background with a navy readability gradient over the photograph.
 
 ### Validation
 

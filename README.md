@@ -49,7 +49,7 @@ Built to comply with Maharashtra municipal portal standards (governed by informa
 * **Focused Retrieval:** Conversational questions bypass civic search, town questions favor town records, and each local answer uses one strongest source. When Gemini is unavailable, short facts are selected from the matching record; unknown prices and general facts are never invented.
 * **Integration Audit:** The latest checked Neon connection was healthy and contained live portal records. Gemini verification must use the current configured models; see the agent change log for the tested result and deployment status.
 * **Rate-Limit Resilience:** The chatbot uses Upstash Redis through its REST pipeline. If that service is briefly unavailable, a bounded in-memory limiter protects the request path while the service recovers.
-* **Ward Detail Flow:** Every map pin and ward directory card now opens its own `/nagar-parishad/ward-map/[ward]` page with a place profile, visible local-work status, and a civic-information panel.
+* **Ward Detail Flow:** Every map pin and ward directory card now opens its own `/nagar-parishad/ward-map/[ward]` page with a place profile, visible local-work status, a civic-information panel, and its supplied ward image as a full-width responsive hero.
 
 ### 5. Admin Governance CMS (`/admin`)
 * **Role-Based Access Control (RBAC):** `SUPER_ADMIN`, `EDITOR`, and `WARD_EDITOR` tiers.

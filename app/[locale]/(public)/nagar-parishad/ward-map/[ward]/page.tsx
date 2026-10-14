@@ -17,6 +17,26 @@ const placeNotes: Record<number, string> = {
   16: "Employment and artisan-support area including industrial and handloom activity.",
 };
 
+const wardImages: Record<number, string> = {
+  1: "/images/wards/ward-01.jpeg",
+  2: "/images/wards/ward-02.jpeg",
+  3: "/images/wards/ward-03.jpeg",
+  4: "/images/wards/ward-04.jpeg",
+  5: "/images/wards/ward-05.jpeg",
+  6: "/images/wards/ward-06.jpeg",
+  7: "/images/wards/ward-07.jpeg",
+  8: "/images/wards/ward-08.jpeg",
+  9: "/images/wards/ward-09.jpeg",
+  10: "/images/wards/ward-10.webp",
+  11: "/images/wards/ward-11.jpeg",
+  12: "/images/wards/ward-12.jpg",
+  13: "/images/wards/ward-13.jpeg",
+  14: "/images/wards/ward-14.jpeg",
+  15: "/images/wards/ward-15.jpeg",
+  16: "/images/wards/ward-16.jpeg",
+  17: "/images/wards/ward-17.webp",
+};
+
 export default function WardDetailPage() {
   const params = useParams<{ ward: string }>();
   const wardNumber = Number(params.ward);
@@ -47,13 +67,16 @@ export default function WardDetailPage() {
           <ArrowLeft className="h-4 w-4" /> {t("wardMapTitle")}
         </Link>
 
-        <section className="relative mt-5 overflow-hidden border border-[var(--gov-navy-800)] bg-[var(--gov-navy-900)] px-6 py-9 text-white shadow-lg sm:px-9 sm:py-12">
-          <div className="absolute inset-0 opacity-25" style={{ backgroundImage: "linear-gradient(135deg, rgba(218,165,32,.55), transparent 42%), url('/images/sites/brahmapuri-mound.jpg')", backgroundPosition: "center", backgroundSize: "cover" }} />
-          <div className="relative max-w-3xl">
+        <section className="relative mt-5 min-h-[360px] overflow-hidden border border-[var(--gov-navy-800)] bg-[var(--gov-navy-900)] text-white shadow-lg sm:min-h-[430px]">
+          <img src={wardImages[ward.number]} alt={`${ward.name} place view`} className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(3,20,43,.94)] via-[rgba(3,20,43,.7)] to-[rgba(3,20,43,.18)]" />
+          <div className="relative flex min-h-[360px] items-end px-6 py-9 sm:min-h-[430px] sm:px-9 sm:py-12">
+          <div className="max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--zari-gold-300)]">Paithan Municipal Council · {tCommon("ward")} {ward.number}</p>
             <h1 className="mt-3 font-display text-3xl font-semibold leading-tight sm:text-5xl">{isMr ? ward.nameMr : ward.name}</h1>
             {!isMr && <p lang="mr" className="mt-2 text-base text-white/85">{ward.nameMr}</p>}
             <p className="mt-5 flex items-start gap-2 text-sm leading-6 text-white/90"><MapPin className="mt-1 h-4 w-4 shrink-0 text-[var(--zari-gold-300)]" />{ward.locality}</p>
+          </div>
           </div>
         </section>
 
