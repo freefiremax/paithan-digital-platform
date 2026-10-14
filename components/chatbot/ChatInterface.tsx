@@ -59,9 +59,9 @@ const PROMPT_SUGGESTIONS = [
 ];
 
 const WELCOME_MESSAGES = {
-  en: "Hello! Welcome to Paithan Municipal Council Help Desk. How can I help you with civic services, property tax, complaints, or town information today?",
-  mr: "नमस्कार! पैठण नगर परिषद सहाय्य कक्षात आपले स्वागत आहे. मी आपणास कर भरणा, तक्रार नोंदणी, दाखले किंवा नागरी सेवांमध्ये कशी मदत करू?",
-  hi: "नमस्ते! पैठण नगर परिषद सहायता केंद्र में आपका स्वागत है। मैं आपको टैक्स भुगतान, शिकायत दर्ज करने, प्रमाण पत्र या नागरिक सेवाओं में कैसे सहायता करूँ?",
+  en: "Hello! I can help with Paithan civic services, tourism and heritage, as well as general questions. What would you like to know?",
+  mr: "नमस्कार! मी पैठणच्या नागरी सेवा, पर्यटन आणि वारसा यांसह सामान्य प्रश्नांमध्येही मदत करू शकतो. तुम्हाला काय जाणून घ्यायचे आहे?",
+  hi: "नमस्ते! मैं पैठण की नागरिक सेवाओं, पर्यटन और विरासत के साथ सामान्य प्रश्नों में भी मदद कर सकता हूँ। आप क्या जानना चाहते हैं?",
 };
 
 export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
@@ -150,6 +150,9 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
         });
 
         const data = await response.json();
+        if (!response.ok && !data.reply) {
+          throw new Error(data.error?.message || data.error || 'Chatbot request failed');
+        }
 
         messageCounterRef.current += 1;
         const assistantMessage: Message = {

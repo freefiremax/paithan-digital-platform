@@ -41,8 +41,10 @@ Built to comply with Maharashtra municipal portal standards (governed by informa
 * **Curated Travel Itineraries (`/tourism/routes`):** Step-by-step 1-day itineraries tailored for pilgrims, history enthusiasts, and nature lovers.
 
 ### 4. AI Citizen Assistant (`/chatbot`)
-* **Bilingual Intelligence:** English & Marathi support for civic FAQs, ward contacts, museum hours, and travel routes.
-* **Zero-Hallucination Fallback:** Integrated Google Gemini API coupled with a local RAG knowledge base. Every response provides clickable source route citations.
+* **Multilingual Intelligence:** English, Marathi, and Hindi support for Paithan civic questions and general-purpose assistance.
+* **Two Trust Modes:** Paithan-specific answers use the local verified knowledge base and show relevant source links; unrelated questions use Gemini's general knowledge without attaching misleading municipal citations.
+* **Controlled Output:** Structured Gemini responses, concise-answer instructions, bounded conversation history, response length limits, and normalized plain-text formatting keep replies focused and readable.
+* **Resilient Delivery:** Supported Gemini 2.5 Flash model fallbacks and a local Paithan fallback keep core municipal help available when the API key, quota, or upstream service is unavailable.
 
 ### 5. Admin Governance CMS (`/admin`)
 * **Role-Based Access Control (RBAC):** `SUPER_ADMIN`, `EDITOR`, and `WARD_EDITOR` tiers.
@@ -189,3 +191,11 @@ According to **[`rules.md`](./rules.md)** §2 & §8:
 
 ---
 *Maintained with care for the citizens and heritage of Paithan.*
+
+---
+
+## Agent Collaboration & Change Handoff
+
+Codex and Antigravity may work on this repository at different times. After every implementation task, the acting agent must update this README when user-facing capabilities, setup, architecture, or operating behavior changes, and append a dated entry to [`docs/agent-change-log.md`](./docs/agent-change-log.md).
+
+Before starting work, read the latest change-log entries and run `git status --short`. Preserve changes made by the other agent, avoid rewriting overlapping files without reviewing the current diff, and record the exact files changed, behavior added, validation performed, and any remaining limitations. The change log is a handoff record; Git remains the source of truth for the actual code.
