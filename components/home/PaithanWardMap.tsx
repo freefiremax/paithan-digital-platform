@@ -10,23 +10,26 @@ import { useLocale, useTranslations } from "next-intl";
 
 // Pin centres, exactly as authored in the source SVG. Index + 1 === ward number.
 const WARD_PINS = [
-  { cx: 440, cy: 270 }, // Ward 1
-  { cx: 658, cy: 243 }, // Ward 2
-  { cx: 917, cy: 240 }, // Ward 3
-  { cx: 371, cy: 355 }, // Ward 4
-  { cx: 620, cy: 366 }, // Ward 5
-  { cx: 811, cy: 353 }, // Ward 6
-  { cx: 1077, cy: 408 }, // Ward 7
-  { cx: 392, cy: 548 }, // Ward 8
-  { cx: 612, cy: 489 }, // Ward 9
-  { cx: 946, cy: 540 }, // Ward 10
-  { cx: 349, cy: 672 }, // Ward 11
-  { cx: 565, cy: 673 }, // Ward 12
-  { cx: 801, cy: 675 }, // Ward 13
-  { cx: 1128, cy: 697 }, // Ward 14
-  { cx: 466, cy: 771 }, // Ward 15
-  { cx: 950, cy: 751 }, // Ward 16
-  { cx: 730, cy: 885 }, // Ward 17
+  // These coordinates are the tips of the numbered markers in the source map
+  // (1316 x 1195). Keeping the hit targets on the marker tips makes the map
+  // remain accurate when the image scales responsively.
+  { cx: 443, cy: 282 }, // Ward 1 — Babhulgaon/Jambhali
+  { cx: 664, cy: 282 }, // Ward 2 — Khodegaon
+  { cx: 926, cy: 278 }, // Ward 3 — Kolghar
+  { cx: 374, cy: 394 }, // Ward 4 — Islampur
+  { cx: 626, cy: 404 }, // Ward 5 — Nandalgaon
+  { cx: 820, cy: 396 }, // Ward 6 — Abdullapur
+  { cx: 1085, cy: 445 }, // Ward 7 — Adgaon
+  { cx: 397, cy: 582 }, // Ward 8 — Mankapur
+  { cx: 620, cy: 534 }, // Ward 9 — Balanagar
+  { cx: 956, cy: 575 }, // Ward 10 — Sultanpur
+  { cx: 355, cy: 706 }, // Ward 11 — Shevata
+  { cx: 576, cy: 715 }, // Ward 12 — Pimpalwadi
+  { cx: 809, cy: 718 }, // Ward 13 — Kasarpadli
+  { cx: 1140, cy: 734 }, // Ward 14 — Pachod
+  { cx: 468, cy: 810 }, // Ward 15 — Karanj Kheda
+  { cx: 959, cy: 791 }, // Ward 16 — Kutub Kheda
+  { cx: 737, cy: 896 }, // Ward 17 — Apegaon
 ] as const;
 
 export function PaithanWardMap() {
@@ -83,7 +86,7 @@ export function PaithanWardMap() {
                   <Link
                     key={wardNumber}
                     href={href}
-                    aria-label={`Ward ${wardNumber}`}
+                    aria-label={`Open Ward ${wardNumber} details`}
                     className="ward-pin"
                     onKeyDown={(event) => {
                       if (event.key === " " || event.key === "Spacebar") {
@@ -96,7 +99,7 @@ export function PaithanWardMap() {
                       className="ward-pin__halo"
                       cx={pin.cx}
                       cy={pin.cy}
-                      r={40}
+                      r={44}
                     />
                     <title>{`Ward ${wardNumber}`}</title>
                   </Link>

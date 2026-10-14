@@ -39,6 +39,11 @@ This is the handoff record for work performed by Codex, ChatGPT, Antigravity, an
 - Preserved the active locale in map-pin, directory-card, breadcrumb, back, and contact links so navigation does not silently switch to English.
 - Added a visual map lead-in and compact image-backed directory cards to make the ward index feel like a complete civic locator rather than a plain list.
 
+## 2026-10-14 — Codex — Map marker alignment
+
+- Re-measured the 17 interactive SVG hit areas against the numbered marker tips in `public/maps/paithan-17-wards-base.png`.
+- Increased the hit target slightly and clarified accessible labels while preserving the map's embedded marker colors and branding.
+
 ### Validation
 
 - Pending current Gemini recheck, Cloudinary account read, and static checks.

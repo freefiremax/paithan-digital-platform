@@ -51,6 +51,7 @@ Built to comply with Maharashtra municipal portal standards (governed by informa
 * **Rate-Limit Resilience:** The chatbot uses Upstash Redis through its REST pipeline. If that service is briefly unavailable, a bounded in-memory limiter protects the request path while the service recovers.
 * **Ward Detail Flow:** Every map pin and ward directory card now opens its own `/nagar-parishad/ward-map/[ward]` page with a place profile, visible local-work status, a civic-information panel, and its supplied ward image as a full-width responsive hero.
 * **Ward Map Navigation:** Ward links preserve the active language route (`/en`, `/mr`, or `/hi`), and the directory now includes a visual map lead-in plus image-backed ward cards so the map page has a clear starting point.
+* **Map Pin Alignment:** Interactive hit areas are aligned to the numbered marker tips in the 1316×1195 source map, so the clickable points stay on the colored markers as the map scales.
 
 ### 5. Admin Governance CMS (`/admin`)
 * **Role-Based Access Control (RBAC):** `SUPER_ADMIN`, `EDITOR`, and `WARD_EDITOR` tiers.
