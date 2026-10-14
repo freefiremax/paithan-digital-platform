@@ -5,7 +5,7 @@
 - Live current production deployment answered English photosynthesis, arithmetic and Hindi science through `gemini-3.5-flash-lite`. Provider access is now working in these probes; no credential value was revealed or committed.
 - A Marathi city overview reached the model but included an incorrect historical claim. Expanded the deterministic city overview to Devanagari Marathi, joined spellings, Hindi and English, with the existing local summary and a public heritage source link.
 - Added `.github/scripts/install-dependencies.sh` and used it in all four CI jobs. It retries npm installation and Prisma generation only for recognized transient network errors, up to three attempts with short backoff, preserving postinstall scripts and final failure status. No dependency versions or database records changed.
-- Updated chatbot regression coverage, README and this record. Deployment and final CI results are recorded after verification.
+- Validation: 167 tests across 11 suites passed; TypeScript, quiet ESLint and diff checks passed. Commit `76a0106` deployed successfully on Vercel. Live English science, Hindi science, Marathi city overview, Islamapur and Sant Eknath mandir/wada requests returned HTTP 200 with the expected local/provider engines. GitHub tests, lint/typecheck and security audit passed; the final Linux build was still running at this record's update.
 
 ## 2026-10-14 — Codex — Existing Gemini key diagnosis correction
 
