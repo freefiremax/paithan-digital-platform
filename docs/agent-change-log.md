@@ -1,5 +1,14 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Introductions and bird-sanctuary regression fixes
+
+- Added multilingual name-introduction acknowledgements and thank-you responses in `app/api/chatbot/route.ts` without an external model dependency.
+- Normalized Jayakwadi spelling variants and bird/birds in `lib/rag.ts`, with specific bird-sanctuary routing rather than an unrelated dam or general fallback.
+- Added concise English, Marathi and Hindi sanctuary fallback replies without unverified visitor counts or current access claims.
+- Added API-level regression tests for the user's exact two failing prompts in `tests/chatbot.test.ts`.
+- Live configured Google fallback check returned HTTP 200 with an answer. This confirms local credentials work; it does not certify the production environment's key or quota.
+- This changes the retrieval dataset, conversational logic and regression coverage; no hosted-model fine-tuning was performed.
+
 ## 2026-10-14 — Codex — Chatbot locality coverage
 
 - Added `lib/chatbot-localities.ts` with 15 place-name groups, spelling aliases, multilingual overview replies and whole-name matching.

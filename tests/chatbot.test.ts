@@ -184,6 +184,19 @@ describe("Chatbot API Route Handler", () => {
 });
 
 describe("Chatbot response controls", () => {
+  it("acknowledges a personal introduction without requiring an AI service", async () => {
+    const response = await POST(new NextRequest("http://localhost/api/chatbot", { method: "POST", body: JSON.stringify({ message: "I am Prasanna", language: "en" }) }));
+    const data = await response.json();
+    expect(data.reply).toContain("Hello Prasanna!");
+    expect(data.engine).toBe("local-reliable");
+  });
+  it("answers the exact Jaikwadi bird question when Gemini is unavailable", async () => {
+    const response = await POST(new NextRequest("http://localhost/api/chatbot", { method: "POST", body: JSON.stringify({ message: "tell me about jaikwadi bird", language: "en" }) }));
+    const data = await response.json();
+    expect(data.reply).toContain("Bird Sanctuary");
+    expect(data.reply).not.toContain("temporarily unavailable");
+    expect(data.sources).toHaveLength(1);
+  });
   it("answers Islamapur locally when the model is unavailable", async () => {
     const response = await POST(new NextRequest("http://localhost/api/chatbot", {
       method: "POST", body: JSON.stringify({ message: "tell me about islamapur", language: "en" }),

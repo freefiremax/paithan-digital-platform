@@ -14,6 +14,16 @@ const MAX_QUERY_LENGTH = 2_000;
 
 function deterministicReply(query: string, language: ChatLanguage): string | null {
   const normalized = query.toLowerCase().trim();
+  const introduction = query.trim().match(/^(?:i\s+am|i['’]m|my\s+name\s+is|call\s+me|mera\s+naam|maza\s+nav|माझे\s+नाव|माझं\s+नाव|मेरा\s+नाम)\s+([\p{L}][\p{L}\s'-]{0,59}?)(?:\s+(?:is|aahe|ahe|hai|आहे|है))?[.!]*$/iu);
+  if (introduction) {
+    const name = introduction[1].trim();
+    return language === "mr" ? `नमस्कार ${name}! तुम्हाला कशाबद्दल मदत हवी आहे?`
+      : language === "hi" ? `नमस्ते ${name}! आपको किस बारे में मदद चाहिए?`
+      : `Hello ${name}! What would you like help with?`;
+  }
+  if (/^(thanks|thank you|धन्यवाद|आभार|shukriya)[.!\s]*$/i.test(normalized)) {
+    return language === "mr" ? "स्वागत आहे! आणखी काही मदत हवी आहे का?" : language === "hi" ? "आपका स्वागत है! और किस बारे में मदद चाहिए?" : "You're welcome! What else can I help with?";
+  }
 
   if (/^(mala\s+)?(paithan|paithancha|paithanche)\s+(baddal|vishayi)\s+sanga[?.!\s]*$/i.test(normalized)) {
     return language === "mr"
@@ -61,6 +71,13 @@ function localFallback(query: string, language: ChatLanguage, retrieved: Retriev
   const primary = retrieved[0];
   const normalized = query.toLowerCase();
   if (primary) {
+    if (primary.id === "kb-bird-sanctuary") {
+      return language === "mr"
+        ? "जायकवाडी (नाथसागर) पक्षी अभयारण्य हे पैठणजवळील जलाशय परिसरात आहे. येथे स्थानिक आणि स्थलांतरित पाणपक्षी पाहता येतात. पक्षीनिरीक्षणासाठी हिवाळा अनुकूल असतो; कोणते पक्षी दिसतील हे ऋतू आणि पाण्याच्या पातळीवर अवलंबून असते. भेटीपूर्वी प्रवेश आणि स्थानिक नियम तपासा."
+        : language === "hi"
+          ? "जायकवाड़ी (नाथसागर) पक्षी अभयारण्य पैठण के पास जलाशय क्षेत्र में है। यहाँ स्थानीय और प्रवासी जलपक्षी देखे जा सकते हैं। सर्दियों में पक्षी देखने का अच्छा अवसर मिलता है; दिखाई देने वाली प्रजातियाँ मौसम और जलस्तर पर निर्भर करती हैं। यात्रा से पहले प्रवेश और स्थानीय नियमों की पुष्टि करें।"
+          : "Jayakwadi (also spelled Jaikwadi), or Nath Sagar Bird Sanctuary, is a wetland around the reservoir near Paithan. It attracts resident and migratory waterbirds, making it a birdwatching destination, especially in winter. Sightings depend on the season and water level. Check local access rules before visiting.";
+    }
     if (/^(what|where|tell me about|describe|about)\s+(is\s+)?paithan[?.!\s]*$/i.test(normalized)) {
       return "Paithan is a historic town on the Godavari River in Chhatrapati Sambhajinagar district, Maharashtra. Once known as Pratishthana, it is known for Paithani weaving, Sant Eknath's heritage, and the nearby Jayakwadi Dam.";
     }
@@ -147,6 +164,9 @@ export async function POST(req: NextRequest) {
     }
 
     const hasLocalContext = retrieved.length > 0;
+    if (retrieved[0]?.id === "kb-bird-sanctuary" && /^(tell\s+(?:me\s+)?about|what\s+is|describe|.*बद्दल|.*के बारे)/i.test(query)) {
+      return NextResponse.json({ reply: localFallback(query, language, retrieved), sources, grounded: true, engine: "local-reliable" });
+    }
     const generated = await generateChatbotAnswer({ query, language, history, contextText, isLocalQuestion: hasLocalContext });
     const reply = generated?.answer || localFallback(query, language, retrieved);
 

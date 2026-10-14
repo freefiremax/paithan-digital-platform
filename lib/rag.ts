@@ -336,7 +336,13 @@ function tokenizeQuery(query: string): string[] {
  * Searches the localized RAG knowledge base using multi-keyword semantic and lexical scoring.
  */
 export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
-  const normalizedQuery = query.toLowerCase().trim();
+  const normalizedQuery = query.toLowerCase().trim()
+    .replace(/\b(?:jaikwadi|jaikwady|jayakawadi|jaykwadi|jaikawadi)\b/g, "jayakwadi")
+    .replace(/\bbird\b/g, "birds");
+  if (/(jayakwadi|जायकवाडी|जायकवाड़ी|nath\s*sagar)/i.test(normalizedQuery) && /(birds?|sanctuary|पक्षी|birdwatch)/i.test(normalizedQuery)) {
+    const doc = KNOWLEDGE_BASE.find((item) => item.id === "kb-bird-sanctuary");
+    if (doc) return [{ id: doc.id, sourceType: doc.category, sourceTitle: doc.sourceTitle, sourceUrl: doc.sourceUrl, content: doc.content, score: 100 }];
+  }
   const locality = findChatbotLocality(query);
   if (locality) {
     return [{ id: `kb-place-${locality.aliases[0]}`, sourceType: "WEBSITE", sourceTitle: "Paithan area map", sourceUrl: "/nagar-parishad/ward-map", content: `${locality.name} is a locality name in the Paithan area map/image directory. The displayed map covers an assembly constituency, not confirmed municipal ward boundaries. Detailed history, population, contacts and civic jurisdiction for this locality have not been verified; do not invent them.`, score: 100 }];
@@ -353,7 +359,7 @@ export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
     return town ? [{ id: town.id, sourceType: town.category, sourceTitle: town.sourceTitle, sourceUrl: town.sourceUrl, content: town.content, score: 100 }] : [];
   }
 
-  const tokens = tokenizeQuery(query);
+  const tokens = tokenizeQuery(normalizedQuery);
   if (tokens.length === 0) {
     return [];
   }

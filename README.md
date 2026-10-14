@@ -1,5 +1,7 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
+Chatbot regression coverage now includes personal introductions (`I am Prasanna`), acknowledgements, locality aliases, and Jayakwadi/Jaikwadi bird queries with singular/plural spelling normalization. These use local conversational or knowledge responses when the API is unavailable. The live fallback-model connectivity check returned HTTP 200 on 2026-10-14; deployed credentials and quota must also be valid. These are application knowledge and response controls, not a fine-tuned Google model.
+
 Chatbot locality coverage: place-name aliases (including Islamapur/Islampur and Devanagari forms) are recognized locally. Overview questions work without Gemini, and all ward profiles feed the retrieval dataset. Detailed unverified locality facts are never invented. General questions still require an available model API; no prompt or dataset can guarantee answers during a provider outage. A model-specific 429 now tries the next configured fallback.
 
 Ward content maintenance: `lib/ward-profiles.ts` supplies locality-specific descriptions and a shared image mapping for directory cards and detail pages. Photos without confirmed locality provenance are labeled illustrative. Public ward project summaries include only records marked `VERIFIED`; sample projects do not count as completed or ongoing work. Boundary assignments still require council confirmation.
