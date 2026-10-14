@@ -20,7 +20,7 @@ const MAX_QUERY_LENGTH = 2_000;
 
 function deterministicReply(query: string, language: ChatLanguage): string | null {
   const normalized = query.toLowerCase().trim();
-  if (/^(how are you|how r u|कसे आहात|आप कैसे हैं)[?.!\s]*$/i.test(normalized)) return language === "mr" ? "मी मदतीसाठी तयार आहे! तुम्हाला काय जाणून घ्यायचे आहे?" : language === "hi" ? "मैं मदद के लिए तैयार हूँ! आप क्या जानना चाहेंगे?" : "I'm ready to help! What would you like to know?";
+  if (/^(?:(?:hi+|hey+|hello)[,.!\s]+)?(how are you|how r u|कसे आहात|आप कैसे हैं)[?.!\s]*$/i.test(normalized)) return language === "mr" ? "मी मदतीसाठी तयार आहे! तुम्हाला काय जाणून घ्यायचे आहे?" : language === "hi" ? "मैं मदद के लिए तैयार हूँ! आप क्या जानना चाहेंगे?" : "I'm ready to help! What would you like to know?";
   if (/^(tell (?:me )?a joke|joke|विनोद सांग|चुटकुला सुनाओ)[?.!\s]*$/i.test(normalized)) return language === "mr" ? "संगणकाला थंडी का वाजली? कारण त्याने विंडोज उघडल्या होत्या!" : language === "hi" ? "कंप्यूटर को ठंड क्यों लगी? क्योंकि उसने विंडोज खोल रखी थीं!" : "Why was the computer cold? It left its Windows open!";
   const introduction = query.trim().match(/^(?:i\s+am|i['’]m|my\s+name\s+is|call\s+me|mera\s+naam|maza\s+nav|माझे\s+नाव|माझं\s+नाव|मेरा\s+नाम)\s+([\p{L}][\p{L}\s'-]{0,59}?)(?:\s+(?:is|aahe|ahe|hai|आहे|है))?[.!]*$/iu);
   if (introduction) {
@@ -202,6 +202,9 @@ export async function POST(req: NextRequest) {
     const reply = generated?.answer || (retrieved[0]?.sourceType === "page" || retrieved[0]?.sourceType === "public-data" || retrieved[0]?.sourceType === "database" ? extractRelevantSummary(retrievalQuery, retrieved.slice(0, 1)) || localFallback(query, language, retrieved) : localFallback(query, language, retrieved));
     const usedSources = generated ? [...new Set(generated.sourceIds || [])].map((i) => sources[i]).filter(Boolean) : sources.slice(0, 1);
     const distinctSources = [...new Map(usedSources.map((source) => [source.url, source])).values()];
+    if (!generated && !hasLocalContext) {
+      return respond({ reply, error: { code: "AI_UNAVAILABLE", message: "The AI service is unavailable." }, sources: [], grounded: false, engine: "unavailable" }, 503);
+    }
 
     return respond({
       reply,

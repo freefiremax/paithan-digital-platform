@@ -104,6 +104,14 @@ describe("API reliability and privacy evaluation", () => {
     expect(data.reply).toContain("chemical energy");
     expect(data.sources).toEqual([]);
   });
+  it("returns a failure status instead of pretending a provider outage is a successful answer", async () => {
+    const response = await POST(new NextRequest("http://localhost/api/chatbot", { method: "POST", body: JSON.stringify({ message: "What is photosynthesis?", language: "en" }) }));
+    expect(response.status).toBe(503);
+    const data = await response.json();
+    expect(data.engine).toBe("unavailable");
+    expect(data.error.code).toBe("AI_UNAVAILABLE");
+    expect(data.sources).toEqual([]);
+  });
   it("tries a fallback after provider failure, ignoring thought text", async () => {
     vi.stubEnv("GEMINI_API_KEY", "fake-test-key");
     const fetchMock = vi.fn().mockResolvedValueOnce(new Response("{}", { status: 503 })).mockResolvedValueOnce(new Response(JSON.stringify({ candidates: [{ content: { parts: [{ thought: true, text: "private reasoning" }, { text: '{"answer":"4","sourceIds":[]}' }] } }] }), { status: 200 }));

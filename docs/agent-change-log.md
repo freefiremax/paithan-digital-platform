@@ -10,6 +10,8 @@
 - Ingestion: 215 chunks, no extraction failures; repeated ingestion reported all 215 unchanged. Final full suite passed 162 tests across 11 files; targeted suite passed 70 tests. TypeScript, lint and whitespace checks passed. Published and read-verified 215 public chunks in Neon with embeddings disabled.
 - Live culture/bird/science handler checks returned HTTP 200. Gemini 3.8 returned 503; 3.5 Flash-Lite fallback worked. Local Windows builds failed before compilation because of the existing SWC native binding/cache permission issue; Linux CI validation is required.
 - Read `docs/chatbot-architecture.md` for activation, exact source adapters, optional embeddings, PDF sidecar support and known content limitations. These are RAG/application improvements, not hosted-model fine-tuning.
+- Deployment verification: `6fec173` passed all GitHub checks and Vercel deployment; the culture question returned HTTP 200 on the public production API. General AI still fails there while succeeding locally. Vercel CLI is logged out, so production credentials/configuration cannot yet be repaired. User login is requested; no credentials should be posted in chat.
+- Follow-up: general provider outages now return HTTP 503 and trigger the client retry UI, with a regression test, instead of appearing as successful answers.
 
 ## 2026-10-14 — Codex — Floating language controls and Eknath topic coverage
 
