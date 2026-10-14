@@ -19,7 +19,7 @@ const placeNotes: Record<number, string> = {
 
 const wardImages: Record<number, string> = {
   1: "/images/wards/ward-01.jpeg",
-  2: "/images/wards/ward-02.jpeg",
+  2: "/images/wards/sant-eknath-mandir.jpeg",
   3: "/images/wards/ward-03.jpeg",
   4: "/images/wards/ward-04.jpeg",
   5: "/images/wards/ward-05.jpeg",

@@ -48,6 +48,11 @@ This is the handoff record for work performed by Codex, ChatGPT, Antigravity, an
 
 - Repositioned all 17 interactive marker tips onto the small white town points in the source map. This corrects the visible offset shown at Nandalgaon and applies the same alignment to every marker.
 
+## 2026-10-14 — Codex — Sant Eknath Mandir image correction
+
+- Added `public/images/wards/sant-eknath-mandir.jpeg` from the supplied temple photograph.
+- Ward 2 now uses the named Sant Eknath Mandir asset instead of relying on the upload-order mapping.
+
 ## 2026-10-14 — Codex — Floating chatbot stability
 
 - Made the floating panel use viewport-aware height and width so it does not extend below the screen on mobile.

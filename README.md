@@ -53,6 +53,7 @@ Built to comply with Maharashtra municipal portal standards (governed by informa
 * **Ward Map Navigation:** Ward links preserve the active language route (`/en`, `/mr`, or `/hi`), and the directory now includes a visual map lead-in plus image-backed ward cards so the map page has a clear starting point.
 * **Map Pin Alignment:** Interactive hit areas are aligned to the numbered marker tips in the 1316×1195 source map, so the clickable points stay on the colored markers as the map scales.
 * **White Point Anchors:** The numbered marker tips are anchored to the map's small white town points, including Nandalgaon, so the colored pin and underlying location mark stay together.
+* **Sant Eknath Mandir Image:** Ward 2 uses the supplied Sant Eknath Mandir photograph rather than the generic upload-order image.
 * **Floating Assistant:** The floating chatbot now fits the available viewport on mobile and desktop, keeps its panel inside the screen, supports Escape-to-close, and moves focus to the close control when opened.
 
 ### 5. Admin Governance CMS (`/admin`)
