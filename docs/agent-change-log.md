@@ -1,6 +1,13 @@
 # Agent Change Log
 
-## 2026-10-14 — Codex — Operating cost PDF
+## 2026-10-14 — Codex — Essential-only cost revision
+
+- Replaced the broad eight-page cost PDF with a two-page essential-only version at the same path, per the owner's clarification. Removed external maintenance labour and optional paid subscriptions from the recommendation; the earlier ₹12,000 allowance is superseded.
+- Lists current hosting, database, general AI, uploads, rate limiting, Turnstile and chosen domain. Separates service necessity from paid-plan necessity: Neon, Gemini, Cloudinary, Upstash and Turnstile can remain free within allowances. Vercel Hobby eligibility is explicitly conditional.
+- Light usage examples: ₹2,313/month equivalent when database/AI stay free, or ₹3,243 with modest paid usage; recommend ₹2,500-₹3,500 planning allowance, with stated FX/tax assumptions. No unlimited-traffic promise, account invoice audit, purchase or application change.
+- Updated ReportLab source and README; rendered and inspected both PDF pages.
+
+## 2026-10-14 — Codex — Operating cost PDF (superseded by essential-only revision)
 
 - Added `output/pdf/paithan-platform-cost-estimate.pdf` and reproducible ReportLab source `scripts/create-cost-estimate.py`. Inspected the existing public service configuration and researched official provider price pages, without reading credentials or changing subscriptions.
 - Eight pages cover Vercel, Neon, Cloudinary, Gemini, Upstash, Sentry, Cloudflare, proposed email/backup/monitoring, domain purchases, one-time setup, maintenance hours and three operating scenarios. Small-launch example: ₹5,157 infrastructure plus ₹6,000 maintenance; recommend ₹12,000/month allowance. USD conversion uses an explicit ₹90 planning assumption, not a live FX quote. Sentry's paid price is marked unverified; taxes are illustrative reserves.
