@@ -56,6 +56,15 @@ describe("Chatbot RAG Knowledge Base", () => {
     expect(contextText).toContain("Source 1:");
     expect(sources.length).toBeGreaterThan(0);
   });
+
+  it("does not retrieve civic records for a general offer of help", () => {
+    expect(queryKnowledgeBase("will you help me")).toEqual([]);
+    expect(queryKnowledgeBase("who is CEO of Google")).toEqual([]);
+  });
+
+  it("retrieves the town rather than the textile for a Paithan overview", () => {
+    expect(queryKnowledgeBase("what is paithan")[0]?.id).toBe("kb-council");
+  });
 });
 
 describe("Chatbot API Route Handler", () => {
@@ -119,6 +128,48 @@ describe("Chatbot API Route Handler", () => {
     const data = await res.json();
     expect(data.reply).toContain("02431-223010");
     expect(data.sources.length).toBeGreaterThan(0);
+  });
+
+  it("answers a general offer of help without a civic citation", async () => {
+    const res = await POST(new NextRequest("http://localhost:3000/api/chatbot", {
+      method: "POST",
+      body: JSON.stringify({ message: "will you help me", language: "en" }),
+    }));
+    const data = await res.json();
+    expect(data.reply).toMatch(/what would you like help with/i);
+    expect(data.sources).toEqual([]);
+  });
+
+  it("answers a town overview directly", async () => {
+    const res = await POST(new NextRequest("http://localhost:3000/api/chatbot", {
+      method: "POST",
+      body: JSON.stringify({ message: "what is paithan", language: "en" }),
+    }));
+    const data = await res.json();
+    expect(data.reply).toMatch(/Paithan is a historic town/);
+    expect(data.reply).not.toMatch(/Queen of Silks/);
+    expect(data.sources).toHaveLength(1);
+  });
+
+  it("does not invent a Paithani price when none exists in the local record", async () => {
+    const res = await POST(new NextRequest("http://localhost:3000/api/chatbot", {
+      method: "POST",
+      body: JSON.stringify({ message: "what is the cost of paithani silk saree", language: "en" }),
+    }));
+    const data = await res.json();
+    expect(data.reply).toMatch(/don.t have a verified current price/i);
+    expect(data.reply).not.toMatch(/Queen of Silks/);
+  });
+
+  it("limits an MLA answer to the relevant representative", async () => {
+    const res = await POST(new NextRequest("http://localhost:3000/api/chatbot", {
+      method: "POST",
+      body: JSON.stringify({ message: "who is MLA of Paithan", language: "en" }),
+    }));
+    const data = await res.json();
+    expect(data.reply).toContain("Vilas Sandipanrao Bhumre");
+    expect(data.reply).not.toContain("Paithani Silk");
+    expect(data.sources).toHaveLength(1);
   });
 });
 

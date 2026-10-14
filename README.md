@@ -46,6 +46,7 @@ Built to comply with Maharashtra municipal portal standards (governed by informa
 * **Controlled Output:** Structured Gemini responses, concise-answer instructions, bounded conversation history, response length limits, and normalized plain-text formatting keep replies focused and readable.
 * **Resilient Delivery:** Supported Gemini 2.5 Flash model fallbacks and a local Paithan fallback keep core municipal help available when the API key, quota, or upstream service is unavailable.
 * **Stable Chat View:** New messages scroll only inside the conversation panel, keeping the chatbot section fixed in the browser viewport.
+* **Focused Retrieval:** Conversational questions bypass civic search, town questions favor town records, and each local answer uses one strongest source. When Gemini is unavailable, short facts are selected from the matching record; unknown prices and general facts are never invented.
 
 ### 5. Admin Governance CMS (`/admin`)
 * **Role-Based Access Control (RBAC):** `SUPER_ADMIN`, `EDITOR`, and `WARD_EDITOR` tiers.

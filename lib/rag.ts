@@ -303,7 +303,8 @@ const STOP_WORDS = new Set([
   "hi", "hii", "hiii", "hey", "heyy", "hello", "is", "am", "are", "was", "were", "be",
   "the", "a", "an", "to", "in", "at", "for", "of", "and", "or", "me", "my", "you", "your",
   "what", "how", "when", "where", "who", "which", "why", "tell", "give", "can", "please",
-  "kya", "kaise", "hai", "hain", "karo", "kay", "aahe", "ahet", "sang", "sanga", "bol", "bola"
+  "kya", "kaise", "hai", "hain", "karo", "kay", "aahe", "ahet", "sang", "sanga", "bol", "bola",
+  "will", "would", "could", "help", "thanks", "thank", "please", "cost", "price", "much"
 ]);
 
 const GREETING_REGEX = /^(hi|hii|hiii|hey|heyy|hello|namaste|namaskar|pranam|ram\s+krishna\s+hari|नमस्कार|प्रणाम|नमस्ते|राम\s+कृष्ण\s+हरी|शुभ\s+सकाळ|शुभ\s+संध्याकाळ)$/i;
@@ -326,12 +327,18 @@ export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
   const normalizedQuery = query.toLowerCase().trim();
 
   // If query is just a greeting, return no KB chunks so conversational AI handles it naturally
-  if (GREETING_REGEX.test(normalizedQuery)) {
+  if (GREETING_REGEX.test(normalizedQuery) || /^(will|can|could|would) you help me[?.!\s]*$/i.test(normalizedQuery)) {
     return [];
   }
 
+  // A town overview should start with the town, not a similarly named textile.
+  if (/^(what|where|tell me about|describe|about)\s+(is\s+)?paithan[?.!\s]*$/i.test(normalizedQuery)) {
+    const town = KNOWLEDGE_BASE.find((doc) => doc.id === "kb-council");
+    return town ? [{ id: town.id, sourceType: town.category, sourceTitle: town.sourceTitle, sourceUrl: town.sourceUrl, content: town.content, score: 100 }] : [];
+  }
+
   const tokens = tokenizeQuery(query);
-  if (tokens.length === 0 && normalizedQuery.length < 4) {
+  if (tokens.length === 0) {
     return [];
   }
 
@@ -350,11 +357,11 @@ export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
     // 2. Keyword matches
     for (const kw of doc.keywords) {
       const kwLower = kw.toLowerCase();
-      if (kwLower.length >= 3 && normalizedQuery.includes(kwLower)) {
+      if ((kwLower.length >= 3 && tokens.some((token) => token === kwLower)) || (kwLower.includes(" ") && normalizedQuery.includes(kwLower))) {
         score += 35;
       }
       for (const token of tokens) {
-        if (kwLower === token || (token.length >= 4 && kwLower.includes(token))) {
+        if (kwLower === token) {
           score += 15;
         }
       }
@@ -381,7 +388,7 @@ export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
   });
 
   return scoredDocs
-    .filter((doc) => doc.score >= 15)
+    .filter((doc) => doc.score >= 35)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
@@ -395,10 +402,7 @@ export function buildChatbotContext(query: string): { contextText: string; sourc
   if (retrieved.length === 0) {
     return {
       contextText: "No specific local municipal chunks matched this exact keyword. Provide helpful municipal or general assistance.",
-      sources: [
-        { title: "Paithan Municipal Council Portal", url: "/nagar-parishad" },
-        { title: "Tourism & Heritage Guide", url: "/tourism" },
-      ],
+      sources: [],
     };
   }
 

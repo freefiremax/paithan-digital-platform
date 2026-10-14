@@ -152,11 +152,16 @@ ${options.isLocalQuestion ? options.contextText : "No relevant verified Paithan 
         }
       );
 
-      if (!response.ok) continue;
+      if (!response.ok) {
+        console.error(`[chatbot] Gemini ${model} returned HTTP ${response.status}.`);
+        if (response.status === 401 || response.status === 403 || response.status === 429) break;
+        continue;
+      }
       const answer = extractStructuredAnswer((await response.json()) as GeminiPayload);
       if (answer) return { answer, model };
+      console.error(`[chatbot] Gemini ${model} returned no usable answer.`);
     } catch {
-      // Try the next supported model. The route provides a local fallback afterward.
+      console.error(`[chatbot] Gemini ${model} request failed or timed out.`);
     } finally {
       clearTimeout(timeout);
     }

@@ -2,6 +2,29 @@
 
 This is the handoff record for work performed by Codex, ChatGPT, Antigravity, and other coding agents. Add the newest entry at the top. Each entry must state the owner, affected files, final behavior, validation, and known limitations. Always inspect the live Git diff because this document does not replace version control.
 
+## 2026-10-14 — Codex — Focused chatbot retrieval and answer fallbacks
+
+### Changed files
+
+- `lib/rag.ts`, `app/api/chatbot/route.ts`, `lib/gemini.ts`
+- `tests/chatbot.test.ts`, `README.md`
+
+### Final behavior
+
+- Conversational offers such as “will you help me” receive a direct response with no emergency citation.
+- “What is Paithan” retrieves the town record, not the similarly named Paithani textile.
+- Local retrieval requires a stronger exact keyword match, and the route sends only the top record to Gemini.
+- The offline fallback selects a short relevant line. Price questions without an actual verified price say that the price is unavailable.
+- General questions without local evidence remain available to Gemini; if Gemini is unavailable, the assistant says so rather than presenting unrelated civic content.
+- Gemini failure logs include the model and HTTP status without exposing the API key.
+
+### Validation
+
+- `npm test -- --run tests/chatbot.test.ts` — passed (21 tests).
+- `npx tsc --noEmit` — passed.
+- `npm run lint -- --quiet` — passed.
+- Live Gemini access still depends on a valid production key and available quota; server logs now report upstream status codes for diagnosis.
+
 ## 2026-10-14 — Codex — Production chatbot recovery and contained scrolling
 
 ### Changed files

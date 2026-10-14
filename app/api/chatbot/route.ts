@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildChatbotContext, queryKnowledgeBase } from "@/lib/rag";
+import { queryKnowledgeBase, type RetrievedChunk } from "@/lib/rag";
 import {
   generateChatbotAnswer,
   normalizeAnswer,
@@ -37,19 +37,36 @@ function deterministicReply(query: string, language: ChatLanguage): string | nul
         : "I’m the Paithan Digital Platform AI Citizen Assistant. I can help with verified local information, civic services, tourism, heritage, and general questions.";
   }
 
+  if (/^(will|can|could|would) you help me[?.!\s]*$/i.test(normalized)) {
+    return language === "mr" ? "हो, नक्की. तुम्हाला कशाबद्दल मदत हवी आहे?" : language === "hi" ? "हाँ, ज़रूर। आपको किस बारे में मदद चाहिए?" : "Yes. What would you like help with?";
+  }
+
   return null;
 }
 
-function localFallback(language: ChatLanguage, contextText: string, hasLocalContext: boolean): string {
-  if (hasLocalContext) {
-    const compactContext = contextText
-      .replace(/^\[Source[^\n]*\]\n/gm, "")
-      .replace(/\n---\n/g, "\n")
-      .split("\n")
-      .filter((line) => line.trim())
-      .slice(0, 6)
-      .join("\n");
-    return normalizeAnswer(compactContext, 900);
+function localFallback(query: string, language: ChatLanguage, retrieved: RetrievedChunk[]): string {
+  const primary = retrieved[0];
+  const normalized = query.toLowerCase();
+  if (primary) {
+    if (/^(what|where|tell me about|describe|about)\s+(is\s+)?paithan[?.!\s]*$/i.test(normalized)) {
+      return "Paithan is a historic town on the Godavari River in Chhatrapati Sambhajinagar district, Maharashtra. Once known as Pratishthana, it is known for Paithani weaving, Sant Eknath's heritage, and the nearby Jayakwadi Dam.";
+    }
+    if (/\b(cost|price|how much|rate)\b/i.test(normalized)) {
+      return language === "mr" ? "या वस्तूची सध्याची सत्यापित किंमत माझ्याकडे नाही. कृपया विक्रेता किंवा सहकारी संस्थेकडून किंमत तपासा." : language === "hi" ? "मेरे पास इसकी सत्यापित वर्तमान कीमत नहीं है। कृपया विक्रेता या सहकारी संस्था से कीमत पूछें।" : "I don’t have a verified current price for that item. Please check with a seller or weavers’ cooperative; prices vary by material and workmanship.";
+    }
+    const lines = primary.content.split("\n").map((line) => line.trim()).filter(Boolean);
+    if (/office|timing|hours|वेळ|समय/i.test(normalized) && /phone|contact|number|फोन|संपर्क/i.test(normalized)) {
+      return normalizeAnswer(lines.filter((line) => /Working Hours|Official Phone/i.test(line)).join("\n"), 500);
+    }
+    const intent = normalized.includes("mla") || normalized.includes("आमदार") ? /\bMLA\b|आमदार/i
+      : normalized.includes("mp") || normalized.includes("खासदार") ? /\bMP\b|खासदार/i
+      : /office|timing|hours|वेळ|समय/i.test(normalized) ? /Working Hours/i
+      : /phone|contact|number|फोन|संपर्क/i.test(normalized) ? /Official Phone|Control Room/i
+      : /emergency|police|ambulance|fire/i.test(normalized) ? /Police|Hospital|Fire|Control Room/i
+      : null;
+    const matching = intent ? lines.filter((line) => intent.test(line)) : [];
+    if (matching.length > 0) return normalizeAnswer(matching.slice(0, 3).join("\n"), 500);
+    return normalizeAnswer(lines.slice(0, 2).join("\n"), 360);
   }
 
   return language === "mr"
@@ -101,18 +118,20 @@ export async function POST(req: NextRequest) {
     const history = sanitizeChatHistory(body.history);
     let contextText = "No verified Paithan record was retrieved for this question.";
     let sources: Array<{ title: string; url: string }> = [];
-    let hasLocalContext = false;
+    let retrieved: RetrievedChunk[] = [];
     try {
-      const context = buildChatbotContext(query);
-      contextText = context.contextText;
-      sources = context.sources;
-      hasLocalContext = queryKnowledgeBase(query, 4).some((item) => item.score >= 15);
+      retrieved = queryKnowledgeBase(query, 1);
+      if (retrieved[0]) {
+        contextText = `[Source: ${retrieved[0].sourceTitle} (${retrieved[0].sourceUrl})]\n${retrieved[0].content}`;
+        sources = [{ title: retrieved[0].sourceTitle, url: retrieved[0].sourceUrl }];
+      }
     } catch (retrievalError) {
       console.error("[chatbot] Local knowledge retrieval failed; continuing without local context.", retrievalError);
     }
 
+    const hasLocalContext = retrieved.length > 0;
     const generated = await generateChatbotAnswer({ query, language, history, contextText, isLocalQuestion: hasLocalContext });
-    const reply = generated?.answer || localFallback(language, contextText, hasLocalContext);
+    const reply = generated?.answer || localFallback(query, language, retrieved);
 
     return NextResponse.json({
       reply,
