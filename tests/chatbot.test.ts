@@ -1,10 +1,12 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { queryKnowledgeBase, buildChatbotContext, KNOWLEDGE_BASE } from "@/lib/rag";
 import { POST } from "@/app/api/chatbot/route";
 import { NextRequest } from "next/server";
 import { normalizeAnswer, sanitizeChatHistory } from "@/lib/gemini";
 import fs from "node:fs";
 import path from "node:path";
+
+beforeEach(() => { vi.stubEnv("GEMINI_API_KEY", ""); });
 
 describe("Chatbot RAG Knowledge Base", () => {
   it("should have comprehensive knowledge base documents", () => {

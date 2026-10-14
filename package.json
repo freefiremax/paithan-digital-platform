@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "npm run chatbot:ingest && prisma generate && next build",
+    "chatbot:ingest": "tsx scripts/ingest-chatbot-knowledge.ts",
+    "chatbot:publish": "tsx --env-file=.env scripts/publish-chatbot-knowledge.ts",
+    "chatbot:evaluate": "vitest run tests/chatbot.test.ts tests/chatbot-knowledge.test.ts tests/rate-limit.test.ts",
+    "chatbot:verify-live": "tsx --env-file=.env scripts/verify-chatbot-live.ts",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",

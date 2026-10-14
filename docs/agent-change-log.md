@@ -1,5 +1,16 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Automated chatbot knowledge and reliability upgrade
+
+- Implemented `scripts/ingest-chatbot-knowledge.ts`, a generated public index, shared knowledge types, ranked retrieval, public Prisma adapters, optional embedding/search interfaces, validated model settings and local culture synthesis under `lib/chatbot/`.
+- Updated `app/api/chatbot/route.ts` for bounded bodies/history, multi-source context, source IDs, privacy-aware diagnostics, graceful fallback and request IDs. Updated Gemini timeouts, structured citations and token reporting.
+- Added an ADMIN-only knowledge console/API and sidebar entry, transactional owned-prefix Neon publishing, build-triggered ingestion and explicit offline/live verification commands. No migrations or private-data indexing.
+- Fixed client request cancellation, duplicate sends, reset races, safe Markdown, translated labels and persistence when the floating panel is closed/reopened. Restricted citation URLs and capped in-memory rate-limit storage.
+- New evaluation files: `tests/chatbot-knowledge.test.ts` and `tests/chatbot-admin.test.ts`. Existing chatbot tests now disable live provider calls.
+- Ingestion: 215 chunks, no extraction failures; repeated ingestion reported all 215 unchanged. Final full suite passed 162 tests across 11 files; targeted suite passed 70 tests. TypeScript, lint and whitespace checks passed. Published and read-verified 215 public chunks in Neon with embeddings disabled.
+- Live culture/bird/science handler checks returned HTTP 200. Gemini 3.8 returned 503; 3.5 Flash-Lite fallback worked. Local Windows builds failed before compilation because of the existing SWC native binding/cache permission issue; Linux CI validation is required.
+- Read `docs/chatbot-architecture.md` for activation, exact source adapters, optional embeddings, PDF sidecar support and known content limitations. These are RAG/application improvements, not hosted-model fine-tuning.
+
 ## 2026-10-14 — Codex — Floating language controls and Eknath topic coverage
 
 - Made the floating chat header stack its language controls so English, Marathi and Hindi remain visible in narrow panels; added selected-state accessibility labels and a shrinkable composer.

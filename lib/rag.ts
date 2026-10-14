@@ -9,6 +9,8 @@ export interface RetrievedChunk {
   sourceUrl: string;
   content: string;
   score: number;
+  updatedAt?: string;
+  reliability?: "website" | "verified";
 }
 
 export interface KnowledgeDoc {

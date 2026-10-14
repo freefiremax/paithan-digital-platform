@@ -93,6 +93,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       icon: Map,
     },
   ];
+  if (userRole === "ADMIN") navItems.push({ label: locale === "mr" ? "AI ज्ञान निर्देशांक" : locale === "hi" ? "AI ज्ञान सूची" : "Chatbot knowledge", href: "/admin/chatbot", icon: ShieldCheck });
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">

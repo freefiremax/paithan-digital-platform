@@ -2,8 +2,9 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
+import { MessageContent } from './MessageContent';
+import { safeSourceUrl } from '@/lib/chatbot/knowledge-types';
 import {
   Bot,
   Send,
@@ -24,6 +25,7 @@ interface Message {
   content: string;
   sources?: Array<{ title: string; url: string }>;
   engine?: string;
+  failed?: boolean;
   timestamp: string;
 }
 
@@ -64,8 +66,13 @@ const WELCOME_MESSAGES = {
   hi: "नमस्ते! मैं पैठण की नागरिक सेवाओं, पर्यटन और विरासत के साथ सामान्य प्रश्नों में भी मदद कर सकता हूँ। आप क्या जानना चाहते हैं?",
 };
 
+const CHAT_LABELS = {
+  en: { error: "The assistant couldn't complete this request. Please try again.", sources: "Sources", engine: "Paithan assistant", reset: "Reset conversation", retry: "Try again" },
+  mr: { error: "विनंती पूर्ण करता आली नाही. कृपया पुन्हा प्रयत्न करा.", sources: "माहितीचे स्रोत", engine: "पैठण सहाय्यक", reset: "संभाषण पुन्हा सुरू करा", retry: "पुन्हा प्रयत्न करा" },
+  hi: { error: "अनुरोध पूरा नहीं हो सका। कृपया फिर प्रयास करें।", sources: "जानकारी के स्रोत", engine: "पैठण सहायक", reset: "बातचीत फिर शुरू करें", retry: "फिर प्रयास करें" },
+};
+
 export function ChatInterface({ fullPage = false, floating = false }: { fullPage?: boolean; floating?: boolean }) {
-  const t = useTranslations('chatbot');
   const systemLocale = useLocale() as 'en' | 'mr' | 'hi';
   const [chatLang, setChatLang] = useState<'en' | 'mr' | 'hi'>(systemLocale);
 
@@ -86,6 +93,10 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
   const [isLoading, setIsLoading] = useState(false);
   const messagePanelRef = useRef<HTMLDivElement>(null);
   const messageCounterRef = useRef(1);
+  const requestRef = useRef<AbortController | null>(null);
+  const requestVersionRef = useRef(0);
+  const sendingRef = useRef(false);
+  useEffect(() => () => { requestVersionRef.current += 1; requestRef.current?.abort(); }, []);
 
   const scrollToBottom = () => {
     const panel = messagePanelRef.current;
@@ -125,7 +136,12 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
   const handleSend = useCallback(
     async (textToSend?: string) => {
       const query = (textToSend || input).trim();
-      if (!query || isLoading) return;
+      if (!query || isLoading || sendingRef.current) return;
+      sendingRef.current = true;
+      const version = ++requestVersionRef.current;
+      const controller = new AbortController();
+      requestRef.current = controller;
+      const timer = setTimeout(() => controller.abort(), 35_000);
 
       messageCounterRef.current += 1;
       const userMsgId = `user-${messageCounterRef.current}`;
@@ -136,7 +152,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
         timestamp: 'Just now',
       };
 
-      setMessages((prev) => [...prev, userMessage]);
+      setMessages((prev) => [...prev.slice(-49), userMessage]);
       if (!textToSend) setInput('');
       setIsLoading(true);
 
@@ -144,6 +160,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
         const response = await fetch('/api/chatbot', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
           body: JSON.stringify({
             message: query,
             language: chatLang,
@@ -152,6 +169,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
         });
 
         const data = await response.json();
+        if (version !== requestVersionRef.current) return;
         if (!response.ok && !data.reply) {
           throw new Error(data.error?.message || data.error || 'Chatbot request failed');
         }
@@ -160,32 +178,41 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
         const assistantMessage: Message = {
           id: `assistant-${messageCounterRef.current}`,
           role: 'assistant',
-          content: data.reply || t('error'),
-          sources: data.sources || [],
+          content: typeof data.reply === 'string' ? data.reply : CHAT_LABELS[chatLang].error,
+          sources: Array.isArray(data.sources) ? data.sources.filter((source: unknown) => source && typeof source === 'object' && typeof (source as { title?: unknown }).title === 'string' && typeof (source as { url?: unknown }).url === 'string' && safeSourceUrl((source as { url: string }).url)) : [],
           engine: data.engine || 'rag-verified-local',
+          failed: !response.ok,
           timestamp: 'Just now',
         };
 
         setMessages((prev) => [...prev, assistantMessage]);
       } catch {
+        if (version !== requestVersionRef.current) return;
         messageCounterRef.current += 1;
         setMessages((prev) => [
           ...prev,
           {
             id: `err-${messageCounterRef.current}`,
             role: 'assistant',
-            content: t('error'),
+            content: CHAT_LABELS[chatLang].error,
+            failed: true,
             timestamp: 'Just now',
           },
         ]);
       } finally {
-        setIsLoading(false);
+        clearTimeout(timer);
+        if (version === requestVersionRef.current) { setIsLoading(false); sendingRef.current = false; requestRef.current = null; }
       }
     },
-    [chatLang, input, isLoading, messages, t]
+    [chatLang, input, isLoading, messages]
   );
 
   const handleReset = () => {
+    requestVersionRef.current += 1;
+    requestRef.current?.abort();
+    sendingRef.current = false;
+    setIsLoading(false);
+    setInput('');
     setMessages([
       {
         id: 'welcome-msg',
@@ -258,6 +285,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
             <Languages className="w-3.5 h-3.5 text-amber-400 ml-1.5 mr-1 hidden sm:block" />
             <button
               onClick={() => handleLanguageChange('en')}
+              disabled={isLoading}
               aria-pressed={chatLang === 'en'}
               aria-label="Answer in English"
               className={`px-2 py-1 text-xs font-semibold rounded transition cursor-pointer ${
@@ -268,6 +296,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
             </button>
             <button
               onClick={() => handleLanguageChange('mr')}
+              disabled={isLoading}
               aria-pressed={chatLang === 'mr'}
               aria-label="मराठीत उत्तर द्या"
               className={`px-2 py-1 text-xs font-semibold rounded transition cursor-pointer ${
@@ -278,6 +307,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
             </button>
             <button
               onClick={() => handleLanguageChange('hi')}
+              disabled={isLoading}
               aria-pressed={chatLang === 'hi'}
               aria-label="हिंदी में उत्तर दें"
               className={`px-2 py-1 text-xs font-semibold rounded transition cursor-pointer ${
@@ -290,7 +320,8 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
 
           <button
             onClick={handleReset}
-            title={t('reset')}
+            title={CHAT_LABELS[chatLang].reset}
+            aria-label={CHAT_LABELS[chatLang].reset}
             className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
@@ -299,7 +330,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
       </div>
 
       {/* Messages */}
-      <div ref={messagePanelRef} className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-4 bg-slate-50/60">
+      <div ref={messagePanelRef} role="log" aria-live="polite" aria-relevant="additions" className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-4 bg-slate-50/60">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
             <div
@@ -312,17 +343,19 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
               {msg.role === 'assistant' && (
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-700 mb-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span>{t("aiEngine")}</span>
+                  <span>{CHAT_LABELS[chatLang].engine}</span>
                 </div>
               )}
 
-              <div className="whitespace-pre-line">{msg.content}</div>
+              <MessageContent text={msg.content} />
+              {msg.failed && !isLoading && <button className="mt-2 text-xs font-semibold text-amber-800 underline" onClick={() => { const last = [...messages].reverse().find((message) => message.role === 'user'); if (last) handleSend(last.content); }}>{CHAT_LABELS[chatLang].retry}</button>}
+              {msg.engine === 'local-fallback' && msg.sources?.length ? <p className="mt-2 text-[11px] text-slate-500">{chatLang === 'mr' ? 'AI उपलब्ध नसल्यामुळे उपलब्ध स्थानिक नोंदींवर आधारित उत्तर.' : chatLang === 'hi' ? 'AI उपलब्ध नहीं होने पर उपलब्ध स्थानीय रिकॉर्ड का उत्तर।' : 'Using available local records while the AI service is unavailable.'}</p> : null}
 
               {msg.sources && msg.sources.length > 0 && (
                 <div className="mt-3 pt-2.5 border-t border-slate-100 flex flex-col gap-1">
                   <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1">
                     <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                    {t("sourcesTitle")}
+                    {CHAT_LABELS[chatLang].sources}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {msg.sources.map((src, i) => (

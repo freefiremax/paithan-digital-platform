@@ -22,6 +22,10 @@ function windowToMilliseconds(window: Duration): number {
 
 function localLimit(identifier: string, limit: number, window: Duration) {
   const now = Date.now();
+  if (localRateLimitCache.size >= 2000) {
+    for (const [key, value] of localRateLimitCache) if (value.reset <= now) localRateLimitCache.delete(key);
+    if (localRateLimitCache.size >= 2000) localRateLimitCache.delete(localRateLimitCache.keys().next().value!);
+  }
   const windowMs = windowToMilliseconds(window);
   const entry = localRateLimitCache.get(identifier);
   const current = !entry || entry.reset <= now ? { count: 0, reset: now + windowMs } : entry;
@@ -49,7 +53,7 @@ export async function checkRateLimit(
   const window = options.window ?? "1 m";
   const url = env.UPSTASH_REDIS_REST_URL;
   const token = env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
+  if (!url || !token) return localLimit(`${limit}:${window}:${identifier}`, limit, window);
 
   const windowMs = windowToMilliseconds(window);
   const seconds = Math.max(1, Math.ceil(windowMs / 1_000));
@@ -87,7 +91,7 @@ export async function checkRateLimit(
       didWarnAboutUpstashFallback = true;
       console.error("[rate-limit] Upstash unavailable; using this instance's bounded fallback.", error);
     }
-    return localLimit(identifier, limit, window);
+    return localLimit(`${limit}:${window}:${identifier}`, limit, window);
   }
 }
 

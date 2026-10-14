@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryKnowledgeBase, type RetrievedChunk } from "@/lib/rag";
+import { type RetrievedChunk } from "@/lib/rag";
 import {
   generateChatbotAnswer,
   normalizeAnswer,
@@ -9,12 +9,19 @@ import {
 import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
 import { localityOverview } from "@/lib/chatbot-localities";
 import { heritageAnswer, resolveHeritageQuery } from "@/lib/chatbot-heritage";
+import { searchKnowledge } from "@/lib/chatbot/search";
+import { resolveConversationQuery } from "@/lib/chatbot/retrieval";
+import { cultureOverview, extractRelevantSummary } from "@/lib/chatbot/local-summary";
+import { randomUUID } from "node:crypto";
 
 export const runtime = "nodejs";
+export const maxDuration = 40;
 const MAX_QUERY_LENGTH = 2_000;
 
 function deterministicReply(query: string, language: ChatLanguage): string | null {
   const normalized = query.toLowerCase().trim();
+  if (/^(how are you|how r u|कसे आहात|आप कैसे हैं)[?.!\s]*$/i.test(normalized)) return language === "mr" ? "मी मदतीसाठी तयार आहे! तुम्हाला काय जाणून घ्यायचे आहे?" : language === "hi" ? "मैं मदद के लिए तैयार हूँ! आप क्या जानना चाहेंगे?" : "I'm ready to help! What would you like to know?";
+  if (/^(tell (?:me )?a joke|joke|विनोद सांग|चुटकुला सुनाओ)[?.!\s]*$/i.test(normalized)) return language === "mr" ? "संगणकाला थंडी का वाजली? कारण त्याने विंडोज उघडल्या होत्या!" : language === "hi" ? "कंप्यूटर को ठंड क्यों लगी? क्योंकि उसने विंडोज खोल रखी थीं!" : "Why was the computer cold? It left its Windows open!";
   const introduction = query.trim().match(/^(?:i\s+am|i['’]m|my\s+name\s+is|call\s+me|mera\s+naam|maza\s+nav|माझे\s+नाव|माझं\s+नाव|मेरा\s+नाम)\s+([\p{L}][\p{L}\s'-]{0,59}?)(?:\s+(?:is|aahe|ahe|hai|आहे|है))?[.!]*$/iu);
   if (introduction) {
     const name = introduction[1].trim();
@@ -109,37 +116,47 @@ function localFallback(query: string, language: ChatLanguage, retrieved: Retriev
 
 export async function POST(req: NextRequest) {
   let language: ChatLanguage = "en";
+  const requestId = randomUUID();
+  const started = Date.now();
+  const respond = (data: Record<string, unknown>, status = 200) => {
+    console.info(JSON.stringify({ event: "chatbot.response", requestId, status, engine: data.engine || "validation", sourceCount: Array.isArray(data.sources) ? data.sources.length : 0, latencyMs: Date.now() - started }));
+    return NextResponse.json({ ...data, requestId }, { status, headers: { "Cache-Control": "no-store", "X-Request-ID": requestId } });
+  };
   try {
-    const body = (await req.json()) as Record<string, unknown>;
+    const reader = req.body?.getReader();
+    if (!reader) return respond({ error: "Query is required" }, 400);
+    const buffers: Uint8Array[] = [];
+    let bytes = 0;
+    while (true) {
+      const part = await reader.read();
+      if (part.done) break;
+      bytes += part.value.length;
+      if (bytes > 32_000) { await reader.cancel(); return respond({ error: "Request is too large" }, 413); }
+      buffers.push(part.value);
+    }
+    let parsed: unknown;
+    try { parsed = JSON.parse(Buffer.concat(buffers).toString("utf8")); } catch { return respond({ error: "Invalid JSON" }, 400); }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return respond({ error: "Invalid request" }, 400);
+    const body = parsed as Record<string, unknown>;
     const rawQuery = typeof body.message === "string" ? body.message : typeof body.query === "string" ? body.query : "";
     const query = rawQuery.trim();
     language = body.language === "mr" ? "mr" : body.language === "hi" ? "hi" : "en";
 
-    if (!query) return NextResponse.json({ error: "Query is required" }, { status: 400 });
+    if (!query) return respond({ error: "Query is required" }, 400);
     if (query.length > MAX_QUERY_LENGTH) {
-      return NextResponse.json(
+      return respond(
         { error: "Query is too long", reply: "Please shorten your question to 2,000 characters or fewer." },
-        { status: 400 }
+        400
       );
-    }
-
-    const immediateReply = deterministicReply(query, language);
-    if (immediateReply) {
-      return NextResponse.json({
-        reply: immediateReply,
-        sources: [],
-        grounded: false,
-        engine: "local-reliable",
-      });
     }
 
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
     try {
       const rateLimit = await checkRateLimit(`chatbot:${ip}`, RATE_LIMIT_CONFIGS.apiRead);
       if (rateLimit && !rateLimit.success) {
-        return NextResponse.json(
+        return respond(
           { error: { code: "RATE_LIMITED", message: "Too many chatbot requests. Please wait a moment." }, reply: "Too many requests were sent. Please wait a moment and try again." },
-          { status: 429 }
+          429
         );
       }
     } catch (rateLimitError) {
@@ -147,44 +164,54 @@ export async function POST(req: NextRequest) {
     }
 
     const history = sanitizeChatHistory(body.history);
-    const retrievalQuery = resolveHeritageQuery(query, history);
+    const immediateReply = deterministicReply(query, language);
+    if (immediateReply) return respond({ reply: immediateReply, sources: [], grounded: false, engine: "local-reliable" });
+    const retrievalQuery = resolveConversationQuery(resolveHeritageQuery(query, history), history);
     const heritage = heritageAnswer(retrievalQuery, language);
     if (heritage) {
-      return NextResponse.json({ reply: heritage.answer, sources: [{ title: "Sant Eknath heritage", url: `/${language}${heritage.sourceUrl}` }], grounded: true, engine: "local-reliable" });
+      return respond({ reply: heritage.answer, sources: [{ title: "Sant Eknath heritage", url: `/${language}${heritage.sourceUrl}` }], grounded: true, engine: "local-reliable" });
     }
     const locality = localityOverview(query, language);
     if (locality) {
-      return NextResponse.json({ reply: locality.answer, sources: [{ title: "Paithan area map", url: `/${language}/nagar-parishad/ward-map` }], grounded: true, engine: "local-reliable" });
+      return respond({ reply: locality.answer, sources: [{ title: "Paithan area map", url: `/${language}/nagar-parishad/ward-map` }], grounded: true, engine: "local-reliable" });
     }
     let contextText = "No verified Paithan record was retrieved for this question.";
     let sources: Array<{ title: string; url: string }> = [];
     let retrieved: RetrievedChunk[] = [];
     try {
-      retrieved = queryKnowledgeBase(retrievalQuery, 1);
+      const retrievalStarted = Date.now();
+      retrieved = await searchKnowledge(retrievalQuery, language);
+      console.info(JSON.stringify({ event: "chatbot.retrieval", requestId, chunks: retrieved.length, latencyMs: Date.now() - retrievalStarted }));
       if (retrieved[0]) {
-        contextText = `[Source: ${retrieved[0].sourceTitle} (${retrieved[0].sourceUrl})]\n${retrieved[0].content}`;
-        sources = [{ title: retrieved[0].sourceTitle, url: retrieved[0].sourceUrl }];
+        contextText = retrieved.map((chunk, i) => `[Source ${i}: ${chunk.sourceTitle} (${chunk.sourceUrl}); reliability: ${chunk.reliability || "website, verification/date unknown"}]\n${chunk.content}`).join("\n\n").slice(0, 10_000);
+        sources = retrieved.map((chunk) => ({ title: chunk.sourceTitle, url: chunk.sourceUrl }));
       }
     } catch (retrievalError) {
       console.error("[chatbot] Local knowledge retrieval failed; continuing without local context.", retrievalError);
     }
 
     const hasLocalContext = retrieved.length > 0;
+    const culture = cultureOverview(retrievalQuery, language, retrieved);
+    if (culture) return respond({ reply: culture, sources: [{ title: language === "mr" ? "पैठणचा सांस्कृतिक वारसा" : language === "hi" ? "पैठण की सांस्कृतिक विरासत" : "Paithan cultural heritage", url: `/${language}/heritage/cultural-heritage` }], grounded: true, engine: "local-reliable" });
     if (retrieved[0]?.id === "kb-bird-sanctuary" && /^(tell\s+(?:me\s+)?about|what\s+is|describe|.*बद्दल|.*के बारे)/i.test(query)) {
-      return NextResponse.json({ reply: localFallback(query, language, retrieved), sources, grounded: true, engine: "local-reliable" });
+      return respond({ reply: localFallback(query, language, retrieved), sources: sources.slice(0, 1), grounded: true, engine: "local-reliable" });
     }
+    const generationStarted = Date.now();
     const generated = await generateChatbotAnswer({ query, language, history, contextText, isLocalQuestion: hasLocalContext });
-    const reply = generated?.answer || localFallback(query, language, retrieved);
+    console.info(JSON.stringify({ event: "chatbot.generation", requestId, model: generated?.model || null, latencyMs: Date.now() - generationStarted, usage: generated?.usage }));
+    const reply = generated?.answer || (retrieved[0]?.sourceType === "page" || retrieved[0]?.sourceType === "public-data" || retrieved[0]?.sourceType === "database" ? extractRelevantSummary(retrievalQuery, retrieved.slice(0, 1)) || localFallback(query, language, retrieved) : localFallback(query, language, retrieved));
+    const usedSources = generated ? [...new Set(generated.sourceIds || [])].map((i) => sources[i]).filter(Boolean) : sources.slice(0, 1);
+    const distinctSources = [...new Map(usedSources.map((source) => [source.url, source])).values()];
 
-    return NextResponse.json({
+    return respond({
       reply,
-      sources: hasLocalContext ? sources : [],
-      grounded: hasLocalContext,
+      sources: distinctSources,
+      grounded: distinctSources.length > 0,
       engine: generated?.model || "local-fallback",
     });
   } catch (error) {
-    console.error("Chatbot API Error:", error);
-    return NextResponse.json(
+    console.error(JSON.stringify({ event: "chatbot.error", requestId, errorType: error instanceof Error ? error.name : "unknown" }));
+    return respond(
       {
         error: { code: "CHATBOT_ERROR", message: "The assistant could not process this request." },
         reply: language === "mr"
@@ -194,7 +221,7 @@ export async function POST(req: NextRequest) {
             : "I couldn’t process that request. Please try again.",
         sources: [],
       },
-      { status: 500 }
+      500
     );
   }
 }
