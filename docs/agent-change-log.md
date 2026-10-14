@@ -1,5 +1,12 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Production Gemini configuration diagnosis
+
+- CLI approval connected `revenex-ventures`, which does not own the Paithan project. The in-app browser is authenticated to the owning `pymohan-s-projects` team, so project settings were inspected there instead of requesting another blind login.
+- The project's environment-variable list contains model settings but no `GEMINI_API_KEY`, explaining general-model failures despite a working local key.
+- Prepared the add-variable dialog with key `GEMINI_API_KEY`, type Secret, environment Production. The value remains empty and nothing was saved. The owner must enter/save the credential, then the existing deployment can be redeployed and live general queries rechecked.
+- Updated README. No application changes or secret values were committed.
+
 ## 2026-10-14 — Codex — Vercel access verification
 
 - CLI authorization succeeded as `prasanna-cyber77`.
