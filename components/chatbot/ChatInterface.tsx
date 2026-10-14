@@ -84,11 +84,13 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
 
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagePanelRef = useRef<HTMLDivElement>(null);
   const messageCounterRef = useRef(1);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const panel = messagePanelRef.current;
+    if (!panel) return;
+    panel.scrollTo({ top: panel.scrollHeight, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -291,7 +293,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 bg-slate-50/60">
+      <div ref={messagePanelRef} className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-4 bg-slate-50/60">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
             <div
@@ -347,7 +349,6 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
           </div>
         )}
 
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Suggestions */}

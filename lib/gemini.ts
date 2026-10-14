@@ -20,7 +20,7 @@ const DEFAULT_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
 const MAX_HISTORY_ITEMS = 8;
 
 function configuredModels(): string[] {
-  const configured = process.env.GEMINI_MODEL?.trim();
+  const configured = (process.env.GEMINI_MODEL || process.env.GEMINI_CHAT_MODEL)?.trim();
   return configured
     ? [configured, ...DEFAULT_MODELS.filter((model) => model !== configured)]
     : DEFAULT_MODELS;

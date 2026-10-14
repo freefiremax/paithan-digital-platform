@@ -11,7 +11,7 @@ import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
 export const runtime = "nodejs";
 const MAX_QUERY_LENGTH = 2_000;
 
-function localFallback(query: string, language: ChatLanguage, contextText: string, hasLocalContext: boolean): string {
+function deterministicReply(query: string, language: ChatLanguage): string | null {
   const normalized = query.toLowerCase().trim();
   if (/(system\s+prompt|api\s*key|database_url|env\s*var|password_hash|auth_secret|ignore\s+(all\s+)?previous)/i.test(normalized)) {
     return language === "mr"
@@ -37,6 +37,10 @@ function localFallback(query: string, language: ChatLanguage, contextText: strin
         : "I’m the Paithan Digital Platform AI Citizen Assistant. I can help with verified local information, civic services, tourism, heritage, and general questions.";
   }
 
+  return null;
+}
+
+function localFallback(language: ChatLanguage, contextText: string, hasLocalContext: boolean): string {
   if (hasLocalContext) {
     const compactContext = contextText
       .replace(/^\[Source[^\n]*\]\n/gm, "")
@@ -56,20 +60,12 @@ function localFallback(query: string, language: ChatLanguage, contextText: strin
 }
 
 export async function POST(req: NextRequest) {
+  let language: ChatLanguage = "en";
   try {
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    const rateLimit = await checkRateLimit(`chatbot:${ip}`, RATE_LIMIT_CONFIGS.apiRead);
-    if (rateLimit && !rateLimit.success) {
-      return NextResponse.json(
-        { error: { code: "RATE_LIMITED", message: "Too many chatbot requests. Please wait a moment." }, reply: "Too many requests were sent. Please wait a moment and try again." },
-        { status: 429 }
-      );
-    }
-
     const body = (await req.json()) as Record<string, unknown>;
     const rawQuery = typeof body.message === "string" ? body.message : typeof body.query === "string" ? body.query : "";
     const query = rawQuery.trim();
-    const language: ChatLanguage = body.language === "mr" ? "mr" : body.language === "hi" ? "hi" : "en";
+    language = body.language === "mr" ? "mr" : body.language === "hi" ? "hi" : "en";
 
     if (!query) return NextResponse.json({ error: "Query is required" }, { status: 400 });
     if (query.length > MAX_QUERY_LENGTH) {
@@ -79,12 +75,44 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const immediateReply = deterministicReply(query, language);
+    if (immediateReply) {
+      return NextResponse.json({
+        reply: immediateReply,
+        sources: [],
+        grounded: false,
+        engine: "local-reliable",
+      });
+    }
+
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    try {
+      const rateLimit = await checkRateLimit(`chatbot:${ip}`, RATE_LIMIT_CONFIGS.apiRead);
+      if (rateLimit && !rateLimit.success) {
+        return NextResponse.json(
+          { error: { code: "RATE_LIMITED", message: "Too many chatbot requests. Please wait a moment." }, reply: "Too many requests were sent. Please wait a moment and try again." },
+          { status: 429 }
+        );
+      }
+    } catch (rateLimitError) {
+      console.error("[chatbot] Rate-limit service unavailable; continuing with model safeguards.", rateLimitError);
+    }
+
     const history = sanitizeChatHistory(body.history);
-    const { contextText, sources } = buildChatbotContext(query);
-    const retrieved = queryKnowledgeBase(query, 4);
-    const hasLocalContext = retrieved.some((item) => item.score >= 15);
+    let contextText = "No verified Paithan record was retrieved for this question.";
+    let sources: Array<{ title: string; url: string }> = [];
+    let hasLocalContext = false;
+    try {
+      const context = buildChatbotContext(query);
+      contextText = context.contextText;
+      sources = context.sources;
+      hasLocalContext = queryKnowledgeBase(query, 4).some((item) => item.score >= 15);
+    } catch (retrievalError) {
+      console.error("[chatbot] Local knowledge retrieval failed; continuing without local context.", retrievalError);
+    }
+
     const generated = await generateChatbotAnswer({ query, language, history, contextText, isLocalQuestion: hasLocalContext });
-    const reply = generated?.answer || localFallback(query, language, contextText, hasLocalContext);
+    const reply = generated?.answer || localFallback(language, contextText, hasLocalContext);
 
     return NextResponse.json({
       reply,
@@ -97,7 +125,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         error: { code: "CHATBOT_ERROR", message: "The assistant could not process this request." },
-        reply: "I couldn’t process that request. Please try again with a shorter, clearer question.",
+        reply: language === "mr"
+          ? "विनंतीवर प्रक्रिया करता आली नाही. कृपया पुन्हा प्रयत्न करा."
+          : language === "hi"
+            ? "अनुरोध पूरा नहीं हो सका। कृपया फिर प्रयास करें।"
+            : "I couldn’t process that request. Please try again.",
         sources: [],
       },
       { status: 500 }

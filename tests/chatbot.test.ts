@@ -3,6 +3,8 @@ import { queryKnowledgeBase, buildChatbotContext, KNOWLEDGE_BASE } from "@/lib/r
 import { POST } from "@/app/api/chatbot/route";
 import { NextRequest } from "next/server";
 import { normalizeAnswer, sanitizeChatHistory } from "@/lib/gemini";
+import fs from "node:fs";
+import path from "node:path";
 
 describe("Chatbot RAG Knowledge Base", () => {
   it("should have comprehensive knowledge base documents", () => {
@@ -137,5 +139,15 @@ describe("Chatbot response controls", () => {
       { role: "user", content: "First question" },
       { role: "assistant", content: "First answer" },
     ]);
+  });
+
+  it("scrolls only the chat message panel instead of the browser page", () => {
+    const source = fs.readFileSync(
+      path.join(process.cwd(), "components/chatbot/ChatInterface.tsx"),
+      "utf8"
+    );
+    expect(source).toContain("panel.scrollTo");
+    expect(source).toContain("ref={messagePanelRef}");
+    expect(source).not.toContain("scrollIntoView");
   });
 });
