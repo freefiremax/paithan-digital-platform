@@ -7,6 +7,7 @@ import {
   type ChatLanguage,
 } from "@/lib/gemini";
 import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
+import { localityOverview } from "@/lib/chatbot-localities";
 
 export const runtime = "nodejs";
 const MAX_QUERY_LENGTH = 2_000;
@@ -128,6 +129,10 @@ export async function POST(req: NextRequest) {
     }
 
     const history = sanitizeChatHistory(body.history);
+    const locality = localityOverview(query, language);
+    if (locality) {
+      return NextResponse.json({ reply: locality.answer, sources: [{ title: "Paithan area map", url: `/${language}/nagar-parishad/ward-map` }], grounded: true, engine: "local-reliable" });
+    }
     let contextText = "No verified Paithan record was retrieved for this question.";
     let sources: Array<{ title: string; url: string }> = [];
     let retrieved: RetrievedChunk[] = [];

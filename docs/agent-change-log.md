@@ -1,5 +1,13 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Chatbot locality coverage
+
+- Added `lib/chatbot-localities.ts` with 15 place-name groups, spelling aliases, multilingual overview replies and whole-name matching.
+- Islamapur overview requests now return local map context without requiring Google AI. Other locality questions retrieve context rather than being treated as unrelated general questions.
+- All 17 ward profiles now feed the retrieval dataset through shared content. Municipal ward assignments remain unverified and are not inferred from the assembly map.
+- Gemini tries the fallback model after a model-specific quota response (429); invalid credentials still stop requests.
+- Added regression tests for Islamapur, Marathi aliases and unrelated substring matches. General question coverage remains dependent on the model API; no model fine-tuning was performed.
+
 ## 2026-10-14 — Codex — Ward content accuracy and layout
 
 - Added `lib/ward-profiles.ts` with descriptions for all 17 localities and shared imagery used by directory and detail pages.

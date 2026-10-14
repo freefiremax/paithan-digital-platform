@@ -1,3 +1,7 @@
+import { wards } from "@/lib/mock-data";
+import { getWardProfile } from "@/lib/ward-profiles";
+import { findChatbotLocality } from "@/lib/chatbot-localities";
+
 export interface RetrievedChunk {
   id: string;
   sourceType: string;
@@ -17,6 +21,14 @@ export interface KnowledgeDoc {
 }
 
 export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
+  ...wards.map((ward): KnowledgeDoc => ({
+    id: `kb-ward-${ward.number}`,
+    category: "WEBSITE",
+    sourceTitle: ward.name,
+    sourceUrl: `/nagar-parishad/ward-map/${ward.number}`,
+    keywords: [ward.name.toLowerCase(), ward.nameMr, ...ward.locality.toLowerCase().split(/\s*&\s*/)],
+    content: `${ward.name}\n${getWardProfile(ward.number).description}\nLocality: ${ward.locality}. Municipal ward assignments await official council confirmation.`,
+  })),
   // 1. Council & Administration
   {
     id: "kb-council",
@@ -325,6 +337,10 @@ function tokenizeQuery(query: string): string[] {
  */
 export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
   const normalizedQuery = query.toLowerCase().trim();
+  const locality = findChatbotLocality(query);
+  if (locality) {
+    return [{ id: `kb-place-${locality.aliases[0]}`, sourceType: "WEBSITE", sourceTitle: "Paithan area map", sourceUrl: "/nagar-parishad/ward-map", content: `${locality.name} is a locality name in the Paithan area map/image directory. The displayed map covers an assembly constituency, not confirmed municipal ward boundaries. Detailed history, population, contacts and civic jurisdiction for this locality have not been verified; do not invent them.`, score: 100 }];
+  }
 
   // If query is just a greeting, return no KB chunks so conversational AI handles it naturally
   if (GREETING_REGEX.test(normalizedQuery) || /^(will|can|could|would) you help me[?.!\s]*$/i.test(normalizedQuery)) {

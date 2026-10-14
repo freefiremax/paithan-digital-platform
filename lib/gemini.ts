@@ -155,7 +155,8 @@ ${options.isLocalQuestion ? options.contextText : "No relevant verified Paithan 
 
       if (!response.ok) {
         console.error(`[chatbot] Gemini ${model} returned HTTP ${response.status}.`);
-        if (response.status === 401 || response.status === 403 || response.status === 429) break;
+        // Quota can be model-specific: still try the lighter fallback on 429.
+        if (response.status === 401 || response.status === 403) break;
         continue;
       }
       const answer = extractStructuredAnswer((await response.json()) as GeminiPayload);

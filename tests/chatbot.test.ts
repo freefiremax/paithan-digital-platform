@@ -184,6 +184,21 @@ describe("Chatbot API Route Handler", () => {
 });
 
 describe("Chatbot response controls", () => {
+  it("answers Islamapur locally when the model is unavailable", async () => {
+    const response = await POST(new NextRequest("http://localhost/api/chatbot", {
+      method: "POST", body: JSON.stringify({ message: "tell me about islamapur", language: "en" }),
+    }));
+    const data = await response.json();
+    expect(data.reply).toContain("Islamapur");
+    expect(data.reply).not.toContain("AI service is temporarily unavailable");
+    expect(data.engine).toBe("local-reliable");
+  });
+
+  it("recognizes locality spelling aliases without matching unrelated words", () => {
+    expect(queryKnowledgeBase("islampur history")[0].id).toBe("kb-place-islamapur");
+    expect(queryKnowledgeBase("इस्लामपूर बद्दल सांगा")[0].id).toBe("kb-place-islamapur");
+    expect(queryKnowledgeBase("notislamapur")).toEqual([]);
+  });
   it("normalizes excessive whitespace and caps oversized answers", () => {
     expect(normalizeAnswer("First line.  \n\n\nSecond line.")).toBe("First line.\n\nSecond line.");
     expect(normalizeAnswer("word ".repeat(1_000), 120).length).toBeLessThanOrEqual(121);
