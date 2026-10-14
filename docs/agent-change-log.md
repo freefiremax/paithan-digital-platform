@@ -1,5 +1,11 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Backend security assessment
+
+- Added `docs/backend-security-review.md` and README status. Critical source findings: public registration persists accepted ADMIN/EDITOR roles; client session updates copy role/ward claims while some admin operations trust those claims. High findings: upload deletion lacks ownership enforcement; enabled credential Turnstile can be omitted and authorize lacks login-specific rate limiting.
+- Read-only anonymous production admin users/db-health/chatbot knowledge checks returned 401; auth session returned null. Existing five backend test suites passed (58 tests). No account creation, production mutation, deletion, exploit or load test performed.
+- Documentation-only assessment; findings remain unfixed and should be prioritised before sensitive citizen-data use. Passing existing tests is not a security certification.
+
 ## 2026-10-14 — Codex — Essential-only cost revision
 
 - Replaced the broad eight-page cost PDF with a two-page essential-only version at the same path, per the owner's clarification. Removed external maintenance labour and optional paid subscriptions from the recommendation; the earlier ₹12,000 allowance is superseded.
