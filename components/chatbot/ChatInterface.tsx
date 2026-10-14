@@ -64,7 +64,7 @@ const WELCOME_MESSAGES = {
   hi: "नमस्ते! मैं पैठण की नागरिक सेवाओं, पर्यटन और विरासत के साथ सामान्य प्रश्नों में भी मदद कर सकता हूँ। आप क्या जानना चाहते हैं?",
 };
 
-export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
+export function ChatInterface({ fullPage = false, floating = false }: { fullPage?: boolean; floating?: boolean }) {
   const t = useTranslations('chatbot');
   const systemLocale = useLocale() as 'en' | 'mr' | 'hi';
   const [chatLang, setChatLang] = useState<'en' | 'mr' | 'hi'>(systemLocale);
@@ -227,7 +227,7 @@ export function ChatInterface({ fullPage = false }: { fullPage?: boolean }) {
   return (
     <div
       className={`flex flex-col bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden ${
-        fullPage ? 'h-[750px] max-h-[85vh] w-full' : 'h-[560px] w-full'
+        fullPage ? 'h-[750px] max-h-[85vh] w-full' : floating ? 'h-[min(560px,calc(100dvh-7.5rem))] max-h-[calc(100dvh-7.5rem)] w-full' : 'h-[560px] w-full'
       }`}
     >
       {/* Header */}

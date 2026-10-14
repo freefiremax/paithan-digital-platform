@@ -44,6 +44,11 @@ This is the handoff record for work performed by Codex, ChatGPT, Antigravity, an
 - Re-measured the 17 interactive SVG hit areas against the numbered marker tips in `public/maps/paithan-17-wards-base.png`.
 - Increased the hit target slightly and clarified accessible labels while preserving the map's embedded marker colors and branding.
 
+## 2026-10-14 — Codex — Floating chatbot stability
+
+- Made the floating panel use viewport-aware height and width so it does not extend below the screen on mobile.
+- Added dialog semantics, Escape-to-close, focus placement, and visible keyboard focus styling for the floating trigger and close control.
+
 ### Validation
 
 - Pending current Gemini recheck, Cloudinary account read, and static checks.
