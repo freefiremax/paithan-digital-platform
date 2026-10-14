@@ -1,6 +1,13 @@
 # Agent Change Log
 
-## 2026-10-14 — Codex — Production Gemini configuration diagnosis
+## 2026-10-14 — Codex — Existing Gemini key diagnosis correction
+
+- Refreshed and searched the owning Vercel project settings after a duplicate-variable error. `GEMINI_API_KEY` already exists as a Secret for Production and Preview, dated September 22. The earlier missing-key conclusion below was incorrect.
+- Closed the unsaved duplicate form and opened Edit on the existing entry. The owner must enter/save the replacement credential; Codex did not save, reveal, or commit its value.
+- Public production photosynthesis probe returned HTTP 503 with `AI_UNAVAILABLE`. No redeployment has been performed in this step; update the existing credential, redeploy, and retest before claiming recovery.
+- Updated README and this handoff record only; application code is unchanged.
+
+## 2026-10-14 — Codex — Production Gemini configuration diagnosis (superseded)
 
 - CLI approval connected `revenex-ventures`, which does not own the Paithan project. The in-app browser is authenticated to the owning `pymohan-s-projects` team, so project settings were inspected there instead of requesting another blind login.
 - The project's environment-variable list contains model settings but no `GEMINI_API_KEY`, explaining general-model failures despite a working local key.
