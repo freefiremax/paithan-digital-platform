@@ -1,5 +1,12 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Vercel access verification
+
+- CLI authorization succeeded as `prasanna-cyber77`.
+- The account's accessible projects do not include Paithan; its team list does not include `pymohan-s-projects`, which owns the deployment URL recorded by GitHub. An explicit scope lookup failed.
+- No production environment values were read or modified, and no new Vercel project was created. General AI configuration repair remains dependent on access to the owning team/account.
+- Updated README and operating guide. This was an access check and documentation update; application code was not changed.
+
 ## 2026-10-14 — Codex — Automated chatbot knowledge and reliability upgrade
 
 - Implemented `scripts/ingest-chatbot-knowledge.ts`, a generated public index, shared knowledge types, ranked retrieval, public Prisma adapters, optional embedding/search interfaces, validated model settings and local culture synthesis under `lib/chatbot/`.
