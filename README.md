@@ -1,5 +1,7 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
+Floating chat has a separate responsive language-control row for English, Marathi and Hindi. Language selection changes the reply language, title and composer. `lib/chatbot-heritage.ts` provides concise multilingual Sant Eknath, mandir and wada overviews and resolves explicit topic follow-ups using bounded conversation history; precise/current questions continue through grounded model retrieval. This is application knowledge coverage, not hosted-model fine-tuning or universal offline knowledge.
+
 Chatbot regression coverage now includes personal introductions (`I am Prasanna`), acknowledgements, locality aliases, and Jayakwadi/Jaikwadi bird queries with singular/plural spelling normalization. These use local conversational or knowledge responses when the API is unavailable. The live fallback-model connectivity check returned HTTP 200 on 2026-10-14; deployed credentials and quota must also be valid. These are application knowledge and response controls, not a fine-tuned Google model.
 
 Chatbot locality coverage: place-name aliases (including Islamapur/Islampur and Devanagari forms) are recognized locally. Overview questions work without Gemini, and all ward profiles feed the retrieval dataset. Detailed unverified locality facts are never invented. General questions still require an available model API; no prompt or dataset can guarantee answers during a provider outage. A model-specific 429 now tries the next configured fallback.

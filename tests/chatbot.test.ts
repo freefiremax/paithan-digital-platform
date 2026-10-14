@@ -184,6 +184,18 @@ describe("Chatbot API Route Handler", () => {
 });
 
 describe("Chatbot response controls", () => {
+  it.each(["en", "mr", "hi"])("answers Eknath mandir and wada locally in %s", async (language) => {
+    const response = await POST(new NextRequest("http://localhost/api/chatbot", { method: "POST", body: JSON.stringify({ message: "sant eknath mandir wada", language }) }));
+    const data = await response.json();
+    expect(data.engine).toBe("local-reliable");
+    expect(data.reply).toContain(language === "en" ? "distinct places" : language === "mr" ? "वेगळी स्थळे" : "अलग-अलग स्थल");
+    expect(data.sources).toHaveLength(1);
+  });
+  it("carries the Eknath topic into an explicit follow-up", async () => {
+    const response = await POST(new NextRequest("http://localhost/api/chatbot", { method: "POST", body: JSON.stringify({ message: "and the wada?", language: "en", history: [{ role: "user", content: "Tell me about Sant Eknath" }, { role: "assistant", content: "A saint associated with Paithan." }] }) }));
+    const data = await response.json();
+    expect(data.reply).toContain("historic residence");
+  });
   it("acknowledges a personal introduction without requiring an AI service", async () => {
     const response = await POST(new NextRequest("http://localhost/api/chatbot", { method: "POST", body: JSON.stringify({ message: "I am Prasanna", language: "en" }) }));
     const data = await response.json();

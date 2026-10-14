@@ -344,6 +344,10 @@ export function queryKnowledgeBase(query: string, limit = 4): RetrievedChunk[] {
     if (doc) return [{ id: doc.id, sourceType: doc.category, sourceTitle: doc.sourceTitle, sourceUrl: doc.sourceUrl, content: doc.content, score: 100 }];
   }
   const locality = findChatbotLocality(query);
+  if (/(?:\b(?:eknath|ekanath|eknaath)\b|एकनाथ)/i.test(query)) {
+    const doc = KNOWLEDGE_BASE.find((item) => item.id === "kb-sant-eknath");
+    if (doc) return [{ id: doc.id, sourceType: doc.category, sourceTitle: doc.sourceTitle, sourceUrl: doc.sourceUrl, content: doc.content, score: 100 }];
+  }
   if (locality) {
     return [{ id: `kb-place-${locality.aliases[0]}`, sourceType: "WEBSITE", sourceTitle: "Paithan area map", sourceUrl: "/nagar-parishad/ward-map", content: `${locality.name} is a locality name in the Paithan area map/image directory. The displayed map covers an assembly constituency, not confirmed municipal ward boundaries. Detailed history, population, contacts and civic jurisdiction for this locality have not been verified; do not invent them.`, score: 100 }];
   }

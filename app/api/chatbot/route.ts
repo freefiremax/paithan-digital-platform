@@ -8,6 +8,7 @@ import {
 } from "@/lib/gemini";
 import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
 import { localityOverview } from "@/lib/chatbot-localities";
+import { heritageAnswer, resolveHeritageQuery } from "@/lib/chatbot-heritage";
 
 export const runtime = "nodejs";
 const MAX_QUERY_LENGTH = 2_000;
@@ -146,6 +147,11 @@ export async function POST(req: NextRequest) {
     }
 
     const history = sanitizeChatHistory(body.history);
+    const retrievalQuery = resolveHeritageQuery(query, history);
+    const heritage = heritageAnswer(retrievalQuery, language);
+    if (heritage) {
+      return NextResponse.json({ reply: heritage.answer, sources: [{ title: "Sant Eknath heritage", url: `/${language}${heritage.sourceUrl}` }], grounded: true, engine: "local-reliable" });
+    }
     const locality = localityOverview(query, language);
     if (locality) {
       return NextResponse.json({ reply: locality.answer, sources: [{ title: "Paithan area map", url: `/${language}/nagar-parishad/ward-map` }], grounded: true, engine: "local-reliable" });
@@ -154,7 +160,7 @@ export async function POST(req: NextRequest) {
     let sources: Array<{ title: string; url: string }> = [];
     let retrieved: RetrievedChunk[] = [];
     try {
-      retrieved = queryKnowledgeBase(query, 1);
+      retrieved = queryKnowledgeBase(retrievalQuery, 1);
       if (retrieved[0]) {
         contextText = `[Source: ${retrieved[0].sourceTitle} (${retrieved[0].sourceUrl})]\n${retrieved[0].content}`;
         sources = [{ title: retrieved[0].sourceTitle, url: retrieved[0].sourceUrl }];

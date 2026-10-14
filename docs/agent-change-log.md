@@ -1,5 +1,12 @@
 # Agent Change Log
 
+## 2026-10-14 — Codex — Floating language controls and Eknath topic coverage
+
+- Made the floating chat header stack its language controls so English, Marathi and Hindi remain visible in narrow panels; added selected-state accessibility labels and a shrinkable composer.
+- Added shared multilingual Eknath overview responses, mandir/wada distinction and explicit follow-up subject resolution. Specific/current queries remain with the model and local source context.
+- Eknath spelling variants now retrieve the heritage entry consistently; increased client history to the server's eight-message bound and preserved page locale in internal source links.
+- Added three-language API regressions and a wada follow-up regression. README updated for Antigravity handoff. No model fine-tuning performed.
+
 ## 2026-10-14 — Codex — Introductions and bird-sanctuary regression fixes
 
 - Added multilingual name-introduction acknowledgements and thank-you responses in `app/api/chatbot/route.ts` without an external model dependency.

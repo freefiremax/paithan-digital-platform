@@ -147,7 +147,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
           body: JSON.stringify({
             message: query,
             language: chatLang,
-            history: messages.slice(-4).map((m) => ({ role: m.role, content: m.content })),
+            history: messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
           }),
         });
 
@@ -231,7 +231,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
       }`}
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-[var(--vangi-950)] to-[var(--vangi-850)] text-white px-4 sm:px-5 py-3.5 flex items-center justify-between border-b border-amber-500/20">
+      <div className={`bg-gradient-to-r from-[var(--vangi-950)] to-[var(--vangi-850)] text-white px-4 sm:px-5 py-3.5 flex flex-wrap gap-3 items-center justify-between border-b border-amber-500/20 ${floating ? 'flex-col items-stretch' : ''}`}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-white shadow-md shadow-amber-500/20 shrink-0">
             <Bot className="w-5 h-5" />
@@ -243,7 +243,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
               </h2>
               <span className="flex items-center gap-1 text-[10px] sm:text-[11px] bg-emerald-500/20 text-emerald-300 font-medium px-2 py-0.5 rounded-full border border-emerald-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Live AI
+                {chatLang === 'mr' ? 'AI सहाय्यक' : chatLang === 'hi' ? 'AI सहायक' : 'AI assistant'}
               </span>
             </div>
             <p className="text-[11px] text-slate-300 truncate max-w-[200px] sm:max-w-xs">
@@ -252,12 +252,14 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           {/* Active Multilingual Language Switcher */}
-          <div className="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-slate-700">
+          <div role="group" aria-label="Chat language / भाषा" className="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-slate-700">
             <Languages className="w-3.5 h-3.5 text-amber-400 ml-1.5 mr-1 hidden sm:block" />
             <button
               onClick={() => handleLanguageChange('en')}
+              aria-pressed={chatLang === 'en'}
+              aria-label="Answer in English"
               className={`px-2 py-1 text-xs font-semibold rounded transition cursor-pointer ${
                 chatLang === 'en' ? 'bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white'
               }`}
@@ -266,6 +268,8 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
             </button>
             <button
               onClick={() => handleLanguageChange('mr')}
+              aria-pressed={chatLang === 'mr'}
+              aria-label="मराठीत उत्तर द्या"
               className={`px-2 py-1 text-xs font-semibold rounded transition cursor-pointer ${
                 chatLang === 'mr' ? 'bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white'
               }`}
@@ -274,6 +278,8 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
             </button>
             <button
               onClick={() => handleLanguageChange('hi')}
+              aria-pressed={chatLang === 'hi'}
+              aria-label="हिंदी में उत्तर दें"
               className={`px-2 py-1 text-xs font-semibold rounded transition cursor-pointer ${
                 chatLang === 'hi' ? 'bg-amber-500 text-slate-950 shadow' : 'text-slate-300 hover:text-white'
               }`}
@@ -322,7 +328,7 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
                     {msg.sources.map((src, i) => (
                       <Link
                         key={i}
-                        href={src.url}
+                        href={src.url.startsWith('/') && !/^\/(en|mr|hi)(\/|$)/.test(src.url) ? `/${systemLocale}${src.url}` : src.url}
                         className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/70 px-2 py-0.5 rounded transition"
                       >
                         <span>{src.title}</span>
@@ -392,7 +398,8 @@ export function ChatInterface({ fullPage = false, floating = false }: { fullPage
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={getPlaceholder()}
-            className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition placeholder:text-slate-400"
+            aria-label={getPlaceholder()}
+            className="min-w-0 flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition placeholder:text-slate-400"
           />
           <button
             type="submit"
