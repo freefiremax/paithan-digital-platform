@@ -443,6 +443,41 @@ body{overflow-x:hidden}
 #sec-links .lstrip+.lstrip{margin-top:22px}
 #sec-links{padding-bottom:30px}
 
+/* Locality identity stays within the map dashboard; public site chrome is unchanged. */
+#region{--place-deep:#254e43;--place-soft:#e4eee5;--place-accent:#c6a257;background:var(--place-soft);padding-bottom:32px}
+#region[data-theme="water"]{--place-deep:#174e64;--place-soft:#e4eff3;--place-accent:#9dccd6}
+#region[data-theme="heritage"]{--place-deep:#632c3b;--place-soft:#f1e5df;--place-accent:#dfba7c}
+#region[data-theme="craft"]{--place-deep:#583857;--place-soft:#eee4ef;--place-accent:#d7b870}
+#region[data-theme="nature"]{--place-deep:#315b38;--place-soft:#e3eddf;--place-accent:#d4dca1}
+#region[data-theme="market"]{--place-deep:#66502a;--place-soft:#f0eadc;--place-accent:#e3c886}
+#region .rhero{background:var(--place-deep);padding-bottom:40px}
+#region .rhero .rbg{background:linear-gradient(90deg,var(--place-deep) 18%,transparent 100%)}
+#region .rhero .rbg::before,#region .rhero .rbg::after{display:none}
+#region .rhero .rtop{padding-top:32px}
+#region .rhero .rtop h2{font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.12;text-shadow:none}
+#region .rhero .rtop .eyebrow{color:#fff0cd;text-transform:none;letter-spacing:0}
+#region .rhero .rtop .tl{font-size:1.05rem;border-color:var(--place-accent)}
+#region .imgtag{display:none}
+#region .rhero .rtop .rprofile{display:none}
+#region .reveal{opacity:1;transform:none}
+#region .doors{margin-top:34px}
+#region .door{animation:none;transform:none!important;border-radius:9px;box-shadow:none;border-color:#ffffff35}
+#region .door:hover{border-color:var(--place-accent);box-shadow:0 5px 18px #0002}
+#region .door-body{background:#f9faf7}
+#region .door-img .scene{animation:none;transform:none!important}
+.place-story{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(230px,1fr);gap:30px;padding-top:34px;padding-bottom:0}
+.place-story article{padding:28px;background:#ffffffb8;border-radius:8px;border:1px solid #ffffff}
+.place-story h3{font-size:1.8rem;color:var(--place-deep);margin-bottom:14px}
+.place-story p{color:#3d5051;line-height:1.8;max-width:70ch}
+.place-story .place-context{background:var(--place-deep);color:#fff3dc}
+.place-context h3,.place-context p{color:inherit}
+.place-context p{font-size:.95rem}
+.place-context a{display:inline-flex;gap:8px;align-items:center;color:#fff3dc;text-decoration:underline;text-underline-offset:4px;margin-top:18px;min-height:36px}
+.place-source{display:inline-flex;min-height:40px;align-items:center;margin-top:16px;color:var(--place-deep);text-decoration:underline;text-underline-offset:4px;font-size:.85rem}
+#region .scard,#region .stat{background:#ffffffc9;box-shadow:none;border-color:#c6d1cd}
+#region .sech .sh-t b{color:var(--place-deep)}
+#region a:focus-visible,#region button:focus-visible{outline:3px solid #c6a257;outline-offset:5px}
+@media(max-width:700px){.place-story{grid-template-columns:1fr;gap:16px;padding-inline:20px}.place-story article{padding:22px}#region .rhero .rtop{padding-inline:22px}#region .rhero .rtop h2{overflow-wrap:anywhere}}
 </style>
 </head>
 <body>
@@ -547,15 +582,13 @@ body{overflow-x:hidden}
   <a class="item" onclick="enterRegion()"><span data-i18n="navCouncil">Nagar Parishad</span> <span class="car">▾</span></a>
   <a class="item" onclick="enterRegion()"><span data-i18n="navHeritage">Heritage &amp; Culture</span> <span class="car">▾</span></a>
   <a class="item" onclick="enterRegion()"><span data-i18n="navTourism">Tourism &amp; Places</span> <span class="car">▾</span></a>
-  <a class="item" onclick="enterRegion()"><span data-i18n="navNotices">Notices &amp; Tenders</span></a>
+  <a class="item" onclick="enterRegion()"><span data-i18n="navNotices">Public notices</span></a>
   <a class="admin" onclick="enterRegion()"><svg class="ic"><use href="#ic-shield"/></svg> <span data-i18n="navAdmin">Council admin</span></a>
 </div></nav>
 <div class="zari"></div>
 <div class="ticker"><div class="wrap">
   <span class="bell"><svg class="ic"><use href="#ic-bell"/></svg> <span data-i18n="tkNotices">Notices</span></span>
   <div class="track"><div class="move" id="tickmove">
-    <span class="n"><span class="tag">TENDER</span> E-Tender: Solid Waste Management &amp; Door-to-Door Collection across 17 Wards <span class="code">MC-PTN/SAN/SWM-2026/08</span></span>
-    <span class="n"><span class="tag">TENDER</span> E-Tender: Electrical &amp; Mechanical Maintenance, Water Pumping Station <span class="code">MC-PTN/WSD/TND-2026/04</span></span>
     <span class="n"><span class="tag">NOTICE</span> Citizen Advisory: Sanitation Guidelines for Shashti Mahotsav <span class="code">MC-PTN/GEN/ADV-2026/11</span></span>
   </div></div>
   <a class="all">All notices <svg class="ic"><use href="#ic-chevron"/></svg></a>
@@ -575,8 +608,6 @@ body{overflow-x:hidden}
         <div class="nhead"><span class="mr">सूचना</span><h3 data-i18n="nhTitle">Current notices</h3><span class="all" data-i18n="nhAll">All 5</span></div>
         <div class="nlist">
           <div class="nitem feature"><div class="row"><span class="rc">Expression of Interest</span></div><div class="tt">Heritage Tour Guide empanelment for the Paithan archaeological circuit</div></div>
-          <div class="nitem"><div class="row"><span class="etag">E-TENDER</span><span class="rc">MC-PTN/SAN/SWM-2026/08</span></div><div class="cl">CLOSES 8 OCT 2026</div><div class="tt">Solid Waste Management, Door-to-Door Collection &amp; Segregation across 17 Wards</div></div>
-          <div class="nitem"><div class="row"><span class="etag">E-TENDER</span><span class="rc">MC-PTN/WSD/TND-2026/04</span></div><div class="cl">CLOSES 5 OCT 2026</div><div class="tt">Annual Electrical &amp; Mechanical Maintenance, Municipal Water Pumping Station</div></div>
           <div class="nitem"><div class="row"><span class="ptag">PUBLIC NOTICE</span><span class="rc">MC-PTN/GEN/ADV-2026/11</span></div><div class="cl">12 SEPT 2026</div><div class="tt">Citizen Advisory: Advance Planning &amp; Sanitation for Shashti Mahotsav</div></div>
         </div>
       </aside>
@@ -667,7 +698,11 @@ body{overflow-x:hidden}
     </div>
     <div class="doors" id="doors"></div>
   </div>
-  <section id="sec-services" class="wrap" style="padding:74px 34px 8px">
+  <section class="wrap place-story" aria-labelledby="placeStoryTitle">
+    <article><h3 id="placeStoryTitle"></h3><p id="placeStoryText"></p><a id="placeStorySource" class="place-source" target="_blank" rel="noopener noreferrer" hidden></a></article>
+    <article class="place-context"><h3 id="placeContextTitle"></h3><p id="placeContextText"></p><a href="#" id="placeMapBack" onclick="goHome();return false"></a></article>
+  </section>
+  <section id="sec-services" class="wrap" style="padding:40px 34px 8px">
     <div class="sech svc reveal">
       <span class="lb-ic"><svg class="ic"><use href="#ic-doc"/></svg></span>
       <div class="sh-t"><b data-i18n="svcH">Citizen Services</b><span data-i18n="svcSub">Everyday municipal services — apply, pay and track online</span></div>
@@ -735,7 +770,7 @@ body{overflow-x:hidden}
       <a class="fl"><svg class="ic"><use href="#ic-chevron"/></svg> <span data-i18n="ftMembers">Elected members</span></a>
       <a class="fl"><svg class="ic"><use href="#ic-chevron"/></svg> <span data-i18n="ftDepts">Departments</span></a>
       <a class="fl"><svg class="ic"><use href="#ic-chevron"/></svg> <span data-i18n="ftRti">Right to Information</span></a>
-      <a class="fl"><svg class="ic"><use href="#ic-chevron"/></svg> <span data-i18n="ftTenders">Tenders &amp; notices</span></a>
+      <a class="fl"><svg class="ic"><use href="#ic-chevron"/></svg> <span data-i18n="ftTenders">Public notices</span></a>
     </div>
     <div>
       <h5 data-i18n="ftCitizen">Citizen</h5>
@@ -855,7 +890,7 @@ const I18N={
   navCouncil:L('Nagar Parishad','नगर परिषद','नगर परिषद'),
   navHeritage:L('Heritage & Culture','विरासत व संस्कृति','वारसा व संस्कृती'),
   navTourism:L('Tourism & Places','पर्यटन व स्थल','पर्यटन व स्थळे'),
-  navNotices:L('Notices & Tenders','सूचनाएँ व निविदाएँ','सूचना व निविदा'),
+  navNotices:L('Public notices','सार्वजनिक सूचनाएँ','सार्वजनिक सूचना'),
   navAdmin:L('Council admin','परिषद प्रशासन','परिषद प्रशासन'),
   tkNotices:L('Notices','सूचनाएँ','सूचना'),
   hhEye:L('Pratishthana on the Godavari','गोदावरी तट पर प्रतिष्ठान','गोदावरीकाठी प्रतिष्ठान'),
@@ -894,7 +929,7 @@ const I18N={
   ftMembers:L('Elected members','निर्वाचित सदस्य','निवडून आलेले सदस्य'),
   ftDepts:L('Departments','विभाग','विभाग'),
   ftRti:L('Right to Information','सूचना का अधिकार','माहितीचा अधिकार'),
-  ftTenders:L('Tenders & notices','निविदाएँ व सूचनाएँ','निविदा व सूचना'),
+  ftTenders:L('Public notices','सार्वजनिक सूचनाएँ','सार्वजनिक सूचना'),
   ftCitizen:L('Citizen','नागरिक','नागरिक'),
   ftOnline:L('Online services','ऑनलाइन सेवाएँ','ऑनलाइन सेवा'),
   ftTax:L('Pay property tax','संपत्ति कर भरें','मालमत्ता कर भरा'),
@@ -1067,7 +1102,13 @@ const PAITHAN_HERO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGB
      '<place-id>': { hero:'…', doors:{ building:'', water:'', leaf:'', directions:'', landmark:'' } }
    Any field left '' falls back to the shared default styling. */
 const PLACE_PHOTOS = {
-  paithan: { hero: PAITHAN_HERO, doors:{} }
+  paithan: { hero: PAITHAN_HERO, doors:{} },
+  dam: { hero:'/images/sites/jayakwadi-dam.jpg', doors:{} },
+  nathsagar: { hero:'/images/sites/jayakwadi-dam.jpg', doors:{} },
+  birds: { hero:'/images/sites/jaikwadi-birds.jpg', doors:{} },
+  udyan: { hero:'/images/sites/dnyaneshwar-udyan.jpg', doors:{} },
+  paithani: { hero:'/images/sites/paithani-weaving.jpg', doors:{} },
+  apegaon: { hero:'/images/sites/apegaon-temple.jpg', doors:{} }
 };
 /* Honest, verified one-line leads for the named heritage places.
    _village is the generic lead for revenue villages (no fabricated data). */
@@ -1086,6 +1127,7 @@ const REGION_LEAD = {
    figures are source-labelled). {p} is replaced with the place name at render.
    Villages not listed here fall back to REGION_LEAD._village + place category. */
 const LOCALITIES = {
+  islampur: {type:L('Village · Paithan taluka','गाँव · पैठण तालुका','गाव · पैठण तालुका'), lead:L('Islampur is a village in Paithan taluka, recorded in the Aurangabad district Census village directory. Use this page for Islampur-related service enquiries and local information.','इस्लामपुर पैठण तालुका का गाँव है, जो औरंगाबाद जिले की जनगणना ग्राम निर्देशिका में दर्ज है। इस्लामपुर से संबंधित सेवाओं और स्थानीय जानकारी के लिए यह पृष्ठ देखें।','इस्लामपूर हे पैठण तालुक्यातील गाव असून औरंगाबाद जिल्ह्याच्या जनगणना ग्राम निर्देशिकेत नोंदलेले आहे. इस्लामपूरशी संबंधित सेवा चौकशी आणि स्थानिक माहितीसाठी हे पान वापरा.'), profile:L('Water conservation: the Central Ground Water Board 2019 Aurangabad aquifer report lists a percolation tank at Islampur, Paithan. This is a documented water-recharge feature; its current condition and public access are not confirmed.','जल संरक्षण: केंद्रीय भूजल बोर्ड की 2019 औरंगाबाद रिपोर्ट में इस्लामपुर, पैठण में एक रिसाव तालाब दर्ज है। इसकी वर्तमान स्थिति और सार्वजनिक पहुँच की पुष्टि नहीं है।','जलसंधारण: केंद्रीय भूजल मंडळाच्या २०१९ च्या औरंगाबाद अहवालात इस्लामपूर, पैठण येथे पाझर तलावाची नोंद आहे. सध्याची स्थिती आणि सार्वजनिक प्रवेशाची पुष्टी झालेली नाही.')},
   pachod:          {type:L('Major locality · Regional centre','प्रमुख स्थान · क्षेत्रीय केंद्र','प्रमुख ठिकाण · क्षेत्रीय केंद्र'), lead:L('{p} is a regional centre in Paithan taluka — a market and service hub for the surrounding villages. Individual works and records to be published from verified sources.','{p} पैठण तालुक्यातील एक क्षेत्रीय केंद्र आहे — आसपासच्या गावांसाठी बाजारपेठ व सेवा केंद्र. वैयक्तिक कामे व नोंदी पडताळलेल्या स्रोतांवरून प्रसिद्ध केल्या जातील.','{p} पैठण तालुक्यातील एक क्षेत्रीय केंद्र आहे — आसपासच्या गावांसाठी बाजारपेठ व सेवा केंद्र. वैयक्तिक कामे व नोंदी पडताळलेल्या स्रोतांवरून प्रसिद्ध केली जातील.')},
   chitegaon:       {type:L('Major locality · Development centre','प्रमुख स्थान · विकास केंद्र','प्रमुख ठिकाण · विकास केंद्र'), lead:L('{p} is a major locality in Paithan taluka with local civic and economic activity. Project and record details to be published from verified sources.','{p} पैठण तालुक्यातील स्थानिक नागरी व आर्थिक हालचाल असलेले प्रमुख ठिकाण आहे. प्रकल्प व नोंदी पडताळलेल्या स्रोतांवरून प्रसिद्ध केल्या जातील.','{p} पैठण तालुक्यातील स्थानिक नागरी व आर्थिक हालचाल असलेले प्रमुख ठिकाण आहे. प्रकल्प व नोंदींचे तपशील पडताळलेल्या स्रोतांवरून प्रसिद्ध केले जातील.')},
   vihamandwa:      {type:L('Major rural locality','प्रमुख ग्रामीण स्थान','प्रमुख ग्रामीण ठिकाण'), lead:L('{p} is a major rural locality in Paithan taluka. Its civic services, public works and welfare access, gathered in one place. Record details to be published from verified sources.','{p} पैठण तालुक्यातील एक प्रमुख ग्रामीण ठिकाण आहे. त्याच्या नागरी सेवा, सार्वजनिक कामे व कल्याण योजना — एकाच ठिकाणी. नोंदी पडताळलेल्या स्रोतांवरून प्रसिद्ध केल्या जातील.','{p} पैठण तालुक्यातील एक प्रमुख ग्रामीण ठिकाण आहे. त्याच्या नागरी सेवा, सार्वजनिक कामे व कल्याण योजना — एकाच ठिकाणी. नोंदी पडताळलेल्या स्रोतांवरून प्रसिद्ध केल्या जातील.')},
@@ -1112,6 +1154,30 @@ function regionMeta(id){
 function applyRegion(id){
   CUR_REGION = PLACES.find(x=>x.id===id) ? id : 'paithan';
   const m = regionMeta(CUR_REGION);
+  const water=['dam','nathsagar','hiradpuri'];
+  const heritage=['paithan','ghat','apegaon','dhupkheda','hiwarachondhala','babhulgaon'];
+  const theme=water.includes(CUR_REGION)?'water':heritage.includes(CUR_REGION)?'heritage':CUR_REGION==='paithani'?'craft':['birds','udyan'].includes(CUR_REGION)?'nature':['pachod','chitegaon'].includes(CUR_REGION)?'market':'rural';
+  $('#region').dataset.theme=theme;
+  $('#placeStoryTitle').textContent=tr(L('About {p}','{p} के बारे में','{p} विषयी')).replace('{p}',m.name);
+  $('#placeStoryText').textContent=m.profile || m.lead;
+  $('#placeContextTitle').textContent=tr(L('Your selected place','आपका चुना हुआ स्थान','तुम्ही निवडलेले ठिकाण'));
+  $('#placeContextText').textContent=tr(L('{p} · Paithan taluka. The services below are shared public resources; availability and the responsible authority should be confirmed for this location.','{p} · पैठण तालुका। नीचे दी गई सेवाएँ साझा सार्वजनिक संसाधन हैं; इस स्थान के लिए उपलब्धता और संबंधित प्राधिकरण की पुष्टि करें।','{p} · पैठण तालुका. खालील सेवा सार्वजनिक संसाधने आहेत; या ठिकाणासाठी उपलब्धता आणि संबंधित प्राधिकरणाची खात्री करा.')).replace('{p}',m.name);
+  $('#placeMapBack').textContent=tr(I18N.back);
+  const source=$('#placeStorySource');
+  const sources={
+    islampur:'https://cgwb.gov.in/sites/default/files/2022-11/aurangabad-nqm_report_final_29_04_2019.pdf',
+    paithani:'https://chhatrapatisambhajinagar.maharashtra.gov.in/en/handicraft/',
+    paithan:'https://chhatrapatisambhajinagar.maharashtra.gov.in/en/history/',
+    ghat:'https://chhatrapatisambhajinagar.maharashtra.gov.in/en/history/',
+    birds:'https://www.incredibleindia.gov.in/en/maharashtra/chhatrapati-sambhaji-nagar/jayakwadi-bird-sanctuary',
+    dam:'https://maharashtratourism.gov.in/heritage/paithan/',
+    nathsagar:'https://maharashtratourism.gov.in/heritage/paithan/',
+    udyan:'https://maharashtratourism.gov.in/heritage/paithan/'
+  };
+  source.hidden=!sources[CUR_REGION];
+  source.style.display=source.hidden?'none':'inline-flex';
+  source.href=sources[CUR_REGION] || '';
+  source.textContent=CUR_REGION==='islampur'?tr(L('Source: CGWB aquifer report, 2019 (PDF)','स्रोत: केंद्रीय भूजल बोर्ड रिपोर्ट, 2019 (PDF)','स्रोत: केंद्रीय भूजल मंडळ अहवाल, २०१९ (PDF)')):tr(L('Read the official source','आधिकारिक स्रोत पढ़ें','अधिकृत स्रोत वाचा'));
   const t=$('#rTitle'); if(t) t.textContent=m.name;
   const e=$('#rEyebrow'); if(e) e.textContent=m.eyebrow;
   const l=$('#rLead'); if(l) l.textContent=m.lead;
@@ -1125,7 +1191,7 @@ window.enterRegion=enterRegion; window.applyRegion=applyRegion;
 function renderDoors(){
   var PLACE_NAME = ((PLACES.find(x=>x.id===CUR_REGION)||{}).name)||'Paithan';
   $('#doors').innerHTML = DOORS.map((d,i)=>{
-   var pd = ((PLACE_PHOTOS[CUR_REGION]||{}).doors)||{}; var k = d.icon.replace('ic-',''); var ph = pd[k] || PHOTOS[k]; var sc = ph ? ('<img class="scene" src="'+ph+'" alt="" loading="lazy">') : (SCENES[k] || '');
+   var pd = ((PLACE_PHOTOS[CUR_REGION]||{}).doors)||{}; var k = d.icon.replace('ic-',''); var ph = pd[k] || (CUR_REGION==='paithan'?PHOTOS[k]:''); var sc = ph ? ('<img class="scene" src="'+ph+'" alt="" loading="lazy">') : (SCENES[k] || '');
    return '<article class="door reveal" onclick="'+d.tgt+'">'
    +'<div class="door-img" style="background:'+d.grad+'">'+sc
    +'<div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start">'

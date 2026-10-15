@@ -33,7 +33,7 @@ export default function WardDetailPage() {
   ];
   return <>
     <Breadcrumb items={[{label:nav("home"),href:`/${locale}`},{label:nav("nagarParishad"),href:`/${locale}/nagar-parishad`},{label:t("wardMapTitle"),href:base},{label:`${common("ward")} ${ward.number}`}]}/>
-    <div className={styles.page}>
+    <div className={styles.page} data-theme={profile.identity.theme}>
       <div className={styles.topline}><Link href={base}><ArrowLeft size={16}/>{t("wardMapTitle")}</Link><span>{c.directory}</span></div>
       <section className={styles.hero}>
         <img src={profile.image} alt={profile.imageNote} className={styles.photo}/>
@@ -52,6 +52,7 @@ export default function WardDetailPage() {
           <div>
             <section className={styles.profile}>
               <div className={styles.sectionTitle}><span className={styles.smallSeal}><MapPin size={22}/></span><h2>{c.about}</h2></div>
+              <p className={styles.speciality}>{profile.identity[locale === 'mr' ? 'mr' : locale === 'hi' ? 'hi' : 'en']}</p>
               <p lang="en" className={styles.description}>{profile.description}</p>
               <dl className={styles.details}><div><dt>{common("ward")}</dt><dd>{ward.number.toString().padStart(2,"0")}</dd></div><div><dt>{c.area}</dt><dd>{ward.locality}</dd></div></dl>
               <div className={styles.recordNote}><ShieldCheck size={18}/><p>{c.pending}</p></div>

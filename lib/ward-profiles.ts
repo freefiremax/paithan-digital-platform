@@ -26,9 +26,31 @@ const photographs: Record<number, string> = {
   14: "jayakwadi-dam.jpg", 15: "jayakwadi-dam.jpg", 16: "paithani-weaving.jpg",
 };
 
+// Themes follow the locality's directory subject, never political affiliation.
+const identities = [
+  { theme: 'heritage', en: 'Archaeology & the old fort', mr: 'पुरातत्व आणि जुना किल्ला', hi: 'पुरातत्व और पुराना किला' },
+  { theme: 'heritage', en: 'Sant Eknath pilgrimage', mr: 'संत एकनाथ तीर्थक्षेत्र', hi: 'संत एकनाथ तीर्थस्थल' },
+  { theme: 'water', en: 'Godavari riverfront & ghats', mr: 'गोदावरी नदीकाठ आणि घाट', hi: 'गोदावरी नदी तट और घाट' },
+  { theme: 'heritage', en: 'The historic wada precinct', mr: 'ऐतिहासिक वाडा परिसर', hi: 'ऐतिहासिक वाडा परिसर' },
+  { theme: 'craft', en: 'Paithani handloom tradition', mr: 'पैठणी हातमाग परंपरा', hi: 'पैठणी हथकरघा परंपरा' },
+  { theme: 'market', en: 'The central market', mr: 'मध्यवर्ती बाजारपेठ', hi: 'केंद्रीय बाजार' },
+  { theme: 'market', en: 'Chowk & Court Road', mr: 'चौक आणि कोर्ट रोड', hi: 'चौक और कोर्ट रोड' },
+  { theme: 'market', en: 'Old Bazar & Gandhi Chowk', mr: 'जुना बाजार आणि गांधी चौक', hi: 'पुराना बाजार और गांधी चौक' },
+  { theme: 'community', en: 'Neighbourhood & school surroundings', mr: 'वस्ती आणि शाळेचा परिसर', hi: 'मोहल्ला और विद्यालय परिसर' },
+  { theme: 'community', en: 'A residential neighbourhood', mr: 'निवासी परिसर', hi: 'आवासीय क्षेत्र' },
+  { theme: 'market', en: 'The town’s bus station', mr: 'शहराचे बस स्थानक', hi: 'शहर का बस स्थानक' },
+  { theme: 'nature', en: 'Gardens & green spaces', mr: 'उद्यान आणि हरित परिसर', hi: 'उद्यान और हरित क्षेत्र' },
+  { theme: 'heritage', en: 'Museum & local history', mr: 'संग्रहालय आणि स्थानिक इतिहास', hi: 'संग्रहालय और स्थानीय इतिहास' },
+  { theme: 'water', en: 'Jayakwadi reservoir surroundings', mr: 'जायकवाडी जलाशय परिसर', hi: 'जायकवाड़ी जलाशय परिसर' },
+  { theme: 'water', en: 'Nath Sagar & the canal', mr: 'नाथसागर आणि कालवा', hi: 'नाथ सागर और नहर' },
+  { theme: 'craft', en: 'Industry & handloom', mr: 'उद्योग आणि हातमाग', hi: 'उद्योग और हथकरघा' },
+  { theme: 'community', en: 'Kalidas Nagar neighbourhood', mr: 'कालिदास नगर परिसर', hi: 'कालिदास नगर क्षेत्र' },
+];
+
 export function getWardProfile(number: number) {
   const extension = number === 10 || number === 17 ? "webp" : number === 12 ? "jpg" : "jpeg";
   return {
+    identity: identities[number - 1] || identities[9],
     description: descriptions[number - 1] || "Locality information is awaiting confirmation.",
     image: photographs[number]
       ? `/images/sites/${photographs[number]}`

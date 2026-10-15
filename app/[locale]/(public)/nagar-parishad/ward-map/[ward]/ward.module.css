@@ -73,3 +73,20 @@
   .neighbours { grid-template-columns: 1fr 1fr; gap: 20px; } .directoryLink { grid-column: 1 / -1; grid-row: 2; margin: auto; }
 }
 @media (max-width: 380px) { .heroInner, .profile, .guide, .updates { padding: 22px 18px; } .hero h1 { font-size: 30px; } .details { grid-template-columns: 65px 1fr; gap: 12px; } }
+/* Locality palettes: river blue, handloom plum, market bronze, garden green. */
+.page { --ward-deep: #652b3d; --ward-soft: #f0e2dd; --ward-panel: #faf0e9; --ward-burgundy: var(--ward-deep); --ward-teal: var(--ward-deep); --ward-rule: #d9cec5; background: var(--ward-soft); }
+.page[data-theme="water"] { --ward-deep: #22546b; --ward-soft: #dfeef2; --ward-panel: #edf6f8; --ward-rule: #bdd5df; }
+.page[data-theme="craft"] { --ward-deep: #61345d; --ward-soft: #eee1ef; --ward-panel: #f8eff7; --ward-rule: #d6c0d8; }
+.page[data-theme="market"] { --ward-deep: #6b4c25; --ward-soft: #eee5d4; --ward-panel: #faf3e5; --ward-rule: #d8c8a9; }
+.page[data-theme="nature"], .page[data-theme="community"] { --ward-deep: #285447; --ward-soft: #e0ece1; --ward-panel: #eff6ec; --ward-rule: #bfd2c3; }
+.hero { background: var(--ward-panel); border-color: var(--ward-rule); border-bottom: 4px solid var(--ward-deep); }
+.shade { background: linear-gradient(90deg,var(--ward-panel) 49%,var(--ward-panel) 53%,transparent 70%); }
+.profile { background: var(--ward-panel); }
+.speciality { color: var(--ward-deep); font-size: 17px; font-weight: 600; line-height: 1.6; margin-top: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--ward-rule); }
+.description { margin-top: 16px; }
+.guide { background: var(--ward-deep); color: #fff8ee; border-color: var(--ward-deep); }
+.guide h2, .guide > svg, .guide li::marker, .guide a { color: #fff0cf; }
+.guide a { border-color: #ffffff50; }
+.updates, .serviceList { background: var(--ward-panel); }
+.recordNote, .smallSeal, .wardTag { background: var(--ward-soft); color: var(--ward-deep); }
+.service:hover { background: var(--ward-soft); }
