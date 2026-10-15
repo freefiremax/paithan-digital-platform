@@ -39,6 +39,7 @@ export default function WardDetailPage() {
         <img src={profile.image} alt={profile.imageNote} className={styles.photo}/>
         <div className={styles.shade}/>
         <div className={styles.heroInner}>
+          <span className={styles.wardNumber} aria-hidden="true">{ward.number.toString().padStart(2,"0")}</span>
           <div className={styles.identity}><Landmark size={20}/><span>{nav("nagarParishad")}</span><span className={styles.wardTag}>{common("ward")} {ward.number}</span></div>
           <h1>{locale === "mr" ? ward.nameMr : ward.name}</h1>
           {locale !== "mr" && <p className={styles.marathi} lang="mr">{ward.nameMr}</p>}
@@ -47,24 +48,29 @@ export default function WardDetailPage() {
         </div>
       </section>
       <div className={styles.content}>
+        <nav className={styles.quickNav} aria-label={c.directory}>
+          <a href="#ward-profile"><MapPin size={19}/>{c.about}</a>
+          <a href="#ward-services"><Landmark size={19}/>{c.services}</a>
+          <a href="#ward-updates"><FileText size={19}/>{c.updates}</a>
+        </nav>
         <p className={styles.caption}>{c.photo}</p>
         <div className={styles.layout}>
           <div>
-            <section className={styles.profile}>
+            <section id="ward-profile" className={styles.profile}>
               <div className={styles.sectionTitle}><span className={styles.smallSeal}><MapPin size={22}/></span><h2>{c.about}</h2></div>
               <p className={styles.speciality}>{profile.identity[locale === 'mr' ? 'mr' : locale === 'hi' ? 'hi' : 'en']}</p>
               <p lang="en" className={styles.description}>{profile.description}</p>
               <dl className={styles.details}><div><dt>{common("ward")}</dt><dd>{ward.number.toString().padStart(2,"0")}</dd></div><div><dt>{c.area}</dt><dd>{ward.locality}</dd></div></dl>
               <div className={styles.recordNote}><ShieldCheck size={18}/><p>{c.pending}</p></div>
             </section>
-            <section className={styles.serviceSection}>
+            <section id="ward-services" className={styles.serviceSection}>
               <h2>{c.help}</h2>
               <nav aria-label={c.help} className={styles.serviceList}>{links.map(({href,title,detail,Icon})=><Link key={href} href={`/${locale}${href}`} className={styles.service}><Icon size={24}/><div><h3>{title}</h3><p>{detail}</p></div><ArrowRight size={19}/></Link>)}</nav>
             </section>
           </div>
           <aside className={styles.aside}>
             <div className={styles.guide}><FileText size={25}/><h2>{c.guidance}</h2><ol>{c.steps.map(step=><li key={step}>{step}</li>)}</ol><Link href={`/${locale}/contact`}>{c.contact}<ArrowRight size={17}/></Link></div>
-            <div className={styles.updates}><h2>{c.updates}</h2>{works.length ? works.map(work=><article key={work.id}><span>{work.status.replaceAll("_"," ")}</span><h3>{locale==="mr"?work.titleMr:work.title}</h3><p>{work.description}</p></article>):<><p>{c.empty}</p><Link href={`/${locale}/contact`}>{c.contact}<ArrowRight size={16}/></Link></>}</div>
+            <div id="ward-updates" className={styles.updates}><h2>{c.updates}</h2>{works.length ? works.map(work=><article key={work.id}><span>{work.status.replaceAll("_"," ")}</span><h3>{locale==="mr"?work.titleMr:work.title}</h3><p>{work.description}</p></article>):<><p>{c.empty}</p><Link href={`/${locale}/contact`}>{c.contact}<ArrowRight size={16}/></Link></>}</div>
           </aside>
         </div>
         <nav className={styles.neighbours} aria-label={c.directory}>

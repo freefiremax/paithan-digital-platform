@@ -90,3 +90,58 @@
 .updates, .serviceList { background: var(--ward-panel); }
 .recordNote, .smallSeal, .wardTag { background: var(--ward-soft); color: var(--ward-deep); }
 .service:hover { background: var(--ward-soft); }
+
+/* Civic place profiles: generous photography, council burgundy and restrained gold. */
+.page { --ward-gold: #dfbd79; background: #f1ece4; padding-bottom: 24px; }
+.topline { padding-block: 18px; }
+.hero { max-width: none; margin: 0; border: 0; border-radius: 0; background: #31232a; border-bottom: 4px solid var(--ward-gold); }
+.photo { width: 100%; height: 100%; inset: 0; object-position: center 48%; }
+.shade { display: block; background: linear-gradient(90deg,rgba(34,18,27,.96),rgba(34,18,27,.78) 38%,rgba(20,31,31,.2) 100%),linear-gradient(0deg,rgba(25,20,24,.7),transparent 65%); }
+.heroInner { position: relative; max-width: 1200px; min-height: 490px; margin: auto; padding: 54px 28px 86px; color: #fff7e7; }
+.identity { max-width: 80%; color: var(--ward-gold); gap: 12px; }
+.wardTag { border-color: #dfbd7966; background: #ffffff0c; color: #fff4d9; padding: 7px 13px; }
+.hero h1 { color: #fff7e7; font-size: clamp(38px,4.5vw,62px); max-width: 740px; margin-top: 26px; font-weight: 500; letter-spacing: -.025em; }
+.marathi { color: #eee0cf; font-size: 19px; max-width: 70%; }
+.location { max-width: 70%; color: #f2e7d8; margin-top: 24px; }
+.location svg { color: var(--ward-gold); }
+.heroAction { background: var(--ward-gold); color: #442232; border: 1px solid var(--ward-gold); padding: 14px 20px; border-radius: 4px; margin-top: 26px; }
+.heroAction:hover { background: #f1d49e; color: #442232; }
+.wardNumber { position: absolute; right: 30px; bottom: 70px; font-family: Georgia,serif; font-size: 150px; line-height: 1; color: #fff8e71c; pointer-events: none; }
+.content { position: relative; }
+.quickNav { position: relative; margin-top: -31px; z-index: 1; display: grid; grid-template-columns: repeat(3,1fr); background: #652b3d; border: 1px solid #a57850; border-radius: 6px; box-shadow: 0 10px 25px #35223118; }
+.quickNav a { display: flex; justify-content: center; align-items: center; gap: 12px; padding: 22px 14px; color: #fff4de; font-size: 14px; font-weight: 600; }
+.quickNav a + a { border-left: 1px solid #ffffff25; }
+.quickNav svg { color: var(--ward-gold); flex-shrink: 0; }
+.quickNav a:hover { background: #ffffff12; }
+.caption { padding: 18px 0 30px; }
+.layout { grid-template-columns: minmax(0,1.85fr) minmax(300px,1fr); gap: 30px; }
+.profile { padding: 34px; background: #fffaf2; border: 1px solid #d9cab5; border-top: 4px solid var(--ward-deep); border-radius: 7px; }
+.page h2 { font-family: var(--font-display),Georgia,serif; font-size: 27px; font-weight: 500; color: #652b3d; }
+.smallSeal { width: 48px; height: 48px; border: 1px solid var(--ward-rule); border-radius: 50%; }
+.speciality { font-family: var(--font-display),Georgia,serif; font-size: 28px; line-height: 1.35; margin-top: 26px; padding-bottom: 20px; }
+.description { font-size: 16px; line-height: 1.9; }
+.details { background: var(--ward-soft); border: 0; padding: 19px; border-radius: 5px; }
+.details dd { color: var(--ward-deep); }
+.recordNote { background: transparent; padding: 0; margin-top: 20px; }
+.serviceSection { padding-top: 34px; }
+.serviceList { background: transparent; border: 0; display: grid; gap: 12px; overflow: visible; }
+.service { background: #fffaf2; border: 1px solid #d9cab5; border-left: 4px solid var(--ward-deep); border-radius: 5px; padding: 24px; }
+.service + .service { border-top: 1px solid #d9cab5; }
+.service > svg:first-child { width: 44px; height: 44px; padding: 10px; background: var(--ward-soft); border-radius: 7px; }
+.service h3 { font-size: 17px; }
+.guide { position: relative; background: var(--ward-deep); border: 1px solid var(--ward-deep); border-top: 4px solid var(--ward-gold); padding: 30px; border-radius: 7px; }
+.guide h2 { color: #fff3dc; font-size: 26px; }
+.guide li { font-size: 14px; }
+.updates { background: #e8ddc8; border-color: #d1bea0; padding: 28px; }
+.updates h2 { font-size: 25px; }
+.neighbours { background: #e8dfd1; border: 1px solid #d6c7b4; padding: 24px; border-radius: 6px; }
+.profile, .serviceSection, .updates { scroll-margin-top: 140px; }
+@media(max-width:900px) { .layout { grid-template-columns: minmax(0,1.5fr) minmax(270px,1fr); gap: 20px; } .profile,.guide,.updates { padding: 26px; } .hero h1 { max-width: 80%; } .wardNumber { font-size: 110px; } }
+@media(max-width:760px) {
+ .hero { margin: 0; } .photo { position: absolute; height: 100%; width: 100%; } .shade { background: linear-gradient(90deg,rgba(34,18,27,.94),rgba(34,18,27,.65)); }
+ .heroInner { min-height: 450px; padding: 36px 22px 74px; } .hero h1 { font-size: 39px; max-width: 100%; } .identity,.marathi,.location { max-width: 100%; } .identity { font-size: 12px; } .wardNumber { display: none; }
+ .quickNav a { font-size: 12px; text-align: center; flex-direction: column; gap: 8px; padding: 16px 8px; line-height: 1.5; }
+ .layout { grid-template-columns: 1fr; gap: 24px; } .caption { font-size: 11px; padding-bottom: 24px; } .speciality { font-size: 25px; } .page h2 { font-size: 24px; } .profile { padding: 25px; } .description { font-size: 15px; }
+ .neighbours { padding: 20px 16px; gap: 16px; } .service { padding: 20px 16px; }
+}
+@media(prefers-reduced-motion:reduce) { .page * { scroll-behavior: auto; transition: none; } }
