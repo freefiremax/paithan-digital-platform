@@ -1161,7 +1161,8 @@
 
 @media (min-width: 64rem) {
   /*
-   * Bottom-left, in the footage the panel does not cover. The chip is the same
+   * Bottom-right, in the footage the left-hand notice panel does not cover. The
+   * chip is the same
    * 0.68 dark as a notice row so the two read as one family, and the label
    * stays near-white rather than taking an accent, because these are chrome
    * rather than content.
@@ -1402,5 +1403,405 @@
   .ward-map-svg__link:hover .ward-map-svg__marker,
   .ward-map-svg__link:focus-visible .ward-map-svg__marker {
     transform: none;
+  }
+}
+
+/* ==========================================================================
+   FIRST-ENTRY INTRO — the "Paithan" wordmark sequence.
+   ==========================================================================
+
+   A full-bleed madder field (the pallu ground) framed top and bottom by the
+   woven zari band. Across it, names for the town — set in every script a
+   Paithan resident reads — are planted all over the frame and each one comes
+   out of the screen at its own spot: small and far back, growing to full size
+   as it reaches the viewer, then gone, while the next ones arrive around it.
+   They land on a randomised, staggered clock, so the picture reads as a
+   crowded stage rather than an arrangement. A pre-roll (--preroll below) means
+   the frame is already busy on the first frame. The whole thing is one
+   page-load moment. Markup, copy and the timing constants live in
+   components/intro/PaithanEntryIntro.tsx; the timings are handed in as custom
+   properties so these keyframes and the JS dismissal cannot drift apart.
+
+   WHY 3D AND NOT SCALE. `translateZ` under a real `perspective` gives the depth
+   cue for free — the browser scales each glyph by perspective/(perspective - z),
+   so it grows the way an object approaching you grows, rather than the way a
+   CSS `scale()` zooms a picture. Each name has its OWN perspective (on
+   .paithan-intro__word), and that is the load-bearing detail: one shared lens
+   on the stage drags every name toward the same vanishing point, which fans the
+   picture out into a circle — exactly what an earlier pass did, and it looked
+   ugly. With private lenses, a name simply gets bigger where it stands.
+
+   WHY NO BLUR. An earlier pass blurred the far names and refocused them as they
+   came. Two problems: a blurred word is not readable, and many simultaneously
+   animated `filter`s repaint every frame. Depth is carried instead by the
+   things that cost nothing — perspective scale, a paired fade in/out, and
+   near-over-far occlusion. Gold text-shadow was deliberately NOT used either: on
+   crimson, drop-shadowed gold is the Diwali-merchandise tell the PRD and
+   rules.md §7 warn against.
+
+   REDUCED MOTION. The travel is removed and the wordmark simply fades in; the
+   JS also uses a shorter hold in that mode. A Skip control (and the >5s motion
+   it overrides) satisfies WCAG 2.2.2 for anyone who does not want to wait.
+   ========================================================================== */
+
+/*
+ * Scroll lock. `overflow: hidden` has to be on both the root and the body: the
+ * scroller is the document element here, and locking only `body` leaves the
+ * root able to scroll behind the fixed overlay on some engines.
+ */
+html.paithan-intro-locked,
+html.paithan-intro-locked body {
+  overflow: hidden;
+}
+
+.paithan-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--footer-bg);
+  /* A vignette, so the field has a centre of gravity the words emerge from
+     rather than a flat colour. Kept dark at the edges so the zari band frames
+     a pool of depth, not a lit rectangle. */
+  background-image: radial-gradient(
+    130% 100% at 50% 44%,
+    #6d1529 0%,
+    var(--footer-bg) 58%,
+    #380a17 100%
+  );
+  opacity: 1;
+  transition: opacity var(--paithan-leave-ms, 1400ms) ease;
+}
+
+.paithan-intro--leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The same paper-fibre tile as the page ground, so the intro belongs to the
+   site's material rather than being a separate photographic plate. Soft-light
+   over madder feathers it instead of dusting it grey. */
+.paithan-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='fibre'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23fibre)' opacity='0.22'/%3E%3C/svg%3E");
+}
+
+/* The woven border, reused verbatim from the site identity, pinned to the top
+   and foot of the screen. */
+.paithan-intro__frame {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 3;
+}
+
+.paithan-intro__frame--top {
+  top: 0;
+}
+
+.paithan-intro__frame--bottom {
+  bottom: 0;
+}
+
+/* A plain container — deliberately no perspective here. Each name owns its own
+   lens (see .paithan-intro__word) so that it grows out of the screen at the
+   spot it is planted. A single shared perspective on this stage is what made
+   an earlier version fan every name toward one vanishing point and read as an
+   ugly circle. */
+.paithan-intro__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.paithan-intro__words {
+  position: absolute;
+  inset: 0;
+  /* Flattened on purpose: this layer must not stitch the names into one 3D
+     space, or they stop owning their own lens and start converging again. */
+  animation: paithan-words-dim 900ms ease both;
+  animation-delay: var(--paithan-lockup-delay-ms, 3000ms);
+}
+
+/* Each word is a full-size flex box that centres its glyph. `--fx`/`--fy` plant
+   the name somewhere in the frame, and — because this element flattens rather
+   than preserving 3D — that plant position is plain screen space: it is not
+   scaled or dragged by the glyph's depth. The `perspective` here is the name's
+   own private lens, so its translateZ only grows it in place. That is the whole
+   trick: the name comes out of the screen where it stands, like a prop pushed
+   toward the audience on a stage, instead of streaking toward a shared
+   vanishing point. */
+.paithan-intro__word {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+  transform: translate3d(var(--fx, 0px), var(--fy, 0px), 0);
+}
+
+.paithan-intro__glyph {
+  display: block;
+  white-space: nowrap;
+  /* Readable from the first frame: names are born at a size you can actually
+     read, not as dots, and stay legible right up to the lens. */
+  font-size: clamp(1.5rem, 4vw, 3.25rem);
+  line-height: 1;
+  color: var(--zari-gold-400);
+  opacity: 0;
+  /* Easing is kept off the depth axis: the arrivals have to feel like a steady
+     scatter of pops, not a start-and-stop swell. */
+  animation: paithan-fly-through var(--paithan-fly-ms, 2600ms) linear both;
+  /*
+   * Launch order is randomised by the coprime lattice stride in the component,
+   * so `--fly-index` staggers each name after the last without sweeping the
+   * frame. `--preroll` is subtracted from all of them so the frame is already
+   * busy on the first frame. A negative animation-delay is how you start
+   * mid-keyframe without JS.
+   */
+  animation-delay: calc(
+    var(--paithan-stagger-ms, 90ms) * var(--fly-index, 0) -
+      var(--paithan-preroll-ms, 700ms)
+  );
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Script routing. One face per writing system, in the order it would actually
+   be read on this platform: the web-loaded face first where we ship one, then
+   the platform's own script font (Latha for Tamil, Vrinda for Bengali,
+   Nastaliq for Urdu), then Nirmala UI — which covers every major Indic script
+   on Windows — and finally the site's Devanagari/Inter stack. Fallbacks are
+   named per script so a machine missing one script still gets a proper
+   typeface for it rather than a tofu box. */
+.paithan-intro__glyph.is-latin {
+  font-family: var(--font-display);
+}
+
+.paithan-intro__glyph.is-deva {
+  font-family: var(--font-display-deva);
+}
+
+.paithan-intro__glyph.is-gu {
+  font-family: "Noto Sans Gujarati", "Shruti", "Nirmala UI",
+    var(--font-devanagari), sans-serif;
+}
+
+.paithan-intro__glyph.is-kn {
+  font-family: "Noto Sans Kannada", "Tunga", "Nirmala UI", var(--font-devanagari),
+    sans-serif;
+}
+
+.paithan-intro__glyph.is-ta {
+  font-family: "Latha", "Noto Sans Tamil", "Nirmala UI", var(--font-devanagari),
+    sans-serif;
+}
+
+.paithan-intro__glyph.is-te {
+  font-family: "Gautami", "Noto Sans Telugu", "Nirmala UI",
+    var(--font-devanagari), sans-serif;
+}
+
+.paithan-intro__glyph.is-bn {
+  font-family: "Vrinda", "Noto Sans Bengali", "Nirmala UI",
+    var(--font-devanagari), sans-serif;
+}
+
+.paithan-intro__glyph.is-ur {
+  font-family: "Jameel Noori Nastaleeq", "Noto Nastaliq Urdu", "Urdu Typesetting",
+    "Nirmala UI", var(--font-devanagari), cursive;
+}
+
+/* The wordmark that comes to rest. Enters from just behind the focal plane so
+   it reads as the final thing arriving out of the same depth as the words. */
+.paithan-intro__lockup {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+  text-align: center;
+  opacity: 0;
+  animation: paithan-lockup-settle 1.4s cubic-bezier(0.16, 0.84, 0.24, 1) both;
+  animation-delay: var(--paithan-lockup-delay-ms, 3700ms);
+}
+
+.paithan-intro__deva {
+  font-family: var(--font-display-deva);
+  font-size: clamp(4.2rem, 19vw, 11rem);
+  line-height: 0.95;
+  color: var(--zari-gold-400);
+  text-shadow: 0 2px 30px rgb(0 0 0 / 0.35);
+}
+
+.paithan-intro__latin {
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 3vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  /* Balances the trailing letter-space so the mark reads as optically centred. */
+  text-indent: 0.42em;
+  color: var(--paper-100);
+}
+
+.paithan-intro__rule {
+  display: block;
+  width: clamp(9rem, 36vw, 20rem);
+  height: 3px;
+  margin: 0.9rem 0 0.85rem;
+  transform: scaleX(0);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--zari-gold-400) 18%,
+    var(--zari-gold-400) 82%,
+    transparent 100%
+  );
+  animation: paithan-rule-draw 900ms ease both;
+  animation-delay: calc(var(--paithan-lockup-delay-ms, 3700ms) + 400ms);
+}
+
+.paithan-intro__council {
+  font-size: clamp(0.78rem, 2.4vw, 1rem);
+  letter-spacing: 0.06em;
+  color: var(--on-vangi);
+}
+
+.paithan-intro__council-mr {
+  margin-top: 0.2rem;
+  font-family: var(--font-devanagari);
+  font-size: clamp(0.74rem, 2.4vw, 0.95rem);
+  color: var(--on-vangi-muted);
+}
+
+/* The one interactive control on the overlay. Gold-outlined and 44px tall to
+   match the site's touch targets; its focus ring flips to zari because the
+   page-wide madder ring would vanish into the madder field. */
+.paithan-intro__skip {
+  position: absolute;
+  left: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  z-index: 4;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  appearance: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid var(--zari-gold-500);
+  color: var(--paper-100);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.paithan-intro__skip:hover {
+  background-color: rgb(221 159 28 / 0.16);
+}
+
+.paithan-intro__skip:focus-visible {
+  outline: 2px solid var(--zari-gold-400);
+  outline-offset: 2px;
+}
+
+/* Depth, per name. The slice of Z is deliberately shallow (about 0.4x → 2.5x
+   growth) so a name is born at a readable size rather than as a dot — a deeper
+   range looks more dramatic on paper but leaves the first frames empty and
+   makes the whole thing feel slow. It fades in as it is born and back out as it
+   passes. Nothing is blurred. */
+@keyframes paithan-fly-through {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, -1200px);
+  }
+  12% {
+    opacity: 1;
+  }
+  76% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 480px);
+  }
+}
+
+/* Dim the travelling words once the wordmark arrives, so it sits in front of
+   the field rather than competing with it. */
+@keyframes paithan-words-dim {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.28;
+  }
+}
+
+@keyframes paithan-lockup-settle {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0, -280px);
+    filter: blur(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes paithan-rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No travel and no depth — the glyphs are decoration and are dropped; the
+     wordmark is the content, so it simply fades in. */
+  .paithan-intro__glyph {
+    display: none;
+  }
+
+  .paithan-intro__words {
+    animation: none;
+  }
+
+  .paithan-intro__lockup {
+    animation: paithan-lockup-fade 600ms ease both;
+    animation-delay: 200ms;
+  }
+
+  .paithan-intro__rule {
+    animation: paithan-lockup-fade 600ms ease both;
+    animation-delay: 400ms;
+  }
+}
+
+@keyframes paithan-lockup-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media print {
+  .paithan-intro {
+    display: none !important;
   }
 }

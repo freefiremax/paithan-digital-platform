@@ -178,6 +178,7 @@
   },
   "common": {
     "loading": "Loading...",
+    "skipIntro": "Skip intro",
     "error": "An error occurred",
     "retry": "Retry",
     "submit": "Submit",

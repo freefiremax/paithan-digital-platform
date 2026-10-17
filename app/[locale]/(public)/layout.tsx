@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { NoticeTicker } from "@/components/layout/NoticeTicker";
+import { PaithanEntryIntro } from "@/components/intro/PaithanEntryIntro";
 import { FloatingChatbotWidget } from "@/components/chatbot/FloatingChatbotWidget";
 
 /**
@@ -14,6 +15,7 @@ import { FloatingChatbotWidget } from "@/components/chatbot/FloatingChatbotWidge
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
     <>
+      <PaithanEntryIntro />
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

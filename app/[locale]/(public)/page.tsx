@@ -10,7 +10,6 @@ import {
   FileText,
   Phone,
   ArrowRight,
-  ShieldCheck,
   CheckCircle2,
   Eye,
   ArrowUpRight,
@@ -32,10 +31,8 @@ import {
   developmentWorks,
   electedRepresentatives,
   formatCivicDate,
-  getWardWorkSummary,
   notifications,
   paithanDemographics,
-  wards,
   TOURIST_PLACES,
 } from "@/lib/mock-data";
 
@@ -93,7 +90,6 @@ export default function HomePage() {
       </div>
 
       <PaithanWardMap />
-      <WardsOverview />
       <OfficialLandmarksShowcase />
     </>
   );
@@ -150,17 +146,6 @@ function Masthead() {
     <>
       <section className="portal-masthead">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
-          <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-[var(--civic-slate-500)]">
-            <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--portal-blue-800)]">
-              <ShieldCheck className="h-3.5 w-3.5 text-[var(--saffron-700)]" aria-hidden="true" />
-              {tHome("badge")}
-            </span>
-            <span className="text-[var(--border-strong)]" aria-hidden="true">
-              |
-            </span>
-            <span>{tHome("districtState")}</span>
-          </div>
-
           <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
             <div className="lg:col-span-7">
               <h1 className="font-display text-[2.1rem] font-semibold leading-[1.18] tracking-tight text-[var(--portal-blue-900)] sm:text-[2.6rem] lg:text-[3rem]">
@@ -617,87 +602,6 @@ function CouncilPanel() {
         </div>
       </section>
     </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-
-/** 17 wards at a glance */
-function WardsOverview() {
-  const tHome = useTranslations("home");
-
-  return (
-    <section
-      className="border-y border-[var(--border-subtle)] bg-[var(--portal-blue-50)] py-12"
-      aria-labelledby="wards-heading"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
-          <div>
-            <h2
-              id="wards-heading"
-              className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
-            >
-              {tHome("wardsOverviewHeading")}
-            </h2>
-            <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl">
-              {tHome("wardsOverviewSubtitle")}
-            </p>
-          </div>
-          <Link
-            href="/nagar-parishad/ward-map"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
-          >
-            <span>{tHome("openWardMap")}</span>
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {wards.map((ward) => {
-            const summary = getWardWorkSummary(ward.number);
-            return (
-              <div
-                key={ward.number}
-                className="rounded-sm border border-[var(--border-subtle)] border-l-[3px] border-l-[var(--zari-gold-500)] bg-white p-3.5 transition-colors hover:border-[var(--portal-blue-300)] hover:border-l-[var(--portal-blue-700)]"
-              >
-                <div className="flex items-baseline justify-between mb-1">
-                  <span className="text-xl font-bold tabular-nums text-[var(--portal-blue-900)]">
-                    {ward.number}
-                  </span>
-                  <span className="rounded-sm bg-[var(--portal-blue-50)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--civic-slate-500)]">
-                    Ward
-                  </span>
-                </div>
-                <p
-                  lang="mr"
-                  className="text-xs font-semibold leading-snug text-[var(--civic-slate-900)] line-clamp-1"
-                >
-                  {ward.nameMr}
-                </p>
-                <p className="mt-2 text-[11px] text-[var(--civic-slate-500)]">
-                  {summary.total === 0 ? (
-                    "—"
-                  ) : (
-                    <>
-                      <span className="font-semibold tabular-nums text-[var(--civic-slate-700)]">
-                        {summary.total}
-                      </span>{" "}
-                      works
-                      {summary.ongoing > 0 ? (
-                        <span className="block font-medium text-[var(--zari-gold-600)]">
-                          {summary.ongoing} ongoing
-                        </span>
-                      ) : null}
-                    </>
-                  )}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
   );
 }
 
