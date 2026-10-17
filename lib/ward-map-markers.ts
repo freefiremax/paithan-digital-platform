@@ -1,5 +1,11 @@
 export const ASSEMBLY_MAP_WIDTH = 1983;
 export const ASSEMBLY_MAP_HEIGHT = 793;
+export const ASSEMBLY_MAP_MOBILE_WIDTH = 941;
+export const ASSEMBLY_MAP_MOBILE_HEIGHT = 1672;
+
+export const ASSEMBLY_MAP_IMAGE = "/maps/paithan-wards-godavari-map.png";
+export const ASSEMBLY_MAP_MOBILE_IMAGE =
+  "/maps/paithan-wards-godavari-map-mobile.png";
 
 export type WardMapMarker = {
   number: number;
@@ -27,3 +33,31 @@ export const wardMapMarkers: WardMapMarker[] = [
   { number: 16, wardName: "Industrial & Handloom Ward", cx: 1440, cy: 555 },
   { number: 17, wardName: "Kavi Kulguru Kalidas Ward", cx: 1150, cy: 578 },
 ];
+
+const MOBILE_PIN_CENTRES: ReadonlyArray<readonly [number, number]> = [
+  [208, 478],
+  [364, 605],
+  [610, 638],
+  [242, 715],
+  [422, 742],
+  [636, 791],
+  [764, 878],
+  [280, 847],
+  [457, 863],
+  [624, 935],
+  [174, 983],
+  [396, 1002],
+  [597, 1056],
+  [785, 1037],
+  [262, 1131],
+  [698, 1182],
+  [459, 1143],
+];
+
+export const wardMapMarkersMobile: WardMapMarker[] = wardMapMarkers.map(
+  (marker, index) => ({
+    ...marker,
+    cx: MOBILE_PIN_CENTRES[index][0],
+    cy: MOBILE_PIN_CENTRES[index][1],
+  }),
+);

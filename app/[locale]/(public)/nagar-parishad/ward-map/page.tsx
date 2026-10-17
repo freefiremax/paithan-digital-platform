@@ -10,9 +10,61 @@ import { wards, developmentWorks } from "@/lib/mock-data";
 import { getWardProfile } from "@/lib/ward-profiles";
 import {
   wardMapMarkers,
+  wardMapMarkersMobile,
   ASSEMBLY_MAP_WIDTH,
   ASSEMBLY_MAP_HEIGHT,
+  ASSEMBLY_MAP_MOBILE_WIDTH,
+  ASSEMBLY_MAP_MOBILE_HEIGHT,
+  ASSEMBLY_MAP_IMAGE,
+  ASSEMBLY_MAP_MOBILE_IMAGE,
+  type WardMapMarker,
 } from "@/lib/ward-map-markers";
+
+function WardMapOverlay({
+  variant,
+  width,
+  height,
+  markers,
+  radius,
+  label,
+}: {
+  variant: "mobile" | "desktop";
+  width: number;
+  height: number;
+  markers: WardMapMarker[];
+  radius: number;
+  label: string;
+}) {
+  const locale = useLocale();
+  const tCommon = useTranslations("common");
+
+  return (
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className={`ward-map-svg absolute inset-0 h-full w-full ${
+        variant === "mobile" ? "sm:hidden" : "hidden sm:block"
+      }`}
+      role="group"
+      aria-label={label}
+    >
+      {markers.map((marker) => (
+        <a
+          key={marker.number}
+          href={`/${locale}/nagar-parishad/ward-map/${marker.number}`}
+          aria-label={`${tCommon("ward")} ${marker.number} — ${marker.wardName}`}
+          className="ward-map-svg__link"
+        >
+          <circle
+            cx={marker.cx}
+            cy={marker.cy}
+            r={radius}
+            className="ward-map-svg__marker"
+          />
+        </a>
+      ))}
+    </svg>
+  );
+}
 
 export default function WardMapPage() {
   const t = useTranslations("nagarParishad");
@@ -79,33 +131,37 @@ export default function WardMapPage() {
         </div>
 
         <figure className="ward-map-bleed relative mt-6 w-full">
-          <img
-            src="/maps/paithan-wards-godavari-map.png"
-            alt="Paithan ward map showing all 17 wards along the Godavari river"
-            className="block h-auto w-full"
+          <picture className="block">
+            <source
+              media="(max-width: 39.98rem)"
+              srcSet={ASSEMBLY_MAP_MOBILE_IMAGE}
+              width={ASSEMBLY_MAP_MOBILE_WIDTH}
+              height={ASSEMBLY_MAP_MOBILE_HEIGHT}
+            />
+            <img
+              src={ASSEMBLY_MAP_IMAGE}
+              alt="Paithan ward map showing all 17 wards along the Godavari river"
+              width={ASSEMBLY_MAP_WIDTH}
+              height={ASSEMBLY_MAP_HEIGHT}
+              className="block h-auto w-full"
+            />
+          </picture>
+          <WardMapOverlay
+            variant="mobile"
+            width={ASSEMBLY_MAP_MOBILE_WIDTH}
+            height={ASSEMBLY_MAP_MOBILE_HEIGHT}
+            markers={wardMapMarkersMobile}
+            radius={60}
+            label={t("interactiveMapTitle")}
           />
-          <svg
-            viewBox={`0 0 ${ASSEMBLY_MAP_WIDTH} ${ASSEMBLY_MAP_HEIGHT}`}
-            className="ward-map-svg absolute inset-0 h-full w-full"
-            role="group"
-            aria-label={t("interactiveMapTitle")}
-          >
-            {wardMapMarkers.map((marker) => (
-              <a
-                key={marker.number}
-                href={`/${locale}/nagar-parishad/ward-map/${marker.number}`}
-                aria-label={`${tCommon("ward")} ${marker.number} — ${marker.wardName}`}
-                className="ward-map-svg__link"
-              >
-                <circle
-                  cx={marker.cx}
-                  cy={marker.cy}
-                  r={36}
-                  className="ward-map-svg__marker"
-                />
-              </a>
-            ))}
-          </svg>
+          <WardMapOverlay
+            variant="desktop"
+            width={ASSEMBLY_MAP_WIDTH}
+            height={ASSEMBLY_MAP_HEIGHT}
+            markers={wardMapMarkers}
+            radius={36}
+            label={t("interactiveMapTitle")}
+          />
         </figure>
       </section>
 

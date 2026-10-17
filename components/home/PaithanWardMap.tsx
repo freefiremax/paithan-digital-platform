@@ -5,19 +5,87 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
   wardMapMarkers,
+  wardMapMarkersMobile,
   ASSEMBLY_MAP_WIDTH,
   ASSEMBLY_MAP_HEIGHT,
+  ASSEMBLY_MAP_MOBILE_WIDTH,
+  ASSEMBLY_MAP_MOBILE_HEIGHT,
+  ASSEMBLY_MAP_IMAGE,
+  ASSEMBLY_MAP_MOBILE_IMAGE,
+  type WardMapMarker,
 } from "@/lib/ward-map-markers";
 
 /**
  * The 17-ward constituency map for the homepage.
  */
 
-// Pin centres come from the pastel constituency map (1672 x 941). Index + 1 === ward number.
-
-export function PaithanWardMap() {
+function WardPinLayer({
+  variant,
+  width,
+  height,
+  markers,
+  radius,
+  title,
+  desc,
+}: {
+  variant: "mobile" | "desktop";
+  width: number;
+  height: number;
+  markers: WardMapMarker[];
+  radius: number;
+  title: string;
+  desc: string;
+}) {
   const router = useRouter();
   const locale = useLocale();
+  const titleId = `ward-map-svg-title-${variant}`;
+  const descId = `ward-map-svg-desc-${variant}`;
+
+  return (
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className={`paithan-ward-map absolute inset-0 h-full w-full ${
+        variant === "mobile" ? "sm:hidden" : "hidden sm:block"
+      }`}
+      role="group"
+      aria-labelledby={`${titleId} ${descId}`}
+    >
+      <title id={titleId}>{title}</title>
+      <desc id={descId}>{desc}</desc>
+
+      <g fill="transparent" stroke="none">
+        {markers.map((marker) => {
+          const wardNumber = marker.number;
+          const href = `/${locale}/nagar-parishad/ward-map/${wardNumber}`;
+          return (
+            <Link
+              key={wardNumber}
+              href={href}
+              aria-label={`Open Ward ${wardNumber} — ${marker.wardName} details`}
+              className="ward-pin"
+              onKeyDown={(event) => {
+                if (event.key === " " || event.key === "Spacebar") {
+                  event.preventDefault();
+                  router.push(href);
+                }
+              }}
+            >
+              <circle
+                className="ward-pin__halo"
+                cx={marker.cx}
+                cy={marker.cy}
+                r={radius}
+              />
+              <title>{`Ward ${wardNumber}`}</title>
+            </Link>
+          );
+        })}
+      </g>
+    </svg>
+  );
+}
+
+export function PaithanWardMap() {
   const tNagar = useTranslations("nagarParishad");
 
   return (
@@ -40,57 +108,40 @@ export function PaithanWardMap() {
       </div>
 
       <figure className="ward-map-bleed relative mt-6 w-full">
-        <svg
-            viewBox={`0 0 ${ASSEMBLY_MAP_WIDTH} ${ASSEMBLY_MAP_HEIGHT}`}
-            className="paithan-ward-map h-auto w-full"
-            role="img"
-            aria-labelledby="ward-map-svg-title ward-map-svg-desc"
-          >
-            <title id="ward-map-svg-title">
-              {tNagar("wardMapTitle")}
-            </title>
-            <desc id="ward-map-svg-desc">
-              {tNagar("wardMapSubtitle")}
-            </desc>
+        <picture className="block">
+          <source
+            media="(max-width: 39.98rem)"
+            srcSet={ASSEMBLY_MAP_MOBILE_IMAGE}
+            width={ASSEMBLY_MAP_MOBILE_WIDTH}
+            height={ASSEMBLY_MAP_MOBILE_HEIGHT}
+          />
+          <img
+            src={ASSEMBLY_MAP_IMAGE}
+            alt=""
+            width={ASSEMBLY_MAP_WIDTH}
+            height={ASSEMBLY_MAP_HEIGHT}
+            className="block h-auto w-full"
+          />
+        </picture>
 
-            <image
-              href="/maps/paithan-wards-godavari-map.png"
-              x="0"
-              y="0"
-              width={ASSEMBLY_MAP_WIDTH}
-              height={ASSEMBLY_MAP_HEIGHT}
-              preserveAspectRatio="xMidYMid meet"
-            />
-
-            <g fill="transparent" stroke="none">
-              {wardMapMarkers.map((marker) => {
-                const wardNumber = marker.number;
-                const href = `/${locale}/nagar-parishad/ward-map/${wardNumber}`;
-                return (
-                  <Link
-                    key={wardNumber}
-                    href={href}
-                    aria-label={`Open Ward ${wardNumber} — ${marker.wardName} details`}
-                    className="ward-pin"
-                    onKeyDown={(event) => {
-                      if (event.key === " " || event.key === "Spacebar") {
-                        event.preventDefault();
-                        router.push(href);
-                      }
-                    }}
-                  >
-                    <circle
-                      className="ward-pin__halo"
-                      cx={marker.cx}
-                      cy={marker.cy}
-                      r={44}
-                    />
-                    <title>{`Ward ${wardNumber}`}</title>
-                  </Link>
-                );
-              })}
-            </g>
-        </svg>
+        <WardPinLayer
+          variant="mobile"
+          width={ASSEMBLY_MAP_MOBILE_WIDTH}
+          height={ASSEMBLY_MAP_MOBILE_HEIGHT}
+          markers={wardMapMarkersMobile}
+          radius={60}
+          title={tNagar("wardMapTitle")}
+          desc={tNagar("wardMapSubtitle")}
+        />
+        <WardPinLayer
+          variant="desktop"
+          width={ASSEMBLY_MAP_WIDTH}
+          height={ASSEMBLY_MAP_HEIGHT}
+          markers={wardMapMarkers}
+          radius={44}
+          title={tNagar("wardMapTitle")}
+          desc={tNagar("wardMapSubtitle")}
+        />
       </figure>
 
       <style>{`
@@ -124,4 +175,3 @@ export function PaithanWardMap() {
     </section>
   );
 }
-
