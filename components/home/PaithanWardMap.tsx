@@ -3,34 +3,17 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import {
+  wardMapMarkers,
+  ASSEMBLY_MAP_WIDTH,
+  ASSEMBLY_MAP_HEIGHT,
+} from "@/lib/ward-map-markers";
 
 /**
  * The 17-ward constituency map for the homepage.
  */
 
-// Pin centres, exactly as authored in the source SVG. Index + 1 === ward number.
-const WARD_PINS = [
-  // These coordinates are the small white town points in the source map
-  // (1316 x 1195). Keeping the numbered marker tips on those points makes
-  // the map remain accurate when the image scales responsively.
-  { cx: 514, cy: 259 }, // Ward 1 — Jambhali
-  { cx: 748, cy: 277 }, // Ward 2 — Khodegaon
-  { cx: 1092, cy: 232 }, // Ward 3 — Kolghar
-  { cx: 313, cy: 388 }, // Ward 4 — Islampur
-  { cx: 499, cy: 434 }, // Ward 5 — Nandalgaon
-  { cx: 859, cy: 396 }, // Ward 6 — Abdullapur
-  { cx: 1083, cy: 462 }, // Ward 7 — Adgaon
-  { cx: 441, cy: 519 }, // Ward 8 — Dhupkheda
-  { cx: 708, cy: 555 }, // Ward 9 — Balanagar
-  { cx: 862, cy: 551 }, // Ward 10 — Sultanpur
-  { cx: 255, cy: 720 }, // Ward 11 — Shevata
-  { cx: 558, cy: 764 }, // Ward 12 — Pimpalwadi
-  { cx: 718, cy: 632 }, // Ward 13 — Kasarpadli
-  { cx: 1090, cy: 684 }, // Ward 14 — Pachod
-  { cx: 658, cy: 808 }, // Ward 15 — Karanj Kheda
-  { cx: 870, cy: 815 }, // Ward 16 — Kutub Kheda
-  { cx: 780, cy: 976 }, // Ward 17 — Apegaon
-] as const;
+// Pin centres come from the pastel constituency map (1672 x 941). Index + 1 === ward number.
 
 export function PaithanWardMap() {
   const router = useRouter();
@@ -54,10 +37,11 @@ export function PaithanWardMap() {
             {tNagar("wardMapSubtitle")}
           </p>
         </div>
+      </div>
 
-        <div className="mx-auto max-w-5xl overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white p-3 sm:p-4">
-          <svg
-            viewBox="0 0 1316 1195"
+      <figure className="ward-map-bleed relative mt-6 w-full">
+        <svg
+            viewBox={`0 0 ${ASSEMBLY_MAP_WIDTH} ${ASSEMBLY_MAP_HEIGHT}`}
             className="paithan-ward-map h-auto w-full"
             role="img"
             aria-labelledby="ward-map-svg-title ward-map-svg-desc"
@@ -70,23 +54,23 @@ export function PaithanWardMap() {
             </desc>
 
             <image
-              href="/maps/paithan-17-wards-base.png"
+              href="/maps/paithan-wards-godavari-map.png"
               x="0"
               y="0"
-              width="1316"
-              height="1195"
-              preserveAspectRatio="none"
+              width={ASSEMBLY_MAP_WIDTH}
+              height={ASSEMBLY_MAP_HEIGHT}
+              preserveAspectRatio="xMidYMid meet"
             />
 
             <g fill="transparent" stroke="none">
-              {WARD_PINS.map((pin, index) => {
-                const wardNumber = index + 1;
+              {wardMapMarkers.map((marker) => {
+                const wardNumber = marker.number;
                 const href = `/${locale}/nagar-parishad/ward-map/${wardNumber}`;
                 return (
                   <Link
                     key={wardNumber}
                     href={href}
-                    aria-label={`Open Ward ${wardNumber} details`}
+                    aria-label={`Open Ward ${wardNumber} — ${marker.wardName} details`}
                     className="ward-pin"
                     onKeyDown={(event) => {
                       if (event.key === " " || event.key === "Spacebar") {
@@ -97,8 +81,8 @@ export function PaithanWardMap() {
                   >
                     <circle
                       className="ward-pin__halo"
-                      cx={pin.cx}
-                      cy={pin.cy}
+                      cx={marker.cx}
+                      cy={marker.cy}
                       r={44}
                     />
                     <title>{`Ward ${wardNumber}`}</title>
@@ -106,9 +90,8 @@ export function PaithanWardMap() {
                 );
               })}
             </g>
-          </svg>
-        </div>
-      </div>
+        </svg>
+      </figure>
 
       <style>{`
         .paithan-ward-map .ward-pin { cursor: pointer; }

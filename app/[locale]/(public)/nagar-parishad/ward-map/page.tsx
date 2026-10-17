@@ -8,6 +8,11 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DataStatusBadge } from "@/components/ui/DataStatusBadge";
 import { wards, developmentWorks } from "@/lib/mock-data";
 import { getWardProfile } from "@/lib/ward-profiles";
+import {
+  wardMapMarkers,
+  ASSEMBLY_MAP_WIDTH,
+  ASSEMBLY_MAP_HEIGHT,
+} from "@/lib/ward-map-markers";
 
 export default function WardMapPage() {
   const t = useTranslations("nagarParishad");
@@ -26,28 +31,12 @@ export default function WardMapPage() {
         ]}
       />
 
-      <div className="mx-auto max-w-[1180px] px-4 py-11">
+      <div className="mx-auto max-w-[1180px] px-4 pt-11">
         <SectionHeading
           as="h1"
           title={t("wardMapTitle")}
           description={t("wardMapSubtitle")}
         />
-
-        <section className="mt-7 overflow-hidden border border-[var(--gov-navy-800)] bg-[var(--gov-navy-900)] text-white shadow-lg">
-          <div className="grid items-stretch lg:grid-cols-[1.15fr_.85fr]">
-            <div className="relative min-h-[260px] overflow-hidden">
-              <img src="/maps/paithan-17-wards-base.png" alt="Paithan municipal 17 ward map" className="absolute inset-0 h-full w-full object-cover object-center" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[rgba(3,20,43,.8)] via-[rgba(3,20,43,.35)] to-transparent" />
-              <div className="relative flex h-full min-h-[260px] items-end p-6 sm:p-8">
-                <div><p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--zari-gold-300)]">Interactive ward directory</p><h2 className="mt-2 max-w-md font-display text-2xl font-semibold sm:text-3xl">Choose a ward to see its place profile and local updates.</h2></div>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center border-t border-white/15 p-6 sm:p-8 lg:border-l lg:border-t-0">
-              <p className="text-sm leading-6 text-white/75">Explore local landmarks, find civic services and see confirmed updates for your area. Select a locality below to open its profile.</p>
-              <div className="mt-5 flex items-center gap-3"><span className="text-3xl font-semibold text-[var(--zari-gold-300)]">17</span><span className="text-sm text-white/75">municipal wards<br />in this directory</span></div>
-            </div>
-          </div>
-        </section>
 
         {/* DELIMITATION NOTICE */}
         <div className="mt-4 mb-8 border-l-[3px] border-[var(--zari-gold-500)] bg-[var(--zari-gold-100)]/40 px-4 py-3">
@@ -61,7 +50,66 @@ export default function WardMapPage() {
             {t("secAdvisoryText")}
           </p>
         </div>
+      </div>
 
+      {/* INTERACTIVE WARD MAP — full-bleed, unframed */}
+      <section className="mt-7 mb-8">
+        <div className="mx-auto max-w-[1180px] px-4">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--zari-gold-600)]">
+                {t("interactiveMapTitle")}
+              </p>
+              <h2 className="mt-2 max-w-md font-display text-2xl font-semibold text-[var(--gov-navy-900)] sm:text-3xl">
+                {t("interactiveMapHeading")}
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--civic-slate-700)]">
+                {t("interactiveMapHint")}
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-3xl font-semibold text-[var(--gov-navy-900)]">17</span>
+              <span className="text-sm text-[var(--civic-slate-700)]">
+                municipal wards
+                <br />
+                in this directory
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <figure className="ward-map-bleed relative mt-6 w-full">
+          <img
+            src="/maps/paithan-wards-godavari-map.png"
+            alt="Paithan ward map showing all 17 wards along the Godavari river"
+            className="block h-auto w-full"
+          />
+          <svg
+            viewBox={`0 0 ${ASSEMBLY_MAP_WIDTH} ${ASSEMBLY_MAP_HEIGHT}`}
+            className="ward-map-svg absolute inset-0 h-full w-full"
+            role="group"
+            aria-label={t("interactiveMapTitle")}
+          >
+            {wardMapMarkers.map((marker) => (
+              <a
+                key={marker.number}
+                href={`/${locale}/nagar-parishad/ward-map/${marker.number}`}
+                aria-label={`${tCommon("ward")} ${marker.number} — ${marker.wardName}`}
+                className="ward-map-svg__link"
+              >
+                <circle
+                  cx={marker.cx}
+                  cy={marker.cy}
+                  r={36}
+                  className="ward-map-svg__marker"
+                />
+              </a>
+            ))}
+          </svg>
+        </figure>
+      </section>
+
+        <div className="mx-auto max-w-[1180px] px-4 pb-11">
         {/* 17 WARDS DIRECTORY CARDS */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {wards.map((ward) => {

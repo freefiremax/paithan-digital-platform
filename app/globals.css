@@ -1342,3 +1342,65 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+/* Ward map: dissolve the map plate's own top/bottom edge into whatever ground
+   sits behind it (parchment on the page, white on the home band), so the plate
+   reads as part of the page instead of a pasted rectangle. Stops are percentages
+   of the figure height so the blend scales with the map, never eating labels. */
+.ward-map-bleed {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.45) 3.5%,
+    #000 9%,
+    #000 92%,
+    rgba(0, 0, 0, 0.45) 96.5%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.45) 3.5%,
+    #000 9%,
+    #000 92%,
+    rgba(0, 0, 0, 0.45) 96.5%,
+    transparent 100%
+  );
+}
+
+/* Interactive ward map markers */
+.ward-map-svg__link {
+  cursor: pointer;
+  outline: none;
+}
+
+.ward-map-svg__marker {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 150ms ease, stroke 150ms ease, fill 150ms ease;
+}
+
+.ward-map-svg__link:hover .ward-map-svg__marker {
+  fill: color-mix(in srgb, var(--zari-gold-500) 20%, transparent);
+  stroke: var(--zari-gold-600);
+  transform: scale(1.12);
+}
+
+.ward-map-svg__link:focus-visible .ward-map-svg__marker {
+  fill: color-mix(in srgb, var(--portal-blue-700) 15%, transparent);
+  stroke: var(--portal-blue-700);
+  stroke-width: 3.5;
+  transform: scale(1.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ward-map-svg__marker {
+    transition: stroke 150ms ease, fill 150ms ease;
+  }
+  .ward-map-svg__link:hover .ward-map-svg__marker,
+  .ward-map-svg__link:focus-visible .ward-map-svg__marker {
+    transform: none;
+  }
+}
