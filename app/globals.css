@@ -1555,7 +1555,8 @@ html.paithan-intro-locked body {
   font-size: clamp(1.5rem, 4vw, 3.25rem);
   line-height: 1;
   /* Dynamic gold shade + soft opacity for depth; each word picks one via CSS var */
-  color: var(--paithan-gold, var(--paithan-gold-2));
+  color: var(--paithan-gold, var(--zari-gold-400));
+  opacity: 1;
   /* Easing is kept off the depth axis: the arrivals have to feel like a steady
      scatter of pops, not a start-and-stop swell. A decelerating curve so each
      name settles into its resting size rather than snapping to a stop. */
