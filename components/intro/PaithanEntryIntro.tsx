@@ -49,15 +49,15 @@ let introStartedAt = 0;
 const LOCK_FLAG = "paithan-intro-locked";
 
 /* The whole screen time is fixed; this is how long an individual name lives. */
-const FLY_MS = 4600;
+const FLY_MS = 3400;        // each word lifecycle: arrive→fly out
 /* Gap between one name launching and the next. */
-const STAGGER_MS = 90;
+const STAGGER_MS = 70;       // tighter launch chain
 /* Pre-roll so the frame is already alive on the very first frame. */
-const PRE_ROLL_MS = 400;
-const LEAVE_MS = 1400;
+const PRE_ROLL_MS = 300;     // faster pre-roll
+const LEAVE_MS = 900;        // single overlay fade shorter
 /** Whole screen time, closing fade included. */
-const TOTAL_MS = 7700;
-const REDUCED_HOLD_MS = 2600;
+const TOTAL_MS = 5200;       // overall shorter run
+const REDUCED_HOLD_MS = 2000;
 
 type ScriptKind =
   | "latin"
