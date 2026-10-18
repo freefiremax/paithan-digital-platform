@@ -1821,16 +1821,25 @@ html.paithan-intro-locked body {
 
 /*
  * Saree borders. The Paithani pallu motif, run down both outer edges of the
- * page and tiled head-to-foot so the whole site reads as a woven frame. They
- * are fixed and pointer-transparent, so they never take a click and never sit
- * above the entry intro (z-index 40 vs the intro's 200) or the sticky header
- * (z 50). Held back to large screens, where there is real margin to frame.
+ * page and tiled head-to-foot so the whole site reads as a woven frame.
+ *
+ * They are absolutely placed inside `.site-shell`, not fixed: that way the
+ * tiled motif travels with the page as you scroll — an endless loom loop — and
+ * the rails reach the true foot of the document instead of stopping at the
+ * viewport. `.site-shell` is at least a viewport tall so short pages still get
+ * a full frame. z-index 60 keeps them over the sticky header (50) but under the
+ * entry intro (200); pointer-events stay off so they never take a click.
  */
+.site-shell {
+  position: relative;
+  min-height: 100vh;
+}
+
 .saree-frame {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
-  z-index: 40;
+  z-index: 60;
   display: none;
   width: clamp(2.75rem, 4.5vw, 5rem);
   pointer-events: none;
