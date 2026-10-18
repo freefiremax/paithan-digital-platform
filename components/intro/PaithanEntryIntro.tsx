@@ -154,7 +154,12 @@ const WORDS = (() => {
       x: `${x.toFixed(2)}vw`,
       y: `${y.toFixed(2)}vh`,
       // A touch of size and clock variance, so the run never looks ruled.
-      scale: (0.4 + rand() * 0.6).toFixed(3),
+      // Roughly one name in five is drawn much smaller — a whisper set deep in
+      // the scatter — so the field keeps a real size spread instead of one
+      // flat weight.
+      scale: (
+        rand() < 0.2 ? 0.12 + rand() * 0.1 : 0.45 + rand() * 0.55
+      ).toFixed(3),
       jitterMs: Math.round((rand() - 0.5) * 320),
     };
   });
