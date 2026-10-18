@@ -158,7 +158,7 @@ const WORDS = (() => {
       // the scatter — so the field keeps a real size spread instead of one
       // flat weight.
       scale: (
-        rand() < 0.2 ? 0.12 + rand() * 0.1 : 0.45 + rand() * 0.55
+        rand() < 0.4 ? 0.09 + rand() * 0.12 : 0.45 + rand() * 0.55
       ).toFixed(3),
       jitterMs: Math.round((rand() - 0.5) * 320),
     };
