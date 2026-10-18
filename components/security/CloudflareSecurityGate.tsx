@@ -81,7 +81,7 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
           </div>
           <div>
             <h1 className="text-base font-bold text-white tracking-wide">{tHeader("paithanMunicipalCouncil")}</h1>
-            <p className="text-xs text-slate-400">{tHeader("governmentOfMaharashtra")}</p>
+            <p className="text-xs text-slate-400">{tHeader("topbarTagline")}</p>
           </div>
         </div>
 

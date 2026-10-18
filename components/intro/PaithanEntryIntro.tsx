@@ -143,36 +143,69 @@ function mulberry32(seed: number) {
   };
 }
 
+/*
+ * A few extra whispers dropped into whatever gaps the main scatter leaves: the
+ * town's name again, very small and nearly transparent, so the empty corners of
+ * the frame still carry a mark without competing with the names meant to be
+ * read. They are placed AFTER the main pass, against the same `taken` list and
+ * a tighter clearance, so they only ever land in space that is genuinely free.
+ * Each takes its own flyIndex from the EARLY part of the launch chain rather
+ * than being appended to it — appended, they would arrive last and the closing
+ * fade would swallow them before anyone saw them.
+ */
+const EXTRA_ORDER = [0, 1, 2, 8, 21, 15, 19] as const;
+const EXTRA_FLY_INDEX = [3, 8, 13, 18, 23, 28, 32] as const;
+const EXTRA_GAP_X = 6; // vw — they are tiny, so they may sit closer in
+const EXTRA_GAP_Y = 3.5; // vh
+const EXTRA_SCALE = [0.1, 0.22] as const;
+const EXTRA_OPA = [0.15, 0.32] as const;
+
 const WORDS = (() => {
   const rand = mulberry32(0x5ead);
   const taken: { x: number; y: number }[] = [];
-  return Array.from({ length: COUNT }, (_, i) => {
+
+  /** One free spot, cleared by the given gaps. Shared by both passes. */
+  const place = (gapX: number, gapY: number, attempts: number) => {
     let x = 0;
     let y = 0;
-    for (let attempt = 0; attempt < 200; attempt++) {
+    for (let attempt = 0; attempt < attempts; attempt++) {
       x = (rand() * 2 - 1) * SPAN_X;
       y = (rand() * 2 - 1) * SPAN_Y;
-      if (taken.every((p) => Math.abs(p.x - x) > GAP_X || Math.abs(p.y - y) > GAP_Y)) {
+      if (taken.every((p) => Math.abs(p.x - x) > gapX || Math.abs(p.y - y) > gapY)) {
         break;
       }
     }
     taken.push({ x, y });
-    return {
-      ...GLYPHS[SWARM_ORDER[i % SWARM_ORDER.length]],
-      x: `${x.toFixed(2)}vw`,
-      y: `${y.toFixed(2)}vh`,
-      // A touch of size and clock variance, so the run never looks ruled.
-      // Roughly one name in five is drawn much smaller — a whisper set deep in
-      // the scatter — so the field keeps a real size spread instead of one
-      // flat weight.
-      scale: (
-        rand() < 0.5 ? 0.07 + rand() * 0.15 : 0.48 + rand() * 0.52
-      ).toFixed(3),
-      // Vary the gold shade + a touch of opacity to avoid uniform brightness.
+    return { x: `${x.toFixed(2)}vw`, y: `${y.toFixed(2)}vh` };
+  };
+
+  const words = Array.from({ length: COUNT }, (_, i) => ({
+    ...GLYPHS[SWARM_ORDER[i % SWARM_ORDER.length]],
+    ...place(GAP_X, GAP_Y, 200),
+    // A touch of size and clock variance, so the run never looks ruled.
+    // Roughly one name in five is drawn much smaller — a whisper set deep in
+    // the scatter — so the field keeps a real size spread instead of one
+    // flat weight.
+    scale: (rand() < 0.5 ? 0.07 + rand() * 0.15 : 0.48 + rand() * 0.52).toFixed(3),
+    // Vary the gold shade + a touch of opacity to avoid uniform brightness.
+    gold: `var(--paithan-gold-${Math.floor(1 + rand() * 10)})`,
+    opa: (0.85 + rand() * 0.15).toFixed(2),
+    flyIndex: i,
+  }));
+
+  EXTRA_ORDER.forEach((glyph, n) => {
+    words.push({
+      ...GLYPHS[glyph],
+      ...place(EXTRA_GAP_X, EXTRA_GAP_Y, 300),
+      // Pinned small and pinned faint on purpose: texture, not content.
+      scale: (EXTRA_SCALE[0] + rand() * (EXTRA_SCALE[1] - EXTRA_SCALE[0])).toFixed(3),
       gold: `var(--paithan-gold-${Math.floor(1 + rand() * 10)})`,
-      opa: (0.85 + rand() * 0.15).toFixed(2),
-    };
+      opa: (EXTRA_OPA[0] + rand() * (EXTRA_OPA[1] - EXTRA_OPA[0])).toFixed(2),
+      flyIndex: EXTRA_FLY_INDEX[n],
+    });
   });
+
+  return words;
 })();
 
 type Phase = "show" | "leaving" | "done";
@@ -270,7 +303,7 @@ export function PaithanEntryIntro() {
               className="paithan-intro__word"
               style={
                 {
-                  "--fly-index": index,
+                  "--fly-index": word.flyIndex,
                   "--fx": word.x,
                   "--fy": word.y,
                   "--scale": word.scale,

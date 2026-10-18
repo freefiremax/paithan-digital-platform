@@ -2,9 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { Phone, MapPin, ExternalLink, Clock, ShieldCheck } from "lucide-react";
+import { Phone, Mail, MapPin, ExternalLink, Clock, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { StateEmblem } from "@/components/ui/StateEmblem";
 
 export default function Footer() {
   const t = useTranslations("footer");
@@ -59,6 +58,17 @@ export default function Footer() {
           <p className="leading-relaxed text-[var(--on-vangi-muted)]">
             {t("councilDesc")}
           </p>
+          {/*
+            The portal's own positioning line. It used to sit on a second header
+            band above the page; it belongs down here, with the identity it
+            describes, where there is room for it to be read rather than scanned.
+          */}
+          <p className="border-l-2 border-[var(--saffron-500)] pl-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--saffron-500)]">
+            {tHeader("topbarTagline")}
+          </p>
+          <p className="-mt-1.5 text-[11px] text-[var(--on-vangi-muted)]">
+            {tHeader("topbarSub")}
+          </p>
           <div className="space-y-1.5 pt-1 text-[var(--on-vangi-muted)]">
             <div className="flex items-start gap-2">
               <MapPin
@@ -75,6 +85,20 @@ export default function Footer() {
                 aria-hidden="true"
               />
               <span>{t("officeHours")}</span>
+            </div>
+            {/* The council's mailbox. Contact details belong with contact
+                details — this used to be parked on the header utility strip. */}
+            <div className="flex items-center gap-2">
+              <Mail
+                className="h-3.5 w-3.5 shrink-0 text-[var(--saffron-500)]"
+                aria-hidden="true"
+              />
+              <a
+                href="mailto:munptn@gmail.com"
+                className="transition-colors hover:text-[var(--saffron-500)]"
+              >
+                {tHeader("email")}
+              </a>
             </div>
           </div>
         </div>
@@ -197,13 +221,13 @@ export default function Footer() {
           </ul>
         </nav>
 
-        {/* Col 4: Official State Portals */}
+        {/* Col 4: External portal links. The heading names the links, never an
+            authority the portal speaks for. */}
         <nav className="space-y-3" aria-labelledby="footer-gov">
           <h4
             id="footer-gov"
             className="flex items-center gap-2 border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
           >
-            <StateEmblem size={16} invert />
             <span>{t("govLinksTitle")}</span>
           </h4>
           <ul className="space-y-2">

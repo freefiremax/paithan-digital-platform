@@ -35,7 +35,7 @@ The **Paithan Digital Platform** is an official municipal, heritage, and tourism
 
 ### Step 4: Core Navigation Shell & Data Layer (Completed)
 * **`lib/mock-data.ts`:** Complete unified data layer providing verified leadership, 17 wards, development works, notifications, museum antiquities, and tourism spots with explicit `DataStatus` tagging (`VERIFIED` vs `SAMPLE_TBD`).
-* **`components/layout/Header.tsx`:** Official dual-tier municipal header with Government of Maharashtra banner, Paithan Municipal Council crest, helpline `02431-223010`, 4-wing navigation, and citizen AI bot button.
+* **`components/layout/Header.tsx`:** Single-tier municipal header with the Paithan Municipal Council crest, global search, language switcher, account controls, helpline `02431-223010`, 4-wing navigation, and citizen AI bot button. Contact details and the portal's positioning line live in the footer.
 * **`components/layout/NoticeTicker.tsx`:** Live ticker for tenders, schemes, and Nath Shashti advisories.
 * **`components/layout/Footer.tsx`:** Statutory footer with emergency numbers, council office hours, citizen services, state portal links, RTI, and Citizen Charter.
 * **`components/layout/MobileNav.tsx`:** Accessible mobile drawer navigation.

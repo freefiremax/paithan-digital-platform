@@ -1,26 +1,31 @@
 /*
  * Full-bleed background video sitting directly under the three-band header, with
- * the council's live notices running up the right-hand side.
+ * the council's live notices running up the right-hand side and a short welcome
+ * card for visitors and residents running down the left.
  *
  * The video itself is plain on purpose: one clip, `object-cover`, no scrim over
  * the footage, no blur backdrop, no mask. The `.video-fade-bottom` dissolve and
  * the blurred second layer were both added to hide the trim on a 2:1 clip in a
  * much wider band, and neither was the look that was wanted. The only darkening
- * anywhere in this band is the notice panel's own head bar and the per-row
- * chips, which sit on the panel rather than across the image.
+ * anywhere in this band is LOCAL: the notice panel's own head bar, the per-row
+ * chips, and the welcome card. Each sits on the frame as its own chip rather
+ * than being stretched across the image, so the footage still reads through.
  *
  * `muted` + `playsInline` are not optional: without them every mobile browser
  * blocks autoplay and the band renders as an empty rectangle. The clip is
  * swapped by replacing the single file in /public/videoclips.
  *
  * LAYOUT. On desktop the notices float over the right of the frame on a
- * deliberately TRANSPARENT panel, so the footage stays visible between the rows.
- * Legibility therefore cannot come from a panel-coloured backdrop: each row
- * carries its own translucent dark chip, and the accent cycle in ACCENTS gives
- * every notice a different bright bar. On mobile the video stops being
- * full-bleed and the notices become an ordinary solid block underneath it,
- * because a floating panel over a phone screen would cover the footage entirely
- * and clip the longest titles mid-word. `.notice-panel` keeps that split in CSS
+ * deliberately TRANSPARENT panel, and the welcome card mirrors them on the left
+ * over the part of the frame the notices never reach. Legibility therefore
+ * cannot come from a panel-coloured backdrop: each notice row carries its own
+ * translucent dark chip, and the accent cycle in ACCENTS gives every notice a
+ * different bright bar; the welcome card carries one chip of its own, at the
+ * same 0.68 dark, so the two sides read as one family. On mobile the video
+ * stops being full-bleed and BOTH blocks become ordinary solid blocks stacked
+ * under it — welcome card first, then notices — because floating either one
+ * over a phone screen would cover the footage entirely and clip the longest
+ * titles mid-word. `.notice-panel` and `.band-welcome` keep that split in CSS
  * at the lg boundary so the two layouts cannot drift apart.
  *
  * The section's `lg:h-[82vh] lg:min-h-[380px] lg:max-h-[860px]` is the single
@@ -45,6 +50,7 @@
  * alone is not enough to satisfy WCAG 2.2.2.
  */
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { notifications, formatCivicDate } from "@/lib/mock-data";
 import { NotificationCategoryBadge } from "@/components/ui/NotificationCategoryBadge";
 import { VideoControls } from "@/components/layout/VideoControls";
@@ -81,7 +87,21 @@ const ROWS = LEDGER.map((notice, i) => ({
   accent: ACCENTS[i % ACCENTS.length],
 }));
 
+/**
+ * The four doors out of the welcome card: two for the visitor planning a day in
+ * Paithan, two for the resident who came for the council itself. Keys rather
+ * than labels so the whole card is translated like the rest of the page.
+ */
+const WELCOME_LINKS = [
+  { key: "bandLinkPlaces", href: "/tourism/places-to-visit" },
+  { key: "bandLinkRoutes", href: "/tourism/routes" },
+  { key: "bandLinkServices", href: "/services" },
+  { key: "bandLinkWards", href: "/nagar-parishad/ward-map" },
+] as const;
+
 export default function HomeVideoBand() {
+  const t = useTranslations("home");
+
   return (
     <section
       className="
@@ -89,7 +109,7 @@ export default function HomeVideoBand() {
         lg:h-[82vh] lg:min-h-[380px] lg:max-h-[860px]
         motion-reduce:h-auto motion-reduce:overflow-visible
       "
-      aria-label="Scenic footage of Paithan, with the council's current notices"
+      aria-label="Welcome to Paithan, with scenic footage of the town and the council's current notices"
     >
       {/*
         Desktop: absolutely positioned so the footage runs edge to edge behind
@@ -110,13 +130,40 @@ export default function HomeVideoBand() {
       />
 
       {/*
-        The caption and the playback controls sit bottom-LEFT, in the footage the
-        notice panel does not cover. Controls rather than a mute-only switch,
-        because this clip autoplays on a loop forever and WCAG 2.2.2 requires any
-        motion that runs past five seconds to be pausable. See VideoControls for
-        why this is an island instead of the whole band becoming client-side.
+        The caption and the playback controls sit bottom-LEFT, in the footage
+        neither the notice panel nor the welcome card covers — the card's bottom
+        padding in globals.css reserves this corner for them. Controls rather
+        than a mute-only switch, because this clip autoplays on a loop forever
+        and WCAG 2.2.2 requires any motion that runs past five seconds to be
+        pausable. See VideoControls for why this is an island instead of the
+        whole band becoming client-side.
       */}
       <VideoControls />
+
+      {/*
+        The left-hand welcome card: what Paithan is and the four doors a visitor
+        or a resident usually wants first. Mobile: an ordinary block under the
+        video, above the notices, so it reads as the band's opening paragraph.
+        Desktop: absolutely pinned to the left of the frame, mirrored against the
+        notice panel, on the same per-block chip that makes the notices legible.
+        `.band-welcome` owns that split in globals.css.
+      */}
+      <div className="band-welcome">
+        <div className="band-welcome__card">
+          <p className="band-welcome__eyebrow">{t("bandEyebrow")}</p>
+          <h2 className="band-welcome__title">{t("bandTitle")}</h2>
+          <p className="band-welcome__blurb">{t("bandBlurb")}</p>
+          <ul className="band-welcome__links">
+            {WELCOME_LINKS.map((link) => (
+              <li key={link.key}>
+                <Link href={link.href} className="band-welcome__link">
+                  {t(link.key)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
       <aside
         className="

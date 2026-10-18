@@ -1,7 +1,7 @@
 {
   "header": {
-    "governmentOfMaharashtra": "Government of Maharashtra",
-    "dma": "Directorate of Municipal Administration",
+    "topbarTagline": "Paithan civic, heritage & tourism portal",
+    "topbarSub": "Wards, services, notices and places to visit",
     "helpline": "Helpline 02431-223010",
     "email": "munptn@gmail.com",
     "language": "Language",
@@ -133,7 +133,14 @@
     "viewAllWorks": "View all development works",
     "activeProjects": "Active municipal projects across wards",
     "totalWards": "17 Wards",
-    "totalArea": "18.5 sq km"
+    "totalArea": "18.5 sq km",
+    "bandEyebrow": "For visitors & residents",
+    "bandTitle": "Welcome to Paithan",
+    "bandBlurb": "Old Pratishthana on the Godavari — its ghats, the Paithani and the Jayakwadi dam. Council services for residents and a day's plan for visitors, in one place.",
+    "bandLinkPlaces": "Places to visit",
+    "bandLinkRoutes": "How to reach & routes",
+    "bandLinkServices": "Citizen services",
+    "bandLinkWards": "Wards & representatives"
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -159,9 +166,9 @@
     "jayakwadiLink": "Jayakwadi Dam & Reservoir Engineering",
     "nathSagarLink": "Nath Sagar & Jaikwadi Bird Sanctuary",
     "routesLink": "Pilgrim & Heritage Tourist Itineraries",
-    "govLinksTitle": "Government Links",
+    "govLinksTitle": "Useful links",
     "aapleSarkar": "Aaple Sarkar Citizen Services",
-    "mahaGov": "Government of Maharashtra",
+    "mahaGov": "Maharashtra State Portal",
     "districtPortal": "Chhatrapati Sambhajinagar District Portal",
     "mahaTenders": "MahaTenders e-Procurement",
     "aiAssistant": "AI Citizen Assistant",
@@ -551,7 +558,7 @@
     "privacyHeader": "Privacy Policy",
     "privacyText": "Your personal data submitted through municipal grievance and service portals is protected and never shared with unauthorized third parties.",
     "termsHeader": "Terms of Service",
-    "termsText": "By accessing this portal, users agree to comply with applicable municipal bylaws and Government of Maharashtra digital usage policies.",
+    "termsText": "By accessing this portal, users agree to comply with the applicable municipal bylaws and digital usage policies.",
     "copyrightHeader": "Copyright Policy",
     "copyrightText": "Content on this portal is published by Paithan Municipal Council. Material may be reproduced with due acknowledgment for non-commercial purposes.",
     "hyperlinkHeader": "Hyperlinking Policy",

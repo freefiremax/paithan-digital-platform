@@ -1368,6 +1368,135 @@
   );
 }
 
+/*
+ * WELCOME CARD — the left-hand counterweight to the notice panel: one short
+ * paragraph plus four doors out, for the visitor planning a day in Paithan and
+ * the resident who came for the council itself.
+ *
+ * It is built the same way a notice row is, because it faces the same problem —
+ * unknown frame behind, near-white text in front. The card chip below is the
+ * same 0.68 dark as `.notice-item` (the contrast arithmetic is written out in
+ * that rule), so the two sides of the band read as one family and neither needs
+ * a scrim stretched across the footage.
+ *
+ * Mobile: an ordinary in-flow block between the video and the notices, on the
+ * solid `--paithani-red` the notice panel takes, so the band stacks up as
+ * blocks instead of burying the footage under text nobody can read.
+ * Desktop: absolutely pinned to the left of the frame. Its bottom padding is not
+ * cosmetic — it reserves the bottom-left corner that `.video-controls` owns, so
+ * the controls and the card can never land on top of each other.
+ */
+.band-welcome {
+  border-top: 2px solid var(--zari-gold-400);
+  padding: 1.1rem 1rem 1.35rem;
+  background-color: var(--paithani-red);
+}
+
+.band-welcome__card {
+  padding: 1rem 1.1rem 1.15rem;
+  background-color: rgb(26 8 14 / 0.68);
+  border-left: 3px solid var(--zari-gold-400);
+  color: var(--surface-card);
+}
+
+.band-welcome__eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--zari-gold-400);
+}
+
+.band-welcome__title {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  line-height: 1.15;
+  color: var(--surface-card);
+  /* Same belt and braces as the notice title: the chip covers the soft edge. */
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+}
+
+.band-welcome__blurb {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--notice-ink-muted);
+}
+
+.band-welcome__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.band-welcome__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--morpanhki-400);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--surface-card);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+/* Solid zari on hover, dark text on gold — the one bright fill in this band. */
+.band-welcome__link:hover,
+.band-welcome__link:focus-visible {
+  background-color: var(--zari-gold-400);
+  border-color: var(--zari-gold-400);
+  color: var(--paper-950);
+}
+
+@media (min-width: 64rem) {
+  .band-welcome {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* 5.5rem at the bottom is the standing reservation for `.video-controls`. */
+    padding: 3.5rem 1.75rem 5.5rem 1.5rem;
+    background-color: transparent;
+    border-top: 0;
+    /* The notice panel keeps the right 19–21rem; this never crosses into it. */
+    max-width: min(25rem, 46%);
+  }
+}
+
+/* Ward map: dissolve the map plate's own top/bottom edge into whatever ground
+   sits behind it (parchment on the page, white on the home band), so the plate
+   reads as part of the page instead of a pasted rectangle. Stops are percentages
+   of the figure height so the blend scales with the map, never eating labels. */
+.ward-map-bleed {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.45) 3.5%,
+    #000 9%,
+    #000 92%,
+    rgba(0, 0, 0, 0.45) 96.5%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.45) 3.5%,
+    #000 9%,
+    #000 92%,
+    rgba(0, 0, 0, 0.45) 96.5%,
+    transparent 100%
+  );
+}
+
 /* Interactive ward map markers */
 .ward-map-svg__link {
   cursor: pointer;
@@ -1578,7 +1707,7 @@ html.paithan-intro-locked body {
   filter: url(#paithan-torn);
   /* Readable from the first frame: names are born at a size you can actually
      read, not as dots, and stay legible right up to the lens. */
-  font-size: clamp(1.75rem, 5vw, 3.75rem);
+  font-size: clamp(1.5rem, 4.3vw, 3.1rem);
   line-height: 1;
   /* Dynamic gold shade + soft opacity for depth; each word picks one via CSS var */
   color: var(--paithan-gold, var(--zari-gold-400));

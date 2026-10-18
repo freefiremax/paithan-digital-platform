@@ -172,7 +172,7 @@ const extraEn = {
     privacyHeader: "Privacy Policy",
     privacyText: "Your personal data submitted through municipal grievance and service portals is protected and never shared with unauthorized third parties.",
     termsHeader: "Terms of Service",
-    termsText: "By accessing this portal, users agree to comply with applicable municipal bylaws and Government of Maharashtra digital usage policies.",
+    termsText: "By accessing this portal, users agree to comply with the applicable municipal bylaws and digital usage policies.",
     copyrightHeader: "Copyright Policy",
     copyrightText: "Content on this portal is published by Paithan Municipal Council. Material may be reproduced with due acknowledgment for non-commercial purposes.",
     hyperlinkHeader: "Hyperlinking Policy",
