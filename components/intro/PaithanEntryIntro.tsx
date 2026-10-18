@@ -128,10 +128,10 @@ const COUNT = 36;
  * client draw the same layout, so there is no hydration mismatch and no
  * reshuffle between loads.
  */
-const SPAN_X = 56; // vw
-const SPAN_Y = 40; // vh
-const GAP_X = 14; // vw of minimum clearance between two names
-const GAP_Y = 8;  // vh
+const SPAN_X = 60; // vw
+const SPAN_Y = 42; // vh
+const GAP_X = 12; // vw of minimum clearance between two names
+const GAP_Y = 7;  // vh
 
 function mulberry32(seed: number) {
   let s = seed;
