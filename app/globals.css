@@ -1466,9 +1466,9 @@ html.paithan-intro-locked body {
      a pool of depth, not a lit rectangle. */
   background-image: radial-gradient(
     130% 100% at 50% 44%,
-    #6d1529 0%,
-    var(--footer-bg) 58%,
-    #380a17 100%
+    color-mix(in srgb, #6d1529 98%, black 2%) 0%,
+    color-mix(in srgb, var(--footer-bg) 95%, black 5%) 58%,
+    color-mix(in srgb, #380a17 98%, black 2%) 100%
   );
   opacity: 1;
   transition: opacity var(--paithan-leave-ms, 1400ms) ease;
