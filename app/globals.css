@@ -1583,7 +1583,9 @@ html.paithan-intro-locked body {
    named per script so a machine missing one script still gets a proper
    typeface for it rather than a tofu box. */
 .paithan-intro__glyph.is-latin {
-  font-family: var(--font-display);
+  font-family: var(--font-besley), "IM Fell English", "IM Fell DW Pica", "Uncial/Medieval", Georgia, "Times New Roman", serif;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.15);
 }
 
 .paithan-intro__glyph.is-deva {
