@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Inter, Noto_Sans_Devanagari, Besley, Tiro_Devanagari_Hindi } from "next/font/google";
+import {
+  Inter,
+  Noto_Sans_Devanagari,
+  Besley,
+  Tiro_Devanagari_Hindi,
+  IM_Fell_English,
+} from "next/font/google";
 import { councilProfile } from "@/lib/mock-data";
 import "./globals.css";
 
@@ -50,6 +56,16 @@ const tiroDevanagari = Tiro_Devanagari_Hindi({
   display: "swap",
 });
 
+// The intro's Latin names only — a 17th-century Fell typeface, cut from metal
+// and printed on rag paper, so the wordmark reads old-print rather than UI.
+const imFellEnglish = IM_Fell_English({
+  subsets: ["latin"],
+  weight: "400",
+  style: "normal",
+  variable: "--font-im-fell",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${councilProfile.shortNameEn} — Official Digital Platform`,
@@ -63,7 +79,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${notoSansDevanagari.variable} ${besley.variable} ${tiroDevanagari.variable}`}
+      className={`${inter.variable} ${notoSansDevanagari.variable} ${besley.variable} ${tiroDevanagari.variable} ${imFellEnglish.variable}`}
     >
       <body>{children}</body>
     </html>
