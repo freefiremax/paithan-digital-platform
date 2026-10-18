@@ -6,6 +6,8 @@ import {
   Besley,
   Tiro_Devanagari_Hindi,
   IM_Fell_English,
+  Shrikhand,
+  Rozha_One,
 } from "next/font/google";
 import { councilProfile } from "@/lib/mock-data";
 import "./globals.css";
@@ -66,6 +68,24 @@ const imFellEnglish = IM_Fell_English({
   display: "swap",
 });
 
+// Intro Devanagari/Gujarati names — a heavy vintage Indian display face that
+// reads like an old hand-painted signboard rather than a UI sans.
+const shrikhand = Shrikhand({
+  subsets: ["gujarati", "latin"],
+  weight: "400",
+  variable: "--font-shrikhand",
+  display: "swap",
+});
+
+// Intro Devanagari names — a high-contrast old-print display face (Monotype
+// "Rozha"), cut like letterpress on paper.
+const rozhaOne = Rozha_One({
+  subsets: ["devanagari", "latin"],
+  weight: "400",
+  variable: "--font-rozha",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${councilProfile.shortNameEn} — Official Digital Platform`,
@@ -79,7 +99,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${notoSansDevanagari.variable} ${besley.variable} ${tiroDevanagari.variable} ${imFellEnglish.variable}`}
+      className={`${inter.variable} ${notoSansDevanagari.variable} ${besley.variable} ${tiroDevanagari.variable} ${imFellEnglish.variable} ${shrikhand.variable} ${rozhaOne.variable}`}
     >
       <body>{children}</body>
     </html>

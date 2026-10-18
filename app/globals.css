@@ -1551,6 +1551,7 @@ html.paithan-intro-locked body {
 .paithan-intro__glyph {
   display: block;
   white-space: nowrap;
+  filter: url(#paithan-torn);
   /* Readable from the first frame: names are born at a size you can actually
      read, not as dots, and stay legible right up to the lens. */
   font-size: clamp(1.5rem, 4vw, 3.25rem);
@@ -1587,12 +1588,15 @@ html.paithan-intro-locked body {
   letter-spacing: 0.015em;
 }
 
-.paithan-intro__glyph.is-deva {
-  font-family: var(--font-display-deva);
+.paithan-intro__glyph.is-deva,
+.paithan-intro__glyph.is-deva-noto,
+.paithan-intro__glyph.is-deva-mangal,
+.paithan-intro__glyph.is-deva-kokila {
+  font-family: var(--font-rozha), var(--font-tiro), var(--font-noto-devanagari), serif;
 }
 
 .paithan-intro__glyph.is-gu {
-  font-family: "Noto Sans Gujarati", "Shruti", "Nirmala UI",
+  font-family: var(--font-shrikhand), "Noto Sans Gujarati", "Shruti", "Nirmala UI",
     var(--font-devanagari), sans-serif;
 }
 

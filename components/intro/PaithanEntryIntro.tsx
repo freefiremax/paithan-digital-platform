@@ -228,6 +228,26 @@ export function PaithanEntryIntro() {
         } as React.CSSProperties
       }
     >
+      {/* Torn-edge ink filter: roughens each glyph's outline so the names read
+          as letterpress pressed into rag paper rather than screen type. */}
+      <svg aria-hidden="true" width="0" height="0" style={{ position: "absolute" }}>
+        <filter id="paithan-torn">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.05"
+            numOctaves="2"
+            result="n"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="n"
+            scale="2.5"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </svg>
+
       <div
         className="paithan-intro__frame paithan-intro__frame--top paithani-band"
         aria-hidden="true"
