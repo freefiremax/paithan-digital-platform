@@ -1847,7 +1847,15 @@ html.paithan-intro-locked body {
   background-repeat: repeat-y;
   background-position: top center;
   background-size: 100% auto;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.35));
+  /*
+   * Theme grade. The source art is a bright signal-red and cream gold; the
+   * palette is deep madder crimson (--portal-blue-700 #7d1430) with zari gold
+   * (#dd9f1c). Pulling the hue back toward the madder side, calming the
+   * saturation and dropping the luminance lands the border in the same family
+   * the rest of the site is painted in.
+   */
+  filter: saturate(0.82) hue-rotate(-12deg) brightness(0.82) contrast(1.06)
+    drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
   opacity: 0.95;
 }
 
