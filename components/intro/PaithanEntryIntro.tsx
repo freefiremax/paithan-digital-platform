@@ -49,15 +49,15 @@ let introStartedAt = 0;
 const LOCK_FLAG = "paithan-intro-locked";
 
 /* The whole screen time is fixed; this is how long an individual name lives. */
-const FLY_MS = 2000;
+const FLY_MS = 2400;
 /* Gap between one name launching and the next. */
-const STAGGER_MS = 130;
+const STAGGER_MS = 150;
 /* Pre-roll so the frame is already alive on the very first frame. */
-const PRE_ROLL_MS = 250;
-const LEAVE_MS = 1400;
+const PRE_ROLL_MS = 450;
+const LEAVE_MS = 1600;
 /** Whole screen time, closing fade included. */
-const TOTAL_MS = 4400;
-const REDUCED_HOLD_MS = 2000;
+const TOTAL_MS = 6900;
+const REDUCED_HOLD_MS = 2600;
 
 type ScriptKind =
   | "latin"
@@ -107,9 +107,10 @@ const GLYPHS: ReadonlyArray<{
  */
 const SWARM_ORDER = [
   0, 1, 2, 8, 10, 13, 3, 9, 11, 4, 14, 5, 15, 12, 6, 17, 16, 7, 10, 3,
+  18, 20, 19, 21,
 ];
 
-const COUNT = 20;
+const COUNT = 24;
 
 /*
  * Scattered, not arranged. The spots are drawn once from a fixed seed with
@@ -153,7 +154,7 @@ const WORDS = (() => {
       x: `${x.toFixed(2)}vw`,
       y: `${y.toFixed(2)}vh`,
       // A touch of size and clock variance, so the run never looks ruled.
-      scale: (0.72 + rand() * 0.48).toFixed(3),
+      scale: (0.4 + rand() * 0.6).toFixed(3),
       jitterMs: Math.round((rand() - 0.5) * 320),
     };
   });

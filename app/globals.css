@@ -1526,8 +1526,6 @@ html.paithan-intro-locked body {
   inset: 0;
   /* Flattened on purpose: this layer must not stitch the names into one 3D
      space, or they stop owning their own lens and start converging again. */
-  animation: paithan-words-dim 900ms ease both;
-  animation-delay: var(--paithan-lockup-delay-ms, 3000ms);
 }
 
 /* Each word is a full-size flex box that centres its glyph. `--fx`/`--fy` plant
@@ -1559,8 +1557,10 @@ html.paithan-intro-locked body {
   color: var(--zari-gold-400);
   opacity: 0;
   /* Easing is kept off the depth axis: the arrivals have to feel like a steady
-     scatter of pops, not a start-and-stop swell. */
-  animation: paithan-fly-through var(--paithan-fly-ms, 2600ms) linear both;
+     scatter of pops, not a start-and-stop swell. A decelerating curve so each
+     name settles into its resting size rather than snapping to a stop. */
+  animation: paithan-fly-through var(--paithan-fly-ms, 2600ms)
+    cubic-bezier(0.16, 1, 0.3, 1) both;
   /*
    * Launch order is randomised by the coprime lattice stride in the component,
    * so `--fly-index` staggers each name after the last without sweeping the
@@ -1727,17 +1727,14 @@ html.paithan-intro-locked body {
 @keyframes paithan-fly-through {
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, -1200px);
+    transform: translate3d(0, 0, -1400px);
   }
-  12% {
-    opacity: 1;
-  }
-  76% {
+  18% {
     opacity: 1;
   }
   100% {
-    opacity: 0;
-    transform: translate3d(0, 0, 480px);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
