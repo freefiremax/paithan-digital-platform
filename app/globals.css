@@ -1461,15 +1461,17 @@ html.paithan-intro-locked body {
   overflow: hidden;
   isolation: isolate;
   background-color: var(--footer-bg);
-  /* A vignette, so the field has a centre of gravity the words emerge from
-     rather than a flat colour. Kept dark at the edges so the zari band frames
-     a pool of depth, not a lit rectangle. */
-  background-image: radial-gradient(
-    130% 100% at 50% 44%,
-    color-mix(in srgb, #6d1529 98%, black 2%) 0%,
-    color-mix(in srgb, var(--footer-bg) 95%, black 5%) 58%,
-    color-mix(in srgb, #380a17 98%, black 2%) 100%
-  );
+  background-image:
+    radial-gradient(
+      130% 100% at 50% 44%,
+      color-mix(in srgb, #6d1529 98%, black 2%) 0%,
+      color-mix(in srgb, var(--footer-bg) 95%, black 5%) 58%,
+      color-mix(in srgb, #380a17 98%, black 2%) 100%
+    ),
+    url("/images/paithani-bg.png");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
   opacity: 1;
   transition: opacity var(--paithan-leave-ms, 1400ms) ease;
 }
@@ -1498,7 +1500,7 @@ html.paithan-intro-locked body {
    is a vertical strip, so a quarter-turn inside the frame turns it into a
    horizontal band, tiled along its length. */
 .paithan-intro__frame {
-  --paithan-frame-h: clamp(1.5rem, 3.25vw, 2.5rem);
+  --paithan-frame-h: clamp(1.25rem, 2.5vw, 2rem);
   position: absolute;
   left: 0;
   right: 0;
@@ -1857,10 +1859,41 @@ html.paithan-intro-locked body {
 .site-shell {
   position: relative;
   min-height: 100vh;
+  /* Rail width = the side gutter reserved for the borders on large screens. */
+  --saree-rail: 0px;
 }
 
 .saree-frame {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 60;
   display: none;
+  width: var(--saree-rail, 2rem);
+  pointer-events: none;
+  background-image: url("/border.png");
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 100% auto;
+  filter: saturate(0.82) hue-rotate(-12deg) brightness(0.82) contrast(1.06)
+    drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
+  opacity: 0.95;
+}
+
+@media (min-width: 1024px) {
+  .site-shell {
+    --saree-rail: clamp(1.25rem, 2.25vw, 2rem);
+  }
+
+  .saree-frame {
+    display: block;
+  }
+
+  .site-shell > main,
+  .site-shell > footer {
+    padding-left: var(--saree-rail);
+    padding-right: var(--saree-rail);
+  }
 }
 
 .saree-frame--left {
