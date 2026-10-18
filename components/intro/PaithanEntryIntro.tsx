@@ -118,7 +118,7 @@ const SWARM_ORDER = [
   18, 20, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29,
 ];
 
-const COUNT = 30;
+const COUNT = 36;
 
 /*
  * Scattered, not arranged. The spots are drawn once from a fixed seed with
@@ -128,10 +128,10 @@ const COUNT = 30;
  * client draw the same layout, so there is no hydration mismatch and no
  * reshuffle between loads.
  */
-const SPAN_X = 52; // vw
-const SPAN_Y = 38; // vh
-const GAP_X = 16; // vw of minimum clearance between two names
-const GAP_Y = 9; // vh
+const SPAN_X = 56; // vw
+const SPAN_Y = 40; // vh
+const GAP_X = 14; // vw of minimum clearance between two names
+const GAP_Y = 8;  // vh
 
 function mulberry32(seed: number) {
   let s = seed;
@@ -166,7 +166,7 @@ const WORDS = (() => {
       // the scatter — so the field keeps a real size spread instead of one
       // flat weight.
       scale: (
-        rand() < 0.4 ? 0.09 + rand() * 0.12 : 0.45 + rand() * 0.55
+        rand() < 0.5 ? 0.07 + rand() * 0.15 : 0.48 + rand() * 0.52
       ).toFixed(3),
       jitterMs: Math.round((rand() - 0.5) * 320),
     };
