@@ -1841,7 +1841,7 @@ html.paithan-intro-locked body {
   bottom: 0;
   z-index: 60;
   display: none;
-  width: clamp(1.25rem, 2vw, 2rem);
+  width: clamp(1.75rem, 2.75vw, 2.75rem);
   pointer-events: none;
   background-image: url("/border.png");
   background-repeat: repeat-y;
