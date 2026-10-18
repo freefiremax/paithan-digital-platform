@@ -1552,7 +1552,7 @@ html.paithan-intro-locked body {
   filter: url(#paithan-torn);
   /* Readable from the first frame: names are born at a size you can actually
      read, not as dots, and stay legible right up to the lens. */
-  font-size: clamp(1.5rem, 4vw, 3.25rem);
+  font-size: clamp(1.75rem, 5vw, 3.75rem);
   line-height: 1;
   /* Dynamic gold shade + soft opacity for depth; each word picks one via CSS var */
   color: var(--paithan-gold, var(--zari-gold-400));
