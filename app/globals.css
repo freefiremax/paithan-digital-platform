@@ -1498,7 +1498,7 @@ html.paithan-intro-locked body {
    is a vertical strip, so a quarter-turn inside the frame turns it into a
    horizontal band, tiled along its length. */
 .paithan-intro__frame {
-  --paithan-frame-h: clamp(2rem, 4.5vw, 3.25rem);
+  --paithan-frame-h: clamp(1.5rem, 3.25vw, 2.5rem);
   position: absolute;
   left: 0;
   right: 0;
