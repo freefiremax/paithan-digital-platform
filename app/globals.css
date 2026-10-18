@@ -1740,7 +1740,7 @@ html.paithan-intro-locked body {
   }
   100% {
     opacity: 0;
-    transform: translate3d(0, 0, -1400px);
+    transform: translate3d(0, 0, 480px);
   }
 }
 
