@@ -49,14 +49,14 @@ let introStartedAt = 0;
 const LOCK_FLAG = "paithan-intro-locked";
 
 /* The whole screen time is fixed; this is how long an individual name lives. */
-const FLY_MS = 2400;
+const FLY_MS = 4600;
 /* Gap between one name launching and the next. */
-const STAGGER_MS = 150;
+const STAGGER_MS = 90;
 /* Pre-roll so the frame is already alive on the very first frame. */
-const PRE_ROLL_MS = 450;
-const LEAVE_MS = 1600;
+const PRE_ROLL_MS = 400;
+const LEAVE_MS = 1400;
 /** Whole screen time, closing fade included. */
-const TOTAL_MS = 6900;
+const TOTAL_MS = 7700;
 const REDUCED_HOLD_MS = 2600;
 
 type ScriptKind =
