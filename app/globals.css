@@ -1493,13 +1493,35 @@ html.paithan-intro-locked body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='fibre'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23fibre)' opacity='0.22'/%3E%3C/svg%3E");
 }
 
-/* The woven border, reused verbatim from the site identity, pinned to the top
-   and foot of the screen. */
+/* The Paithani pallu — the same artwork as the site's side rails — laid along
+   the top and foot of the screen so the intro reads as a woven page. The art
+   is a vertical strip, so a quarter-turn inside the frame turns it into a
+   horizontal band, tiled along its length. */
 .paithan-intro__frame {
+  --paithan-frame-h: clamp(2rem, 4.5vw, 3.25rem);
   position: absolute;
   left: 0;
   right: 0;
+  height: var(--paithan-frame-h);
+  overflow: hidden;
   z-index: 3;
+  pointer-events: none;
+}
+
+.paithan-intro__frame::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--paithan-frame-h);
+  height: 100vw;
+  transform: translate(-50%, -50%) rotate(90deg);
+  background-image: url("/border.png");
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: center;
+  filter: saturate(0.82) hue-rotate(-12deg) brightness(0.82) contrast(1.06);
+  opacity: 0.95;
 }
 
 .paithan-intro__frame--top {
@@ -1508,6 +1530,8 @@ html.paithan-intro-locked body {
 
 .paithan-intro__frame--bottom {
   bottom: 0;
+  /* Mirror so the two bands face the field symmetrically. */
+  transform: scaleY(-1);
 }
 
 /* A plain container — deliberately no perspective here. Each name owns its own
@@ -1833,53 +1857,10 @@ html.paithan-intro-locked body {
 .site-shell {
   position: relative;
   min-height: 100vh;
-  /* Rail width = the side gutter reserved for the borders on large screens. */
-  --saree-rail: 0px;
 }
 
 .saree-frame {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 60;
   display: none;
-  width: var(--saree-rail, 2rem);
-  pointer-events: none;
-  background-image: url("/border.png");
-  background-repeat: repeat-y;
-  background-position: top center;
-  background-size: 100% auto;
-  /*
-   * Theme grade. The source art is a bright signal-red and cream gold; the
-   * palette is deep madder crimson (--portal-blue-700 #7d1430) with zari gold
-   * (#dd9f1c). Pulling the hue back toward the madder side, calming the
-   * saturation and dropping the luminance lands the border in the same family
-   * the rest of the site is painted in.
-   */
-  filter: saturate(0.82) hue-rotate(-12deg) brightness(0.82) contrast(1.06)
-    drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
-  opacity: 0.95;
-}
-
-@media (min-width: 1024px) {
-  .site-shell {
-    --saree-rail: clamp(1.75rem, 2.75vw, 2.75rem);
-  }
-
-  .saree-frame {
-    display: block;
-  }
-
-  /*
-   * Keep page content clear of the rails. The gutters are added to the content
-   * column only (main + footer), not the sticky header — padding the header
-   * would punch see-through strips beside it once the rails have scrolled away.
-   */
-  .site-shell > main,
-  .site-shell > footer {
-    padding-left: var(--saree-rail);
-    padding-right: var(--saree-rail);
-  }
 }
 
 .saree-frame--left {

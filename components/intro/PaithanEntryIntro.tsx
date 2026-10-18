@@ -258,7 +258,7 @@ export function PaithanEntryIntro() {
       </svg>
 
       <div
-        className="paithan-intro__frame paithan-intro__frame--top paithani-band"
+        className="paithan-intro__frame paithan-intro__frame--top"
         aria-hidden="true"
       />
 
@@ -292,7 +292,7 @@ export function PaithanEntryIntro() {
       </div>
 
       <div
-        className="paithan-intro__frame paithan-intro__frame--bottom paithani-band"
+        className="paithan-intro__frame paithan-intro__frame--bottom"
         aria-hidden="true"
       />
     </div>

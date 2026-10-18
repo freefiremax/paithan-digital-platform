@@ -14,19 +14,17 @@ import { FloatingChatbotWidget } from "@/components/chatbot/FloatingChatbotWidge
  */
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="site-shell">
-      <PaithanEntryIntro />
-      <div aria-hidden="true" className="saree-frame saree-frame--left" />
-      <div aria-hidden="true" className="saree-frame saree-frame--right" />
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
-      <Header />
-      <NoticeTicker />
-      <main id="main-content">{children}</main>
-      <Footer />
-      <FloatingChatbotWidget />
-    </div>
+      <div className="site-shell">
+        <PaithanEntryIntro />
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+        <Header />
+        <NoticeTicker />
+        <main id="main-content">{children}</main>
+        <Footer />
+        <FloatingChatbotWidget />
+      </div>
   );
 }
 
