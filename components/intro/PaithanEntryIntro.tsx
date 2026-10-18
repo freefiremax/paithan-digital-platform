@@ -178,7 +178,7 @@ const WORDS = (() => {
 type Phase = "show" | "leaving" | "done";
 
 export function PaithanEntryIntro() {
-  const t = useTranslations("common");
+  const _t = useTranslations("common");
   // Lazy initialiser: on a fresh load (SSR and first client render) it is
   // "show", so server and client agree and there is no hydration mismatch. A
   // remount sees the guard already set — if the play is still within its four
@@ -220,13 +220,6 @@ export function PaithanEntryIntro() {
       document.documentElement.classList.remove(LOCK_FLAG);
     };
   }, []);
-
-  const dismiss = () => {
-    timers.current.forEach((id) => clearTimeout(id));
-    document.documentElement.classList.remove(LOCK_FLAG);
-    setPhase("leaving");
-    window.setTimeout(() => setPhase("done"), LEAVE_MS);
-  };
 
   if (phase === "done") return null;
 
@@ -302,10 +295,6 @@ export function PaithanEntryIntro() {
         className="paithan-intro__frame paithan-intro__frame--bottom paithani-band"
         aria-hidden="true"
       />
-
-      <button type="button" className="paithan-intro__skip" onClick={dismiss}>
-        {t("skipIntro")}
-      </button>
     </div>
   );
 }
