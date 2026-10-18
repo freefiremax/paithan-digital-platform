@@ -1833,6 +1833,8 @@ html.paithan-intro-locked body {
 .site-shell {
   position: relative;
   min-height: 100vh;
+  /* Rail width = the side gutter reserved for the borders on large screens. */
+  --saree-rail: 0px;
 }
 
 .saree-frame {
@@ -1841,7 +1843,7 @@ html.paithan-intro-locked body {
   bottom: 0;
   z-index: 60;
   display: none;
-  width: clamp(1.75rem, 2.75vw, 2.75rem);
+  width: var(--saree-rail, 2rem);
   pointer-events: none;
   background-image: url("/border.png");
   background-repeat: repeat-y;
@@ -1860,8 +1862,23 @@ html.paithan-intro-locked body {
 }
 
 @media (min-width: 1024px) {
+  .site-shell {
+    --saree-rail: clamp(1.75rem, 2.75vw, 2.75rem);
+  }
+
   .saree-frame {
     display: block;
+  }
+
+  /*
+   * Keep page content clear of the rails. The gutters are added to the content
+   * column only (main + footer), not the sticky header — padding the header
+   * would punch see-through strips beside it once the rails have scrolled away.
+   */
+  .site-shell > main,
+  .site-shell > footer {
+    padding-left: var(--saree-rail);
+    padding-right: var(--saree-rail);
   }
 }
 
