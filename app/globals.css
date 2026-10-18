@@ -1813,4 +1813,47 @@ html.paithan-intro-locked body {
   .paithan-intro {
     display: none !important;
   }
+
+  .saree-frame {
+    display: none !important;
+  }
+}
+
+/*
+ * Saree borders. The Paithani pallu motif, run down both outer edges of the
+ * page and tiled head-to-foot so the whole site reads as a woven frame. They
+ * are fixed and pointer-transparent, so they never take a click and never sit
+ * above the entry intro (z-index 40 vs the intro's 200) or the sticky header
+ * (z 50). Held back to large screens, where there is real margin to frame.
+ */
+.saree-frame {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 40;
+  display: none;
+  width: clamp(2.75rem, 4.5vw, 5rem);
+  pointer-events: none;
+  background-image: url("/border.png");
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 100% auto;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.35));
+  opacity: 0.95;
+}
+
+@media (min-width: 1024px) {
+  .saree-frame {
+    display: block;
+  }
+}
+
+.saree-frame--left {
+  left: 0;
+}
+
+.saree-frame--right {
+  right: 0;
+  /* Mirror so the two borders face the page symmetrically. */
+  transform: scaleX(-1);
 }

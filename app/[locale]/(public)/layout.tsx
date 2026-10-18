@@ -16,6 +16,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <PaithanEntryIntro />
+      <div aria-hidden="true" className="saree-frame saree-frame--left" />
+      <div aria-hidden="true" className="saree-frame saree-frame--right" />
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
