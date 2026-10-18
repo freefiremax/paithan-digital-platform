@@ -168,7 +168,9 @@ const WORDS = (() => {
       scale: (
         rand() < 0.5 ? 0.07 + rand() * 0.15 : 0.48 + rand() * 0.52
       ).toFixed(3),
-      jitterMs: Math.round((rand() - 0.5) * 320),
+      // Vary the gold shade + a touch of opacity to avoid uniform brightness.
+      gold: `var(--paithan-gold-${Math.floor(1 + rand() * 10)})`,
+      opa: (0.85 + rand() * 0.15).toFixed(2),
     };
   });
 })();
@@ -279,7 +281,8 @@ export function PaithanEntryIntro() {
                   "--fx": word.x,
                   "--fy": word.y,
                   "--scale": word.scale,
-                  "--fly-jitter": `${word.jitterMs}ms`,
+                  "--paithan-gold": word.gold,
+                  "--paithan-opa": word.opa,
                 } as React.CSSProperties
               }
             >
