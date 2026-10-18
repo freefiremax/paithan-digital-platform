@@ -99,6 +99,14 @@ const GLYPHS: ReadonlyArray<{
   { text: "ਪੈਥਾਨ", script: "pa", lang: "pa" },
   { text: "ପୈଥାନ", script: "or", lang: "or" },
   { text: "পৈথান", script: "bn", lang: "as" },
+  { text: "पैंठण", script: "deva-mangal", lang: "mr" },
+  { text: "पैठाण", script: "deva", lang: "mr" },
+  { text: "Paiṭhaṇ", script: "latin", lang: "en" },
+  { text: "Paithana", script: "latin", lang: "en" },
+  { text: "ಪೈಥಣ", script: "kn", lang: "kn" },
+  { text: "పైథణ", script: "te", lang: "te" },
+  { text: "پَیتھن", script: "ur", lang: "ur", rtl: true },
+  { text: "ପୈଥଣ", script: "or", lang: "or" },
 ];
 
 /*
@@ -107,10 +115,10 @@ const GLYPHS: ReadonlyArray<{
  */
 const SWARM_ORDER = [
   0, 1, 2, 8, 10, 13, 3, 9, 11, 4, 14, 5, 15, 12, 6, 17, 16, 7, 10, 3,
-  18, 20, 19, 21,
+  18, 20, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29,
 ];
 
-const COUNT = 24;
+const COUNT = 30;
 
 /*
  * Scattered, not arranged. The spots are drawn once from a fixed seed with
