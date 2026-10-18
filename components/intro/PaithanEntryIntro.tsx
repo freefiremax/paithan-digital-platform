@@ -149,10 +149,38 @@ const WORDS = (() => {
       }
     }
     taken.push({ x, y });
+
+    /*
+     * The exit angle. A name leaves the frame the way it entered the frame's
+     * map — outward from the centre, along its own bearing, nudged off true
+     * radial so the departures fan across every edge instead of a few spokes.
+     * That is what keeps them from streaming back through the middle and
+     * piling on top of each other.
+     */
+    let dx = x;
+    let dy = y;
+    let len = Math.hypot(dx, dy);
+    if (len < 0.001) {
+      const a = rand() * Math.PI * 2;
+      dx = Math.cos(a);
+      dy = Math.sin(a);
+      len = 1;
+    }
+    const jx = dx / len;
+    const jy = dy / len;
+    const spin = (rand() - 0.5) * 0.9; // fan, roughly ±26 degrees
+    const cos = Math.cos(spin);
+    const sin = Math.sin(spin);
+    const ux = jx * cos - jy * sin;
+    const uy = jx * sin + jy * cos;
+
     return {
       ...GLYPHS[SWARM_ORDER[i % SWARM_ORDER.length]],
       x: `${x.toFixed(2)}vw`,
       y: `${y.toFixed(2)}vh`,
+      // Far enough to clear any edge from any starting spot.
+      ex: `${(ux * 110).toFixed(2)}vw`,
+      ey: `${(uy * 110).toFixed(2)}vh`,
       // A touch of size and clock variance, so the run never looks ruled.
       scale: (0.4 + rand() * 0.6).toFixed(3),
       jitterMs: Math.round((rand() - 0.5) * 320),
@@ -265,6 +293,8 @@ export function PaithanEntryIntro() {
                   "--fly-index": index,
                   "--fx": word.x,
                   "--fy": word.y,
+                  "--ex": word.ex,
+                  "--ey": word.ey,
                   "--scale": word.scale,
                   "--fly-jitter": `${word.jitterMs}ms`,
                 } as React.CSSProperties
