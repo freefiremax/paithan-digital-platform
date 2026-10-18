@@ -30,7 +30,7 @@ export function FloatingChatbotWidget() {
   return (
     <>
       {/* Floating Action Button */}
-      <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
+      <div className="fixed bottom-4 right-4 z-[70] sm:bottom-6 sm:right-6 lg:right-[calc(var(--saree-rail,2rem)+1.5rem)]">
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
