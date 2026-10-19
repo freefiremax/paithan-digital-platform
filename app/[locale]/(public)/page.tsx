@@ -16,6 +16,8 @@ import {
   MapPin,
   CreditCard,
   Camera,
+
+
 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { NotificationCategoryBadge } from "@/components/ui/NotificationCategoryBadge";
@@ -99,6 +101,7 @@ export default function HomePage() {
 
 function Masthead() {
   const tHome = useTranslations("home");
+  const locale = useLocale();
 
   const WINGS = [
     {
@@ -147,26 +150,57 @@ function Masthead() {
       <section className="portal-masthead">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
           <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
+            {/* LEFT: CULTURAL WELCOME BOX */}
             <div className="lg:col-span-7">
-              <h1 className="font-display text-[2.1rem] font-semibold leading-[1.18] tracking-tight text-[var(--portal-blue-900)] sm:text-[2.6rem] lg:text-[3rem]">
-                <span className="illuminated-cap" aria-hidden="true">
-                  {tHome("heroHeadingPrefix").charAt(0) || "R"}
+              <div className="relative overflow-hidden rounded-sm border border-[var(--zari-gold-400)]/40 bg-gradient-to-br from-[var(--paithani-red)] via-[var(--paithani-red)] to-[var(--portal-blue-900)] p-6 sm:p-8 lg:p-10">
+                {/* Paithani corner motifs */}
+                <span className="pointer-events-none absolute right-3 top-3 opacity-30 sm:right-5 sm:top-5" aria-hidden="true">
+                  <ButiOrnament className="h-14 w-8 text-[var(--zari-gold-400)] sm:h-20 sm:w-11" />
                 </span>
-                <span className="sr-only">{tHome("heroHeadingPrefix").charAt(0)}</span>
-                {tHome("heroHeadingPrefix").slice(1)} {councilProfile.wardCount} {tHome("heroHeadingSuffix")}
-              </h1>
+                <span className="pointer-events-none absolute bottom-3 left-3 rotate-180 opacity-30 sm:bottom-5 sm:left-5" aria-hidden="true">
+                  <ButiOrnament className="h-14 w-8 text-[var(--zari-gold-400)] sm:h-20 sm:w-11" />
+                </span>
 
-              <div className="gazette-rule mt-6" aria-hidden="true" />
+                {/* Top accent line */}
+                <div className="mb-5 flex items-center gap-2.5" aria-hidden="true">
+                  <span className="h-px flex-1 bg-gradient-to-r from-[var(--zari-gold-400)]/60 to-transparent" />
+                  
+                  <span className="h-px flex-1 bg-gradient-to-l from-[var(--zari-gold-400)]/60 to-transparent" />
+                </div>
 
-              <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed text-[var(--civic-slate-700)]">
-                {tHome("heroDesc")}
-              </p>
+                <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-[var(--zari-gold-400)]">
+                  {locale === "mr" ? "पैठणमध्ये आपले स्वागत आहे" : locale === "hi" ? "पैठण में आपका स्वागत है" : "Welcome to Paithan"}
+                </p>
 
-              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[var(--civic-slate-500)]">
-                {tHome("heroHeritageNote")}
-              </p>
+                <h1 className="mt-4 text-center font-display text-[1.9rem] font-semibold leading-[1.2] tracking-tight text-white sm:text-[2.4rem] lg:text-[2.8rem]">
+                  <span className="illuminated-cap" aria-hidden="true">
+                    {tHome("heroHeadingPrefix").charAt(0) || "R"}
+                  </span>
+                  <span className="sr-only">{tHome("heroHeadingPrefix").charAt(0)}</span>
+                  {tHome("heroHeadingPrefix").slice(1)} {councilProfile.wardCount} {tHome("heroHeadingSuffix")}
+                </h1>
+
+                {/* Zari divider */}
+                <div className="mx-auto mt-5 flex max-w-md items-center gap-3" aria-hidden="true">
+                  <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--zari-gold-400)]/50" />
+                  
+                  <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--zari-gold-400)]/50" />
+                </div>
+
+                <p className="mx-auto mt-5 max-w-2xl text-center text-[0.95rem] leading-relaxed text-white/80">
+                  {tHome("heroDesc")}
+                </p>
+
+                <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-[var(--zari-gold-400)]/80">
+                  {tHome("heroHeritageNote")}
+                </p>
+
+                {/* Bottom Paithani band inside the box */}
+                <div className="mt-7 h-1.5 w-full rounded-full bg-gradient-to-r from-[var(--zari-gold-400)]/30 via-[var(--zari-gold-400)]/70 to-[var(--zari-gold-400)]/30" aria-hidden="true" />
+              </div>
             </div>
 
+            {/* RIGHT: VITALS */}
             <div className="lg:col-span-5 lg:pt-1">
               <dl className="portal-vitals">
                 <div className="portal-vital">
@@ -211,7 +245,15 @@ function Masthead() {
             >
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-2 flex items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)]">
+                  <span
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-sm ${
+                      wing.key === "civic"
+                        ? "bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)]"
+                        : wing.key === "heritage"
+                          ? "bg-[var(--zari-gold-100)] text-[var(--zari-gold-600)]"
+                          : "bg-[var(--paithani-red-light)] text-[var(--paithani-red)]"
+                    }`}
+                  >
                     {wing.key === "civic" ? (
                       <Building2 className="h-4 w-4" aria-hidden="true" />
                     ) : wing.key === "heritage" ? (
@@ -251,9 +293,9 @@ function Masthead() {
                 </ul>
               </div>
 
-              <p className="flex items-center gap-1.5 border-t border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-5 py-2.5 text-xs font-medium text-[var(--civic-slate-700)]">
+              <p className="flex items-center gap-1.5 border-t border-[var(--border-subtle)] bg-[var(--zari-gold-100)]/40 px-5 py-2.5 text-xs font-medium text-[var(--civic-slate-700)]">
                 <CheckCircle2
-                  className="h-3.5 w-3.5 shrink-0 text-[var(--saffron-700)]"
+                  className="h-3.5 w-3.5 shrink-0 text-[var(--zari-gold-600)]"
                   aria-hidden="true"
                 />
                 {wing.facts}
@@ -310,9 +352,12 @@ function CitizenServicesSection() {
 
       <div className="rounded-sm border border-[var(--border-subtle)] bg-white p-5 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
-          <h2 className="portal-rule font-display text-xl font-semibold text-[var(--portal-blue-900)]">
-            {tHome("servicesHeading")}
-          </h2>
+          <div className="flex items-center gap-2.5">
+            <ButiOrnament className="h-7 w-4 shrink-0 text-[var(--zari-gold-600)]" />
+            <h2 className="portal-rule font-display text-xl font-semibold text-[var(--portal-blue-900)]">
+              {tHome("servicesHeading")}
+            </h2>
+          </div>
           <p className="text-xs text-[var(--civic-slate-500)]">
             {tHome("servicesSubtitle")}
           </p>
@@ -501,29 +546,38 @@ function NoticeLedger() {
 function CouncilPanel() {
   const tHome = useTranslations("home");
   const tNagar = useTranslations("nagarParishad");
+  const locale = useLocale();
   const ongoingWorks = developmentWorks.filter((work) => work.status === "ONGOING");
 
   return (
     <div className="space-y-6">
       <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="council-heading">
-        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--zari-gold-100)]/50 px-4 py-2.5">
           <h2 id="council-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
             {tNagar("representativesTitle")}
           </h2>
         </div>
         <div className="divide-y divide-[var(--border-subtle)]">
           {electedRepresentatives.map((representative) => (
-            <div key={representative.slug} className="px-4 py-3">
+            <Link
+              key={representative.slug}
+              href={`/${locale}/nagar-parishad/representatives/${representative.id === "rep-mla" ? "mla" : "mp"}`}
+              className="block px-4 py-3 transition-colors hover:bg-[var(--zari-gold-100)]/30"
+            >
               <span className="block text-sm font-bold text-[var(--portal-blue-900)]">
                 {representative.name}
               </span>
               <span className="mt-0.5 block text-xs text-[var(--civic-slate-700)]">
                 {representative.designation}
               </span>
-            </div>
+              <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--zari-gold-600)]">
+                {locale === "mr" ? "पूर्ण माहिती" : locale === "hi" ? "पूरी जानकारी" : "Full profile"}
+                <ArrowRight className="h-3 w-3" aria-hidden="true" />
+              </span>
+            </Link>
           ))}
         </div>
-        <div className="border-t border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
+        <div className="border-t border-[var(--border-subtle)] bg-[var(--zari-gold-100)]/40 px-4 py-2.5">
           <Link
             href="/nagar-parishad/representatives"
             className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
@@ -535,7 +589,7 @@ function CouncilPanel() {
       </section>
 
       <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="progress-heading">
-        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--paithani-red-light)]/50 px-4 py-2.5">
           <h2 id="progress-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
             {tHome("activeProjects")}
           </h2>
@@ -573,7 +627,7 @@ function CouncilPanel() {
             </div>
           ))}
         </div>
-        <div className="border-t border-[var(--border-subtle)] bg-[var(--portal-blue-50)] px-4 py-2.5">
+        <div className="border-t border-[var(--border-subtle)] bg-[var(--paithani-red-light)]/40 px-4 py-2.5">
           <Link
             href="/nagar-parishad/development-works"
             className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
@@ -619,7 +673,7 @@ function OfficialLandmarksShowcase() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <p className="mb-2 flex items-center gap-2 text-xs font-semibold text-[var(--saffron-700)]">
+            <p className="mb-2 flex items-center gap-2 text-xs font-semibold text-[var(--zari-gold-600)]">
               <Camera className="h-3.5 w-3.5" aria-hidden="true" />
               <span lang="mr">अधिकृत स्थळ दर्शन</span>
             </p>
