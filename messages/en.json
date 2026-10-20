@@ -140,7 +140,14 @@
     "bandLinkPlaces": "Places to visit",
     "bandLinkRoutes": "How to reach & routes",
     "bandLinkServices": "Citizen services",
-    "bandLinkWards": "Wards & representatives"
+    "bandLinkWards": "Wards & representatives",
+    "repsEyebrow": "Your Elected Representatives",
+    "repsHeading": "MLA & MP for Paithan",
+    "repsSubtitle": "The leaders who carry Paithan’s voice to the State Assembly and to Parliament.",
+    "repsMlaTag": "State Legislature",
+    "repsMpTag": "Parliament",
+    "repsViewProfile": "View full profile",
+    "repsConstituencyLabel": "Constituency"
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -372,7 +379,20 @@
     "projectTimeline": "Target Timeline",
     "projectScope": "Project Scope & Beneficiaries",
     "noWorksHint": "Try clearing your search query or selecting all wards.",
-    "noWorksFound": "No development works match your filter criteria."
+    "noWorksFound": "No development works match your filter criteria.",
+    "repPhone": "Phone",
+    "repEmail": "Email",
+    "repOfficeAddress": "Office Address",
+    "repTerm": "Term",
+    "repSourceLabel": "Verified source",
+    "repQuickFacts": "At a glance",
+    "repConstituencyLabel": "Constituency",
+    "repProfileEyebrow": "Paithan Representative",
+    "repContactHeading": "Contact & office",
+    "repNameLabel": "Name",
+    "repRoleLabel": "Role & constituency",
+    "repAboutHeading": "About",
+    "repBackToReps": "All representatives"
   },
   "tourism": {
     "title": "Explore Paithan",

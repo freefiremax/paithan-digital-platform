@@ -140,7 +140,14 @@
     "bandLinkPlaces": "प्रेक्षणीय स्थळे",
     "bandLinkRoutes": "कसे पोहोचावे व मार्ग",
     "bandLinkServices": "नागरी सेवा",
-    "bandLinkWards": "प्रभाग व नगरसेवक"
+    "bandLinkWards": "प्रभाग व नगरसेवक",
+    "repsEyebrow": "आपले लोकप्रतिनिधी",
+    "repsHeading": "पैठणचे आमदार आणि खासदार",
+    "repsSubtitle": "पैठणचा आवाज विधानभवन आणि संसदेपर्यंत पोहोचवणारे लोकप्रतिनिधी.",
+    "repsMlaTag": "राज्य विधानमंडळ",
+    "repsMpTag": "संसद",
+    "repsViewProfile": "संपूर्ण माहिती पाहा",
+    "repsConstituencyLabel": "मतदारसंघ"
   },
   "footer": {
     "rights": "सर्व हक्क राखीव.",
@@ -372,7 +379,20 @@
     "projectTimeline": "मुदत",
     "projectScope": "प्रकल्पाचे स्वरूप व लाभार्थी",
     "noWorksHint": "शोध क्वेरी साफ करण्याचा किंवा सर्व प्रभाग निवडण्याचा प्रयत्न करा.",
-    "noWorksFound": "आपल्या निकषांनुसार कोणतीही विकास कामे आढळली नाहीत."
+    "noWorksFound": "आपल्या निकषांनुसार कोणतीही विकास कामे आढळली नाहीत.",
+    "repPhone": "दूरध्वनी",
+    "repEmail": "ईमेल",
+    "repOfficeAddress": "कार्यालय पत्ता",
+    "repTerm": "कार्यकाळ",
+    "repSourceLabel": "प्रमाणित स्रोत",
+    "repQuickFacts": "एका दृष्टिक्षेपात",
+    "repConstituencyLabel": "मतदारसंघ",
+    "repProfileEyebrow": "पैठण लोकप्रतिनिधी",
+    "repContactHeading": "संपर्क आणि कार्यालय",
+    "repNameLabel": "नाव",
+    "repRoleLabel": "पद आणि मतदारसंघ",
+    "repAboutHeading": "परिचय",
+    "repBackToReps": "सर्व लोकप्रतिनिधी"
   },
   "tourism": {
     "title": "पर्यटन व परिसर",

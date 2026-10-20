@@ -468,6 +468,7 @@
   /* On the madder chrome the ring flips to the zari gold: 3.9:1 against 900,
      where a madder ring would vanish into the band it is drawn on. */
   .gov-nav-bar :focus-visible,
+  .loom-warp-nav :focus-visible,
   .gov-top-bar :focus-visible,
   footer :focus-visible,
   .portal-band :focus-visible {
@@ -507,8 +508,390 @@
 }
 
 .gov-nav-bar {
-  background-color: var(--morpanhki);
+  background-color: var(--paithani-red);
   color: var(--on-vangi);
+}
+
+/*
+ * THE HEADER, IN TWO STATES.
+ *
+ * The masthead is the full, ornate identity and lives in normal flow — it is NOT
+ * sticky, so it scrolls away with the page and never squats over the content.
+ * The ground is silk with a woven butt to it rather than flat white, so the top
+ * of the page reads as a dyed textile like the rest of the site.
+ *
+ * The tube is the collapsed state: a fixed ~52px strip that appears only after
+ * the masthead has scrolled past, carrying the crest, the council name and the
+ * primary nav and nothing else. It is the "slim tube" the brief asked for — just
+ * enough chrome to get anywhere, no search, no account, no chatbot. It stays
+ * hidden (translated up, non-interactive) until `--visible` flips, and it honours
+ * reduced-motion by simply appearing without the slide.
+ */
+.header-masthead {
+  /* Warm paper silk with a faint all-over buti (gold flower-dot) repeat, kept
+     low so it reads as woven cloth, not embroidery. */
+  position: relative;
+  background-color: var(--surface-card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23a8642a' stroke-opacity='0.045'%3E%3Cpath d='M22 15 C24 18 24 21 22 23 C20 21 20 18 22 15 Z'/%3E%3Cpath d='M22 23 C19.5 22.4 18.2 20.6 18.6 18 C21 18.8 22 20.6 22 23 Z'/%3E%3Cpath d='M22 23 C24.5 22.4 25.8 20.6 25.4 18 C23 18.8 22 20.6 22 23 Z'/%3E%3Cpath d='M22 23 C19.5 23.6 17.6 25.8 17.4 28.2 C20 27.6 21.6 25.4 22 23 Z'/%3E%3Cpath d='M22 23 C24.5 23.6 26.4 25.8 26.6 28.2 C24 27.6 22.4 25.4 22 23 Z'/%3E%3C/g%3E%3Cg fill='%23a8642a' fill-opacity='0.05'%3E%3Ccircle cx='0' cy='0' r='1.3'/%3E%3Ccircle cx='44' cy='0' r='1.3'/%3E%3Ccircle cx='0' cy='44' r='1.3'/%3E%3Ccircle cx='44' cy='44' r='1.3'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(
+    180deg,
+    #fff8f4 0%,
+    #fdf0ec 55%,
+    #f9e7e6 100%
+  );
+  background-size: 44px 44px, 100% 100%;
+}
+
+/*
+ * THE MASTHEAD GROUND ORNAMENT. A Paithani floral jaal, all in curves — no
+ * ruled lines. A central eight-petal BUTTI rosette with a zari heart, small
+ * three-petal buds scattered at the tile corners, and a kairi (mango-bud)
+ * paisley set between them. Staggered on a half-drop so the sprigs read as a
+ * hand-laid field rather than a grid. Faint madder + zari.
+ */
+.header-masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23a8642a' stroke-opacity='0.13' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(48 48)'%3E%3Cpath d='M0 -6 C3 -6 4 -3 6 0 C4 3 3 6 0 6 C-3 6 -4 3 -6 0 C-4 -3 -3 -6 0 -6 Z'/%3E%3Cpath d='M0 -6 C3 -6 4 -3 6 0 C4 3 3 6 0 6 C-3 6 -4 3 -6 0 C-4 -3 -3 -6 0 -6 Z' transform='rotate(45)'/%3E%3Cpath d='M0 -13 C2.4 -13 3.4 -11 4.4 -8.6 C3 -8 1.6 -8 0 -8.6 C-1.6 -8 -3 -8 -4.4 -8.6 C-3.4 -11 -2.4 -13 0 -13 Z'/%3E%3Cpath d='M0 -16 C1.4 -16 2 -15 2.6 -13.6 C1.8 -13.2 1 -13.2 0 -13.6 C-1 -13.2 -1.8 -13.2 -2.6 -13.6 C-2 -15 -1.4 -16 0 -16 Z'/%3E%3C/g%3E%3Cg transform='translate(48 48)'%3E%3Cpath d='M0 6 C3 6 4 9 6 12 C4 15 3 18 0 18 C-3 18 -4 15 -6 12 C-4 9 -3 6 0 6 Z'/%3E%3Cpath d='M0 -18 C3 -18 4 -21 6 -24 C4 -27 3 -30 0 -30 C-3 -30 -4 -27 -6 -24 C-4 -21 -3 -18 0 -18 Z'/%3E%3Cpath d='M6 12 C9 12 12 15 12 18 C9 21 6 21 3 18 C3 15 3 12 6 12 Z'/%3E%3Cpath d='M-6 12 C-9 12 -12 15 -12 18 C-9 21 -6 21 -3 18 C-3 15 -3 12 -6 12 Z'/%3E%3C/g%3E%3Cg transform='translate(0 0)'%3E%3Cpath d='M0 -6 C2.6 -3 3 1 0 4 C-3 1 -2.6 -3 0 -6 Z'/%3E%3Cpath d='M0 -6 C4 -4 5.4 -0.6 4.4 4 C1.6 1.6 -1.6 -0.4 0 -6 Z'/%3E%3Cpath d='M0 -6 C-4 -4 -5.4 -0.6 -4.4 4 C-1.6 1.6 1.6 -0.4 0 -6 Z'/%3E%3C/g%3E%3Cg transform='translate(96 96)'%3E%3Cpath d='M0 -6 C2.6 -3 3 1 0 4 C-3 1 -2.6 -3 0 -6 Z'/%3E%3Cpath d='M0 -6 C4 -4 5.4 -0.6 4.4 4 C1.6 1.6 -1.6 -0.4 0 -6 Z'/%3E%3Cpath d='M0 -6 C-4 -4 -5.4 -0.6 -4.4 4 C-1.6 1.6 1.6 -0.4 0 -6 Z'/%3E%3C/g%3E%3Cg transform='translate(96 0)'%3E%3Cpath d='M0 -6 C2.6 -3 3 1 0 4 C-3 1 -2.6 -3 0 -6 Z'/%3E%3Cpath d='M0 -6 C4 -4 5.4 -0.6 4.4 4 C1.6 1.6 -1.6 -0.4 0 -6 Z'/%3E%3Cpath d='M0 -6 C-4 -4 -5.4 -0.6 -4.4 4 C-1.6 1.6 1.6 -0.4 0 -6 Z'/%3E%3C/g%3E%3Cg transform='translate(0 96)'%3E%3Cpath d='M0 -6 C2.6 -3 3 1 0 4 C-3 1 -2.6 -3 0 -6 Z'/%3E%3Cpath d='M0 -6 C4 -4 5.4 -0.6 4.4 4 C1.6 1.6 -1.6 -0.4 0 -6 Z'/%3E%3Cpath d='M0 -6 C-4 -4 -5.4 -0.6 -4.4 4 C-1.6 1.6 1.6 -0.4 0 -6 Z'/%3E%3C/g%3E%3C/g%3E%3Cg fill='%23a8642a' fill-opacity='0.15'%3E%3Ccircle cx='48' cy='48' r='1.6'/%3E%3Ccircle cx='48' cy='40' r='0.9'/%3E%3Ccircle cx='0' cy='0' r='1'/%3E%3Ccircle cx='96' cy='96' r='1'/%3E%3Ccircle cx='96' cy='0' r='1'/%3E%3Ccircle cx='0' cy='96' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: 96px 96px;
+}
+
+.loom-warp {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * THE PALLU CROWN. The top edge of the page as the opening border of a
+ * Paithani: a rising floral spire alternating with a lotus bud between two zari
+ * threads. Kept to 12px and low-opacity zari so it frames the paper without
+ * tipping into bridal embroidery.
+ */
+.loom-crown {
+  height: 12px;
+  background-color: var(--portal-blue-900);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='12' viewBox='0 0 30 12'%3E%3Cpath d='M0 1 H30' stroke='%23dd9f1c' stroke-opacity='0.5'/%3E%3Cpath d='M0 11 H30' stroke='%23dd9f1c' stroke-opacity='0.5'/%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.7' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2.2 C16.8 4.2 17.3 6.6 16.7 8.6 C16.2 10 15.7 10.5 15 10.5 C14.3 10.5 13.8 10 13.3 8.6 C12.7 6.6 13.2 4.2 15 2.2 Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.4'%3E%3Cpath d='M3.5 6 C5 4.8 7 4.8 8.5 6 C7 7.2 5 7.2 3.5 6 Z'/%3E%3Cpath d='M21.5 6 C23 4.8 25 4.8 26.5 6 C25 7.2 23 7.2 21.5 6 Z'/%3E%3C/g%3E%3Cg fill='%23dd9f1c' fill-opacity='0.55'%3E%3Ccircle cx='6' cy='9.6' r='0.8'/%3E%3Ccircle cx='24' cy='9.6' r='0.8'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+  box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.2);
+}
+
+/*
+ * THE PALLU FOOT BORDER. A running row of temple spires and lozenges between two
+ * zari threads, closing the masthead. Thinner (10px) and lower-opacity than the
+ * original so it echoes the crown without doubling the ornament weight.
+ */
+.loom-pallu-border {
+  height: 10px;
+  background-color: var(--portal-blue-900);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 1 H40' stroke='%23dd9f1c' stroke-opacity='0.45'/%3E%3Cpath d='M0 9 H40' stroke='%23dd9f1c' stroke-opacity='0.45'/%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.65' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 8 V4.6 C8 3.2 9.8 2.4 12 2.4 C14.2 2.4 16 3.2 16 4.6 V8'/%3E%3Cpath d='M8 8 H16'/%3E%3Cpath d='M12 2.4 V1.4'/%3E%3C/g%3E%3Cpath d='M28 3 L30.2 5 L28 7 L25.8 5 Z' fill='none' stroke='%23dd9f1c' stroke-opacity='0.6'/%3E%3Ccircle cx='28' cy='5' r='0.9' fill='%23dd9f1c' fill-opacity='0.55'/%3E%3Cg fill='%23dd9f1c' fill-opacity='0.4'%3E%3Ccircle cx='2' cy='5' r='0.8'/%3E%3Ccircle cx='20' cy='5' r='0.8'/%3E%3Ccircle cx='36' cy='5' r='0.8'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.2);
+}
+
+/*
+ * THE CREST PLATE. The seal set in a woven medallion: a lotus-petal ring over a
+ * silk disc, framed by zari rings with a small buti at top and foot. The petals
+ * are kept low-opacity so the seal stays the focus.
+ */
+.crest-plate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  flex: none;
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.3' stroke-width='1'%3E%3Cg%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z'/%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z' transform='rotate(45 32 32)'/%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z' transform='rotate(90 32 32)'/%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z' transform='rotate(135 32 32)'/%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z' transform='rotate(180 32 32)'/%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z' transform='rotate(225 32 32)'/%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z' transform='rotate(270 32 32)'/%3E%3Cpath d='M32 5 C34.6 9 34.6 12.6 32 15.4 C29.4 12.6 29.4 9 32 5 Z' transform='rotate(315 32 32)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle at 50% 38%, #fffdf8 0%, var(--surface-subtle) 78%);
+  box-shadow:
+    0 0 0 1px var(--zari-gold-400),
+    0 0 0 4px var(--surface-card),
+    0 0 0 5px rgb(221 159 28 / 0.35),
+    0 10px 24px -12px rgb(26 8 14 / 0.4);
+}
+
+.crest-plate::before,
+.crest-plate::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  background-color: var(--paithani-red);
+  border: 1px solid var(--zari-gold-400);
+}
+
+.crest-plate::before {
+  top: -2px;
+}
+
+.crest-plate::after {
+  bottom: -2px;
+}
+
+/*
+ * HEADER CONTROLS. Each action is a small length of Paithani pallu, not a
+ * button: a silk patch edged by a woven selvedge (a zari thread with buti beads
+ * top and bottom), carrying an inset zari register. The interactive moment is
+ * the weft: on hover a zari thread sweeps across the patch from the left, the
+ * way a shuttle crosses the loom, and the ground warms under it. This answers
+ * the person's action instead of decorating at rest.
+ */
+.header-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 44px;
+  padding: 0 1.15rem;
+  border: 1px solid #d3afa8;
+  border-radius: 3px;
+  background-color: #fffdf9;
+  background-image: linear-gradient(
+    180deg,
+    #fffdf9 0%,
+    #fdf4ee 100%
+  );
+  color: var(--portal-blue-900);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8);
+  transition: border-color 200ms ease, color 200ms ease,
+    box-shadow 200ms ease, transform 200ms ease;
+}
+
+/* The woven selvedge: a zari hairline with a row of buti beads, top and bottom
+   inset from the edge. */
+.header-control::before {
+  content: "";
+  position: absolute;
+  inset: 4px 5px;
+  border-top: 1px solid rgb(221 159 28 / 0.45);
+  border-bottom: 1px solid rgb(221 159 28 / 0.45);
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+/* The weft: the zari thread that sweeps the patch on hover. */
+.header-control::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgb(221 159 28 / 0.9) 0%,
+    rgb(221 159 28 / 0.25) 60%,
+    transparent 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 300ms ease;
+}
+
+.header-control > * {
+  position: relative;
+  z-index: 1;
+}
+
+.header-control:hover {
+  transform: translateY(-1px);
+  border-color: var(--zari-gold-400);
+  color: var(--portal-blue-900);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.8),
+    0 7px 18px -10px rgb(26 8 14 / 0.45);
+}
+
+.header-control:hover::after {
+  transform: scaleX(1);
+  opacity: 0.34;
+}
+
+.header-control:focus-visible {
+  outline: 2px solid var(--zari-gold-400);
+  outline-offset: 2px;
+}
+
+.header-control:active {
+  transform: translateY(0);
+}
+
+.header-control--solid {
+  border-color: var(--portal-blue-900);
+  background-color: var(--portal-blue-900);
+  background-image: linear-gradient(180deg, var(--portal-blue-800) 0%, #3d0b1a 100%);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
+}
+
+.header-control--solid::before {
+  border-top-color: rgb(221 159 28 / 0.6);
+  border-bottom-color: rgb(221 159 28 / 0.6);
+}
+
+.header-control--solid::after {
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.55) 0%,
+    rgb(255 255 255 / 0.16) 60%,
+    transparent 100%
+  );
+}
+
+.header-control--solid:hover {
+  border-color: var(--zari-gold-400);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.14),
+    0 7px 18px -10px rgb(26 8 14 / 0.6);
+}
+
+.header-control--solid:hover::after {
+  opacity: 0.42;
+}
+
+.header-control--chatbot {
+  border-color: var(--zari-gold-400);
+  background-color: #fffdf9;
+  color: var(--portal-blue-900);
+}
+
+.header-control--chatbot:hover {
+  border-color: var(--zari-gold-400);
+  background-color: #fff7e8;
+  color: var(--portal-blue-900);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-control,
+  .header-control::after {
+    transition: none;
+  }
+}
+
+/*
+ * HEADER SEARCH: the same woven cloth as the controls, stretched into a strip.
+ * It carries the zari selvedge top and bottom; when focused the ground warms
+ * and the selvedge brightens, lighting the loom. The selvedge sits inside the
+ * field so it never clips the text.
+ */
+.header-search {
+  position: relative;
+  background-color: #fffdf9;
+  background-image: linear-gradient(180deg, #fffdf9 0%, #fdf4ee 100%);
+  overflow: hidden;
+}
+
+.header-search::before {
+  content: "";
+  position: absolute;
+  inset: 4px 5px;
+  border-top: 1px solid rgb(221 159 28 / 0.4);
+  border-bottom: 1px solid rgb(221 159 28 / 0.4);
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  pointer-events: none;
+  transition: border-color 200ms ease;
+}
+
+.header-search[data-open="true"] {
+  box-shadow: 0 0 0 3px rgb(221 159 28 / 0.18);
+}
+
+.header-search[data-open="true"]::before {
+  border-top-color: rgb(221 159 28 / 0.75);
+  border-bottom-color: rgb(221 159 28 / 0.75);
+}
+
+.header-search > * {
+  position: relative;
+  z-index: 1;
+}
+
+.header-tube {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  /* Peacock green matching the nav band, with the asavali vine in faint zari,
+     closed by the red selvedge at the foot. */
+  background-color: var(--morpanhki);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.07' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath d='M0 24 C8 24 10 12 18 12 C26 12 28 24 36 24 C44 24 46 36 48 36'/%3E%3Cpath d='M0 36 C8 36 10 24 18 24 C26 24 28 36 36 36 C44 36 46 48 48 48'/%3E%3Cpath d='M18 12 C20 8 24 8 26 12 C24 11 20 11 18 12 Z'/%3E%3Cpath d='M36 24 C38 20 42 20 44 24 C42 23 38 23 36 24 Z'/%3E%3C/g%3E%3Cg fill='%23dd9f1c' fill-opacity='0.06'%3E%3Ccircle cx='18' cy='12' r='1.6'/%3E%3Ccircle cx='36' cy='24' r='1.6'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.06) 0%,
+    transparent 45%,
+    rgb(0 0 0 / 0.28) 100%
+  );
+  background-size: 48px 48px, 100% 100%;
+  color: var(--on-vangi);
+  box-shadow: 0 8px 22px rgb(26 8 14 / 0.34);
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 220ms ease, opacity 180ms ease;
+}
+
+/* The green band fills all but the 8px red selvedge at the foot. */
+.header-tube > .loom-warp-tight {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.header-tube--visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-tube {
+    transition: none;
+  }
 }
 
 /*
@@ -723,6 +1106,357 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='12' viewBox='0 0 36 12'%3E%3Cg fill='none' stroke='%237a6a3a' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath d='M0 0.7 H36'/%3E%3Cpath d='M0 11.3 H36'/%3E%3C/g%3E%3Cg fill='none' stroke='%238f4028' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 1.8 C6.4 3.6 5.6 6 6.2 8.1 C6.6 9.5 7.8 9.9 9 9.9 C10.2 9.9 11.4 9.5 11.8 8.1 C12.4 6 11.6 3.6 9 1.8 Z'/%3E%3Cpath d='M9 3.6 C7.9 5 7.5 6.6 7.8 8.2'/%3E%3Cpath d='M9 3.6 C10.1 5 10.5 6.6 10.2 8.2'/%3E%3Cpath d='M27 1.8 C24.4 3.6 23.6 6 24.2 8.1 C24.6 9.5 25.8 9.9 27 9.9 C28.2 9.9 29.4 9.5 29.8 8.1 C30.4 6 29.6 3.6 27 1.8 Z'/%3E%3Cpath d='M27 3.6 C25.9 5 25.5 6.6 25.8 8.2'/%3E%3Cpath d='M27 3.6 C28.1 5 28.5 6.6 28.2 8.2'/%3E%3C/g%3E%3Cg fill='none' stroke='%231e5049' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 3.6 L20.4 6 L18 8.4 L15.6 6 Z'/%3E%3C/g%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-position: center;
+}
+
+/*
+ * ===========================================================================
+ * THE LOOM
+ * ===========================================================================
+ *
+ * Paithan is a weaving town: the Paithani saree has been woven here for some
+ * two thousand years, and the craft — not "a warm palette" — is what makes this
+ * page belong to this town and nowhere else. So the chrome is built from the
+ * three real facts of a handloom, and nothing else:
+ *
+ *   1. WARP — the taut vertical threads stretched on the loom. They run the
+ *      full height of a band and are what the ground of cloth actually is.
+ *   2. WEFT — the horizontal thread carried across by the shuttle. It is what
+ *      you SEE move when cloth is being made, so it is what moves on hover.
+ *   3. SELVEDGE — the finished edge. A Paithani edge is not a hairline rule:
+ *      it is a band of its own, with its own motif, that says "the cloth ends
+ *      here". Every band on this page ends on one.
+ *
+ * All three are flat CSS geometry (repeating gradients + one SVG tile), never a
+ * picture, so they read as textile rather than illustration — the same rule the
+ * pallu border already follows.
+ */
+
+/*
+ * WARP. The old version laid a vertical thread grid over the silk ground and it
+ * read as graph paper — a mesh of hairlines rather than cloth. A woven ground
+ * is only legible in the threads themselves; at UI scale the mesh just competes
+ * with the type. So the "warp" is now a soft silk sheen only: a single diagonal
+ * light band, barely there, that gives the panel a direction of weave without
+ * drawing a single line. No repetition, no grid.
+ */
+.loom-warp {
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(94 15 34 / 0.05) 38%,
+    rgb(255 255 255 / 0.32) 50%,
+    rgb(94 15 34 / 0.05) 62%,
+    transparent 100%
+  );
+}
+
+/*
+ * WARP, tight — for the narrow madder bands (nav, tube). Same reasoning: a
+ * quiet sheen, not a grid. Kept near-invisible so the gold threads and labels
+ * carry the band.
+ */
+.loom-warp-tight {
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.04) 45%,
+    rgb(255 255 255 / 0.07) 50%,
+    rgb(255 255 255 / 0.04) 55%,
+    transparent 100%
+  );
+}
+
+/*
+ * THE SELVEDGE. The finished edge of the cloth. Two zari threads with a row of
+ * madder picks between them — the same grammar as the pallu border, but this is
+ * the EDGE, so it is a thin, quiet strip rather than the wide woven band. It
+ * replaces the generic chevron rule under every band.
+ *
+ * The tile is 24px: a pearl pick at x=6 and x=18 between two gold hairlines.
+ */
+.loom-selvedge {
+  height: 8px;
+  background-color: var(--saffron-100);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cg fill='none' stroke='%237a6a3a' stroke-width='1' stroke-linecap='round'%3E%3Cpath d='M0 1 H24'/%3E%3Cpath d='M0 7 H24'/%3E%3C/g%3E%3Cg fill='%238f4028'%3E%3Cpath d='M6 2.4 L7.4 4 L6 5.6 L4.6 4 Z'/%3E%3Cpath d='M18 2.4 L19.4 4 L18 5.6 L16.6 4 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* The scroll bar's lower boundary: a madder selvedge with a row of gold picks,
+   matching the nav band's edge. */
+.loom-selvedge--madder {
+  background-color: var(--paithani-red);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-width='1' stroke-linecap='round' opacity='0.7'%3E%3Cpath d='M0 1 H24'/%3E%3Cpath d='M0 7 H24'/%3E%3C/g%3E%3Cg fill='%23dd9f1c'%3E%3Cpath d='M6 2.4 L7.4 4 L6 5.6 L4.6 4 Z'/%3E%3Cpath d='M18 2.4 L19.4 4 L18 5.6 L16.6 4 Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/*
+ * THE NAV BAND — navigation. A plain field looked empty, but a ruled grid read
+ * as graph paper. The answer is the one a real pallu uses: a woven repeat, not
+ * lines. The band carries a running row of zari lozenges along its foot (the
+ * chauk border) and a fine zari hairline at the very top, with a silk sheen
+ * through the madder ground. Separation of items comes from spacing; the
+ * active item gets a solid gold chauk beneath it.
+ */
+.loom-warp-nav {
+  position: relative;
+  /* Peacock green matching the scroll bar, with the asavali vine running across
+     it in very faint zari, closed by the red selvedge at its foot. */
+  background-color: var(--morpanhki);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.07' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath d='M0 24 C8 24 10 12 18 12 C26 12 28 24 36 24 C44 24 46 36 48 36'/%3E%3Cpath d='M0 36 C8 36 10 24 18 24 C26 24 28 36 36 36 C44 36 46 48 48 48'/%3E%3Cpath d='M18 12 C20 8 24 8 26 12 C24 11 20 11 18 12 Z'/%3E%3Cpath d='M36 24 C38 20 42 20 44 24 C42 23 38 23 36 24 Z'/%3E%3C/g%3E%3Cg fill='%23dd9f1c' fill-opacity='0.06'%3E%3Ccircle cx='18' cy='12' r='1.6'/%3E%3Ccircle cx='36' cy='24' r='1.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 48px 48px;
+  background-position: left center;
+}
+
+/* The red lower boundary: a madder selvedge with a row of gold picks, matching
+   the scroll bar's edge and closing the green band. */
+.loom-warp-nav::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 6px;
+  background-color: var(--paithani-red);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'%3E%3Cpath d='M12 0.8 L14.4 3 L12 5.2 L9.6 3 Z' fill='%23dd9f1c' fill-opacity='0.85'/%3E%3Ccircle cx='3' cy='3' r='0.9' fill='%23dd9f1c' fill-opacity='0.6'/%3E%3Ccircle cx='21' cy='3' r='0.9' fill='%23dd9f1c' fill-opacity='0.6'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* A single clean edge only: the red lower boundary above carries the band.
+   The earlier dark hairline + bead crown at the top read as a distracting
+   double line, so it is gone. */
+
+/*
+ * A single nav item. Colour-led: on hover/focus/open the label lifts to full
+ * white and a drawn zari thread grows out from the centre beneath it, capped by
+ * a small bead at each end — the woven underline of a pallu edge. No rotated
+ * lozenge; a clean thread reads more premium.
+ */
+.loom-thread {
+  position: relative;
+  transition: color 160ms ease;
+}
+
+.loom-thread::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  height: 2px;
+  width: calc(100% - 1.75rem);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--zari-gold-400) 14%,
+    var(--zari-gold-400) 86%,
+    transparent
+  );
+  box-shadow: 0 0 6px rgb(221 159 28 / 0.45);
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loom-thread:hover,
+.loom-thread:focus-visible,
+.loom-thread[data-open="true"] {
+  color: #ffffff;
+}
+
+.loom-thread:hover::after,
+.loom-thread:focus-visible::after,
+.loom-thread[data-open="true"]::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loom-thread,
+  .loom-thread::after {
+    transition: none;
+  }
+}
+
+/*
+ * THE LOOM FRAME — the masthead identity. A soft silk chip with a woven
+ * register: a gold hairline inset a few px from the edge, so it reads as a
+ * bordered cloth fragment rather than a bare card. The seal and type stay the
+ * focus.
+ */
+.loom-frame {
+  position: relative;
+  background-color: var(--surface-card);
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgb(122 106 58 / 0.045) 40%,
+    rgb(255 255 255 / 0.35) 50%,
+    rgb(122 106 58 / 0.045) 60%,
+    transparent 100%
+  );
+  border: 1px solid var(--border-subtle);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.loom-frame::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgb(221 159 28 / 0.5);
+  pointer-events: none;
+}
+
+.loom-frame:hover {
+  border-color: var(--zari-gold-400);
+  box-shadow: 0 6px 18px -10px rgb(26 8 14 / 0.4);
+}
+
+/*
+ * ===========================================================================
+ * THE PALLU — representatives panel
+ * ===========================================================================
+ *
+ * The MLA and MP are not two dashboard cards. They are the two figures woven
+ * into the pallu (the ornamental end panel of the saree), one anchored at each
+ * end of a running zari thread. The panel is ONE field of cloth, not two cards:
+ * a shared madder ground with the warp showing through, a central running
+ * thread dividing the ends, and each representative set as a buti — portrait in
+ * a woven frame, the name woven into the border beneath it.
+ *
+ * Light is spent in one place: the portraits. Everything else is quiet.
+ */
+
+/* The field. Madder ground, a silk sheen, a depth wash top and bottom, and a
+   woven chauk border row running all four edges — the pallu's frame. */
+.pallu-field {
+  position: relative;
+  background-color: var(--paithani-red);
+  background-image: linear-gradient(
+      115deg,
+      transparent 0%,
+      rgb(255 255 255 / 0.05) 42%,
+      rgb(255 255 255 / 0.08) 50%,
+      rgb(255 255 255 / 0.05) 58%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(26 8 14 / 0.42) 0%,
+      transparent 24%,
+      transparent 76%,
+      rgb(26 8 14 / 0.46) 100%
+    );
+  border: 1px solid var(--saffron-500);
+  box-shadow: 0 24px 60px -30px rgb(26 8 14 / 0.85);
+}
+
+/* The woven chauk border on all four edges: a tiled row of zari lozenges with a
+   bead between. This is the pallu's outer frame drawn as a real textile repeat. */
+.pallu-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 9px;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M10 4 L14 10 L10 16 L6 10 Z' fill='none' stroke='%23dd9f1c' stroke-opacity='0.5'/%3E%3Ccircle cx='10' cy='10' r='1.1' fill='%23dd9f1c' fill-opacity='0.6'/%3E%3C/svg%3E");
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* The inner register hairline, inset inside the chauk border. */
+.pallu-seam {
+  position: absolute;
+  inset: 26px;
+  border: 1px solid rgb(221 159 28 / 0.28);
+  pointer-events: none;
+}
+
+/* The running zari thread joining the two ends — a solid gold stitch column
+   down the middle, capped by a bead at each end. Not a dotted rule. */
+.pallu-divide {
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgb(221 159 28 / 0.65) 12%,
+    rgb(221 159 28 / 0.65) 88%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.pallu-divide::before,
+.pallu-divide::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translateX(-50%) rotate(45deg);
+  border: 1px solid rgb(221 159 28 / 0.75);
+  background-color: var(--paithani-red);
+}
+
+.pallu-divide::before {
+  top: -5px;
+}
+
+.pallu-divide::after {
+  bottom: -5px;
+}
+
+@media (max-width: 1023px) {
+  .pallu-seam,
+  .pallu-divide {
+    display: none;
+  }
+}
+
+/*
+ * A buti — one woven figure. The portrait sits in a frame cut like a border
+ * cell: an outer zari line, an inner shadow line, and the photo. The frame is
+ * deliberately square-ish and small; the FACE is the light, not the card.
+ */
+.buti-frame {
+  position: relative;
+  background-color: var(--surface-card);
+  padding: 6px;
+  box-shadow:
+    0 0 0 1px var(--zari-gold-400),
+    inset 0 0 0 1px rgb(122 106 58 / 0.35),
+    0 10px 26px -12px rgb(26 8 14 / 0.75);
+}
+
+/* A small zari chauk pinned at the frame's top-left corner, like the corner
+   motif of a pallu cell. */
+.buti-frame::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background-color: var(--paithani-red);
+  border: 1px solid var(--zari-gold-400);
+  z-index: 1;
+}
+
+/* The name, woven into a border strip beneath the portrait. A dark band with a
+   zari sawtooth repeat along its top edge — the pallu's chevron border. */
+.buti-caption {
+  background-color: rgb(26 8 14 / 0.55);
+  border-top: 1px solid rgb(221 159 28 / 0.55);
+  box-shadow: inset 0 3px 0 -2px rgb(221 159 28 / 0.5);
 }
 
 /*
@@ -1231,6 +1965,12 @@
   outline: 2px solid var(--morpanhki-light);
   outline-offset: 2px;
 }
+
+/*
+ * The scroll scrim has been removed along with the layered reveal: the video
+ * band is now an ordinary in-flow section, so it simply scrolls away with the
+ * page and needs no scroll-driven dimming.
+ */
 
 /*
  * NOTICE PANEL. The background is owned here rather than by a `bg-` utility on
@@ -2033,4 +2773,169 @@ html.paithan-intro-locked body {
   right: 0;
   /* Mirror so the two borders face the page symmetrically. */
   transform: scaleX(-1);
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Scroll reveal
+ * ---------------------------------------------------------------------------
+ *
+ * Blocks wrapped in <Reveal> carry `.reveal` and get `.reveal--in` when they
+ * first enter the viewport. The animation is defined ONLY inside
+ * `prefers-reduced-motion: no-preference`, so reduced-motion users get the plain
+ * element with no transition at all, and the base `.reveal` paints at full
+ * opacity — if the script never runs, nothing is hidden.
+ *
+ * The pre-reveal state is therefore declared inside the motion media query too,
+ * so a reveal that never fires (no JS) is visible rather than stuck transparent.
+ * This is the opposite of the usual pattern and is deliberate: for a civic page,
+ * a missing animation must degrade to "already shown", never to a blank block.
+ */
+.reveal {
+  /* No styles in the base state — visible by default. */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .reveal--in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* A gentler, mostly-fade reveal for tall sections where a slide would be too
+     much movement. */
+  .reveal--fade {
+    transform: none;
+  }
+
+  /* Staggered children: each direct child fades up in sequence. The delay is
+     index * step, set with the `--reveal-index` property on the child. */
+  .reveal--stagger {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal--stagger > * {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 620ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(
+      var(--reveal-delay, 0ms) + var(--reveal-index, 0) * var(--reveal-step, 90ms)
+    );
+  }
+
+  .reveal--stagger.reveal--in > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Page transitions. A `template.tsx` remounts its subtree on every navigation,
+ * so this runs on each route change and gives the new page a soft fade-and-rise
+ * as it arrives. Kept short (380ms) so navigation still feels instant. Only runs
+ * when motion is welcome.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .page-transition {
+    animation: page-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Smooth in-page scrolling for anchor jumps (skip links, "back to top"), so a
+ * jump glides rather than snaps. Guarded: reduced-motion users keep instant
+ * jumps. This is `scroll-behavior`, cheap and native — no JS, no scroll hijack,
+ * and it never interferes with normal wheel/touch scrolling.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Home page: floating portraits on the representatives band
+ * ---------------------------------------------------------------------------
+ *
+ * The home page used to run a layered "cover" reveal: a sticky video held still
+ * while the civic panels slid up over it. That read as too busy and has been
+ * removed — the video band and the panels are ordinary in-flow siblings now, so
+ * the whole document scrolls normally. What remains here is only the portrait
+ * styling for the representatives band.
+ *
+ * `--home-header-h` is still set because the compact header tube and the MLA/MP
+ * profile page both key their sticky/min-height maths off it; keep it equal to
+ * the tube's 52px.
+ */
+.home-page {
+  --home-header-h: 52px;
+}
+
+/* `.reps-cover` is the representatives band: an opaque Paithani panel. */
+.reps-cover {
+  position: relative;
+  z-index: 1;
+  background-color: var(--paithani-red);
+}
+
+/*
+ * The section's opaque Paithani ground. It carries the real Paithani weave image
+ * as its background (not a dark wash) and fills the WHOLE band — the weave layer
+ * is absolutely inset to the section, so the pattern reaches the section's top
+ * and bottom edges with no flat-red strip at either end.
+ */
+.reps-ground {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--paithani-red);
+}
+
+/* The Paithani weave itself, held strong enough that the pattern reads as the
+   background rather than a hidden texture. The content sits in its own opaque
+   `.pallu-field`, so the ground is free to be showy. */
+.reps-ground__weave {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.85;
+}
+
+/* A graded madder veil over the weave, but light: it tints and unifies the
+   weave into the madder family and darkens only enough to settle it, letting
+   the actual pattern stay legible edge to edge. The content panel provides the
+   contrast for text, not this veil. */
+.reps-ground__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(94 15 34 / 0.5) 0%,
+    rgb(94 15 34 / 0.32) 45%,
+    rgb(77 15 32 / 0.6) 100%
+  );
 }

@@ -331,16 +331,17 @@ export function HeaderGlobalSearch() {
 
   return (
     <>
-      {/* DESKTOP SEARCH BAR + SATYAMEVA JAYATE CONTAINER */}
-      <div className="hidden lg:flex items-center gap-3.5 flex-1 max-w-[440px] xl:max-w-[500px]">
+      {/* DESKTOP SEARCH BAR CONTAINER */}
+      <div className="hidden lg:block w-full">
         {/* Search Input Box */}
-        <div ref={containerRef} className="relative flex-1">
+        <div ref={containerRef} className="relative w-full">
           <div
-            className={`flex items-center gap-2.5 rounded-md border bg-slate-50/80 px-3.5 h-[44px] transition-all shadow-sm ${
+            className={`header-search relative flex items-center gap-2.5 rounded-sm border px-3.5 h-[44px] transition-all ${
               isOpen
-                ? 'border-[var(--portal-blue-800)] bg-white ring-2 ring-[var(--portal-blue-800)]/15 shadow-md'
-                : 'border-slate-300 hover:border-slate-400 hover:bg-white'
+                ? 'border-[var(--zari-gold-400)] bg-white'
+                : 'border-[#d3afa8] hover:border-[var(--zari-gold-400)] hover:bg-white'
             }`}
+            data-open={isOpen}
           >
             <Search className="h-4 w-4 text-[var(--portal-blue-900)] shrink-0" aria-hidden="true" />
             <input
@@ -473,18 +474,6 @@ export function HeaderGlobalSearch() {
             </div>
           )}
         </div>
-
-        {/* SUBTLE VERTICAL DIVIDER */}
-        <div className="h-6 w-[1.5px] bg-slate-300 select-none shrink-0" aria-hidden="true" />
-
-        {/* SATYAMEVA JAYATE OFFICIAL ACCENT (SAME HORIZONTAL ROW) */}
-        <span
-          className="inline-flex items-center text-[13px] font-semibold tracking-wider text-[var(--portal-blue-900)]/85 select-none whitespace-nowrap font-serif font-display-deva shrink-0"
-          lang="mr"
-          title="सत्यमेव जयते"
-        >
-          {tHeader('satyamevaJayate')}
-        </span>
       </div>
 
       {/* MOBILE / TABLET COMPACT SEARCH BUTTON */}
@@ -522,13 +511,6 @@ export function HeaderGlobalSearch() {
               >
                 <X className="h-5 w-5" />
               </button>
-            </div>
-
-            <div className="bg-slate-100/70 px-4 py-1.5 flex items-center justify-between text-[11px] text-slate-600 font-serif border-b border-slate-200/60">
-              <span>{tSearch('title')}</span>
-              <span className="font-bold text-[var(--portal-blue-900)]" lang="mr">
-                {tHeader('satyamevaJayate')}
-              </span>
             </div>
 
             <div className="overflow-y-auto p-2 flex-1 divide-y divide-slate-100">

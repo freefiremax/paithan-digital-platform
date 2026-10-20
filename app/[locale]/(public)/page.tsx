@@ -27,7 +27,9 @@ import {
   FigureMount,
 } from "@/components/ui/HistoricMotifs";
 import { HomeVideoBand } from "@/components/layout/HomeVideoBand";
+import { RepresentativesShowcase } from "@/components/home/RepresentativesShowcase";
 import { PaithanWardMap } from "@/components/home/PaithanWardMap";
+import { Reveal } from "@/components/ui/Reveal";
 import {
   councilProfile,
   developmentWorks,
@@ -47,53 +49,67 @@ export default function HomePage() {
   const tHome = useTranslations("home");
 
   return (
-    <>
+    <div className="home-page">
+      {/* The video band and the civic panels are ordinary in-flow siblings: the
+          band scrolls away with the page like any other section. The earlier
+          layered reveal (a sticky band under sliding panels) read as too busy,
+          so the home page is a straight vertical document again. */}
       <HomeVideoBand />
-      <Masthead />
-      <CitizenServicesSection />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
-        <SectionFinial className="-mt-6 mb-6 lg:-mt-8 lg:mb-8" />
-        <div className="grid gap-10 lg:grid-cols-12">
-          {/* LEFT: TENDERS & PUBLIC NOTICES */}
-          <section className="lg:col-span-8 flex flex-col" aria-labelledby="notices-heading">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
-              <div>
-                <div className="flex items-center gap-2.5">
-                  <ButiOrnament className="h-8 w-4 shrink-0 text-[var(--saffron-700)]" />
-                  <h2
-                    id="notices-heading"
-                    className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
-                  >
-                    {tHome("noticesHeading")}
-                  </h2>
+      <RepresentativesShowcase />
+      <Reveal>
+        <Masthead />
+      </Reveal>
+      <Reveal>
+        <CitizenServicesSection />
+      </Reveal>
+
+      <Reveal className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
+          <SectionFinial className="-mt-6 mb-6 lg:-mt-8 lg:mb-8" />
+          <div className="grid gap-10 lg:grid-cols-12">
+            {/* LEFT: TENDERS & PUBLIC NOTICES */}
+            <section className="lg:col-span-8 flex flex-col" aria-labelledby="notices-heading">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+                <div>
+                  <div className="flex items-center gap-2.5">
+                    <ButiOrnament className="h-8 w-4 shrink-0 text-[var(--saffron-700)]" />
+                    <h2
+                      id="notices-heading"
+                      className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
+                    >
+                      {tHome("noticesHeading")}
+                    </h2>
+                  </div>
+                  <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
+                    {tHome("noticesSubtitle")}
+                  </p>
                 </div>
-                <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
-                  {tHome("noticesSubtitle")}
-                </p>
+                <Link
+                  href="/nagar-parishad/notifications"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
+                >
+                  <span>{tHome("allNotifications")}</span>
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
               </div>
-              <Link
-                href="/nagar-parishad/notifications"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
-              >
-                <span>{tHome("allNotifications")}</span>
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </div>
 
-            <NoticeLedger />
-          </section>
+              <NoticeLedger />
+            </section>
 
-          {/* RIGHT: THE COUNCIL SIDEBAR */}
-          <aside className="lg:col-span-4 flex flex-col gap-6">
-            <CouncilPanel />
-          </aside>
-        </div>
-      </div>
+            {/* RIGHT: THE COUNCIL SIDEBAR */}
+            <aside className="lg:col-span-4 flex flex-col gap-6">
+              <CouncilPanel />
+            </aside>
+          </div>
+      </Reveal>
 
-      <PaithanWardMap />
-      <OfficialLandmarksShowcase />
-    </>
+      <Reveal>
+        <PaithanWardMap />
+      </Reveal>
+      <Reveal>
+        <OfficialLandmarksShowcase />
+      </Reveal>
+    </div>
   );
 }
 

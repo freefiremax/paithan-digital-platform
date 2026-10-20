@@ -60,11 +60,11 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
     keywords: [
       "mla", "mp", "bhumre", "vilas", "kale", "kalyan", "jalna", "representative", 
       "lok sabha", "vidhan sabha", "constituency", "elected", "nagar sevak", "corporator",
-      "आमदार", "खासदार", "भुमरे", "काळे", "लोकसभा", "विधानसभा", "नगरसेवक"
+      "आमदार", "खासदार", "भुमरे", "संदिपानराव", "लोकसभा", "विधानसभा", "नगरसेवक"
     ],
     content: `Elected Representatives for Paithan:
 1. Member of Legislative Assembly (MLA): Shri Vilas Sandipanrao Bhumre (Shiv Sena), representing Paithan Vidhan Sabha Constituency No. 110 (elected in November 2024 for the 2024–2029 term).
-2. Member of Parliament (MP): Shri Kalyan Vaijinathrao Kale (Indian National Congress), representing the Jalna Lok Sabha Constituency (Paithan is an assembly segment of Jalna Lok Sabha seat, not Sambhajinagar Lok Sabha).
+2. Member of Parliament (MP): Shri Sandipanrao Asaram Bhumare (Shiv Sena), representing the Chhatrapati Sambhajinagar (Aurangabad) Lok Sabha Constituency (Paithan district falls under this region; the Paithan Assembly segment itself is part of the neighbouring Jalna Lok Sabha seat).
 3. Local Municipal Body: Paithan Municipal Council comprises 17 wards (delimited seats). Pending municipal general elections, day-to-day governance is managed by the Chief Officer / Administrator.`,
   },
 

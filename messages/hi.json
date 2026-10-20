@@ -140,7 +140,14 @@
     "bandLinkPlaces": "दर्शनीय स्थल",
     "bandLinkRoutes": "कैसे पहुँचें व मार्ग",
     "bandLinkServices": "नागरिक सेवाएं",
-    "bandLinkWards": "वार्ड व पार्षद"
+    "bandLinkWards": "वार्ड व पार्षद",
+    "repsEyebrow": "आपके निर्वाचित प्रतिनिधि",
+    "repsHeading": "पैठण के विधायक और सांसद",
+    "repsSubtitle": "जो नेता पैठण की आवाज विधानसभा और संसद तक पहुंचाते हैं.",
+    "repsMlaTag": "राज्य विधानमंडल",
+    "repsMpTag": "संसद",
+    "repsViewProfile": "पूरी प्रोफ़ाइल देखें",
+    "repsConstituencyLabel": "निर्वाचन क्षेत्र"
   },
   "footer": {
     "rights": "सर्वाधिकार सुरक्षित।",
@@ -372,7 +379,20 @@
     "projectTimeline": "समय सीमा",
     "projectScope": "परियोजना का स्वरूप एवं लाभार्थी",
     "noWorksHint": "खोज क्वेरी साफ़ करने या सभी वार्ड चुनने का प्रयास करें।",
-    "noWorksFound": "आपके फ़िल्टर मानदंडों से कोई विकास कार्य मेल नहीं खाता।"
+    "noWorksFound": "आपके फ़िल्टर मानदंडों से कोई विकास कार्य मेल नहीं खाता।",
+    "repPhone": "फ़ोन",
+    "repEmail": "ईमेल",
+    "repOfficeAddress": "कार्यालय पता",
+    "repTerm": "कार्यकाल",
+    "repSourceLabel": "सत्यापित स्रोत",
+    "repQuickFacts": "एक नजर में",
+    "repConstituencyLabel": "निर्वाचन क्षेत्र",
+    "repProfileEyebrow": "पैठण प्रतिनिधि",
+    "repContactHeading": "संपर्क और कार्यालय",
+    "repNameLabel": "नाम",
+    "repRoleLabel": "पद और निर्वाचन क्षेत्र",
+    "repAboutHeading": "परिचय",
+    "repBackToReps": "सभी प्रतिनिधि"
   },
   "tourism": {
     "title": "पर्यटन और स्थल",

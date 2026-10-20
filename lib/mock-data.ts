@@ -6,9 +6,9 @@
  *   Paithani saree GI specs, Sant Eknath Maharaj & Sant Dnyaneshwar connections,
  *   Dr. Balasaheb Patil Archaeological Museum, Jayakwadi Dam, Nath Sagar,
  *   Jaikwadi Bird Sanctuary, and MLA Vilas Sandipanrao Bhumre (Paithan Assembly
- *   Constituency No. 110, Nov 2024). Paithan's Lok Sabha MP is Kalyan Vaijinathrao
- *   Kale (Jalna LS, 2024) — the Paithan Assembly seat is a segment of Jalna LS,
- *   NOT the Chhatrapati Sambhajinagar (Aurangabad) LS.
+ *   Constituency No. 110, Nov 2024). Paithan's district MP is Sandipanrao Asaram
+ *   Bhumare (Chhatrapati Sambhajinagar / Aurangabad LS, Jun 2024) — the Paithan
+ *   Assembly seat itself is a segment of the neighbouring Jalna LS.
  * - Provenance is carried on additive optional fields (`sourceUrl`, `sourceNote`,
  *   `verifiedOn`) per DATA_SOURCING_PLAN.md §3.
  * - Unconfirmed items (ward corporators, specific tender rows, administrative status)
@@ -761,19 +761,21 @@ export const electedRepresentatives: readonly Representative[] = [
   },
   {
     id: "rep-mp",
-    slug: "kalyan-vaijinathrao-kale",
-    name: "Shri Kalyan Vaijinathrao Kale",
-    nameMr: "श्री. कल्याण वैजिनाथराव काळे",
+    slug: "sandipanrao-asaram-bhumare",
+    name: "Shri Sandipanrao Asaram Bhumare",
+    nameMr: "श्री. संदिपानराव आसाराम भुमरे",
     designation: "Member of Parliament (Lok Sabha)",
     designationMr: "खासदार (लोकसभा)",
     category: "legislative",
-    constituency: "Jalna Parliamentary Constituency (Paithan Assembly is a segment)",
-    officeAddress: "Jalna Lok Sabha Constituency (covers the Paithan Assembly segment)",
-    bio: "Represents Paithan in the Lok Sabha as the Member of Parliament for the Jalna parliamentary constituency, of which the Paithan Assembly segment forms a part. Elected in the June 2024 general election (Indian National Congress) with 6,07,897 votes, a margin of about 1,09,958. Note: Paithan does not fall under the Chhatrapati Sambhajinagar (Aurangabad) Lok Sabha seat.",
+    constituency: "Chhatrapati Sambhajinagar (Aurangabad) Parliamentary Constituency",
+    officeAddress:
+      "Chhatrapati Sambhajinagar Lok Sabha Constituency, Dist. Chhatrapati Sambhajinagar, Maharashtra",
+    bio: "Elected to the Lok Sabha in the June 2024 general election from Chhatrapati Sambhajinagar (Aurangabad) as a Shiv Sena candidate, with 4,76,130 votes (36.56%), a margin of about 1,34,650 over the runner-up. Represents the district of which Paithan is a part; note that the Paithan Assembly segment itself falls under the neighbouring Jalna Lok Sabha constituency, not this seat.",
     termNote: "Elected term: 2024–2029",
-    sourceNote: "Verified: Election Commission of India, Lok Sabha Results, Jun 2024. Paithan Assembly (No. 110) is a segment of Jalna LS, not Aurangabad LS.",
-    sourceUrl: "https://en.wikipedia.org/wiki/Paithan_Assembly_constituency",
-    verifiedOn: "2026-09-29",
+    sourceNote:
+      "Verified: Election Commission of India, Lok Sabha Results, Jun 2024 (Parliamentary Constituency 19 – Aurangabad / Chhatrapati Sambhajinagar). Paithan Assembly (No. 110) is a segment of Jalna LS.",
+    sourceUrl: "https://results.eci.gov.in/PcResultGenJune2024/ConstituencywiseS1319.htm",
+    verifiedOn: "2026-10-20",
     dataStatus: "VERIFIED",
   },
 ];
