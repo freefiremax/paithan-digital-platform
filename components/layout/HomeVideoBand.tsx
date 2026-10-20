@@ -105,7 +105,7 @@ export default function HomeVideoBand() {
   return (
     <section
       className="
-        relative isolate w-full overflow-hidden bg-[var(--paithani-red)]
+        home-band relative isolate w-full overflow-hidden bg-[var(--paithani-red)]
         lg:h-[82vh] lg:min-h-[380px] lg:max-h-[860px]
         motion-reduce:h-auto motion-reduce:overflow-visible
       "
@@ -178,15 +178,16 @@ export default function HomeVideoBand() {
             light. It is deliberately the only continuous line on the panel: the
             six notice accents carry all the colour below it, and a second
             competing rule would make the heading stop being the anchor. */}
-        <div className="notice-panel__head flex items-baseline justify-between gap-3 border-b border-[var(--zari-gold-400)] px-4 py-3">
+        <div className="notice-panel__head flex items-center justify-between gap-3 border-b border-[var(--zari-gold-400)] px-4 py-3">
           <h2
             id="notice-loop-heading"
-            className="font-display text-base font-semibold text-[var(--surface-card)]"
+            className="flex items-center gap-2 font-display text-base font-semibold text-[var(--surface-card)]"
           >
+            <span className="notice-panel__mark" aria-hidden="true" />
             <span lang="mr" className="font-display-deva">
               सूचना
             </span>
-            <span className="mx-1.5 text-[var(--on-vangi)]" aria-hidden="true">
+            <span className="text-[var(--on-vangi)]" aria-hidden="true">
               &middot;
             </span>
             Current notices

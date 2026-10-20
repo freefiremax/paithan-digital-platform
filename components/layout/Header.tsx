@@ -197,7 +197,7 @@ export default function Header() {
 
         <div className="header-masthead">
           <div className="loom-warp">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
               <div className="flex items-center justify-between gap-6 py-6 lg:gap-10 lg:py-7">
 
                 {/* Crest plate: the seal in a woven frame, joined by a zari rule
@@ -205,28 +205,24 @@ export default function Header() {
                     lands on first. */}
                 <Link
                   href={`/${locale}`}
-                  className="group flex shrink-0 items-center gap-4"
+                  className="group flex shrink-0 items-center gap-5 lg:gap-6 lg:pl-4 xl:pl-6"
                 >
                   <span className="crest-plate">
-                    <CouncilSeal size={56} />
+                    <CouncilSeal size={72} />
                   </span>
-                  <span
-                    className="hidden h-14 w-px bg-gradient-to-b from-transparent via-[var(--zari-gold-400)] to-transparent sm:block"
-                    aria-hidden="true"
-                  />
                   <span className="min-w-0">
-                    <span className="block font-display text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--saffron-700)]">
+                    <span className="block font-display text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--saffron-700)]">
                       {tHeader('district')}
                     </span>
-                    <span className="mt-1 block font-display text-xl font-semibold leading-[1.1] tracking-tight text-[var(--portal-blue-900)] sm:text-[1.6rem] lg:text-[1.85rem]">
+                    <span className="mt-1 block font-display text-2xl font-semibold leading-[1.08] tracking-tight text-[var(--portal-blue-900)] sm:text-[2rem] lg:text-[2.4rem]">
                       {tHeader('paithanMunicipalCouncil')}
                     </span>
                     <span
                       lang="mr"
-                      className="mt-1 flex items-center gap-2 font-display-deva text-sm text-[var(--civic-slate-700)]"
+                      className="mt-1.5 flex items-center gap-2 font-display-deva text-base text-[var(--civic-slate-700)]"
                     >
                       <span
-                        className="h-px w-6 bg-[var(--zari-gold-400)]/70"
+                        className="h-px w-8 bg-[var(--zari-gold-400)]/70"
                         aria-hidden="true"
                       />
                       तीर्थक्षेत्र पैठण
@@ -234,15 +230,15 @@ export default function Header() {
                   </span>
                 </Link>
 
-              {/* A woven divider between the identity and the actions, then the
-                  action cluster. Clear breathing room on both sides so the
-                  heading never crowds the controls. */}
-              <span
-                className="hidden h-16 w-px shrink-0 bg-gradient-to-b from-transparent via-[var(--zari-gold-400)] to-transparent lg:block"
-                aria-hidden="true"
-              />
+                {/* A woven divider between the identity and the actions, then the
+                    action cluster. Clear breathing room on both sides so the
+                    heading never crowds the controls. */}
+                <span
+                  className="hidden h-16 w-px shrink-0 bg-gradient-to-b from-transparent via-[var(--zari-gold-400)] to-transparent lg:block"
+                  aria-hidden="true"
+                />
 
-              <div className="flex flex-1 flex-col items-stretch gap-2.5 min-w-0">
+                <div className="flex flex-1 flex-col items-stretch gap-2.5 min-w-0">
                 {/* Top row: language, sign-in / register, AI assistant — the
                     account strip, held to the right within the same column as
                     the search beneath it. */}
@@ -402,7 +398,7 @@ export default function Header() {
         <div className="loom-pallu-border" aria-hidden="true" />
 
         <div ref={navRef} className="loom-warp-nav hidden lg:block">
-          <nav aria-label="Primary" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <nav aria-label="Primary" className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
             <div className="flex items-stretch justify-between text-sm font-medium">
               <ul className="flex min-w-0 items-stretch">
                 {WINGS.map((wing) => {
@@ -506,7 +502,7 @@ export default function Header() {
         aria-hidden={!isCompact}
       >
         <div className="loom-warp-tight">
-          <div className="mx-auto flex h-full max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+          <div className="flex h-full w-full items-center gap-4 px-4 sm:px-6 lg:px-10 xl:px-14">
             <Link
               href={`/${locale}`}
               className="flex shrink-0 items-center gap-2.5"

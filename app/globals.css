@@ -604,8 +604,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: 84px;
+  height: 84px;
   flex: none;
   border-radius: 50%;
   background:
@@ -1986,6 +1986,96 @@
   background-color: var(--paithani-red);
 }
 
+/*
+ * HOME BAND — the homepage hero. The clip runs edge to edge, but it is treated
+ * as woven cloth rather than a raw video: a warm Paithani wash (madder to ink)
+ * settles the frame and deepens the corners, and a thin zari selvedge closes the
+ * top and bottom so the band reads as the pallu beneath the header. The wash
+ * sits above the video but below the welcome card and notice ledger.
+ */
+.home-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      100deg,
+      rgb(26 8 14 / 0.8) 0%,
+      rgb(26 8 14 / 0.46) 26%,
+      rgb(26 8 14 / 0.1) 52%,
+      rgb(26 8 14 / 0.4) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(26 8 14 / 0.48) 0%,
+      transparent 22%,
+      transparent 74%,
+      rgb(26 8 14 / 0.55) 100%
+    );
+}
+
+.home-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  /* A zari selvedge top and bottom: a running dash of gold picks, keeping only
+     the outer 7px of each edge, so the footage is framed the way a pallu is. */
+  background-image: repeating-linear-gradient(
+      90deg,
+      var(--zari-gold-400) 0 6px,
+      transparent 6px 15px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--zari-gold-400) 0 6px,
+      transparent 6px 15px
+    );
+  background-repeat: repeat-x, repeat-x;
+  background-position: top left, bottom left;
+  background-size: 100% 6px, 100% 6px;
+  opacity: 0.4;
+}
+
+/*
+ * A very slow drift on the footage so the hero is alive rather than a stilled
+ * loop — the one orchestrated motion on the page. Kept gentle (1.06 over 24s)
+ * so it reads as breathing, not zooming, and reduced-motion pins it still.
+ */
+@keyframes home-band-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #home-band-video {
+    animation: home-band-drift 24s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+}
+
+/* The heading mark: a peacock-eye lozenge in zari, the same motif the header
+   nav marks use, so the ledger opens like a woven band rather than a heading. */
+.notice-panel__mark {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  flex: none;
+  transform: rotate(45deg);
+  border: 1px solid var(--zari-gold-400);
+  background:
+    radial-gradient(circle at 50% 50%, var(--zari-gold-400) 0 2px, transparent 2.5px),
+    rgb(14 90 81 / 0.9);
+  box-shadow: inset 0 0 0 1px rgb(26 8 14 / 0.35);
+}
+
 @media (min-width: 64rem) {
   .notice-panel {
     background-color: transparent;
@@ -2018,15 +2108,39 @@
 .notice-item {
   display: block;
   position: relative;
-  padding: 0.75rem 1rem 0.75rem 1.15rem;
+  padding: 0.8rem 1rem 0.8rem 1.3rem;
   background-color: rgb(26 8 14 / 0.68);
-  box-shadow: inset 3px 0 0 var(--notice-accent, var(--notice-accent-1));
-  transition: background-color 150ms ease;
+  /* A silk sheen sweeping the chip, so a row reads as cloth, not a table cell. */
+  background-image: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.06) 42%,
+    rgb(255 255 255 / 0.1) 50%,
+    rgb(255 255 255 / 0.06) 58%,
+    transparent 100%
+  );
+  border-left: 3px solid var(--notice-accent, var(--notice-accent-1));
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+/* A zari pick riding the accent edge — the woven bar each notice opens with. */
+.notice-item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  transform: rotate(45deg);
+  background-color: var(--zari-gold-400);
+  box-shadow: 0 0 0 1px rgb(26 8 14 / 0.6);
 }
 
 .notice-item:hover,
 .notice-item:focus-visible {
   background-color: rgb(26 8 14 / 0.82);
+  transform: translateX(2px);
 }
 
 /* The loop puts air between the rows, which is what sells the transparency. */
@@ -2133,57 +2247,134 @@
 }
 
 .band-welcome__card {
-  padding: 1rem 1.1rem 1.15rem;
-  background-color: rgb(26 8 14 / 0.68);
+  position: relative;
+  padding: 1.35rem 1.35rem 1.45rem;
+  background-color: rgb(26 8 14 / 0.72);
+  /* A faint Paithani floral jaal watermark, the same motif the masthead carries,
+     so the hero belongs to the header instead of floating free. Zari, kept very
+     low so it never competes with the copy. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.12' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(44 44)'%3E%3Cpath d='M0 -6 C3 -6 4 -3 6 0 C4 3 3 6 0 6 C-3 6 -4 3 -6 0 C-4 -3 -3 -6 0 -6 Z'/%3E%3Cpath d='M0 -12 C2.2 -12 3.2 -10.2 4 -8 C3 -7.4 1.4 -7.4 0 -8 C-1.4 -7.4 -3 -7.4 -4 -8 C-3.2 -10.2 -2.2 -12 0 -12 Z'/%3E%3C/g%3E%3Cg transform='translate(0 0)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3Cg transform='translate(88 88)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3Cg transform='translate(88 0)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3Cg transform='translate(0 88)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 88px 88px;
   border-left: 3px solid var(--zari-gold-400);
   color: var(--surface-card);
+  box-shadow:
+    0 24px 50px -26px rgb(0 0 0 / 0.7),
+    inset 0 0 0 1px rgb(221 159 28 / 0.28);
+}
+
+/* The woven zari register — a hairline frame just inside the card, the border a
+   Paithani pallu carries, with a small buti bead at the head of each side. */
+.band-welcome__card::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgb(221 159 28 / 0.38);
+  pointer-events: none;
+}
+
+.band-welcome__card::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  right: 7px;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--zari-gold-400) 18%,
+    var(--zari-gold-400) 82%,
+    transparent 100%
+  );
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .band-welcome__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   margin: 0;
   font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--zari-gold-400);
 }
 
+.band-welcome__eyebrow::before {
+  content: "";
+  width: 1.6rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--zari-gold-400));
+}
+
+.band-welcome__eyebrow::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  background-color: var(--zari-gold-400);
+}
+
 .band-welcome__title {
-  margin: 0.4rem 0 0;
-  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
-  line-height: 1.15;
+  margin: 0.55rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   color: var(--surface-card);
   /* Same belt and braces as the notice title: the chip covers the soft edge. */
-  text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+  text-shadow: 0 2px 6px rgb(0 0 0 / 0.7);
 }
 
 .band-welcome__blurb {
-  margin: 0.5rem 0 0;
-  font-size: 0.8125rem;
-  line-height: 1.55;
+  margin: 0.7rem 0 0;
+  font-size: 0.8375rem;
+  line-height: 1.6;
   color: var(--notice-ink-muted);
+  /* A zari rule under the blurb, fading at both ends — a woven separator. */
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgb(221 159 28 / 0.28);
 }
 
 .band-welcome__links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0.9rem 0 0;
+  gap: 0.45rem;
+  margin: 1rem 0 0;
   padding: 0;
   list-style: none;
 }
 
 .band-welcome__link {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.6rem;
-  border: 1px solid var(--morpanhki-400);
+  padding: 0.4rem 0.7rem;
+  border: 1px solid rgb(221 159 28 / 0.4);
+  border-radius: 2px;
+  background-color: rgb(255 255 255 / 0.04);
   font-size: 0.75rem;
   line-height: 1.2;
   color: var(--surface-card);
   transition:
-    background-color 150ms ease,
-    border-color 150ms ease,
-    color 150ms ease;
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+/* Each door carries a small zari pick at its head, the way a woven chip opens. */
+.band-welcome__link::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  margin-right: 0.45rem;
+  transform: rotate(45deg);
+  background-color: var(--zari-gold-400);
+  transition: background-color 160ms ease;
 }
 
 /* Solid zari on hover, dark text on gold — the one bright fill in this band. */
@@ -2192,6 +2383,12 @@
   background-color: var(--zari-gold-400);
   border-color: var(--zari-gold-400);
   color: var(--paper-950);
+  transform: translateY(-1px);
+}
+
+.band-welcome__link:hover::before,
+.band-welcome__link:focus-visible::before {
+  background-color: var(--portal-blue-900);
 }
 
 @media (min-width: 64rem) {
