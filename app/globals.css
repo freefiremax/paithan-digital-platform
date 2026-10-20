@@ -1987,12 +1987,32 @@
 }
 
 /*
- * HOME BAND — the homepage hero. The clip runs edge to edge, but it is treated
- * as woven cloth rather than a raw video: a warm Paithani wash (madder to ink)
- * settles the frame and deepens the corners, and a thin zari selvedge closes the
- * top and bottom so the band reads as the pallu beneath the header. The wash
- * sits above the video but below the welcome card and notice ledger.
+ * HOME HERO RAIL — the pinned video band. The rail sticks at the top of the
+ * viewport and the content sheet that follows scrolls up over it as a plain
+ * overlay. Making the RAIL sticky (rather than the band itself) is what lets the
+ * band sit alongside anything else that must share the pinned screen — a sticky
+ * element with no net flow height cannot stick at all, so the pin needs a real
+ * height here.
+ *
+ * Below lg there is no pin and no overlap — the rail is a plain block and the
+ * band stacks above the content, which is the phone experience.
  */
+@media (min-width: 64rem) {
+  .home-hero-rail {
+    position: sticky;
+    top: 0;
+    z-index: 0;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  /* The band fills the pinned rail. */
+  .home-hero-rail > .home-band {
+    height: 100%;
+    max-height: none;
+  }
+}
+
 .home-band::before {
   content: "";
   position: absolute;
@@ -2058,6 +2078,55 @@
   #home-band-video {
     animation: home-band-drift 24s ease-in-out infinite alternate;
     will-change: transform;
+  }
+}
+
+/*
+ * HOME SHEET — everything below the hero, laid over the pinned footage. It has
+ * its own opaque parchment ground and sits above the band, so as the page
+ * scrolls it climbs up over the video as a plain overlay. (The cut/slice reveal
+ * treatment belongs to the representatives pages, not here.)
+ */
+.home-sheet {
+  position: relative;
+  z-index: 20;
+  background-color: var(--surface-card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23a8642a' stroke-opacity='0.06' stroke-width='1'%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3C/g%3E%3C/svg%3E");
+  box-shadow: 0 -30px 60px -30px rgb(26 8 14 / 0.65);
+}
+
+.home-sheet__edge {
+  display: block;
+  height: 10px;
+  background-color: var(--paithani-red);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--zari-gold-400) 0 6px,
+    transparent 6px 15px
+  );
+  background-repeat: repeat-x;
+  background-position: top left;
+  background-size: auto 6px;
+  box-shadow:
+    inset 0 1px 0 rgb(0 0 0 / 0.25),
+    0 -1px 0 var(--zari-gold-400);
+}
+
+@media (min-width: 64rem) {
+  /* A soft lip on top of the sheet, so the overlap curtains down onto the frame
+     instead of snapping on. Purely optical — no layout height. */
+  .home-sheet::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 4.5rem;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgb(26 8 14 / 0.35) 0%,
+      transparent 100%
+    );
   }
 }
 
@@ -2248,46 +2317,29 @@
 
 .band-welcome__card {
   position: relative;
-  padding: 1.35rem 1.35rem 1.45rem;
-  background-color: rgb(26 8 14 / 0.72);
+  padding: 1.25rem 1.3rem 1.3rem;
+  background-color: rgb(26 8 14 / 0.74);
   /* A faint Paithani floral jaal watermark, the same motif the masthead carries,
      so the hero belongs to the header instead of floating free. Zari, kept very
      low so it never competes with the copy. */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-opacity='0.12' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(44 44)'%3E%3Cpath d='M0 -6 C3 -6 4 -3 6 0 C4 3 3 6 0 6 C-3 6 -4 3 -6 0 C-4 -3 -3 -6 0 -6 Z'/%3E%3Cpath d='M0 -12 C2.2 -12 3.2 -10.2 4 -8 C3 -7.4 1.4 -7.4 0 -8 C-1.4 -7.4 -3 -7.4 -4 -8 C-3.2 -10.2 -2.2 -12 0 -12 Z'/%3E%3C/g%3E%3Cg transform='translate(0 0)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3Cg transform='translate(88 88)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3Cg transform='translate(88 0)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3Cg transform='translate(0 88)'%3E%3Cpath d='M0 -5 C2.2 -2.6 2.6 0.8 0 3.4 C-2.6 0.8 -2.2 -2.6 0 -5 Z'/%3E%3C/g%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 88px 88px;
-  border-left: 3px solid var(--zari-gold-400);
   color: var(--surface-card);
+  border: 1px solid rgb(221 159 28 / 0.45);
+  border-left: 3px solid var(--zari-gold-400);
   box-shadow:
-    0 24px 50px -26px rgb(0 0 0 / 0.7),
-    inset 0 0 0 1px rgb(221 159 28 / 0.28);
+    0 24px 50px -28px rgb(0 0 0 / 0.75),
+    inset 0 0 0 1px rgb(221 159 28 / 0.2);
 }
 
 /* The woven zari register — a hairline frame just inside the card, the border a
-   Paithani pallu carries, with a small buti bead at the head of each side. */
+   Paithani pallu carries. */
 .band-welcome__card::before {
   content: "";
   position: absolute;
-  inset: 7px;
-  border: 1px solid rgb(221 159 28 / 0.38);
-  pointer-events: none;
-}
-
-.band-welcome__card::after {
-  content: "";
-  position: absolute;
-  top: 7px;
-  bottom: 7px;
-  right: 7px;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    var(--zari-gold-400) 18%,
-    var(--zari-gold-400) 82%,
-    transparent 100%
-  );
-  opacity: 0.7;
+  inset: 6px;
+  border: 1px solid rgb(221 159 28 / 0.4);
   pointer-events: none;
 }
 
@@ -2318,41 +2370,40 @@
 }
 
 .band-welcome__title {
-  margin: 0.55rem 0 0;
+  margin: 0.5rem 0 0;
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-size: clamp(1.6rem, 2.6vw, 2rem);
   font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   color: var(--surface-card);
   /* Same belt and braces as the notice title: the chip covers the soft edge. */
   text-shadow: 0 2px 6px rgb(0 0 0 / 0.7);
 }
 
 .band-welcome__blurb {
-  margin: 0.7rem 0 0;
-  font-size: 0.8375rem;
-  line-height: 1.6;
+  max-width: 36ch;
+  margin: 0.6rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
   color: var(--notice-ink-muted);
-  /* A zari rule under the blurb, fading at both ends — a woven separator. */
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid rgb(221 159 28 / 0.28);
 }
 
 .band-welcome__links {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.45rem;
-  margin: 1rem 0 0;
+  margin: 0.95rem 0 0;
   padding: 0;
   list-style: none;
 }
 
 .band-welcome__link {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  padding: 0.4rem 0.7rem;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem 0.5rem 0.55rem;
   border: 1px solid rgb(221 159 28 / 0.4);
   border-radius: 2px;
   background-color: rgb(255 255 255 / 0.04);
@@ -2369,9 +2420,9 @@
 /* Each door carries a small zari pick at its head, the way a woven chip opens. */
 .band-welcome__link::before {
   content: "";
+  flex: none;
   width: 5px;
   height: 5px;
-  margin-right: 0.45rem;
   transform: rotate(45deg);
   background-color: var(--zari-gold-400);
   transition: background-color 160ms ease;
@@ -2399,13 +2450,14 @@
     z-index: 10;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    /* 5.5rem at the bottom is the standing reservation for `.video-controls`. */
-    padding: 3.5rem 1.75rem 5.5rem 1.5rem;
+    justify-content: flex-end;
+    /* 7rem at the bottom lifts the card clear of `.video-controls` (which keeps
+       its own 5.5rem reservation) so the block sits a touch higher in the frame. */
+    padding: 2rem 1.75rem 7rem 1.5rem;
     background-color: transparent;
     border-top: 0;
     /* The notice panel keeps the right 19–21rem; this never crosses into it. */
-    max-width: min(25rem, 46%);
+    max-width: min(23rem, 42%);
   }
 }
 
@@ -3041,8 +3093,10 @@ html.paithan-intro-locked body {
 /*
  * Page transitions. A `template.tsx` remounts its subtree on every navigation,
  * so this runs on each route change and gives the new page a soft fade-and-rise
- * as it arrives. Kept short (380ms) so navigation still feels instant. Only runs
- * when motion is welcome.
+ * as it arrives — overlaid by a curtain of cut cloth panels (`.page-cut`) that
+ * sweeps away to reveal the screen, left to right. Kept short so navigation
+ * still feels instant. Only runs when motion is welcome; the cut is a no-op (and
+ * never rendered) otherwise.
  */
 @media (prefers-reduced-motion: no-preference) {
   .page-transition {
@@ -3058,6 +3112,78 @@ html.paithan-intro-locked body {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/*
+ * THE PAGE CUT — the "next page" reveal. A curtain of six vertical Paithani
+ * panels is laid over the incoming screen, then each panel withdraws upward on a
+ * short stagger from left to right, so the page is uncovered the way cloth is
+ * cut and peeled from the loom. Fixed and pointer-transparent, but scoped to the
+ * template's lifetime (it unmounts with the route), so it can never sit over a
+ * different page.
+ *
+ * Base state is `display: none`: the curtain exists only while it is animating,
+ * so without motion — or without the animation running for any reason — the page
+ * is simply present, never hidden behind it.
+ */
+.page-cut {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-cut {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    /* One panel-height of travel is 100% of the panel, which is the viewport. */
+  }
+
+  .page-cut__panel {
+    position: relative;
+    flex: 1 1 0;
+    height: 100%;
+    background-color: var(--paithani-red);
+    background-image:
+      /* The cut: a zari pick-line down each panel's right edge. */
+      linear-gradient(
+        90deg,
+        transparent calc(100% - 3px),
+        var(--zari-gold-400) calc(100% - 3px)
+      ),
+      /* A fine running weft so the panels read woven, not flat. */
+      repeating-linear-gradient(
+        180deg,
+        rgb(255 255 255 / 0.04) 0 2px,
+        transparent 2px 6px
+      );
+    /* Each panel holds a beat, then lifts a touch after the one to its left, so
+       the curtain peels left to right instead of rising as one sheet. The hold
+       is what makes the cut readable rather than a blink. */
+    animation: page-cut-away 900ms cubic-bezier(0.7, 0, 0.3, 1) both;
+    animation-delay: calc(120ms + var(--cut-index, 0) * 90ms);
+  }
+
+  .page-cut__panel:last-child {
+    background-image: repeating-linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.04) 0 2px,
+      transparent 2px 6px
+    );
+  }
+}
+
+@keyframes page-cut-away {
+  0% {
+    transform: translateY(0);
+  }
+  22% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-101%);
   }
 }
 
@@ -3136,3 +3262,906 @@ html.paithan-intro-locked body {
     rgb(77 15 32 / 0.6) 100%
   );
 }
+
+/*
+ * ---------------------------------------------------------------------------
+ * REPRESENTATIVES REGISTER — the records page
+ * ---------------------------------------------------------------------------
+ *
+ * The page is a register, not a card grid. Paithan is a handloom town, so the
+ * roster is laid out the way its own textiles are: a masthead woven as a pallu,
+ * the legislative tier as two full pallu cards with a woven border, the
+ * administrative offices as a plain ledger (they are offices, several vacant —
+ * the layout is disciplined and row-based on purpose), and the 17 wards as a
+ * warp-strung grid keyed by the ward number. Madder marks the elected tier;
+ * morpankhi (peacock green) marks the administrative one; zari gold is the
+ * single thread that ties every rule, seam, and pin together.
+ *
+ * Everything below is scoped to `.reg-*` so it cannot leak into other pages.
+ */
+.reg-page {
+  --reg-ink: var(--civic-slate-900);
+  --reg-ink-soft: var(--civic-slate-700);
+  --reg-rule: var(--border-subtle);
+  --reg-rule-strong: var(--border-strong);
+  --reg-silk: var(--surface-card);
+  --reg-silk-deep: var(--surface-subtle);
+}
+
+/* ---- Masthead: the register's title, woven as a pallu -------------------- */
+
+.reg-masthead {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(105deg, var(--paithani-red) 0%, var(--portal-blue-900) 100%);
+  color: var(--on-vangi);
+  border-bottom: 3px solid var(--zari-gold-400);
+}
+
+/* A faint floral-jaal watermark, the same motif the header masthead carries. */
+.reg-masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-width='1' stroke-linecap='round'%3E%3Cpath d='M36 24c3 0 5 3 8 6-3 3-5 6-8 6s-5-3-8-6c3-3 5-6 8-6z'/%3E%3Cpath d='M0 0c2 0 3 2 5 4-2 2-3 4-5 4S-2 6 0 4z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 72px 72px;
+}
+
+/* Running selvedge of zari picks along the bottom edge. */
+.reg-masthead::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--zari-gold-400) 0 6px,
+    transparent 6px 15px
+  );
+  opacity: 0.5;
+}
+
+.reg-masthead__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.reg-masthead__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--zari-gold-400);
+}
+
+.reg-masthead__eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--zari-gold-400));
+}
+
+.reg-masthead__title {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.reg-masthead__deva {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display-deva);
+  font-size: 1.15rem;
+  color: var(--zari-gold-400);
+}
+
+.reg-masthead__desc {
+  margin: 0.9rem 0 0;
+  max-width: 54ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.82);
+}
+
+/* The count seal: total seats in the register, struck like a loom tally. */
+.reg-seal {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid rgb(221 159 28 / 0.5);
+  background: rgb(26 8 14 / 0.35);
+}
+
+.reg-seal__num {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--zari-gold-400);
+  font-variant-numeric: tabular-nums;
+}
+
+.reg-seal__label {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.75);
+  max-width: 12ch;
+}
+
+/* ---- Section heading: a woven rule, not the generic section-rule -------- */
+
+.reg-section {
+  margin-top: 3.75rem;
+}
+
+.reg-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 2px solid var(--reg-rule-strong);
+}
+
+.reg-head__mark {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  align-self: center;
+  transform: rotate(45deg);
+  border: 1px solid var(--zari-gold-500);
+  background:
+    radial-gradient(circle at 50% 50%, var(--zari-gold-400) 0 2px, transparent 2.6px),
+    var(--paithani-red);
+  box-shadow: inset 0 0 0 1px rgb(26 8 14 / 0.3);
+}
+
+.reg-head__mark--admin {
+  background:
+    radial-gradient(circle at 50% 50%, var(--zari-gold-400) 0 2px, transparent 2.6px),
+    var(--morpanhki);
+}
+
+.reg-head__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--portal-blue-900);
+}
+
+.reg-head__deva {
+  font-family: var(--font-display-deva);
+  font-size: 1rem;
+  color: var(--civic-slate-500);
+}
+
+.reg-head__note {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--civic-slate-500);
+  font-variant-numeric: tabular-nums;
+}
+
+.reg-lede {
+  margin: 1rem 0 0;
+  max-width: 68ch;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--reg-ink-soft);
+}
+
+/* ---- Pallu cards: the elected tier -------------------------------------- */
+
+.reg-pallu-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 60rem) {
+  .reg-pallu-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.reg-pallu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--reg-silk);
+  border: 1px solid var(--reg-rule-strong);
+  border-left: 5px solid var(--paithani-red);
+  box-shadow: 0 18px 40px -30px rgb(46 40 31 / 0.55);
+}
+
+/* A woven zari register just inside the card edge, like a pallu's inner border. */
+.reg-pallu::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgb(221 159 28 / 0.35);
+  pointer-events: none;
+}
+
+/* The tier stripe at the head of the card: madder ground with a zari pick. */
+.reg-pallu__tier {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 1.15rem;
+  background: var(--paithani-red);
+  color: var(--on-vangi);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reg-pallu__tier::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--zari-gold-400) 0 5px,
+    transparent 5px 12px
+  );
+  opacity: 0.6;
+}
+
+.reg-pallu__body {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem 1.35rem 1.35rem;
+}
+
+.reg-pallu__plate {
+  position: relative;
+  flex: none;
+  width: 7.25rem;
+}
+
+.reg-pallu__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 2px solid var(--zari-gold-400);
+  background: var(--portal-blue-900);
+}
+
+.reg-pallu__photo img {
+  object-fit: cover;
+  object-position: top center;
+}
+
+.reg-pallu__figmount {
+  margin-top: 0.5rem;
+  color: var(--zari-gold-500);
+}
+
+.reg-pallu__identity {
+  min-width: 0;
+  flex: 1;
+}
+
+.reg-pallu__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--portal-blue-900);
+}
+
+.reg-pallu__name a {
+  text-decoration: none;
+}
+
+.reg-pallu__name a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--zari-gold-400);
+  text-underline-offset: 4px;
+}
+
+.reg-pallu__name-deva {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-display-deva);
+  font-size: 1.05rem;
+  color: var(--civic-slate-500);
+}
+
+.reg-pallu__office {
+  margin: 0.6rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--reg-rule);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--portal-blue-700);
+}
+
+.reg-pallu__office-deva {
+  font-family: var(--font-display-deva);
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--civic-slate-500);
+}
+
+.reg-pallu__seat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+  font-size: 0.78rem;
+  color: var(--civic-slate-700);
+}
+
+.reg-pallu__seat svg {
+  color: var(--zari-gold-600);
+  flex: none;
+}
+
+.reg-pallu__foot {
+  margin-top: auto;
+  border-top: 1px solid var(--reg-rule);
+  background: var(--reg-silk-deep);
+  padding: 0.9rem 1.35rem 1rem;
+}
+
+.reg-pallu__bio {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--reg-ink-soft);
+}
+
+.reg-pallu__provenance {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--reg-rule-strong);
+}
+
+.reg-pallu__source {
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--civic-slate-500);
+}
+
+/* ---- Ledger: the administrative offices --------------------------------- */
+
+.reg-ledger {
+  margin-top: 1.5rem;
+  border: 1px solid var(--reg-rule-strong);
+  background: var(--reg-silk);
+}
+
+.reg-ledger__row {
+  display: grid;
+  gap: 0.75rem 1.5rem;
+  padding: 1.15rem 1.25rem;
+  border-top: 1px solid var(--reg-rule);
+}
+
+.reg-ledger__row:first-child {
+  border-top: 0;
+}
+
+@media (min-width: 52rem) {
+  .reg-ledger__row {
+    grid-template-columns: 15rem 1fr;
+    align-items: start;
+  }
+}
+
+/* The office name sits in its own column, ruled like a register entry. */
+.reg-ledger__office {
+  position: relative;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--morpanhki);
+}
+
+.reg-ledger__office-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--portal-blue-900);
+}
+
+.reg-ledger__office-deva {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display-deva);
+  font-size: 0.85rem;
+  color: var(--civic-slate-500);
+}
+
+.reg-ledger__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+  color: var(--civic-slate-500);
+}
+
+.reg-ledger__bio {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--reg-ink-soft);
+}
+
+.reg-ledger__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+}
+
+.reg-ledger__contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--portal-blue-700);
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.reg-ledger__contact a:hover {
+  color: var(--zari-gold-600);
+  text-decoration: underline;
+}
+
+/* ---- Ward weave: the 17-ward roster keyed by ward number ---------------- */
+
+.reg-weave {
+  display: grid;
+  gap: 1px;
+  margin-top: 1.5rem;
+  background: var(--reg-rule-strong);
+  border: 1px solid var(--reg-rule-strong);
+}
+
+@media (min-width: 40rem) {
+  .reg-weave {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .reg-weave {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.reg-weave__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.95rem 1rem;
+  background: var(--reg-silk);
+}
+
+/* The warp thread: a zari pick running down the left of each cell. */
+.reg-weave__cell::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 3px;
+  background: var(--zari-gold-400);
+  opacity: 0.55;
+}
+
+.reg-weave__num {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--on-vangi);
+  background: var(--morpanhki);
+  border: 1px solid var(--zari-gold-400);
+  font-variant-numeric: tabular-nums;
+}
+
+.reg-weave__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.reg-weave__ward {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--portal-blue-900);
+}
+
+.reg-weave__ward-deva {
+  display: block;
+  font-family: var(--font-display-deva);
+  font-size: 0.78rem;
+  color: var(--civic-slate-500);
+}
+
+.reg-weave__holder {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--civic-slate-500);
+}
+
+.reg-weave__call {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid var(--reg-rule-strong);
+  color: var(--portal-blue-700);
+  background: var(--reg-silk-deep);
+}
+
+.reg-weave__call:hover {
+  background: var(--portal-blue-800);
+  color: var(--on-vangi);
+  border-color: var(--portal-blue-800);
+}
+
+/* ---- Advisory: the SEC notice, given the weight of a footnote band ------ */
+
+.reg-advisory {
+  display: flex;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.25rem;
+  border-left: 4px solid var(--zari-gold-500);
+  background: var(--zari-gold-100);
+}
+
+.reg-advisory svg {
+  color: var(--zari-gold-600);
+  flex: none;
+  margin-top: 0.1rem;
+}
+
+.reg-advisory__text {
+  max-width: 80ch;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: var(--reg-ink-soft);
+}
+
+.reg-advisory__text a {
+  font-weight: 600;
+  color: var(--portal-blue-700);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ==========================================================================
+   WELCOME PLATE — vintage manuscript panel for the home "Welcome to Paithan".
+   Age is expressed with layered washes, a warm parchment ground, a woven
+   speckle grain and hand-set typography (drop cap, justified serif, a pulled
+   quotation) rather than any grid. No geometric pattern is used.
+   ========================================================================== */
+
+.welcome-plate {
+  position: relative;
+  overflow: hidden;
+  max-width: 62rem;
+  margin: 0 auto;
+  border: 1px solid rgba(143, 93, 9, 0.55);
+  border-radius: 2px;
+  padding: 1.75rem 1.5rem 2rem;
+  text-align: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(221, 159, 28, 0.28),
+    inset 0 0 70px rgba(94, 15, 34, 0.35),
+    0 18px 40px -22px rgba(46, 40, 31, 0.55);
+  background:
+    radial-gradient(
+      130% 120% at 15% 0%,
+      rgba(251, 236, 194, 0.16) 0%,
+      rgba(251, 236, 194, 0) 42%
+    ),
+    radial-gradient(
+      120% 130% at 90% 110%,
+      rgba(221, 159, 28, 0.14) 0%,
+      rgba(221, 159, 28, 0) 46%
+    ),
+    linear-gradient(158deg, rgba(109, 18, 38, 0.92) 0%, rgba(94, 15, 34, 0.94) 46%, rgba(77, 15, 32, 0.96) 100%),
+    url("/images/paithani-bg.png");
+  background-size: cover, cover, cover, 320px auto;
+  background-position: center, center, center, center;
+  background-blend-mode: normal, normal, normal, soft-light;
+}
+
+/* --------------------------------------------------------------------------
+   THE WEAVE REVEAL — the welcome plate's own scroll animation.
+
+   Not a generic fade-up. The panel is woven: a zari pick-line sweeps across
+   from the left, the whole plate is unmasked sideways from the centre out, and
+   its content lifts the last few pixels into place. The plate's own woven
+   border (`.welcome-plate__border`) draws its selvedges in from the edges at
+   the same time, so the cloth appears to be made on screen.
+
+   Base state (no JS, reduced motion) is plain and fully visible; every hidden
+   state is declared inside the motion media query only.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal--weave {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .reveal--weave .welcome-plate {
+    clip-path: inset(0 50% 0 50%);
+    transition: clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: clip-path;
+  }
+
+  .reveal--weave.reveal--in .welcome-plate {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* The zari pick-line: a gold thread that runs across the top edge as the
+     plate is woven, then fades away. */
+  .reveal--weave .welcome-plate::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--zari-gold-400) 45%,
+      var(--zari-gold-400) 55%,
+      transparent
+    );
+    transform: scaleX(0);
+    transform-origin: left center;
+    opacity: 0;
+  }
+
+  .reveal--weave.reveal--in .welcome-plate::after {
+    animation: welcome-pick-sweep 1000ms cubic-bezier(0.16, 1, 0.3, 1)
+      var(--reveal-delay, 0ms) both;
+  }
+
+  /* The content lifts the last few pixels, a touch behind the cloth. */
+  .reveal--weave .welcome-plate > .relative {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 700ms ease 260ms,
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 260ms;
+  }
+
+  .reveal--weave.reveal--in .welcome-plate > .relative {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* The woven border's selvedges draw in from the two edges. */
+  .reveal--weave .welcome-plate__border {
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
+  }
+
+  .reveal--weave.reveal--in .welcome-plate__border {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes welcome-pick-sweep {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* The pallu edge: a real Paithani weave band running down each side, drawn as
+   the woven zari border of the cloth rather than any dotted texture. Faint,
+   and only at the seams, so the panel still reads as one field. */
+.welcome-plate__border {
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  border: 1px solid rgba(221, 159, 28, 0.35);
+  border-radius: 1px;
+}
+
+.welcome-plate__border::before,
+.welcome-plate__border::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--zari-gold-400) 0 4px,
+    transparent 4px 7px,
+    var(--morpanhki) 7px 11px,
+    transparent 11px 14px
+  );
+  opacity: 0.5;
+}
+
+.welcome-plate__border::before {
+  left: 5px;
+}
+
+.welcome-plate__border::after {
+  right: 5px;
+}
+
+/* The title sits on the centreline, closed by a small woven ornament. */
+.welcome-plate__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.welcome-plate__eyebrow {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--zari-gold-400);
+  text-indent: 0.3em;
+}
+
+.welcome-plate__ornament {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.welcome-plate__ornament::before,
+.welcome-plate__ornament::after {
+  content: "";
+  align-self: center;
+  width: 3.5rem;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(221, 159, 28, 0.7)
+  );
+}
+
+.welcome-plate__ornament::after {
+  background: linear-gradient(
+    to left,
+    transparent,
+    rgba(221, 159, 28, 0.7)
+  );
+}
+
+/* The lead: what Paithan is today. Justified, drop-capped, the widest line. */
+.welcome-plate__lede {
+  max-width: 44rem;
+  margin: 1.6rem auto 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--on-vangi);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+/* A raised, coloured initial, the way a printed page opened. */
+.welcome-plate__dropcap {
+  float: left;
+  margin: 0.28rem 0.6rem 0 0;
+  font-family: var(--font-rozha), var(--font-display);
+  font-size: 3rem;
+  line-height: 0.7;
+  color: var(--zari-gold-400);
+  text-shadow: 0 2px 10px rgba(46, 40, 31, 0.45);
+}
+
+/* The heritage passage, pulled out as an aside so it does not run into the
+   lead. A zari rule down its left edge marks it as the older voice. */
+.welcome-plate__aside {
+  max-width: 44rem;
+  margin: 1.5rem auto 0;
+  padding-left: 1.35rem;
+  border-left: 2px solid rgba(221, 159, 28, 0.5);
+  text-align: left;
+}
+
+.welcome-plate__aside-title {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--zari-gold-500);
+}
+
+.welcome-plate__lore-text {
+  margin-top: 0.5rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--zari-gold-100);
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+@media (min-width: 48rem) {
+  .welcome-plate {
+    padding: 2.25rem 2.75rem 2.5rem;
+  }
+
+  .welcome-plate__eyebrow {
+    font-size: 1.3rem;
+  }
+
+  .welcome-plate__lede {
+    font-size: 1.0625rem;
+  }
+
+  .welcome-plate__lore-text {
+    font-size: 1rem;
+  }
+}
+
+
+

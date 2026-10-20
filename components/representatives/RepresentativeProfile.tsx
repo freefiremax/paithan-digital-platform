@@ -63,7 +63,7 @@ export function RepresentativeProfile({
           { label: tNav("nagarParishad"), href: `/${locale}/nagar-parishad` },
           {
             label: t("representativesTitle"),
-            href: `/${locale}/nagar-parishad/representatives`,
+            href: `/${locale}/nagar-parishad`,
           },
           { label: crumb },
         ]}
@@ -89,7 +89,7 @@ export function RepresentativeProfile({
 
         <div className="relative m-auto w-full max-w-[1140px] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <Link
-            href={`/${locale}/nagar-parishad/representatives`}
+            href={`/${locale}/nagar-parishad`}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--zari-gold-400)] hover:underline"
           >
             <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
@@ -189,6 +189,8 @@ export function RepresentativeProfile({
                   {rep.bio}
                 </p>
               </div>
+
+
             </div>
           </Reveal>
 

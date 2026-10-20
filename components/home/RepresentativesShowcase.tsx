@@ -194,6 +194,8 @@ export function RepresentativesShowcase() {
               </div>
             </div>
           </Reveal>
+
+          {/* About Paithan block below cards removed */}
         </div>
       </div>
 

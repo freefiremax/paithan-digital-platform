@@ -46,6 +46,13 @@ interface RevealProps {
   readonly stagger?: boolean;
   /** Milliseconds between staggered children. */
   readonly staggerStep?: number;
+  /**
+   * Named treatment. `"weave"` replaces the plain fade with the Paithani
+   * cloth-weaving reveal: the selvedges draw in from either side and a zari
+   * pick-line sweeps across the panel as it settles. Use it only where that
+   * extra motion is warranted, not on every section.
+   */
+  readonly variant?: "default" | "weave";
 }
 
 export function Reveal({
@@ -55,6 +62,7 @@ export function Reveal({
   delay = 0,
   stagger = false,
   staggerStep = 90,
+  variant = "default",
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
@@ -90,9 +98,9 @@ export function Reveal({
   return (
     <Tag
       ref={ref}
-      className={`reveal ${stagger ? "reveal--stagger" : ""} ${
-        shown ? "reveal--in" : ""
-      } ${className}`.trim()}
+      className={`reveal ${variant === "weave" ? "reveal--weave" : ""} ${
+        stagger ? "reveal--stagger" : ""
+      } ${shown ? "reveal--in" : ""} ${className}`.trim()}
       style={
         {
           "--reveal-delay": `${delay}ms`,

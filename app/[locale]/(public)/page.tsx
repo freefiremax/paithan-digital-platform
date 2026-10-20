@@ -50,65 +50,70 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
-      {/* The video band and the civic panels are ordinary in-flow siblings: the
-          band scrolls away with the page like any other section. The earlier
-          layered reveal (a sticky band under sliding panels) read as too busy,
-          so the home page is a straight vertical document again. */}
-      <HomeVideoBand />
+      {/* The hero video band pins on a sticky rail; the civic content sheet then
+          scrolls up over it as a plain overlay. No cut effect here — the
+          slice/reveal treatment is reserved for the representatives (MLA/MP)
+          pages. See `.home-hero-rail` and `.home-sheet` in globals.css. */}
+      <div className="home-hero-rail">
+        <HomeVideoBand />
+      </div>
 
-      <RepresentativesShowcase />
-      <Reveal>
-        <Masthead />
-      </Reveal>
-      <Reveal>
-        <CitizenServicesSection />
-      </Reveal>
+      <div className="home-sheet">
+        <span className="home-sheet__edge" aria-hidden="true" />
+        <RepresentativesShowcase />
+        <Reveal>
+          <Masthead />
+        </Reveal>
+        <Reveal>
+          <CitizenServicesSection />
+        </Reveal>
 
-      <Reveal className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
-          <SectionFinial className="-mt-6 mb-6 lg:-mt-8 lg:mb-8" />
-          <div className="grid gap-10 lg:grid-cols-12">
-            {/* LEFT: TENDERS & PUBLIC NOTICES */}
-            <section className="lg:col-span-8 flex flex-col" aria-labelledby="notices-heading">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
-                <div>
-                  <div className="flex items-center gap-2.5">
-                    <ButiOrnament className="h-8 w-4 shrink-0 text-[var(--saffron-700)]" />
-                    <h2
-                      id="notices-heading"
-                      className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
-                    >
-                      {tHome("noticesHeading")}
-                    </h2>
+        <Reveal className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
+            <SectionFinial className="-mt-6 mb-6 lg:-mt-8 lg:mb-8" />
+            <div className="grid gap-10 lg:grid-cols-12">
+              {/* LEFT: TENDERS & PUBLIC NOTICES */}
+              <section className="lg:col-span-8 flex flex-col" aria-labelledby="notices-heading">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <ButiOrnament className="h-8 w-4 shrink-0 text-[var(--saffron-700)]" />
+                      <h2
+                        id="notices-heading"
+                        className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
+                      >
+                        {tHome("noticesHeading")}
+                      </h2>
+                    </div>
+                    <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
+                      {tHome("noticesSubtitle")}
+                    </p>
                   </div>
-                  <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
-                    {tHome("noticesSubtitle")}
-                  </p>
+                  <Link
+                    href="/nagar-parishad/notifications"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
+                  >
+                    <span>{tHome("allNotifications")}</span>
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
                 </div>
-                <Link
-                  href="/nagar-parishad/notifications"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
-                >
-                  <span>{tHome("allNotifications")}</span>
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </div>
 
-              <NoticeLedger />
-            </section>
+                <NoticeLedger />
+              </section>
 
-            {/* RIGHT: THE COUNCIL SIDEBAR */}
-            <aside className="lg:col-span-4 flex flex-col gap-6">
-              <CouncilPanel />
-            </aside>
-          </div>
-      </Reveal>
+              {/* RIGHT: THE COUNCIL SIDEBAR */}
+              <aside className="lg:col-span-4 flex flex-col gap-6">
+                <CouncilPanel />
+              </aside>
+            </div>
+        </Reveal>
 
-      <Reveal>
-        <PaithanWardMap />
-      </Reveal>
-      <Reveal>
-        <OfficialLandmarksShowcase />
-      </Reveal>
+        <Reveal>
+          <PaithanWardMap />
+        </Reveal>
+        <Reveal>
+          <OfficialLandmarksShowcase />
+        </Reveal>
+      </div>
     </div>
   );
 }
@@ -165,84 +170,48 @@ function Masthead() {
     <>
       <section className="portal-masthead">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-start">
-            {/* LEFT: CULTURAL WELCOME BOX */}
-            <div className="lg:col-span-7">
-              <div className="relative overflow-hidden rounded-sm border border-[var(--zari-gold-400)]/40 bg-gradient-to-br from-[var(--paithani-red)] via-[var(--paithani-red)] to-[var(--portal-blue-900)] p-6 sm:p-8 lg:p-10">
-                {/* Paithani corner motifs */}
-                <span className="pointer-events-none absolute right-3 top-3 opacity-30 sm:right-5 sm:top-5" aria-hidden="true">
-                  <ButiOrnament className="h-14 w-8 text-[var(--zari-gold-400)] sm:h-20 sm:w-11" />
+          <Reveal variant="weave">
+          <div className="welcome-plate">
+            <span className="welcome-plate__border" aria-hidden="true" />
+
+            <span className="pointer-events-none absolute right-3 top-3 opacity-40 sm:right-5 sm:top-5" aria-hidden="true">
+              <ButiOrnament className="h-10 w-6 text-[var(--zari-gold-500)] sm:h-14 sm:w-8" />
+            </span>
+            <span className="pointer-events-none absolute bottom-3 left-3 rotate-180 opacity-40 sm:bottom-5 sm:left-5" aria-hidden="true">
+              <ButiOrnament className="h-10 w-6 text-[var(--zari-gold-500)] sm:h-14 sm:w-8" />
+            </span>
+
+            <div className="relative">
+              <header className="welcome-plate__head">
+                <p className="welcome-plate__eyebrow">
+                  {locale === "mr" ? "पैठण" : locale === "hi" ? "पैठण" : "Welcome to Paithan"}
+                </p>
+                <span className="welcome-plate__ornament" aria-hidden="true">
+                  <ButiOrnament className="h-7 w-4 text-[var(--zari-gold-500)]" />
                 </span>
-                <span className="pointer-events-none absolute bottom-3 left-3 rotate-180 opacity-30 sm:bottom-5 sm:left-5" aria-hidden="true">
-                  <ButiOrnament className="h-14 w-8 text-[var(--zari-gold-400)] sm:h-20 sm:w-11" />
-                </span>
+              </header>
 
-                {/* Top accent line */}
-                <div className="mb-5 flex items-center gap-2.5" aria-hidden="true">
-                  <span className="h-px flex-1 bg-gradient-to-r from-[var(--zari-gold-400)]/60 to-transparent" />
-                  
-                  <span className="h-px flex-1 bg-gradient-to-l from-[var(--zari-gold-400)]/60 to-transparent" />
-                </div>
+              <p className="welcome-plate__lede">
+                <span className="welcome-plate__dropcap" aria-hidden="true">P</span>
+                aithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town&apos;s heritage and its visitor information here.
+              </p>
 
-                <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-[var(--zari-gold-400)]">
-                  {locale === "mr" ? "पैठणमध्ये आपले स्वागत आहे" : locale === "hi" ? "पैठण में आपका स्वागत है" : "Welcome to Paithan"}
+              <aside className="welcome-plate__aside">
+                <p className="welcome-plate__aside-title">
+                  {locale === "mr"
+                    ? "दोन हजार वर्षांचा वारसा"
+                    : locale === "hi"
+                      ? "दो हज़ार वर्षों की विरासत"
+                      : "A town of two thousand years"}
                 </p>
-
-                <h1 className="mt-4 text-center font-display text-[1.9rem] font-semibold leading-[1.2] tracking-tight text-white sm:text-[2.4rem] lg:text-[2.8rem]">
-                  <span className="illuminated-cap" aria-hidden="true">
-                    {tHome("heroHeadingPrefix").charAt(0) || "R"}
-                  </span>
-                  <span className="sr-only">{tHome("heroHeadingPrefix").charAt(0)}</span>
-                  {tHome("heroHeadingPrefix").slice(1)} {councilProfile.wardCount} {tHome("heroHeadingSuffix")}
-                </h1>
-
-                {/* Zari divider */}
-                <div className="mx-auto mt-5 flex max-w-md items-center gap-3" aria-hidden="true">
-                  <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--zari-gold-400)]/50" />
-                  
-                  <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--zari-gold-400)]/50" />
-                </div>
-
-                <p className="mx-auto mt-5 max-w-2xl text-center text-[0.95rem] leading-relaxed text-white/80">
-                  {tHome("heroDesc")}
+                <p className="welcome-plate__lore-text">
+                  Pratishthana was the capital of the Satavahanas, and King Hala&apos;s Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.
                 </p>
-
-                <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-[var(--zari-gold-400)]/80">
-                  {tHome("heroHeritageNote")}
-                </p>
-
-                {/* Bottom Paithani band inside the box */}
-                <div className="mt-7 h-1.5 w-full rounded-full bg-gradient-to-r from-[var(--zari-gold-400)]/30 via-[var(--zari-gold-400)]/70 to-[var(--zari-gold-400)]/30" aria-hidden="true" />
-              </div>
-            </div>
-
-            {/* RIGHT: VITALS */}
-            <div className="lg:col-span-5 lg:pt-1">
-              <dl className="portal-vitals">
-                <div className="portal-vital">
-                  <dt>{tHome("vitalsWards")}</dt>
-                  <dd>{councilProfile.wardCount}</dd>
-                </div>
-                <div className="portal-vital">
-                  <dt>{tHome("vitalsEstablished")}</dt>
-                  <dd>{councilProfile.establishedYear}</dd>
-                </div>
-                <div className="portal-vital">
-                  <dt>{tHome("vitalsPopulation")}</dt>
-                  <dd>
-                    {paithanDemographics.totalPopulation.toLocaleString("en-IN")}
-                    <small> / {tHome("vitalsCensus")}</small>
-                  </dd>
-                </div>
-                <div className="portal-vital">
-                  <dt>{tHome("vitalsControlRoom")}</dt>
-                  <dd className="text-[1.05rem]">{councilProfile.phone}</dd>
-                </div>
-              </dl>
+              </aside>
             </div>
           </div>
+          </Reveal>
         </div>
-
         <div className="paithani-band mt-12" aria-hidden="true" />
       </section>
 
@@ -572,6 +541,14 @@ function CouncilPanel() {
           <h2 id="council-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
             {tNagar("representativesTitle")}
           </h2>
+        </div>
+        <div className="border-b border-[var(--border-subtle)] px-4 py-3 space-y-2">
+          <p className="text-xs leading-relaxed text-[var(--civic-slate-700)]">
+            Paithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town's heritage and its visitor information here.
+          </p>
+          <p className="text-xs leading-relaxed text-[var(--civic-slate-700)]">
+            Pratishthana was the capital of the Satavahanas, and King Hala's Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.
+          </p>
         </div>
         <div className="divide-y divide-[var(--border-subtle)]">
           {electedRepresentatives.map((representative) => (
