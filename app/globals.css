@@ -418,6 +418,24 @@
   }
 
   /*
+   * Hide the page scrollbar chrome. The page still scrolls — wheel, touch,
+   * keyboard and the native scrollbar's own drag all work — but the grey
+   * OS gutter is removed so the woven side rails run the full height of the
+   * frame without a bar cutting through them. `scrollbar-width: none` is the
+   * standard property; the WebKit rule covers older Chromium/Safari. This is
+   * scoped to the root only, so the ledger table and other inner overflow
+   * containers keep their scroll affordance.
+   */
+  html {
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  /*
    * Paper fibre. A flat parchment swatch is the single most recognisable
    * "AI generated" tell in a warm palette, so the ground is given an actual
    * material: an SVG fractal-noise tile multiplied over it at low opacity, which
@@ -2077,7 +2095,6 @@
 @media (prefers-reduced-motion: no-preference) {
   #home-band-video {
     animation: home-band-drift 24s ease-in-out infinite alternate;
-    will-change: transform;
   }
 }
 
@@ -2091,7 +2108,16 @@
   position: relative;
   z-index: 20;
   background-color: var(--surface-card);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23a8642a' stroke-opacity='0.06' stroke-width='1'%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3C/g%3E%3C/svg%3E");
+  /*
+   * Not a geometric grid of circles. The ground under the post-map sections is
+   * the asavali vine — the running scroll of leaves that climbs a Paithani pallu
+   * — laid as a faint repeat. It is the same wonky, hand-woven motif the nav band
+   * carries, at low opacity, so the sheet reads as cloth with a figure in it
+   * rather than graph paper. The tile is seamless (every stroke resolves inside
+   * the 96px box) and pure line-work, so it never reads as an applied pattern.
+   */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23a8642a' stroke-opacity='0.07' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath d='M0 24 C16 24 18 6 30 6 C42 6 44 24 56 24 C72 24 74 42 96 42'/%3E%3Cpath d='M0 42 C16 42 18 24 30 24 C42 24 44 42 56 42 C72 42 74 60 96 60'/%3E%3Cpath d='M0 60 C16 60 18 42 30 42 C42 42 44 60 56 60 C72 60 74 78 96 78'/%3E%3C/g%3E%3Cg fill='none' stroke='%23a8642a' stroke-opacity='0.08' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M30 3 C27.6 6.4 27 10.4 28 13.4 C28.7 15.4 29.8 16 30 16 C30.2 16 31.3 15.4 32 13.4 C33 10.4 32.4 6.4 30 3 Z'/%3E%3Cpath d='M66 33 C63.6 36.4 63 40.4 64 43.4 C64.7 45.4 65.8 46 66 46 C66.2 46 67.3 45.4 68 43.4 C69 40.4 68.4 36.4 66 33 Z'/%3E%3C/g%3E%3Cg fill='%23a8642a' fill-opacity='0.06'%3E%3Ccircle cx='48' cy='24' r='1.4'/%3E%3Ccircle cx='84' cy='54' r='1.4'/%3E%3Ccircle cx='12' cy='78' r='1.4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 96px 96px;
   box-shadow: 0 -30px 60px -30px rgb(26 8 14 / 0.65);
 }
 
@@ -3040,7 +3066,7 @@ html.paithan-intro-locked body {
 
 @media (min-width: 1024px) {
   .site-shell {
-    --saree-rail: clamp(1.25rem, 2.25vw, 2rem);
+    --saree-rail: clamp(1.75rem, 3.2vw, 3rem);
   }
 
   .saree-frame {
@@ -3916,10 +3942,10 @@ html.paithan-intro-locked body {
 }
 
 /* ==========================================================================
-   WELCOME PLATE — vintage manuscript panel for the home "Welcome to Paithan".
-   Age is expressed with layered washes, a warm parchment ground, a woven
-   speckle grain and hand-set typography (drop cap, justified serif, a pulled
-   quotation) rather than any grid. No geometric pattern is used.
+   WELCOME PLATE — the opening plate of the home page. The message is woven onto
+   a small length of the Paithani cloth itself: a matte madder field with the real
+   weave showing through, framed by a woven zari border. Hand-set typography
+   (drop cap, justified serif, a pulled quotation) sets it as a document.
    ========================================================================== */
 
 .welcome-plate {
@@ -3946,25 +3972,22 @@ html.paithan-intro-locked body {
       rgba(221, 159, 28, 0.14) 0%,
       rgba(221, 159, 28, 0) 46%
     ),
-    linear-gradient(158deg, rgba(109, 18, 38, 0.92) 0%, rgba(94, 15, 34, 0.94) 46%, rgba(77, 15, 32, 0.96) 100%),
+    linear-gradient(
+      158deg,
+      rgba(109, 18, 38, 0.92) 0%,
+      rgba(94, 15, 34, 0.94) 46%,
+      rgba(77, 15, 32, 0.96) 100%
+    ),
     url("/images/paithani-bg.png");
   background-size: cover, cover, cover, 320px auto;
   background-position: center, center, center, center;
   background-blend-mode: normal, normal, normal, soft-light;
 }
 
-/* --------------------------------------------------------------------------
-   THE WEAVE REVEAL — the welcome plate's own scroll animation.
-
-   Not a generic fade-up. The panel is woven: a zari pick-line sweeps across
-   from the left, the whole plate is unmasked sideways from the centre out, and
-   its content lifts the last few pixels into place. The plate's own woven
-   border (`.welcome-plate__border`) draws its selvedges in from the edges at
-   the same time, so the cloth appears to be made on screen.
-
-   Base state (no JS, reduced motion) is plain and fully visible; every hidden
-   state is declared inside the motion media query only.
-   -------------------------------------------------------------------------- */
+/* The message plate's reveal: the two halves of the cloth draw back from a centre
+   seam, a zari pick-line runs out to the edges, the content and the woven border
+   follow a beat behind. The hidden state is declared inside the motion media
+   query only, so with motion reduced (or JS off) the plate is simply there. */
 @media (prefers-reduced-motion: no-preference) {
   .reveal--weave {
     opacity: 1;
@@ -3981,7 +4004,6 @@ html.paithan-intro-locked body {
     transition:
       clip-path 1100ms cubic-bezier(0.76, 0, 0.24, 1),
       transform 1100ms cubic-bezier(0.76, 0, 0.24, 1);
-    transition-delay: var(--reveal-delay, 0ms);
     will-change: clip-path, transform;
   }
 
@@ -3997,18 +4019,20 @@ html.paithan-intro-locked body {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
     height: 2px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      var(--zari-gold-400) 45%,
-      var(--zari-gold-400) 55%,
-      transparent
-    );
+    width: 100%;
     transform: scaleX(0);
     transform-origin: center;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--zari-gold-400) 20%,
+      var(--zari-gold-500) 50%,
+      var(--zari-gold-400) 80%,
+      transparent
+    );
     opacity: 0;
+    pointer-events: none;
   }
 
   .reveal--weave.reveal--in .welcome-plate::after {
@@ -4042,14 +4066,28 @@ html.paithan-intro-locked body {
   }
 }
 
+@keyframes welcome-pick-sweep {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
 /* --------------------------------------------------------------------------
    THE CUT REVEAL — the ward map's entrance as it layers over the pinned plate.
 
-   Seven full-height cloth strips lie over the map and rise away one after another
-   (left to right, staggered), so the town is uncovered as if the covering cloth
-   were being cut and peeled back. The strips are markup that only exists under
-   the motion query; with motion reduced (or JS off) the map is simply there. The
-   sliding-over-the-plate motion itself lives on `.plate-pin__over`.
+   Seven vertical cloth strips lie over the chart and rise away one after another
+   (middle outward, staggered), so the town is uncovered as if the covering cloth
+   were being cut and peeled back. The strips cover the map figure only, so the
+   cloth is the height of the chart. The strips are markup that only exists under
+   the motion query; with motion reduced (or JS off) the map is simply there.
    -------------------------------------------------------------------------- */
 .cut-layer {
   position: relative;
@@ -4070,46 +4108,54 @@ html.paithan-intro-locked body {
   .cut-layer__strips {
     display: flex;
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 88vh;
     z-index: 3;
     pointer-events: none;
   }
 
   .cut-layer__strip {
     flex: 1 1 0;
-    /* The strip is the same aged Paithani ground as the welcome plate: a matte
-       madder field with the real weave showing through and faint parchment/gold
-       washes, so the covering cloth reads as old handwoven silk, not gloss. */
+    position: relative;
+    /* Clip the strip's own slice out of a full-row copy of the saree. */
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 1150ms cubic-bezier(0.6, 0, 0.24, 1);
+    transition-delay: calc(
+      var(--reveal-delay, 0ms) + var(--strip-order, 0) * 110ms
+    );
+  }
+
+  /* The saree itself. Every strip carries an IDENTICAL copy of this one layer —
+     the whole row wide (--strip-row) and offset so the row's left edge sits at
+     the strip's own place (--strip-shift) — then the strip's overflow clips the
+     window it should show. The image is sized to the ROW WIDTH with its height
+     following the natural aspect (100% auto, not cover), so it is never zoomed
+     to the tall strip box: each strip shows its true thin width-slice and the
+     seven slices join into one unbroken pallu. */
+  .cut-layer__strip::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: var(--strip-shift, 0%);
+    width: var(--strip-row, 700%);
     background-color: var(--paithani-red);
     background-image:
-      radial-gradient(
-        130% 120% at 15% 0%,
-        rgba(251, 236, 194, 0.14) 0%,
-        rgba(251, 236, 194, 0) 42%
-      ),
-      radial-gradient(
-        120% 130% at 90% 110%,
-        rgba(221, 159, 28, 0.12) 0%,
-        rgba(221, 159, 28, 0) 46%
-      ),
       linear-gradient(
-        158deg,
-        rgba(109, 18, 38, 0.92) 0%,
-        rgba(94, 15, 34, 0.94) 46%,
-        rgba(77, 15, 32, 0.96) 100%
+        180deg,
+        rgb(94 15 34 / 0.42) 0%,
+        rgb(94 15 34 / 0.28) 45%,
+        rgb(77 15 32 / 0.55) 100%
       ),
       url("/images/paithani-bg.png");
-    background-size: cover, cover, cover, 320px auto;
-    background-position: center, center, center, center;
-    background-blend-mode: normal, normal, normal, soft-light;
-    border-right: 1px solid rgba(143, 93, 9, 0.5);
-    box-shadow: inset 0 0 40px rgba(46, 8, 20, 0.4);
-    transform: translateY(0);
-    transition: transform 780ms cubic-bezier(0.7, 0, 0.28, 1);
-    transition-delay: calc(
-      var(--reveal-delay, 0ms) + var(--strip-index) * 85ms
-    );
-    will-change: transform;
+    /* First layer (the veil) fills the whole box; the weave is pinned to the row
+       width at natural height so the slices line up across all strips. */
+    background-size: 100% 100%, 100% auto;
+    background-repeat: no-repeat, no-repeat;
+    background-position: center, center top;
   }
 
   .cut-layer__strip:last-child {
@@ -4117,23 +4163,10 @@ html.paithan-intro-locked body {
   }
 
   /* Each strip lifts up and away, uncovering the map beneath. On the way back
-     up the page the class is dropped and the strips stripe back down. */
+     up the page the class is dropped and the strips stripe back down. They stop
+     a little short of clearing their own height, so the cloth settles lower. */
   .reveal--cut.reveal--in .cut-layer__strip {
-    transform: translateY(-101%);
-  }
-}
-
-@keyframes welcome-pick-sweep {
-  0% {
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.9;
-  }
-  100% {
-    transform: scaleX(1);
-    opacity: 0;
+    transform: translateY(-96%);
   }
 }
 
@@ -4277,7 +4310,6 @@ html.paithan-intro-locked body {
   .welcome-plate {
     padding: 2.25rem 2.75rem 2.5rem;
   }
-
   .welcome-plate__eyebrow {
     font-size: 1.3rem;
   }
@@ -4290,6 +4322,713 @@ html.paithan-intro-locked body {
     font-size: 1rem;
   }
 }
+
+
+/*
+ * ===========================================================================
+ * THE CIVIC RECORD — the post-map home blocks.
+ * ===========================================================================
+ *
+ * Everything below the ward map used to be one repeated gadget: a rounded white
+ * box, an icon in a tinted chip, a heading, a list. Three wing cards, four
+ * service cards, three sidebar cards — the same object four times, which is what
+ * makes a page read as a generated template regardless of the palette.
+ *
+ * A municipal town does not publish itself in cards. It publishes in DOCUMENT
+ * TYPES: a register of notices, an index of departments, a board of services,
+ * a gazette column, a plate of sites. So each block below is given its own
+ * document grammar, drawn from the loom vocabulary already on the page
+ * (`.zari-rule`, `.loom-selvedge`, `.paithani-band`), and they are bound
+ * together by one shared rule: flat grounds, madder hairlines, zari reserved
+ * for the single most important edge in a block, and no box where a ruled
+ * column will do.
+ *
+ * Shared constants for this group:
+ *   ground   --surface-card (#faf1e2), a warm newsprint
+ *   rule     --border-subtle (#ddc59c) hairlines, --border-strong (#9d8b6c) cuts
+ *   ink      --civic-slate-900/700 for body, --portal-blue-900 for heads
+ *   accent   --paithani-red / --zari-gold-500 used sparingly, never both loud
+ */
+
+/* The section head, shared by every post-map block: a display line that sits on
+   a strong rule, the way a register head is ruled on a printed form. */
+.rec-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--border-strong);
+  margin-bottom: 1.25rem;
+}
+
+.rec-head__title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--portal-blue-900);
+}
+
+.rec-head__note {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--civic-slate-500);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+ * THE DEPARTMENT INDEX (wings)
+ *
+ * Three ruled columns of an index, not three cards. The columns are separated
+ * by a woven guide — a warp thread — rather than a box around each one, so the
+ * block reads as one sheet divided into three. Each column is headed by a
+ * number-in-a-keyline (the index numeral of a ledger) and closes on a quiet
+ * selvedge foot. The wing's own colour appears only as a thin weft thread under
+ * its heading; nothing else is tinted.
+ * -------------------------------------------------------------------------- */
+.wing-index {
+  display: grid;
+  gap: 0;
+  border-top: 2px solid var(--border-strong);
+}
+
+@media (min-width: 48rem) {
+  .wing-index {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.wing-col {
+  position: relative;
+  padding: 1.25rem 1.5rem 1.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: transparent;
+}
+
+@media (min-width: 48rem) {
+  .wing-col {
+    border-bottom: 0;
+    /* The woven guide: a warp thread between columns, drawn as two hairlines
+       with a faint gold pick, never a full box. */
+    border-left: 1px solid var(--border-subtle);
+    padding: 0 1.5rem 0 1.5rem;
+  }
+
+  .wing-col:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+
+/* The weft thread: a short colour bar that keys the column to its wing, sitting
+   directly under the index numeral. */
+.wing-col__weft {
+  display: block;
+  width: 2.75rem;
+  height: 3px;
+  margin-top: 0.6rem;
+  background-color: var(--portal-blue-700);
+}
+
+.wing-col--heritage .wing-col__weft {
+  background-color: var(--zari-gold-500);
+}
+
+.wing-col--tourism .wing-col__weft {
+  background-color: var(--morpanhki);
+}
+
+/* The index numeral: a double-keyline box, the construction of a ruled register
+   head. No fill, no tint — the same gesture as the illuminated initial. */
+.wing-col__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--portal-blue-800);
+  border: 1px solid var(--border-strong);
+  box-shadow: inset 0 0 0 3px var(--surface-card), inset 0 0 0 4px var(--border-subtle);
+}
+
+.wing-col__title {
+  margin-top: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--portal-blue-900);
+}
+
+.wing-col__title-mr {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--civic-slate-500);
+}
+
+.wing-col__blurb {
+  margin-top: 0.7rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--civic-slate-700);
+}
+
+/* The column's links as a ruled index: hairline between rows, a small lozenge
+   bullet, and no underline — the rule does the pointing. */
+.wing-col__links {
+  margin-top: 1.1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.wing-col__links li {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.wing-col__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--portal-blue-800);
+  transition: color 140ms ease;
+}
+
+.wing-col__link::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  margin-right: 0.15rem;
+  flex: none;
+  transform: rotate(45deg);
+  background-color: var(--zari-gold-500);
+}
+
+.wing-col__link span {
+  flex: 1;
+}
+
+.wing-col__link svg {
+  color: var(--civic-slate-500);
+  transition: transform 140ms ease;
+}
+
+.wing-col__link:hover {
+  color: var(--zari-gold-600);
+}
+
+.wing-col__link:hover svg {
+  transform: translateX(3px);
+  color: var(--zari-gold-600);
+}
+
+/* The selvedge foot of the column: the wing's fact line, closed by a woven edge
+   rather than a tinted band. */
+.wing-col__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  padding-top: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--civic-slate-500);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.wing-col__foot svg {
+  color: var(--zari-gold-600);
+  flex: none;
+}
+
+/* --------------------------------------------------------------------------
+ * THE SERVICE COUNTER BOARD
+ *
+ * The four citizen services ARE a sequence — you go to a counter, you apply —
+ * so they are numbered, and the number is honest here. The board is one sheet
+ * with a heavy ruled head and hairline rows; each row is a counter with its
+ * numeral set in the margin, its action stamped at the right. No icon chips,
+ * no rounded card faces.
+ * -------------------------------------------------------------------------- */
+.counter-board {
+  border-top: 2px solid var(--border-strong);
+}
+
+.counter-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 0.25rem 1.1rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color 140ms ease;
+}
+
+.counter-row:hover {
+  background-color: color-mix(in srgb, var(--paithani-red) 4%, transparent);
+}
+
+.counter-row__num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--border-strong);
+  font-variant-numeric: tabular-nums;
+  min-width: 2.25rem;
+  text-align: center;
+}
+
+.counter-row__body {
+  min-width: 0;
+}
+
+.counter-row__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--portal-blue-900);
+}
+
+.counter-row__desc {
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--civic-slate-700);
+}
+
+.counter-row__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--zari-gold-600);
+  white-space: nowrap;
+}
+
+.counter-row__action svg {
+  transition: transform 140ms ease;
+}
+
+.counter-row:hover .counter-row__action svg {
+  transform: translateX(3px);
+}
+
+@media (max-width: 47.99rem) {
+  .counter-row {
+    grid-template-columns: auto 1fr;
+  }
+
+  .counter-row__action {
+    grid-column: 2;
+    margin-top: 0.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * THE GAZETTE COLUMN (council sidebar)
+ *
+ * The sidebar is a single ruled column of the gazette, divided into headed
+ * sections by strong rules — not three separate rounded boxes floating with
+ * gaps between them. Contents flow as prose and rows, closed at the foot by a
+ * selvedge.
+ * -------------------------------------------------------------------------- */
+.gaz-col {
+  background-color: transparent;
+  border: 0;
+  border-top: 2px solid var(--border-strong);
+}
+
+.gaz-col__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  background-color: transparent;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.gaz-col__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--portal-blue-900);
+}
+
+.gaz-col__meta {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--civic-slate-500);
+  white-space: nowrap;
+}
+
+.gaz-col__body {
+  padding: 0.85rem 0;
+}
+
+.gaz-col__foot {
+  border-top: 1px solid var(--border-subtle);
+  background-color: transparent;
+}
+
+.gaz-col__foot a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--portal-blue-800);
+  transition: color 140ms ease;
+}
+
+.gaz-col__foot a:hover {
+  color: var(--zari-gold-600);
+}
+
+/* --------------------------------------------------------------------------
+ * THE NOTICE REGISTER — the Tenders & Public Notices ledger.
+ *
+ * A register is a ruled form: the count sits in the head, the column heads are
+ * ruled and set in small caps, and the rows are hairlines. No rounded card, no
+ * tinted band, no purple chrome. The search and the category filter are part of
+ * the form too — the filter is a row of ruled tabs, the selected one marked by
+ * the madder rule of a heading rather than a filled pill.
+ * -------------------------------------------------------------------------- */
+.reg-sheet {
+  /* A register is a ruled form, not a card: no box, no fill. It sits directly on
+     the sheet ground and is defined by its rules alone. */
+  border-top: 2px solid var(--border-strong);
+  background-color: transparent;
+}
+
+.reg-sheet__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.reg-sheet__count {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--civic-slate-500);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The filter strip: ruled tabs, no filled pills. */
+.reg-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.reg-tab {
+  position: relative;
+  padding: 0.6rem 0.15rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--civic-slate-500);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 140ms ease;
+  font-variant-numeric: tabular-nums;
+}
+
+.reg-tab::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 140ms ease;
+}
+
+.reg-tab:hover {
+  color: var(--portal-blue-800);
+}
+
+.reg-tab[aria-pressed="true"] {
+  color: var(--portal-blue-900);
+}
+
+.reg-tab[aria-pressed="true"]::after {
+  background-color: var(--portal-blue-700);
+}
+
+/* The search field: a ruled line, not a rounded box. */
+.reg-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.reg-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.8rem;
+  color: var(--civic-slate-900);
+  outline: none;
+}
+
+.reg-search input::placeholder {
+  color: var(--civic-slate-500);
+}
+
+.reg-search__icon {
+  color: var(--civic-slate-500);
+  flex: none;
+}
+
+/* The register table sits flush to the sheet rules — no inner box, so the outer
+   columns meet the page edge like a printed form. */
+.reg-sheet .portal-register {
+  background-color: transparent;
+}
+
+.reg-sheet .portal-register thead th {
+  background-color: transparent;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.reg-sheet .portal-register thead th:first-child,
+.reg-sheet .portal-register tbody td:first-child {
+  padding-left: 0;
+}
+
+.reg-sheet .portal-register thead th:last-child,
+.reg-sheet .portal-register tbody td:last-child {
+  padding-right: 0;
+}
+
+.reg-sheet .portal-register tbody tr:hover {
+  background-color: color-mix(in srgb, var(--paithani-red) 3.5%, transparent);
+}
+
+/* On small screens the register unrolls into stacked entries rather than
+   scrolling sideways: each entry is a head line, a meta line and an action, the
+   way a printed notice is set when the table cannot hold five columns. */
+.reg-entries {
+  display: none;
+}
+
+@media (max-width: 47.99rem) {
+  .portal-register--wide {
+    display: none;
+  }
+
+  .reg-entries {
+    display: block;
+  }
+}
+
+.reg-entry {
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.85rem 0;
+}
+
+.reg-entry:last-child {
+  border-bottom: 0;
+}
+
+.reg-entry__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.reg-entry__date {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--civic-slate-500);
+  font-variant-numeric: tabular-nums;
+}
+
+.reg-entry__title {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--portal-blue-800);
+}
+
+.reg-entry__mr {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--civic-slate-500);
+}
+
+.reg-entry__meta {
+  margin-top: 0.45rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  font-size: 0.68rem;
+  color: var(--civic-slate-500);
+}
+
+.reg-entry__ref {
+  font-variant-numeric: tabular-nums;
+}
+
+.reg-entry__due {
+  color: var(--portal-blue-700);
+  font-weight: 600;
+}
+
+.reg-entry__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--zari-gold-600);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+ * THE FOOTER — the closed cloth at the foot of the page.
+ *
+ * Built the same way as the rest of the record: ruled column heads, hairline
+ * dividers and one woven selvedge at the very top instead of a plain coloured
+ * border. The ground stays the deep madder vangi, but it is treated as cloth —
+ * a zari hairline keyline, gold thread for the rules — so it reads as the end of
+ * the woven sheet rather than a generic dark band.
+ * -------------------------------------------------------------------------- */
+.site-footer {
+  position: relative;
+  background-color: var(--footer-bg);
+}
+
+/* The selvedge: the finished edge of the cloth, closing the page top of the
+   footer. Reuses the loom selvedge tile in its madder form. */
+.site-footer__selvedge {
+  height: 8px;
+  background-color: var(--paithani-red);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cg fill='none' stroke='%23dd9f1c' stroke-width='1' stroke-linecap='round' opacity='0.7'%3E%3Cpath d='M0 1 H24'/%3E%3Cpath d='M0 7 H24'/%3E%3C/g%3E%3Cg fill='%23dd9f1c'%3E%3Cpath d='M6 2.4 L7.4 4 L6 5.6 L4.6 4 Z'/%3E%3Cpath d='M18 2.4 L19.4 4 L18 5.6 L16.6 4 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+.site-footer__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.65rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--saffron-500) 45%, transparent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--saffron-500);
+}
+
+.site-footer__link {
+  transition: color 140ms ease;
+}
+
+.site-footer__link:hover {
+  color: var(--saffron-500);
+}
+
+/* The commission plate: the one highlighted piece of the footer. A bordered
+   zari keyline panel, set apart from the columns, for the invitation to have a
+   portal like this built. Double keyline, like the index numerals and the
+   register head, so it belongs to the same system. */
+.commission-plate {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--saffron-500) 55%, transparent);
+  background:
+    linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--vangi-850) 60%, transparent) 0%,
+      transparent 62%
+    );
+}
+
+.commission-plate::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--saffron-500) 22%, transparent);
+}
+
+.commission-plate__eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--saffron-500);
+}
+
+.commission-plate__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--on-vangi);
+}
+
+.commission-plate__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--on-vangi);
+  transition: color 140ms ease;
+}
+
+.commission-plate__contact svg {
+  color: var(--saffron-500);
+  flex: none;
+}
+
+.commission-plate__contact:hover {
+  color: var(--saffron-500);
+}
+
 
 
 

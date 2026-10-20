@@ -2,7 +2,15 @@
 
 import React from "react";
 import Link from "next/link";
-import { Phone, Mail, MapPin, ExternalLink, Clock, ShieldCheck } from "lucide-react";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  ExternalLink,
+  Clock,
+  Globe,
+  ArrowUpRight,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export default function Footer() {
@@ -10,10 +18,14 @@ export default function Footer() {
   const tHeader = useTranslations("header");
 
   return (
-    <footer className="border-t-[3px] border-[var(--saffron-500)] bg-[var(--footer-bg)] text-[var(--on-vangi-muted)]">
-      {/* 1. TOP STATUTORY BAR: Emergency Helplines */}
-      <div className="border-b border-[var(--on-vangi-rule)] bg-[var(--vangi-850)] px-4 py-2.5 text-xs sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
+    <footer className="site-footer border-t-0 text-[var(--on-vangi-muted)]">
+      {/* The selvedge: the woven edge that closes the page, in place of a plain
+          coloured border. */}
+      <span className="site-footer__selvedge block" aria-hidden="true" />
+
+      {/* 1. STATUTORY BAR: Emergency Helplines — a ruled strip, not a band. */}
+      <div className="border-b border-[color-mix(in_srgb,var(--saffron-500)_30%,transparent)] px-4 py-2 text-[11px] sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <div className="flex items-center gap-2 font-semibold text-[var(--saffron-500)]">
             <Phone className="h-3.5 w-3.5" aria-hidden="true" />
             <span>{t("emergencyServices")}</span>
@@ -37,13 +49,13 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* 2. MAIN FOOTER GRID */}
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-10 text-xs md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+      {/* 2. MAIN FOOTER GRID — ruled columns in the register grammar. */}
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-x-8 gap-y-5 px-4 py-6 text-xs md:grid-cols-2 lg:grid-cols-4 lg:px-8">
         {/* Col 1: Council Address & Office Hours */}
         <div className="space-y-3">
           <div className="flex items-center gap-2.5">
             <span
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--saffron-500)] bg-[var(--portal-blue-800)] font-bold text-[var(--saffron-500)]"
+              className="flex h-9 w-9 shrink-0 items-center justify-center border border-[var(--saffron-500)] bg-[var(--portal-blue-800)] font-bold text-[var(--saffron-500)]"
               aria-hidden="true"
             >
               <span lang="mr">पै</span>
@@ -55,14 +67,7 @@ export default function Footer() {
               </p>
             </div>
           </div>
-          <p className="leading-relaxed text-[var(--on-vangi-muted)]">
-            {t("councilDesc")}
-          </p>
-          {/*
-            The portal's own positioning line. It used to sit on a second header
-            band above the page; it belongs down here, with the identity it
-            describes, where there is room for it to be read rather than scanned.
-          */}
+          <p className="leading-relaxed text-[var(--on-vangi-muted)]">{t("councilDesc")}</p>
           <p className="border-l-2 border-[var(--saffron-500)] pl-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--saffron-500)]">
             {tHeader("topbarTagline")}
           </p>
@@ -75,9 +80,7 @@ export default function Footer() {
                 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--saffron-500)]"
                 aria-hidden="true"
               />
-              <span>
-                {t("address")}
-              </span>
+              <span>{t("address")}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock
@@ -86,8 +89,6 @@ export default function Footer() {
               />
               <span>{t("officeHours")}</span>
             </div>
-            {/* The council's mailbox. Contact details belong with contact
-                details — this used to be parked on the header utility strip. */}
             <div className="flex items-center gap-2">
               <Mail
                 className="h-3.5 w-3.5 shrink-0 text-[var(--saffron-500)]"
@@ -95,7 +96,7 @@ export default function Footer() {
               />
               <a
                 href="mailto:munptn@gmail.com"
-                className="transition-colors hover:text-[var(--saffron-500)]"
+                className="site-footer__link"
               >
                 {tHeader("email")}
               </a>
@@ -104,20 +105,17 @@ export default function Footer() {
         </div>
 
         {/* Col 2: Citizen Civic Services */}
-        <nav className="space-y-3" aria-labelledby="footer-services">
-          <h4
-            id="footer-services"
-            className="border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
-          >
+        <nav className="space-y-0" aria-labelledby="footer-services">
+          <h4 id="footer-services" className="site-footer__heading">
             {t("civicServicesTitle")}
           </h4>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             <li>
               <a
                 href="https://paithanmahaulb.maharashtra.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
+                className="site-footer__link inline-flex items-center gap-1"
               >
                 <span>{t("onlineTax")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
@@ -128,33 +126,24 @@ export default function Footer() {
                 href="https://crsorgi.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
+                className="site-footer__link inline-flex items-center gap-1"
               >
                 <span>{t("crsRegistration")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
               </a>
             </li>
             <li>
-              <Link
-                href="/nagar-parishad/development-works"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/nagar-parishad/development-works" className="site-footer__link">
                 {t("devWorksStatus")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/nagar-parishad/ward-map"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/nagar-parishad/ward-map" className="site-footer__link">
                 {t("wardMapDir")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/nagar-parishad/notifications"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/nagar-parishad/notifications" className="site-footer__link">
                 {t("eTenders")}
               </Link>
             </li>
@@ -162,81 +151,56 @@ export default function Footer() {
         </nav>
 
         {/* Col 3: Heritage & Tourism Wings */}
-        <nav className="space-y-3" aria-labelledby="footer-heritage">
-          <h4
-            id="footer-heritage"
-            className="border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
-          >
+        <nav className="space-y-0" aria-labelledby="footer-heritage">
+          <h4 id="footer-heritage" className="site-footer__heading">
             {t("heritagePortalsTitle")}
           </h4>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             <li>
-              <Link
-                href="/heritage/museum"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/heritage/museum" className="site-footer__link">
                 {t("museumLink")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/heritage/history"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/heritage/history" className="site-footer__link">
                 {t("historyLink")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/heritage/cultural-heritage"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/heritage/cultural-heritage" className="site-footer__link">
                 {t("paithaniLink")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/tourism/jayakwadi"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/tourism/jayakwadi" className="site-footer__link">
                 {t("jayakwadiLink")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/tourism/nath-sagar"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/tourism/nath-sagar" className="site-footer__link">
                 {t("nathSagarLink")}
               </Link>
             </li>
             <li>
-              <Link
-                href="/tourism/routes"
-                className="transition-colors hover:text-[var(--saffron-500)]"
-              >
+              <Link href="/tourism/routes" className="site-footer__link">
                 {t("routesLink")}
               </Link>
             </li>
           </ul>
         </nav>
 
-        {/* Col 4: External portal links. The heading names the links, never an
-            authority the portal speaks for. */}
-        <nav className="space-y-3" aria-labelledby="footer-gov">
-          <h4
-            id="footer-gov"
-            className="flex items-center gap-2 border-b border-[var(--on-vangi-rule)] pb-1.5 text-xs font-bold text-white"
-          >
-            <span>{t("govLinksTitle")}</span>
+        {/* Col 4: External portal links. */}
+        <nav className="space-y-0" aria-labelledby="footer-gov">
+          <h4 id="footer-gov" className="site-footer__heading">
+            {t("govLinksTitle")}
           </h4>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             <li>
               <a
                 href="https://aaplesarkar.mahaonline.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
+                className="site-footer__link inline-flex items-center gap-1"
               >
                 <span>{t("aapleSarkar")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
@@ -247,7 +211,7 @@ export default function Footer() {
                 href="https://maharashtra.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
+                className="site-footer__link inline-flex items-center gap-1"
               >
                 <span>{t("mahaGov")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
@@ -258,7 +222,7 @@ export default function Footer() {
                 href="https://aurangabad.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
+                className="site-footer__link inline-flex items-center gap-1"
               >
                 <span>{t("districtPortal")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
@@ -269,7 +233,7 @@ export default function Footer() {
                 href="https://mahatenders.gov.in"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 transition-colors hover:text-[var(--saffron-500)]"
+                className="site-footer__link inline-flex items-center gap-1"
               >
                 <span>{t("mahaTenders")}</span>
                 <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />
@@ -278,7 +242,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/chatbot"
-                className="font-semibold text-[var(--saffron-500)] transition-colors hover:text-[var(--saffron-600)]"
+                className="site-footer__link font-semibold text-[var(--saffron-500)]"
               >
                 {t("aiAssistant")}
               </Link>
@@ -287,25 +251,69 @@ export default function Footer() {
         </nav>
       </div>
 
-      {/* 3. STATUTORY FOOTER: Disclaimers & Copyright */}
-      <div className="border-t border-[var(--on-vangi-rule)] px-4 py-4 text-[11px] lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 sm:flex-row">
-          <div className="flex items-center gap-3">
+      {/* 3. THE COMMISSION PLATE — the one highlighted piece: an invitation to
+          have a portal like this built, with the studio's contact details. */}
+      <div className="mx-auto max-w-6xl px-4 pb-6 lg:px-8">
+        <div className="commission-plate px-4 py-4 sm:px-6 sm:py-4">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="commission-plate__eyebrow">{t("buildEyebrow")}</p>
+              <h3 className="commission-plate__title mt-1.5">{t("buildTitle")}</h3>
+              <p className="mt-2 text-xs leading-relaxed text-[var(--on-vangi-muted)]">
+                {t("buildDesc")}
+              </p>
+            </div>
+
+            <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1.5 lg:justify-end">
+              <a
+                href="https://www.revenex.in"
+                target="_blank"
+                rel="noreferrer"
+                className="commission-plate__contact"
+              >
+                <Globe className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>{t("buildCta")}</span>
+                <ArrowUpRight className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
+              </a>
+              <a href="mailto:team@revenex.in" className="commission-plate__contact">
+                <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>{t("buildEmail")}</span>
+              </a>
+              <a href="tel:+919021744355" className="commission-plate__contact">
+                <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+                <span className="tabular-nums">{t("buildPhone")}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. STATUTORY FOOTER: Disclaimers & Copyright */}
+      <div className="border-t border-[var(--on-vangi-rule)] px-4 py-3 text-[11px] lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 sm:flex-row">
+          <div className="flex flex-wrap items-center gap-3">
             <p>
               &copy; {new Date().getFullYear()} {t("copyrightText")}
             </p>
-            <span className="inline-flex items-center gap-1 rounded bg-slate-800/80 px-2 py-0.5 text-[10px] text-emerald-400 border border-emerald-500/30 font-medium">
-              <ShieldCheck className="h-3 w-3" />
-              {t("protectedBy")}
-            </span>
+            <p className="text-[var(--on-vangi-muted)]">
+              {t("builtBy")}{" "}
+              <a
+                href="https://www.revenex.in"
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-[var(--saffron-500)] hover:text-[var(--saffron-600)]"
+              >
+                Revenex Ventures
+              </a>
+            </p>
           </div>
           <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <Link href="/policies/privacy" className="hover:text-[var(--saffron-500)]">{t("privacyPolicy")}</Link>
-            <Link href="/policies/terms" className="hover:text-[var(--saffron-500)]">{t("termsConditions")}</Link>
-            <Link href="/policies/copyright" className="hover:text-[var(--saffron-500)]">{t("copyrightPolicy")}</Link>
-            <Link href="/policies/hyperlinking" className="hover:text-[var(--saffron-500)]">{t("hyperlinkingPolicy")}</Link>
-            <Link href="/policies/disclaimer" className="hover:text-[var(--saffron-500)]">{t("disclaimer")}</Link>
-            <Link href="/policies/accessibility" className="hover:text-[var(--saffron-500)]">{t("accessibilityStatement")}</Link>
+            <Link href="/policies/privacy" className="site-footer__link">{t("privacyPolicy")}</Link>
+            <Link href="/policies/terms" className="site-footer__link">{t("termsConditions")}</Link>
+            <Link href="/policies/copyright" className="site-footer__link">{t("copyrightPolicy")}</Link>
+            <Link href="/policies/hyperlinking" className="site-footer__link">{t("hyperlinkingPolicy")}</Link>
+            <Link href="/policies/disclaimer" className="site-footer__link">{t("disclaimer")}</Link>
+            <Link href="/policies/accessibility" className="site-footer__link">{t("accessibilityStatement")}</Link>
             <span>{t("rti")}</span>
             <span>{t("citizenCharter")}</span>
           </nav>

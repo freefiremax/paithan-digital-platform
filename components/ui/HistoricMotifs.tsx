@@ -140,3 +140,37 @@ export function FigureMount({ className }: { readonly className?: string }) {
     </svg>
   );
 }
+
+/**
+ * The weaver's shuttle, for the assistant launcher.
+ *
+ * A robot head is the default mark for a chat assistant and says nothing about
+ * this town. Paithan is a weaving town, and the tool it is known by is the
+ * shuttle — the boat-shaped bobbin the weft thread is wound on and thrown
+ * across the warp. So the assistant wears the shuttle: a pointed hull with the
+ * thread wound along it and a short zari tail, drawn as flat geometry the same
+ * way the buti and the rosette are. Symmetric, hand-cut, no picture.
+ */
+export function LoomShuttleMark({ className }: { readonly className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 32 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className={cn("h-auto w-5", className)}
+    >
+      {/* The hull: a pointed boat, both ends drawn to a point. */}
+      <path d="M2 12 C6 6 11 4.5 16 4.5 C21 4.5 26 6 30 12 C26 18 21 19.5 16 19.5 C11 19.5 6 18 2 12 Z" />
+      {/* The wound weft: three threads across the body, slightly bowed. */}
+      <path d="M11 7 C10.2 10 10.2 14 11 17" />
+      <path d="M16 6.4 C15.2 9.6 15.2 14.4 16 17.6" />
+      <path d="M21 7 C20.2 10 20.2 14 21 17" />
+      {/* The zari tail pulled off the end. */}
+      <path d="M30 12 C31.4 12.6 31.8 13.6 31.4 14.6" opacity="0.7" />
+    </svg>
+  );
+}

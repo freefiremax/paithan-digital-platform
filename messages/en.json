@@ -188,7 +188,14 @@
     "disclaimer": "Disclaimer",
     "accessibilityStatement": "Accessibility Statement",
     "rti": "Right to Information (RTI)",
-    "citizenCharter": "Citizen Charter"
+    "citizenCharter": "Citizen Charter",
+    "buildEyebrow": "Commission a portal like this",
+    "buildTitle": "Want a public portal built for your town or institution?",
+    "buildDesc": "This Paithan Digital Platform — its records, ward map, heritage archive and Marathi-first design — was designed and built by Revenex Ventures Private Limited. Reach out to discuss one for your municipality, trust or institution.",
+    "buildCta": "Visit revenex.in",
+    "buildEmail": "team@revenex.in",
+    "buildPhone": "+91 9021744355",
+    "builtBy": "Designed and built by"
   },
   "common": {
     "loading": "Loading...",

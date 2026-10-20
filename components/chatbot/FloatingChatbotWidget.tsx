@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Bot, X, Sparkles } from "lucide-react";
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { ChatInterface } from "./ChatInterface";
+import { LoomShuttleMark } from "@/components/ui/HistoricMotifs";
 
 export function FloatingChatbotWidget() {
   const t = useTranslations("chatbot");
@@ -41,7 +42,7 @@ export function FloatingChatbotWidget() {
           >
             <div className="relative">
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-white shadow-md">
-                <Bot className="w-4 h-4" />
+                <LoomShuttleMark className="w-5 text-[var(--vangi-950)]" />
               </div>
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[var(--vangi-950)] rounded-full animate-ping" />
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-[var(--vangi-950)] rounded-full" />
@@ -50,7 +51,6 @@ export function FloatingChatbotWidget() {
             <div className="text-left hidden xs:block">
               <div className="text-xs font-bold tracking-tight text-white flex items-center gap-1">
                 <span>{t("askAi")}</span>
-                <Sparkles className="w-3 h-3 text-amber-400" />
               </div>
               <div className="text-[10px] text-amber-200/80 font-medium leading-none">
                 {t("aiAssistantMarathi")}

@@ -5,16 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Building2,
-  Landmark,
-  Compass,
-  FileText,
   Phone,
   ArrowRight,
   CheckCircle2,
   Eye,
   ArrowUpRight,
   MapPin,
-  CreditCard,
   Camera,
 
 
@@ -45,6 +41,28 @@ const ledgerEntries = [...notifications].sort((a, b) =>
   b.publishedAt.localeCompare(a.publishedAt)
 );
 
+/*
+ * The covering cloth between the welcome plate and the map: seven vertical
+ * strips. They rise from the MIDDLE outward, the two strips either side of the
+ * centre leading. `order` is the rise position (0 = first), fixed here rather
+ * than by DOM index so the middle-out, slightly-random stagger is deterministic
+ * and never re-shuffles between renders.
+ *
+ * Each strip takes an equal share of the row width, and from it the geometry
+ * needed to show its own slice of ONE continuous pallu: the image is drawn at the
+ * full row width (`row = 100 / w`, as a % of the strip) and shifted so the strip's
+ * left edge lands on its true place in the cloth (`shift = -left / w`). The seven
+ * windows therefore tile edge to edge into a single unbroken pallu.
+ */
+const WARD_MAP_STRIP_ORDER = [3, 4, 2, 5, 1, 6, 0];
+const STRIP_COUNT = 7;
+
+const CUT_STRIPS = WARD_MAP_STRIP_ORDER.map((index, order) => {
+  const w = 1 / STRIP_COUNT;
+  const leftFraction = index / STRIP_COUNT;
+  return { index, order, row: 100 / w, shift: (-leftFraction / w) * 100 };
+});
+
 export default function HomePage() {
   const tHome = useTranslations("home");
 
@@ -63,20 +81,28 @@ export default function HomePage() {
         <RepresentativesShowcase />
         <div className="plate-pin">
           <div className="plate-pin__sticky">
-            <Reveal variant="weave">
-              <Masthead />
-            </Reveal>
+            <Masthead />
           </div>
           <div className="plate-pin__over">
             <Reveal variant="cut" reversible>
               <div className="cut-layer">
                 <PaithanWardMap />
+                {/* The covering cloth: seven strips spanning from the top of the
+                    map block up over the welcome plate. The plate is visible
+                    before, the map after; the strips are the seam between them,
+                    cut away as the map rises. */}
                 <span className="cut-layer__strips" aria-hidden="true">
-                  {Array.from({ length: 7 }, (_, i) => (
+                  {CUT_STRIPS.map((strip) => (
                     <span
-                      key={i}
+                      key={strip.index}
                       className="cut-layer__strip"
-                      style={{ "--strip-index": i } as React.CSSProperties}
+                      style={
+                        {
+                          "--strip-row": `${strip.row}%`,
+                          "--strip-shift": `${strip.shift}%`,
+                          "--strip-order": strip.order,
+                        } as React.CSSProperties
+                      }
                     />
                   ))}
                 </span>
@@ -96,27 +122,25 @@ export default function HomePage() {
             <div className="grid gap-10 lg:grid-cols-12">
               {/* LEFT: TENDERS & PUBLIC NOTICES */}
               <section className="lg:col-span-8 flex flex-col" aria-labelledby="notices-heading">
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+                <div className="rec-head">
                   <div>
-                    <div className="flex items-center gap-2.5">
-                      <ButiOrnament className="h-8 w-4 shrink-0 text-[var(--saffron-700)]" />
-                      <h2
-                        id="notices-heading"
-                        className="portal-rule font-display text-2xl font-semibold text-[var(--portal-blue-900)]"
-                      >
-                        {tHome("noticesHeading")}
-                      </h2>
-                    </div>
-                    <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
+                    <h2
+                      id="notices-heading"
+                      className="rec-head__title flex items-center gap-2.5"
+                    >
+                      <ButiOrnament className="h-6 w-3.5 shrink-0 text-[var(--saffron-700)]" />
+                      {tHome("noticesHeading")}
+                    </h2>
+                    <p className="mt-2 text-sm text-[var(--civic-slate-700)] max-w-2xl leading-relaxed">
                       {tHome("noticesSubtitle")}
                     </p>
                   </div>
                   <Link
                     href="/nagar-parishad/notifications"
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--portal-blue-700)] hover:underline shrink-0"
+                    className="gaz-col__meta inline-flex items-center gap-1.5 self-start text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)] sm:self-auto"
                   >
                     <span>{tHome("allNotifications")}</span>
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                   </Link>
                 </div>
 
@@ -141,20 +165,25 @@ export default function HomePage() {
 /* -------------------------------------------------------------------------- */
 
 function Masthead() {
-  const tHome = useTranslations("home");
   const locale = useLocale();
 
   return (
     <section className="portal-masthead">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
-          <Reveal variant="weave">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
+        <Reveal variant="weave">
           <div className="welcome-plate">
             <span className="welcome-plate__border" aria-hidden="true" />
 
-            <span className="pointer-events-none absolute right-3 top-3 opacity-40 sm:right-5 sm:top-5" aria-hidden="true">
+            <span
+              className="pointer-events-none absolute right-3 top-3 opacity-40 sm:right-5 sm:top-5"
+              aria-hidden="true"
+            >
               <ButiOrnament className="h-10 w-6 text-[var(--zari-gold-500)] sm:h-14 sm:w-8" />
             </span>
-            <span className="pointer-events-none absolute bottom-3 left-3 rotate-180 opacity-40 sm:bottom-5 sm:left-5" aria-hidden="true">
+            <span
+              className="pointer-events-none absolute bottom-3 left-3 rotate-180 opacity-40 sm:bottom-5 sm:left-5"
+              aria-hidden="true"
+            >
               <ButiOrnament className="h-10 w-6 text-[var(--zari-gold-500)] sm:h-14 sm:w-8" />
             </span>
 
@@ -187,10 +216,10 @@ function Masthead() {
               </aside>
             </div>
           </div>
-          </Reveal>
-        </div>
-        <div className="paithani-band mt-12" aria-hidden="true" />
-      </section>
+        </Reveal>
+      </div>
+      <div className="paithani-band mt-12" aria-hidden="true" />
+    </section>
   );
 }
 
@@ -243,73 +272,45 @@ function WingsSection() {
 
   return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10">
-        <div className="grid gap-5 md:grid-cols-3">
-          {WINGS.map((wing) => (
+        <div className="wing-index">
+          {WINGS.map((wing, i) => (
             <article
               key={wing.key}
-              className={`portal-card ${
+              className={`wing-col ${
                 wing.key === "heritage"
-                  ? "portal-card--heritage"
+                  ? "wing-col--heritage"
                   : wing.key === "tourism"
-                    ? "portal-card--tourism"
+                    ? "wing-col--tourism"
                     : ""
               }`}
             >
-              <div className="flex flex-1 flex-col p-5">
-                <div className="mb-2 flex items-center gap-3">
-                  <span
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-sm ${
-                      wing.key === "civic"
-                        ? "bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)]"
-                        : wing.key === "heritage"
-                          ? "bg-[var(--zari-gold-100)] text-[var(--zari-gold-600)]"
-                          : "bg-[var(--paithani-red-light)] text-[var(--paithani-red)]"
-                    }`}
-                  >
-                    {wing.key === "civic" ? (
-                      <Building2 className="h-4 w-4" aria-hidden="true" />
-                    ) : wing.key === "heritage" ? (
-                      <Landmark className="h-4 w-4" aria-hidden="true" />
-                    ) : (
-                      <Compass className="h-4 w-4" aria-hidden="true" />
-                    )}
-                  </span>
-                  <div>
-                    <h2 className="font-display text-lg font-semibold leading-tight text-[var(--portal-blue-900)]">
-                      {wing.title}
-                    </h2>
-                    <span lang="mr" className="text-xs text-[var(--civic-slate-500)]">
-                      {wing.titleMr}
-                    </span>
-                  </div>
-                </div>
+              <span className="wing-col__num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="wing-col__weft" aria-hidden="true" />
 
-                <p className="mb-4 text-sm leading-relaxed text-[var(--civic-slate-700)]">
-                  {wing.blurb}
-                </p>
+              <h2 className="wing-col__title">
+                {wing.title}
+                <span lang="mr" className="wing-col__title-mr">
+                  {wing.titleMr}
+                </span>
+              </h2>
 
-                <ul className="mt-auto">
-                  {wing.links.map((link) => (
-                    <li
-                      key={link.href + link.label}
-                      className="border-t border-[var(--border-subtle)]"
-                    >
-                      <Link
-                        href={link.href}
-                        className="block py-2 text-sm font-medium text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)] hover:underline"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p className="wing-col__blurb">{wing.blurb}</p>
 
-              <p className="flex items-center gap-1.5 border-t border-[var(--border-subtle)] bg-[var(--zari-gold-100)]/40 px-5 py-2.5 text-xs font-medium text-[var(--civic-slate-700)]">
-                <CheckCircle2
-                  className="h-3.5 w-3.5 shrink-0 text-[var(--zari-gold-600)]"
-                  aria-hidden="true"
-                />
+              <ul className="wing-col__links">
+                {wing.links.map((link) => (
+                  <li key={link.href + link.label}>
+                    <Link href={link.href} className="wing-col__link">
+                      <span>{link.label}</span>
+                      <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="wing-col__foot">
+                <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
                 {wing.facts}
               </p>
             </article>
@@ -327,136 +328,116 @@ function CitizenServicesSection() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full mt-12 mb-14">
-      {/* Mobile emergency quick bar */}
-      <div className="sm:hidden mb-4 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-[var(--border-subtle)]">
-        <a
-          href="tel:02431223010"
-          className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 bg-white px-1 py-2 text-center hover:bg-[var(--portal-blue-50)]"
-        >
-          <span className="flex items-center gap-1 text-xs font-bold text-[var(--portal-blue-900)]">
-            <Building2 className="h-3.5 w-3.5 text-[var(--zari-gold-600)]" aria-hidden="true" />
-            {tHeader("paithanNagarParishad")}
-          </span>
-          <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">02431-223010</span>
-        </a>
-        <a
-          href="tel:112"
-          className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 bg-white px-1 py-2 text-center hover:bg-[var(--portal-blue-50)]"
-        >
-          <span className="flex items-center gap-1 text-xs font-bold text-red-800">
-            <Phone className="h-3.5 w-3.5 text-red-600" aria-hidden="true" />
-            112
-          </span>
-          <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">112 / 223033</span>
-        </a>
-        <a
-          href="tel:108"
-          className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 bg-white px-1 py-2 text-center hover:bg-[var(--portal-blue-50)]"
-        >
-          <span className="flex items-center gap-1 text-xs font-bold text-emerald-800">
-            <Phone className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-            108
-          </span>
-          <span className="text-[11px] text-[var(--civic-slate-500)] tabular-nums">108 / 223040</span>
-        </a>
-      </div>
-
-      <div className="rounded-sm border border-[var(--border-subtle)] bg-white p-5 sm:p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
-          <div className="flex items-center gap-2.5">
-            <ButiOrnament className="h-7 w-4 shrink-0 text-[var(--zari-gold-600)]" />
-            <h2 className="portal-rule font-display text-xl font-semibold text-[var(--portal-blue-900)]">
-              {tHome("servicesHeading")}
-            </h2>
-          </div>
-          <p className="text-xs text-[var(--civic-slate-500)]">
+      <div className="rec-head">
+        <div>
+          <h2 className="rec-head__title flex items-center gap-2.5">
+            <ButiOrnament className="h-6 w-3.5 shrink-0 text-[var(--zari-gold-600)]" />
+            {tHome("servicesHeading")}
+          </h2>
+          <p className="mt-2 text-sm text-[var(--civic-slate-700)]">
             {tHome("servicesSubtitle")}
           </p>
         </div>
+      </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <ServiceCard
-            icon={<CreditCard className="h-5 w-5" aria-hidden="true" />}
-            iconClass="bg-[var(--zari-gold-100)] text-[var(--zari-gold-600)]"
-            title={tHome("propertyTaxTitle")}
-            body={tHome("propertyTaxDesc")}
-            href="https://paithanmahaulb.maharashtra.gov.in"
-            action={tHome("payOnline")}
-            external
-          />
-          <ServiceCard
-            icon={<FileText className="h-5 w-5" aria-hidden="true" />}
-            iconClass="bg-[var(--portal-blue-50)] text-[var(--portal-blue-700)]"
-            title={tHome("certificatesTitle")}
-            body={tHome("certificatesDesc")}
-            href="https://crsorgi.gov.in"
-            action={tHome("applyOnline")}
-            external
-          />
-          <ServiceCard
-            icon={<MapPin className="h-5 w-5" aria-hidden="true" />}
-            iconClass="bg-[var(--portal-blue-50)] text-[var(--portal-blue-800)]"
-            title={tHome("wardsOverviewHeading")}
-            body={tHome("wardsOverviewSubtitle")}
-            href="/nagar-parishad/ward-map"
-            action={tHome("openWardMap")}
-          />
-          <ServiceCard
-            icon={<Phone className="h-5 w-5" aria-hidden="true" />}
-            iconClass="bg-red-50 text-red-700"
-            title={tHome("grievancesTitle")}
-            body={tHome("grievancesDesc")}
-            href="/grievances/new"
-            action={tHome("fileComplaint")}
-          />
-        </div>
+      <div className="counter-board">
+        <CounterRow
+          index={1}
+          title={tHome("propertyTaxTitle")}
+          body={tHome("propertyTaxDesc")}
+          href="https://paithanmahaulb.maharashtra.gov.in"
+          action={tHome("payOnline")}
+          external
+        />
+        <CounterRow
+          index={2}
+          title={tHome("certificatesTitle")}
+          body={tHome("certificatesDesc")}
+          href="https://crsorgi.gov.in"
+          action={tHome("applyOnline")}
+          external
+        />
+        <CounterRow
+          index={3}
+          title={tHome("wardsOverviewHeading")}
+          body={tHome("wardsOverviewSubtitle")}
+          href="/nagar-parishad/ward-map"
+          action={tHome("openWardMap")}
+        />
+        <CounterRow
+          index={4}
+          title={tHome("grievancesTitle")}
+          body={tHome("grievancesDesc")}
+          href="/grievances/new"
+          action={tHome("fileComplaint")}
+        />
+      </div>
+
+      {/* Emergency quick contacts — a ruled strip below the counter board,
+          always present (the numbers are the same three the old mobile bar
+          carried, but set as a register row rather than a card). */}
+      <div className="mt-1 grid grid-cols-1 gap-px border-t border-[var(--border-subtle)] sm:grid-cols-3 sm:gap-0">
+        <a
+          href="tel:02431223010"
+          className="flex items-center gap-2 py-3 pr-3 text-sm hover:text-[var(--zari-gold-600)]"
+        >
+          <Building2 className="h-4 w-4 text-[var(--zari-gold-600)]" aria-hidden="true" />
+          <span className="font-semibold text-[var(--portal-blue-900)]">
+            {tHeader("paithanNagarParishad")}
+          </span>
+          <span className="ml-auto tabular-nums text-[var(--civic-slate-500)]">02431-223010</span>
+        </a>
+        <a
+          href="tel:112"
+          className="flex items-center gap-2 py-3 text-sm hover:text-[var(--zari-gold-600)] sm:border-l sm:border-[var(--border-subtle)] sm:pl-6"
+        >
+          <Phone className="h-4 w-4 text-[var(--portal-blue-700)]" aria-hidden="true" />
+          <span className="font-semibold text-[var(--portal-blue-900)]">112</span>
+          <span className="ml-auto tabular-nums text-[var(--civic-slate-500)]">112 / 223033</span>
+        </a>
+        <a
+          href="tel:108"
+          className="flex items-center gap-2 py-3 text-sm hover:text-[var(--zari-gold-600)] sm:border-l sm:border-[var(--border-subtle)] sm:pl-6"
+        >
+          <Phone className="h-4 w-4 text-[var(--morpanhki)]" aria-hidden="true" />
+          <span className="font-semibold text-[var(--portal-blue-900)]">108</span>
+          <span className="ml-auto tabular-nums text-[var(--civic-slate-500)]">108 / 223040</span>
+        </a>
       </div>
     </div>
   );
 }
 
-function ServiceCard({
-  icon,
-  iconClass,
+function CounterRow({
+  index,
   title,
   body,
   href,
   action,
-  footnote,
   external,
 }: {
-  icon: React.ReactNode;
-  iconClass: string;
+  index: number;
   title: string;
   body: string;
   href: string;
   action: string;
-  footnote?: string;
   external?: boolean;
 }) {
-  const classes =
-    "flex flex-col justify-between rounded-sm border border-[var(--border-subtle)] bg-[var(--portal-blue-50)] p-4 transition-colors hover:border-[var(--portal-blue-300)] hover:bg-white";
-
   const inner = (
     <>
-      <div>
-        <span
-          className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full ${iconClass}`}
-        >
-          {icon}
-        </span>
-        <h3 className="font-display text-base font-semibold text-[var(--portal-blue-900)] mb-1">{title}</h3>
-        <p className="text-xs text-[var(--civic-slate-700)] leading-relaxed">{body}</p>
-        {footnote ? (
-          <p className="mt-2 text-[11px] text-[var(--civic-slate-500)]">{footnote}</p>
-        ) : null}
-      </div>
-      <span className="mt-4 flex items-center justify-between gap-2 border-t border-[var(--border-subtle)] pt-2.5 text-xs font-bold text-[var(--portal-blue-700)]">
+      <span className="counter-row__num" aria-hidden="true">
+        {String(index).padStart(2, "0")}
+      </span>
+      <span className="counter-row__body">
+        <span className="counter-row__title">{title}</span>
+        <span className="counter-row__desc block">{body}</span>
+      </span>
+      <span className="counter-row__action">
         {action}
         {external ? (
-          <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
         ) : (
-          <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         )}
       </span>
     </>
@@ -466,7 +447,7 @@ function ServiceCard({
     return (
       <a
         href={href}
-        className={classes}
+        className="counter-row"
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {inner}
@@ -475,7 +456,7 @@ function ServiceCard({
   }
 
   return (
-    <Link href={href} className={classes}>
+    <Link href={href} className="counter-row">
       {inner}
     </Link>
   );
@@ -486,67 +467,100 @@ function ServiceCard({
 function NoticeLedger() {
   const tHome = useTranslations("home");
   const tCommon = useTranslations("common");
+  const recent = ledgerEntries.slice(0, 5);
 
   return (
-    <div>
-      <div className="overflow-x-auto rounded-sm border border-[var(--border-subtle)] bg-white">
-        <table className="portal-register">
-          <caption className="sr-only">
-            {tHome("noticesHeading")}
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">{tHome("publishedOn")}</th>
-              <th scope="col">{tCommon("category")}</th>
-              <th scope="col">{tCommon("subject")}</th>
-              <th scope="col">{tHome("closingDate")}</th>
-              <th scope="col" className="text-right">
-                {tHome("downloadNotice")}
-              </th>
+    <div className="reg-sheet">
+      <div className="reg-sheet__head">
+        <span className="gaz-col__title">{tHome("noticesHeading")}</span>
+        <Link
+          href="/nagar-parishad/notifications"
+          className="reg-sheet__count hover:text-[var(--portal-blue-800)]"
+        >
+          {ledgerEntries.length.toLocaleString()} &#8594;
+        </Link>
+      </div>
+
+      <table className="portal-register portal-register--wide">
+        <caption className="sr-only">{tHome("noticesHeading")}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{tHome("publishedOn")}</th>
+            <th scope="col">{tCommon("category")}</th>
+            <th scope="col">{tCommon("subject")}</th>
+            <th scope="col">{tHome("closingDate")}</th>
+            <th scope="col" className="text-right">
+              {tHome("downloadNotice")}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {recent.map((entry) => (
+            <tr key={entry.id}>
+              <td className="whitespace-nowrap font-medium">
+                <time dateTime={entry.publishedAt}>{formatCivicDate(entry.publishedAt)}</time>
+              </td>
+              <td className="whitespace-nowrap">
+                <NotificationCategoryBadge category={entry.category} />
+              </td>
+              <td>
+                <Link
+                  href="/nagar-parishad/notifications"
+                  className="block font-semibold text-[var(--portal-blue-800)] leading-snug hover:text-[var(--zari-gold-600)] hover:underline"
+                >
+                  {entry.title}
+                </Link>
+                <span className="mt-0.5 block text-[11px] text-[var(--civic-slate-500)]">
+                  {tHome("refNo")} {entry.referenceNo}
+                </span>
+              </td>
+              <td className="whitespace-nowrap font-medium">
+                {entry.closingAt ? (
+                  <time dateTime={entry.closingAt} className="font-bold text-[var(--portal-blue-700)]">
+                    {formatCivicDate(entry.closingAt)}
+                  </time>
+                ) : (
+                  <span className="text-[var(--civic-slate-500)]">—</span>
+                )}
+              </td>
+              <td className="whitespace-nowrap text-right">
+                <Link
+                  href="/nagar-parishad/notifications"
+                  className="inline-flex items-center justify-center border border-[var(--border-subtle)] bg-[var(--canvas-bg)] p-2 text-[var(--portal-blue-800)] transition-colors hover:bg-[var(--portal-blue-800)] hover:text-white"
+                  aria-label={`View notice: ${entry.title}`}
+                >
+                  <Eye className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {ledgerEntries.map((entry) => (
-              <tr key={entry.id}>
-                <td className="whitespace-nowrap font-medium">
-                  <time dateTime={entry.publishedAt}>{formatCivicDate(entry.publishedAt)}</time>
-                </td>
-                <td className="whitespace-nowrap">
-                  <NotificationCategoryBadge category={entry.category} />
-                </td>
-                <td className="min-w-[16rem]">
-                  <Link
-                    href="/nagar-parishad/notifications"
-                    className="block font-semibold text-[var(--portal-blue-800)] leading-snug hover:text-[var(--zari-gold-600)] hover:underline"
-                  >
-                    {entry.title}
-                  </Link>
-                  <span className="mt-0.5 block text-[11px] text-[var(--civic-slate-500)]">
-                    {tHome("refNo")} {entry.referenceNo}
-                  </span>
-                </td>
-                <td className="whitespace-nowrap font-medium">
-                  {entry.closingAt ? (
-                    <time dateTime={entry.closingAt} className="font-bold text-red-700">
-                      {formatCivicDate(entry.closingAt)}
-                    </time>
-                  ) : (
-                    <span className="text-[var(--civic-slate-500)]">—</span>
-                  )}
-                </td>
-                <td className="whitespace-nowrap text-right">
-                  <Link
-                    href="/nagar-parishad/notifications"
-                    className="inline-flex items-center justify-center rounded-sm border border-[var(--border-subtle)] bg-[var(--portal-blue-50)] p-2 text-[var(--portal-blue-800)] transition-colors hover:bg-[var(--portal-blue-800)] hover:text-white"
-                    aria-label={`View notice: ${entry.title}`}
-                  >
-                    <Eye className="h-4 w-4" aria-hidden="true" />
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="reg-entries">
+        {recent.map((entry) => (
+          <div key={entry.id} className="reg-entry">
+            <div className="reg-entry__top">
+              <span className="reg-entry__date">
+                <time dateTime={entry.publishedAt}>{formatCivicDate(entry.publishedAt)}</time>
+              </span>
+              <NotificationCategoryBadge category={entry.category} />
+            </div>
+            <Link href="/nagar-parishad/notifications" className="reg-entry__title block">
+              {entry.title}
+            </Link>
+            <div className="reg-entry__meta">
+              <span className="reg-entry__ref">
+                {tHome("refNo")} {entry.referenceNo}
+              </span>
+              {entry.closingAt ? (
+                <span className="reg-entry__due">
+                  {tHome("closingDate")}: {formatCivicDate(entry.closingAt)}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -562,26 +576,19 @@ function CouncilPanel() {
 
   return (
     <div className="space-y-6">
-      <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="council-heading">
-        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--zari-gold-100)]/50 px-4 py-2.5">
-          <h2 id="council-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
+      <section className="gaz-col" aria-labelledby="council-heading">
+        <div className="gaz-col__head">
+          <h2 id="council-heading" className="gaz-col__title">
             {tNagar("representativesTitle")}
           </h2>
-        </div>
-        <div className="border-b border-[var(--border-subtle)] px-4 py-3 space-y-2">
-          <p className="text-xs leading-relaxed text-[var(--civic-slate-700)]">
-            Paithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town's heritage and its visitor information here.
-          </p>
-          <p className="text-xs leading-relaxed text-[var(--civic-slate-700)]">
-            Pratishthana was the capital of the Satavahanas, and King Hala's Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.
-          </p>
+          <span className="gaz-col__meta">{tHome("councilPanelTitle")}</span>
         </div>
         <div className="divide-y divide-[var(--border-subtle)]">
           {electedRepresentatives.map((representative) => (
             <Link
               key={representative.slug}
               href={`/${locale}/nagar-parishad/representatives/${representative.id === "rep-mla" ? "mla" : "mp"}`}
-              className="block px-4 py-3 transition-colors hover:bg-[var(--zari-gold-100)]/30"
+              className="block py-3 transition-colors hover:bg-[color-mix(in_srgb,var(--paithani-red)_4%,transparent)]"
             >
               <span className="block text-sm font-bold text-[var(--portal-blue-900)]">
                 {representative.name}
@@ -596,29 +603,26 @@ function CouncilPanel() {
             </Link>
           ))}
         </div>
-        <div className="border-t border-[var(--border-subtle)] bg-[var(--zari-gold-100)]/40 px-4 py-2.5">
-          <Link
-            href="/nagar-parishad/representatives"
-            className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
-          >
+        <div className="gaz-col__foot">
+          <Link href="/nagar-parishad/representatives">
             <span>{tHome("wingCivicLink1")}</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
       </section>
 
-      <section className="overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-white" aria-labelledby="progress-heading">
-        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--paithani-red-light)]/50 px-4 py-2.5">
-          <h2 id="progress-heading" className="font-display text-base font-semibold text-[var(--portal-blue-900)]">
+      <section className="gaz-col" aria-labelledby="progress-heading">
+        <div className="gaz-col__head">
+          <h2 id="progress-heading" className="gaz-col__title">
             {tHome("activeProjects")}
           </h2>
-          <span className="text-[11px] font-medium text-[var(--civic-slate-500)]">
+          <span className="gaz-col__meta">
             {councilProfile.wardCount} {tHome("vitalsWards")}
           </span>
         </div>
         <div className="divide-y divide-[var(--border-subtle)]">
           {ongoingWorks.slice(0, 3).map((work) => (
-            <div key={work.id} className="px-4 py-3">
+            <div key={work.id} className="py-3">
               <p className="text-xs font-semibold leading-snug text-[var(--portal-blue-900)]">
                 {work.title}
               </p>
@@ -631,7 +635,7 @@ function CouncilPanel() {
                 </span>
               </div>
               <div
-                className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-[var(--border-subtle)]"
+                className="mt-1.5 h-1.5 w-full overflow-hidden bg-[var(--border-subtle)]"
                 role="progressbar"
                 aria-valuenow={work.progressPct}
                 aria-valuemin={0}
@@ -639,37 +643,39 @@ function CouncilPanel() {
                 aria-label={`${work.title} progress`}
               >
                 <div
-                  className="h-full rounded-full bg-[var(--zari-gold-500)]"
+                  className="h-full bg-[var(--zari-gold-500)]"
                   style={{ width: `${work.progressPct}%` }}
                 />
               </div>
             </div>
           ))}
         </div>
-        <div className="border-t border-[var(--border-subtle)] bg-[var(--paithani-red-light)]/40 px-4 py-2.5">
-          <Link
-            href="/nagar-parishad/development-works"
-            className="flex items-center justify-between text-xs font-semibold text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
-          >
+        <div className="gaz-col__foot">
+          <Link href="/nagar-parishad/development-works">
             <span>{tHome("viewAllWorks")}</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
       </section>
 
-      <section className="rounded-sm border border-[var(--border-subtle)] bg-white p-4" aria-labelledby="office-heading">
-        <h2 id="office-heading" className="text-sm font-bold text-[var(--portal-blue-900)] mb-2">
-          {tHome("councilPanelTitle")}
-        </h2>
-        <p className="text-xs text-[var(--civic-slate-700)] leading-relaxed">
-          {councilProfile.addressLine}
-        </p>
-        <div className="mt-3 flex items-center justify-between border-t border-[var(--border-subtle)] pt-3 text-xs">
-          <span className="text-[var(--civic-slate-500)]">{tHome("vitalsControlRoom")}</span>
+      <section className="gaz-col" aria-labelledby="office-heading">
+        <div className="gaz-col__head">
+          <h2 id="office-heading" className="gaz-col__title">
+            {tHome("councilPanelTitle")}
+          </h2>
+          <span className="gaz-col__meta">{tHome("vitalsControlRoom")}</span>
+        </div>
+        <div className="gaz-col__body">
+          <p className="text-xs leading-relaxed text-[var(--civic-slate-700)]">
+            {councilProfile.addressLine}
+          </p>
           <a
             href={`tel:${councilProfile.phone}`}
-            className="font-bold tabular-nums text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)] hover:underline"
+            className="mt-3 flex items-center justify-between border-t border-[var(--border-subtle)] pt-3 text-xs font-bold tabular-nums text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)]"
           >
+            <span className="font-medium text-[var(--civic-slate-500)]">
+              {tHome("vitalsControlRoom")}
+            </span>
             {councilProfile.phone}
           </a>
         </div>
@@ -690,43 +696,37 @@ function OfficialLandmarksShowcase() {
       aria-labelledby="sites-showcase-heading"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div className="rec-head">
           <div>
-            <p className="mb-2 flex items-center gap-2 text-xs font-semibold text-[var(--zari-gold-600)]">
-              <Camera className="h-3.5 w-3.5" aria-hidden="true" />
-              <span lang="mr">अधिकृत स्थळ दर्शन</span>
-            </p>
-            <h2
-              id="sites-showcase-heading"
-              className="portal-rule text-2xl font-bold tracking-tight text-[var(--portal-blue-900)]"
-            >
+            <h2 id="sites-showcase-heading" className="rec-head__title flex items-center gap-2.5">
+              <Camera className="h-4 w-4 text-[var(--zari-gold-600)]" aria-hidden="true" />
               {tHome("landmarksHeading")}
             </h2>
-            <p className="mt-1.5 text-sm text-[var(--civic-slate-700)] max-w-2xl">
+            <p className="mt-2 text-sm text-[var(--civic-slate-700)] max-w-2xl">
               {tHome("landmarksSubtitle")}
             </p>
           </div>
 
           <Link
             href="/tourism/places-to-visit"
-            className="inline-flex items-center gap-2 self-start rounded-sm border border-[var(--portal-blue-800)] bg-[var(--portal-blue-800)] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--portal-blue-900)] md:self-auto"
+            className="gaz-col__meta inline-flex items-center gap-1.5 self-start text-[var(--portal-blue-800)] hover:text-[var(--zari-gold-600)] md:self-auto"
           >
-            <span>{tHome("viewDetails")} ({TOURIST_PLACES.length})</span>
-            <ArrowRight className="h-4 w-4 text-[var(--saffron-500)]" aria-hidden="true" />
+            <span>{tHome("viewDetails")}</span>
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-12">
           <LandmarkFeature place={TOURIST_PLACES[0]} />
 
-          <ul className="grid gap-px overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-[var(--border-subtle)] sm:grid-cols-2 lg:col-span-7">
+          <ul className="grid gap-px overflow-hidden border border-[var(--border-subtle)] bg-[var(--border-subtle)] sm:grid-cols-2 lg:col-span-7">
             {TOURIST_PLACES.slice(1).map((place) => (
               <li key={place.id} className="bg-white">
                 <Link
                   href="/tourism/places-to-visit"
-                  className="flex h-full items-start gap-3 p-3 transition-colors hover:bg-[var(--portal-blue-50)]"
+                  className="flex h-full items-start gap-3 p-3 transition-colors hover:bg-[var(--canvas-bg)]"
                 >
-                  <span className="relative h-16 w-20 shrink-0 overflow-hidden rounded-sm bg-[var(--portal-blue-900)]">
+                  <span className="relative h-16 w-20 shrink-0 overflow-hidden bg-[var(--portal-blue-900)]">
                     <Image
                       src={place.imageUrl}
                       alt={place.imageAlt}
@@ -765,7 +765,7 @@ function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) 
   const locale = useLocale();
 
   return (
-    <article className="portal-card overflow-hidden lg:col-span-5">
+    <article className="flex flex-col overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-card)] lg:col-span-5">
       <div className="relative h-60 w-full bg-[var(--portal-blue-900)] lg:h-full lg:min-h-[26rem]">
         <Image
           src={place.imageUrl}
@@ -793,8 +793,8 @@ function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) 
           {place.tagline}
         </p>
 
-        <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-[var(--border-subtle)] bg-[var(--border-subtle)] text-xs">
-          <div className="bg-[var(--portal-blue-50)] px-3 py-2">
+        <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden border border-[var(--border-subtle)] bg-[var(--border-subtle)] text-xs">
+          <div className="bg-[var(--canvas-bg)] px-3 py-2">
             <dt className="text-[var(--civic-slate-500)]">
               {locale === "mr" ? "बस स्थानकापासून" : locale === "hi" ? "बस स्टैंड से" : "From bus stand"}
             </dt>
@@ -802,7 +802,7 @@ function LandmarkFeature({ place }: { place: (typeof TOURIST_PLACES)[number] }) 
               {place.distanceFromBusStand}
             </dd>
           </div>
-          <div className="bg-[var(--portal-blue-50)] px-3 py-2">
+          <div className="bg-[var(--canvas-bg)] px-3 py-2">
             <dt className="text-[var(--civic-slate-500)]">
               {locale === "mr" ? "वेळ" : locale === "hi" ? "समय" : "Visiting Hours"}
             </dt>
