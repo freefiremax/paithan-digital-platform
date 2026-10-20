@@ -65,6 +65,12 @@ export default function HomePage() {
           <Masthead />
         </Reveal>
         <Reveal>
+          <PaithanWardMap />
+        </Reveal>
+        <Reveal>
+          <WingsSection />
+        </Reveal>
+        <Reveal>
           <CitizenServicesSection />
         </Reveal>
 
@@ -108,9 +114,6 @@ export default function HomePage() {
         </Reveal>
 
         <Reveal>
-          <PaithanWardMap />
-        </Reveal>
-        <Reveal>
           <OfficialLandmarksShowcase />
         </Reveal>
       </div>
@@ -124,51 +127,8 @@ function Masthead() {
   const tHome = useTranslations("home");
   const locale = useLocale();
 
-  const WINGS = [
-    {
-      key: "civic",
-      title: tHome("wingCivicTitle"),
-      titleMr: tHome("wingCivicTitleMr"),
-      blurb: tHome("wingCivicBlurb"),
-      facts: tHome("wingCivicFacts"),
-      links: [
-        { label: tHome("wingCivicLink1"), href: "/nagar-parishad/representatives" },
-        { label: tHome("wingCivicLink2"), href: "/nagar-parishad/ward-map" },
-        { label: tHome("wingCivicLink3"), href: "/nagar-parishad/development-works" },
-        { label: tHome("wingCivicLink4"), href: "/nagar-parishad/notifications" },
-      ],
-    },
-    {
-      key: "heritage",
-      title: tHome("wingHeritageTitle"),
-      titleMr: tHome("wingHeritageTitleMr"),
-      blurb: tHome("wingHeritageBlurb"),
-      facts: tHome("wingHeritageFacts"),
-      links: [
-        { label: tHome("wingHeritageLink1"), href: "/heritage/museum" },
-        { label: tHome("wingHeritageLink2"), href: "/heritage/artifacts" },
-        { label: tHome("wingHeritageLink3"), href: "/heritage/history" },
-        { label: tHome("wingHeritageLink4"), href: "/heritage/cultural-heritage" },
-      ],
-    },
-    {
-      key: "tourism",
-      title: tHome("wingTourismTitle"),
-      titleMr: tHome("wingTourismTitleMr"),
-      blurb: tHome("wingTourismBlurb"),
-      facts: tHome("wingTourismFacts"),
-      links: [
-        { label: tHome("wingTourismLink1"), href: "/tourism/jayakwadi" },
-        { label: tHome("wingTourismLink2"), href: "/tourism/nath-sagar" },
-        { label: tHome("wingTourismLink3"), href: "/tourism/heritage-sites" },
-        { label: tHome("wingTourismLink4"), href: "/tourism/routes" },
-      ],
-    },
-  ];
-
   return (
-    <>
-      <section className="portal-masthead">
+    <section className="portal-masthead">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
           <Reveal variant="weave">
           <div className="welcome-plate">
@@ -214,7 +174,57 @@ function Masthead() {
         </div>
         <div className="paithani-band mt-12" aria-hidden="true" />
       </section>
+  );
+}
 
+/* -------------------------------------------------------------------------- */
+
+function WingsSection() {
+  const tHome = useTranslations("home");
+
+  const WINGS = [
+    {
+      key: "civic",
+      title: tHome("wingCivicTitle"),
+      titleMr: tHome("wingCivicTitleMr"),
+      blurb: tHome("wingCivicBlurb"),
+      facts: tHome("wingCivicFacts"),
+      links: [
+        { label: tHome("wingCivicLink1"), href: "/nagar-parishad/representatives" },
+        { label: tHome("wingCivicLink2"), href: "/nagar-parishad/ward-map" },
+        { label: tHome("wingCivicLink3"), href: "/nagar-parishad/development-works" },
+        { label: tHome("wingCivicLink4"), href: "/nagar-parishad/notifications" },
+      ],
+    },
+    {
+      key: "heritage",
+      title: tHome("wingHeritageTitle"),
+      titleMr: tHome("wingHeritageTitleMr"),
+      blurb: tHome("wingHeritageBlurb"),
+      facts: tHome("wingHeritageFacts"),
+      links: [
+        { label: tHome("wingHeritageLink1"), href: "/heritage/museum" },
+        { label: tHome("wingHeritageLink2"), href: "/heritage/artifacts" },
+        { label: tHome("wingHeritageLink3"), href: "/heritage/history" },
+        { label: tHome("wingHeritageLink4"), href: "/heritage/cultural-heritage" },
+      ],
+    },
+    {
+      key: "tourism",
+      title: tHome("wingTourismTitle"),
+      titleMr: tHome("wingTourismTitleMr"),
+      blurb: tHome("wingTourismBlurb"),
+      facts: tHome("wingTourismFacts"),
+      links: [
+        { label: tHome("wingTourismLink1"), href: "/tourism/jayakwadi" },
+        { label: tHome("wingTourismLink2"), href: "/tourism/nath-sagar" },
+        { label: tHome("wingTourismLink3"), href: "/tourism/heritage-sites" },
+        { label: tHome("wingTourismLink4"), href: "/tourism/routes" },
+      ],
+    },
+  ];
+
+  return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10">
         <div className="grid gap-5 md:grid-cols-3">
           {WINGS.map((wing) => (
@@ -289,7 +299,6 @@ function Masthead() {
           ))}
         </div>
       </div>
-    </>
   );
 }
 
