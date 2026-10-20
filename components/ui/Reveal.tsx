@@ -49,10 +49,17 @@ interface RevealProps {
   /**
    * Named treatment. `"weave"` replaces the plain fade with the Paithani
    * cloth-weaving reveal: the selvedges draw in from either side and a zari
-   * pick-line sweeps across the panel as it settles. Use it only where that
-   * extra motion is warranted, not on every section.
+   * pick-line sweeps across the panel as it settles. `"cut"` lays cloth strips
+   * over the block and lifts them away, uncovering what is beneath. Use them
+   * only where that extra motion is warranted, not on every section.
    */
-  readonly variant?: "default" | "weave";
+  readonly variant?: "default" | "weave" | "cut";
+  /**
+   * Reveal every time the block enters AND leave again when it exits, instead of
+   * the default one-shot. Used by the map's cut strips so they stripe back down
+   * when the reader scrolls up.
+   */
+  readonly reversible?: boolean;
 }
 
 export function Reveal({
@@ -63,6 +70,7 @@ export function Reveal({
   stagger = false,
   staggerStep = 90,
   variant = "default",
+  reversible = false,
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
@@ -82,7 +90,9 @@ export function Reveal({
         for (const entry of entries) {
           if (entry.isIntersecting) {
             setShown(true);
-            observer.unobserve(entry.target);
+            if (!reversible) observer.unobserve(entry.target);
+          } else if (reversible) {
+            setShown(false);
           }
         }
       },
@@ -93,12 +103,14 @@ export function Reveal({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [reversible]);
 
   return (
     <Tag
       ref={ref}
-      className={`reveal ${variant === "weave" ? "reveal--weave" : ""} ${
+      className={`reveal ${
+        variant === "weave" ? "reveal--weave" : variant === "cut" ? "reveal--cut" : ""
+      } ${
         stagger ? "reveal--stagger" : ""
       } ${shown ? "reveal--in" : ""} ${className}`.trim()}
       style={

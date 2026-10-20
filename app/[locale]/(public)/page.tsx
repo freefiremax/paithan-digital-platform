@@ -61,12 +61,29 @@ export default function HomePage() {
       <div className="home-sheet">
         <span className="home-sheet__edge" aria-hidden="true" />
         <RepresentativesShowcase />
-        <Reveal>
-          <Masthead />
-        </Reveal>
-        <Reveal>
-          <PaithanWardMap />
-        </Reveal>
+        <div className="plate-pin">
+          <div className="plate-pin__sticky">
+            <Reveal variant="weave">
+              <Masthead />
+            </Reveal>
+          </div>
+          <div className="plate-pin__over">
+            <Reveal variant="cut" reversible>
+              <div className="cut-layer">
+                <PaithanWardMap />
+                <span className="cut-layer__strips" aria-hidden="true">
+                  {Array.from({ length: 7 }, (_, i) => (
+                    <span
+                      key={i}
+                      className="cut-layer__strip"
+                      style={{ "--strip-index": i } as React.CSSProperties}
+                    />
+                  ))}
+                </span>
+              </div>
+            </Reveal>
+          </div>
+        </div>
         <Reveal>
           <WingsSection />
         </Reveal>
