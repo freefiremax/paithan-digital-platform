@@ -54,7 +54,6 @@ import { useTranslations } from "next-intl";
 import { notifications, formatCivicDate } from "@/lib/mock-data";
 import { NotificationCategoryBadge } from "@/components/ui/NotificationCategoryBadge";
 import { VideoControls } from "@/components/layout/VideoControls";
-import { BandVideo } from "@/components/layout/BandVideo";
 
 /** Newest first, which is the order the register itself is kept in. */
 const LEDGER = [...notifications].sort((a, b) =>
@@ -115,11 +114,20 @@ export default function HomeVideoBand() {
       {/*
         Desktop: absolutely positioned so the footage runs edge to edge behind
         the panel. Mobile: an ordinary block, because `absolute` here would
-        collapse the section's height and take the notices with it. The video is
-        a small client island so the 26.6 MB clip is NOT loaded or played on
-        phones; see BandVideo.
+        collapse the section's height and take the notices with it.
       */}
-      <BandVideo />
+      <video
+        id="home-band-video"
+        className="h-[54vh] max-h-[420px] w-full object-cover object-center lg:absolute lg:inset-0 lg:h-full lg:max-h-none"
+        src="/videoclips/completepaithan.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        tabIndex={-1}
+      />
 
       {/*
         The caption and the playback controls sit bottom-LEFT, in the footage
