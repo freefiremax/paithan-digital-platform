@@ -415,6 +415,10 @@
     font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
+    /* No page may scroll sideways on a phone. `clip` keeps sticky/fixed working
+       (unlike `hidden`, which would establish a scroll container and break the
+       pinned hero and header). */
+    overflow-x: clip;
   }
 
   /*
@@ -653,6 +657,36 @@
 
 .crest-plate::after {
   bottom: -2px;
+}
+
+/* On small phones the crest shrinks so the masthead text has room and the row
+   cannot overflow the viewport. */
+@media (max-width: 30rem) {
+  .crest-plate {
+    width: 64px;
+    height: 64px;
+  }
+
+  .crest-plate::before,
+  .crest-plate::after {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+/* On small phones the crest shrinks so the masthead text has room and the row
+   cannot overflow the viewport. */
+@media (max-width: 30rem) {
+  .crest-plate {
+    width: 64px;
+    height: 64px;
+  }
+
+  .crest-plate::before,
+  .crest-plate::after {
+    width: 4px;
+    height: 4px;
+  }
 }
 
 /*
@@ -3282,6 +3316,9 @@ html.paithan-intro-locked body {
  */
 .home-page {
   --home-header-h: 52px;
+  /* Safety net: nothing on the home page may cause sideways scroll on a phone.
+     `clip` (not `hidden`) so sticky/fixed descendants are not broken. */
+  overflow-x: clip;
 }
 
 /* `.reps-cover` is the representatives band: an opaque Paithani panel. */
