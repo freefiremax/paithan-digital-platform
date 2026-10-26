@@ -21,6 +21,7 @@ export function ContactForm({ locale: _locale }: ContactFormProps = {}) {
   const t = useTranslations("contact");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileAttempt, setTurnstileAttempt] = useState(0);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -114,6 +115,8 @@ export function ContactForm({ locale: _locale }: ContactFormProps = {}) {
       setError(err instanceof Error ? err.message : t("submitError"));
     } finally {
       setIsLoading(false);
+      setFormData((prev) => ({ ...prev, turnstileToken: "" }));
+      setTurnstileAttempt((value) => value + 1);
     }
   };
 
@@ -255,7 +258,7 @@ export function ContactForm({ locale: _locale }: ContactFormProps = {}) {
               <div className="flex-1">
                 <p className="font-medium text-slate-900">{t("turnstileLabel")}</p>
                 <p className="text-sm text-slate-600 mb-2">{t("turnstileNote")}</p>
-                <TurnstileWidget
+                <TurnstileWidget key={turnstileAttempt}
                   onVerify={(token) => {
                     setFormData((prev) => ({ ...prev, turnstileToken: token }));
                     setErrors((prev) => {

@@ -23,6 +23,7 @@ export function GrievanceForm({ }: GrievanceFormProps) {
 
   const [step, setStep] = useState<"form" | "success">("form");
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileAttempt, setTurnstileAttempt] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [ticketNo, setTicketNo] = useState<string | null>(null);
 
@@ -153,6 +154,8 @@ export function GrievanceForm({ }: GrievanceFormProps) {
       setError(err instanceof Error ? err.message : t("submitError"));
     } finally {
       setIsLoading(false);
+      setFormData((prev) => ({ ...prev, turnstileToken: "" }));
+      setTurnstileAttempt((value) => value + 1);
     }
   };
 
@@ -408,7 +411,7 @@ export function GrievanceForm({ }: GrievanceFormProps) {
               <div className="flex-1">
                 <p className="font-medium text-slate-900">{t("turnstileLabel")}</p>
                 <p className="text-sm text-slate-600 mb-2">{t("turnstileNote")}</p>
-                <TurnstileWidget
+                <TurnstileWidget key={turnstileAttempt}
                   onVerify={(token) => {
                     setFormData((prev) => ({ ...prev, turnstileToken: token }));
                     setErrors((prev) => {

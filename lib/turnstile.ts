@@ -8,7 +8,7 @@ export async function verifyTurnstileToken(token: string | undefined): Promise<b
 
   const secretKey = env.TURNSTILE_SECRET_KEY;
 
-  if (!secretKey || !token) {
+  if (!secretKey || typeof token !== 'string' || !token.trim() || token.length > 2048) {
     return false;
   }
 
@@ -21,10 +21,12 @@ export async function verifyTurnstileToken(token: string | undefined): Promise<b
         secret: secretKey,
         response: token,
       }),
+      signal: AbortSignal.timeout(10_000),
+      cache: 'no-store',
     });
-
+    if (!response.ok) return false;
     const data = await response.json();
-    return data.success === true;
+    return data?.success === true;
   } catch {
     return false;
   }
