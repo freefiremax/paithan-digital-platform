@@ -1,0 +1,14 @@
+.nationalGrid, .localGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 14px; }
+.helpline { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 10px; background: #fffdf9; text-decoration: none; transition: background .15s; }
+.helpline:hover { background: var(--paper-100); }
+.localCard { min-width: 0; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 10px; background: #fffdf9; overflow-wrap: anywhere; }
+.support { padding: clamp(22px, 4vw, 32px); background: #fffdf9; border: 1px solid var(--border-subtle); border-radius: 16px; }
+.support h2 { display: flex; align-items: center; gap: 10px; color: var(--portal-blue-900); font: 600 25px/1.4 var(--font-display); }
+.support > p { font-size: 14px; line-height: 1.9; margin: 18px 0 24px; color: var(--paper-700); }
+.support dl { display: grid; gap: 0; }
+.support dl > div { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 18px; padding: 17px 0; border-top: 1px solid var(--border-subtle); font-size: 14px; line-height: 1.8; }
+.support dt { font-weight: 600; color: var(--paper-700); }
+.support dd { min-width: 0; overflow-wrap: anywhere; }
+.support dd a { color: var(--portal-blue-900); text-decoration: underline; text-underline-offset: 4px; }
+.support footer { border-top: 1px solid var(--border-subtle); padding-top: 20px; margin-top: 8px; color: var(--paper-600); font-size: 12px; line-height: 1.8; }
+@media(max-width: 480px) { .support dl > div { grid-template-columns: 1fr; gap: 4px; } }

@@ -26,30 +26,61 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
     let id: string | null = null;
     let timer: ReturnType<typeof setTimeout>;
     let api: Awaited<ReturnType<typeof loadTurnstile>> | undefined;
+    let phase: Status = 'loading';
+    let changedAt = Date.now();
+    let verifiedAt = 0;
+    const update = (next: Status) => { phase = next; changedAt = Date.now(); setStatus(next); };
     const fail = (code = 'challenge-failed') => {
       if (!active) return;
-      clearTimeout(timer); setStatus('error'); setErrorCode(code);
+      clearTimeout(timer); verifiedAt = 0; update('error'); setErrorCode(code);
       callbacks.current.onVerify(''); callbacks.current.onError?.();
     };
-    const watch = () => { clearTimeout(timer); timer = setTimeout(() => fail('verification-timeout'), 30000); };
+    const watch = (milliseconds = 30000) => { clearTimeout(timer); timer = setTimeout(() => fail('verification-timeout'), milliseconds); };
+    const refresh = () => {
+      if (!active) return;
+      verifiedAt = 0; callbacks.current.onVerify(''); setErrorCode(''); update('checking'); watch();
+      try { if (id !== null && api) api.reset(id); else fail('render-failed'); }
+      catch { fail('render-failed'); }
+    };
+    const resume = () => {
+      if (document.hidden || !active) return;
+      if (phase === 'error') { callbacks.current.onVerify(''); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); return; }
+      // Browser timers and iframe callbacks may pause in a background tab.
+      if ((phase === 'verified' && Date.now() - verifiedAt >= 240000) ||
+          (phase === 'checking' && Date.now() - changedAt >= 30000)) refresh();
+    };
+    document.addEventListener('visibilitychange', resume);
+    window.addEventListener('online', resume);
     watch();
     void loadTurnstile().then(loaded => {
       if (!active || !container.current) return;
       api = loaded;
-      setStatus('checking');
+      update('checking');
       id = api.render(container.current, {
-        sitekey: siteKey, theme, size: container.current.clientWidth < 300 ? 'compact' : 'normal',
+        sitekey: siteKey, theme, size: container.current.clientWidth < 300 ? 'compact' : 'flexible',
         appearance: 'always', execution: 'render', language: locale,
-        callback: token => { if (!active) return; if (typeof token !== 'string' || !token.trim() || token.length > 2048) { fail('invalid-token'); return; } clearTimeout(timer); setStatus('verified'); setErrorCode(''); callbacks.current.onVerify(token); },
+        'response-field': false, retry: 'auto', 'retry-interval': 8000,
+        'refresh-expired': 'auto', 'refresh-timeout': 'auto',
+        callback: token => {
+          if (!active) return;
+          if (typeof token !== 'string' || !token.trim() || token.length > 2048) { fail('invalid-token'); return; }
+          clearTimeout(timer); verifiedAt = Date.now(); update('verified'); setErrorCode(''); callbacks.current.onVerify(token);
+          // Refresh before the provider's five-minute expiry, even if an iframe callback is lost.
+          timer = setTimeout(() => { if (!document.hidden) refresh(); }, 240000);
+        },
         'error-callback': code => fail(code),
         'timeout-callback': () => fail('challenge-timeout'),
         'unsupported-callback': () => fail('unsupported-browser'),
-        'before-interactive-callback': () => { if (!active) return; clearTimeout(timer); setStatus('interactive'); },
-        'after-interactive-callback': () => { if (!active) return; setStatus('checking'); watch(); },
-        'expired-callback': () => { if (!active) return; callbacks.current.onVerify(''); setStatus('checking'); watch(); if (id !== null) api?.reset(id); },
+        'before-interactive-callback': () => { if (!active) return; update('interactive'); watch(120000); },
+        'after-interactive-callback': () => { if (!active) return; update('checking'); watch(); },
+        'expired-callback': refresh,
       });
     }).catch(error => fail(error instanceof Error ? error.message : 'render-failed'));
-    return () => { active = false; clearTimeout(timer); if (id !== null) { try { api?.remove(id); } catch { /* Already removed. */ } } };
+    return () => {
+      active = false; clearTimeout(timer);
+      document.removeEventListener('visibilitychange', resume); window.removeEventListener('online', resume);
+      if (id !== null) { try { api?.remove(id); } catch { /* Already removed. */ } }
+    };
   }, [siteKey, theme, locale, attempt]);
 
   const retry = () => { callbacks.current.onVerify(''); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };

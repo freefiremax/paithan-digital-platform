@@ -23,7 +23,7 @@ export default async function LocaleLayout({
   const messages = await getMessages(safeLocale);
 
   return (
-    <NextIntlClientProvider locale={safeLocale} messages={messages}>
+    <NextIntlClientProvider locale={safeLocale} messages={messages} timeZone="Asia/Kolkata">
       <ClientProviders>{children}</ClientProviders>
     </NextIntlClientProvider>
   );

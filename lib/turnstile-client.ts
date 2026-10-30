@@ -8,7 +8,12 @@ export interface TurnstileOptions {
   'before-interactive-callback'?: () => void;
   'after-interactive-callback'?: () => void;
   theme?: 'light' | 'dark' | 'auto';
-  size?: 'normal' | 'compact';
+  size?: 'normal' | 'compact' | 'flexible';
+  'response-field'?: boolean;
+  retry?: 'auto' | 'never';
+  'retry-interval'?: number;
+  'refresh-expired'?: 'auto' | 'manual' | 'never';
+  'refresh-timeout'?: 'auto' | 'manual' | 'never';
   appearance?: 'always';
   execution?: 'render';
   language?: string;
@@ -21,9 +26,14 @@ export interface TurnstileAPI {
 }
 declare global { interface Window { turnstile?: TurnstileAPI } }
 let pending: Promise<TurnstileAPI> | null = null;
+let resolvedAPI: TurnstileAPI | null = null;
 
 /** Share the asynchronous script across SPA mounts. Do not call ready() on async scripts. */
 export function loadTurnstile(): Promise<TurnstileAPI> {
+  if (pending && resolvedAPI && window.turnstile !== resolvedAPI) {
+    pending = null; resolvedAPI = null;
+    document.querySelector('script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]')?.remove();
+  }
   if (pending) return pending;
   pending = new Promise<TurnstileAPI>((resolve, reject) => {
     let script = document.querySelector<HTMLScriptElement>('script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]');
@@ -38,7 +48,7 @@ export function loadTurnstile(): Promise<TurnstileAPI> {
       };
       settled = true; cleanup();
       if (error) { script?.remove(); reject(new Error(error)); }
-      else resolve(api!);
+      else { resolvedAPI = api!; resolve(api!); }
     };
     const onError = () => finish('script-load-failed');
     const onLoad = () => finish();

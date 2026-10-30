@@ -55,3 +55,21 @@ describe('Turnstile SPA loader', () => {
     await retry;
   });
 });
+
+
+it('reloads a resolved API that disappears during navigation or network recovery', async () => {
+  const original = { render: vi.fn(), remove: vi.fn(), reset: vi.fn() };
+  const env = environment(original);
+  const { loadTurnstile } = await import('@/lib/turnstile-client');
+  const first = loadTurnstile();
+  await vi.advanceTimersByTimeAsync(100);
+  await first;
+  window.turnstile = undefined;
+  const second = loadTurnstile();
+  expect(second).not.toBe(first);
+  expect(env.append).toHaveBeenCalledTimes(1);
+  const restored = { render: vi.fn(), remove: vi.fn(), reset: vi.fn() };
+  window.turnstile = restored;
+  await vi.advanceTimersByTimeAsync(100);
+  expect(await second).toBe(restored);
+});

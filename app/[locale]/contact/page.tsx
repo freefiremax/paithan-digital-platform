@@ -21,10 +21,11 @@ export default async function ContactPage({ params }: PageProps) {
   if (!messages.contact) notFound();
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 sm:px-6 lg:px-8 space-y-10">
+    <main className="max-w-4xl mx-auto px-4 py-10 sm:px-6 lg:px-8 space-y-10">
+      <header><h1 className="text-3xl sm:text-4xl text-[var(--portal-blue-900)] mb-3" style={{ fontFamily: 'var(--font-display)' }}>{messages.contact.title}</h1><p className="text-sm leading-7 text-[var(--paper-700)]">{messages.contact.subtitle}</p></header>
       <ContactForm locale={locale as "en" | "mr" | "hi"} />
       <Helplines locale={locale as "en" | "mr" | "hi"} messages={messages.contact} />
       <WebInfoManager locale={locale as "en" | "mr" | "hi"} messages={messages.contact} />
-    </div>
+    </main>
   );
 }

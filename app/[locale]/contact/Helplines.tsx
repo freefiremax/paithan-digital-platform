@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import styles from "./ContactDetails.module.css";
 import { useTranslations } from "next-intl";
 import { Phone, Shield, HeartPulse, Flame, AlertTriangle, HelpCircle } from "lucide-react";
 
@@ -35,17 +36,17 @@ export function Helplines({ locale: _locale, messages: _messages }: HelplinesPro
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-slate-900 mb-3">{t("nationalHelplinesTitle")}</h3>
         <p className="text-sm text-slate-600 mb-4">{t("nationalHelplinesNote")}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className={styles.nationalGrid}>
           {NATIONAL_HELPLINES.map((helpline) => (
             <a
               key={helpline.key}
               href={`tel:${helpline.number.split("/")[0].trim()}`}
-              className="flex items-center gap-3 p-4 border border-slate-200 rounded-xl hover:border-amber-300 hover:bg-amber-50 transition"
+              className={styles.helpline}
             >
-              <div className={`p-3 rounded-lg ${helpline.color}`}>
+              <div className={`shrink-0 p-2 rounded-lg ${helpline.color}`}>
                 <helpline.icon className="w-6 h-6" />
               </div>
-              <div>
+              <div className="min-w-0 break-words">
                 <p className="font-semibold text-slate-900">{t(helpline.labelKey)}</p>
                 <p className="text-sm font-mono text-slate-600">{helpline.number}</p>
               </div>
@@ -57,14 +58,14 @@ export function Helplines({ locale: _locale, messages: _messages }: HelplinesPro
       <div className="border-t border-slate-200 pt-6">
         <h3 className="text-lg font-semibold text-slate-900 mb-3">{t("localHelplinesTitle")}</h3>
         <p className="text-sm text-slate-600 mb-4">{t("localHelplinesNote")}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className={styles.localGrid}>
           {LOCAL_HELPLINES.map((helpline) => (
-            <div key={helpline.key} className="p-4 border border-slate-200 rounded-xl">
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`p-2 rounded-lg ${helpline.color}`}>
+            <div key={helpline.key} className={styles.localCard}>
+              <div className="flex items-start gap-2 mb-3">
+                <div className={`shrink-0 p-2 rounded-lg ${helpline.color}`}>
                   <helpline.icon className="w-5 h-5" />
                 </div>
-                <div>
+                <div className="min-w-0 break-words">
                   <p className="font-semibold text-slate-900">{t(helpline.labelKey)}</p>
                   <a
                     href={`tel:${helpline.number}`}
@@ -76,7 +77,7 @@ export function Helplines({ locale: _locale, messages: _messages }: HelplinesPro
               </div>
               {helpline.noteKey && (
                 <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded-lg">
-                  ⚠️ {t(helpline.noteKey)}
+                  ⚠️ {t("localContactUnconfirmed")}
                 </p>
               )}
             </div>

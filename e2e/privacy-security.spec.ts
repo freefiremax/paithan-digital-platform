@@ -99,3 +99,22 @@ test('cookie banner waits for the complete entry animation', async ({ page }) =>
   await expect(icon).toBeVisible();
   await expect(icon).toHaveText('');
 });
+
+
+test('Cloudflare renews expired tokens and recovers when the connection returns', async ({ page, context, baseURL }) => {
+  await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
+  await page.clock.install();
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: `window.testChallengeOptions=null;window.challengeResets=0;window.turnstile={render:(el,o)=>{window.testChallengeOptions=o;setTimeout(()=>o.callback('isolated-token'),0);return 'widget';},reset(){window.challengeResets++;setTimeout(()=>window.testChallengeOptions.callback('fresh-isolated-token'),0);},remove(){}};` }));
+  await page.goto('/en/login');
+  const panel = page.locator('[data-turnstile-status]');
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
+  await page.clock.fastForward(240001);
+  await expect.poll(() => page.evaluate(() => (window as unknown as { challengeResets: number }).challengeResets)).toBeGreaterThan(0);
+  await page.clock.fastForward(100);
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
+  await page.evaluate(() => (window as unknown as { testChallengeOptions: { 'error-callback': (code: string) => void } }).testChallengeOptions['error-callback']('network-error'));
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'error');
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await page.clock.fastForward(100);
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
+});

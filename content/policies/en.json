@@ -2,89 +2,142 @@
   "privacy": [
     [
       "About this notice",
-      "This notice explains information processed when you browse the Paithan Digital Portal, create an account, sign in, use the chatbot or submit civic information. Read the relevant form before sharing information."
+      "This notice explains information processed when you browse the Paithan Digital Portal, create an account, sign in, use the chatbot or submit civic information.",
+      "Read the relevant form before sharing information."
     ],
     [
       "Accounts and Google sign-in",
-      "Email registration stores your name, email address and an Argon2 password hash in the Neon database. Your plain password is not stored. Google sign-in supplies your name, email, profile picture and provider account identifiers; provider tokens may also be stored to support the connection. Google sign-in does not give this portal access to your Gmail inbox."
+      "Email registration stores your name, email address and an Argon2 password hash in the Neon database.",
+      "Your plain password is not stored.",
+      "Google sign-in supplies your name, email, profile picture and provider account identifiers; provider tokens may also be stored to support the connection.",
+      "Google sign-in does not give this portal access to your Gmail inbox."
     ],
     [
       "Civic submissions and contact",
-      "Grievance records can include your name, phone number, optional email, ward, issue details, photographs and status history. Share only information needed to explain the issue. Keep ticket and tracking details private. The contact form is not a verified email-delivery channel; use the published council contact details for important requests."
+      "Grievance records can include your name, phone number, optional email, ward, issue details, photographs and status history.",
+      "Share only information needed to explain the issue.",
+      "Keep ticket and tracking details private.",
+      "The contact form is not a verified email-delivery channel; use the published council contact details for important requests."
     ],
     [
       "Cookies and optional analytics",
-      "Essential authentication and security functions remain available if you reject optional cookies. With your permission, the portal records aggregate public-page views by day, page, language, device category and source category in Neon. These metrics contain no account ID, IP address or URL query string. Private and authentication pages are excluded. Browser Do Not Track and Global Privacy Control signals are respected. Your cookie choice lasts up to 180 days; use the cookie icon to change it."
+      "Essential authentication and security functions remain available if you reject optional cookies.",
+      "With your permission, the portal records aggregate public-page views by day, page, language, device category and source category in Neon.",
+      "These metrics contain no account ID, IP address or URL query string.",
+      "Private and authentication pages are excluded.",
+      "Browser Do Not Track and Global Privacy Control signals are respected.",
+      "Your cookie choice lasts up to 180 days; use the cookie icon to change it."
     ],
     [
       "Security and service providers",
-      "Vercel hosts the application; Neon stores database records; Cloudinary handles uploaded images. Cloudflare Turnstile verifies security challenges, Upstash supports rate limiting, and Sentry can process technical errors. Security services may process network or device information independently of optional visitor analytics. Access is limited through application permissions; no online service can promise complete security."
+      "Vercel hosts the application; Neon stores database records; Cloudinary handles uploaded images.",
+      "Cloudflare Turnstile verifies security challenges, Upstash supports rate limiting, and Sentry can process technical errors.",
+      "Security services may process network or device information independently of optional visitor analytics.",
+      "Access is limited through application permissions; no online service can promise complete security."
     ],
     [
       "Chatbot and external services",
-      "The chatbot may send your question and conversation context to Google Gemini to generate an answer. Do not enter passwords, identity documents, financial details or sensitive personal information. Provider data handling depends on the service plan and its terms. Answers can be inaccurate and do not replace official advice."
+      "The chatbot may send your question and conversation context to Google Gemini to generate an answer.",
+      "Do not enter passwords, identity documents, financial details or sensitive personal information.",
+      "Provider data handling depends on the service plan and its terms.",
+      "Answers can be inaccurate and do not replace official advice."
     ],
     [
       "Storage, sharing and retention",
-      "Information is processed to provide accounts, handle civic work and protect the service. Records may be shared with authorised staff, supporting providers or competent authorities where required by applicable law. Providers may process data outside India. This portal does not currently publish a verified automatic deletion schedule; contact the council about record retention rather than assuming records are deleted after a fixed period."
+      "Information is processed to provide accounts, handle civic work and protect the service.",
+      "Records may be shared with authorised staff, supporting providers or competent authorities where required by applicable law.",
+      "Providers may process data outside India.",
+      "This portal does not currently publish a verified automatic deletion schedule; contact the council about record retention rather than assuming records are deleted after a fixed period."
     ],
     [
       "Your choices and requests",
-      "You may browse public information without an account, decline optional analytics, and ask about access, correction or deletion of your account or submitted information through the council contact channel. Include only enough information to identify the record; never send your password. Requests may require identity verification and are subject to applicable record-retention duties. There is currently no self-service account deletion tool. Children should use civic services with a parent or guardian and avoid sharing unnecessary personal information."
+      "You may browse public information without an account, decline optional analytics, and ask about access, correction or deletion of your account or submitted information through the council contact channel.",
+      "Include only enough information to identify the record; never send your password.",
+      "Requests may require identity verification and are subject to applicable record-retention duties.",
+      "There is currently no self-service account deletion tool.",
+      "Children should use civic services with a parent or guardian and avoid sharing unnecessary personal information."
     ],
     [
       "Updates and privacy concerns",
-      "The date on this page identifies the latest published revision. For privacy concerns or help making a request, use the contact page and its published council email or telephone. This notice does not claim certification under a data-protection or government website standard."
+      "The date on this page identifies the latest published revision.",
+      "For privacy concerns or help making a request, use the contact page and its published council email or telephone.",
+      "This notice does not claim certification under a data-protection or government website standard."
     ]
   ],
   "terms": [
     [
       "Using the portal",
-      "Use the portal for tourism information and available civic services. Public information can be read without an account. A form receipt is not approval of a municipal application or a guarantee of a response time."
+      "Use the portal for tourism information and available civic services.",
+      "Public information can be read without an account.",
+      "A form receipt is not approval of a municipal application or a guarantee of a response time."
     ],
     [
       "Your account",
-      "Provide accurate information, keep your password private and sign out on shared devices. Google sign-in is optional. A citizen account does not grant council staff access. Staff access requires council authorisation and the assigned role. Email password recovery is not yet available."
+      "Provide accurate information, keep your password private and sign out on shared devices.",
+      "Google sign-in is optional.",
+      "A citizen account does not grant council staff access.",
+      "Staff access requires council authorisation and the assigned role.",
+      "Email password recovery is not yet available."
     ],
     [
       "Responsible use",
-      "Do not impersonate others, submit malicious files, attempt unauthorised access, disrupt the service or publish unlawful material. Submit only information and photographs you are entitled to share. Keep sensitive identity and financial information out of open text fields and the chatbot."
+      "Do not impersonate others, submit malicious files, attempt unauthorised access, disrupt the service or publish unlawful material.",
+      "Submit only information and photographs you are entitled to share.",
+      "Keep sensitive identity and financial information out of open text fields and the chatbot."
     ],
     [
       "Information and third-party services",
-      "Tourism schedules, fees and availability can change. Confirm important information with the relevant authority. Sample or unverified entries are not official decisions. The chatbot is an automated guide and can be wrong. External websites have their own terms and privacy practices."
+      "Tourism schedules, fees and availability can change.",
+      "Confirm important information with the relevant authority.",
+      "Sample or unverified entries are not official decisions.",
+      "The chatbot is an automated guide and can be wrong.",
+      "External websites have their own terms and privacy practices."
     ],
     [
       "Availability and applicable law",
-      "Security checks and request limits protect the service. Features may be interrupted for maintenance or unavailable when a provider fails. These terms operate subject to applicable Indian law and do not remove statutory rights. This portal does not currently provide an online payment checkout."
+      "Security checks and request limits protect the service.",
+      "Features may be interrupted for maintenance or unavailable when a provider fails.",
+      "These terms operate subject to applicable Indian law and do not remove statutory rights.",
+      "This portal does not currently provide an online payment checkout."
     ],
     [
       "Changes and help",
-      "The revision date identifies updates to these terms. Read the privacy, copyright, hyperlinking, disclaimer and accessibility pages for related information. Use the council contact page to report problems or request clarification."
+      "The revision date identifies updates to these terms.",
+      "Read the privacy, copyright, hyperlinking, disclaimer and accessibility pages for related information.",
+      "Use the council contact page to report problems or request clarification."
     ]
   ],
   "copyright": [
     [
       "Content ownership",
-      "Text, photographs, artwork, documents and logos may belong to the council or to third-party owners. Their publication here does not establish an open licence or government ownership of every item."
+      "Text, photographs, artwork, documents and logos may belong to the council or to third-party owners.",
+      "Their publication here does not establish an open licence or government ownership of every item."
     ],
     [
       "Reuse and attribution",
-      "Check the credit and licence attached to each item. Obtain permission from its rights holder where required. Preserve credits and watermarks. Do not use official seals or logos to suggest council endorsement."
+      "Check the credit and licence attached to each item.",
+      "Obtain permission from its rights holder where required.",
+      "Preserve credits and watermarks.",
+      "Do not use official seals or logos to suggest council endorsement."
     ],
     [
       "Corrections and rights concerns",
-      "Use the council contact channel to identify the page and material concerned, your relationship to the rights holder and the action requested. Do not send unrelated personal documents."
+      "Use the council contact channel to identify the page and material concerned, your relationship to the rights holder and the action requested.",
+      "Do not send unrelated personal documents."
     ]
   ],
   "hyperlinking": [
     [
       "Links to other websites",
-      "External links provide additional information. They do not guarantee accuracy, availability or endorsement. The destination website controls its own content, cookies and privacy practices."
+      "External links provide additional information.",
+      "They do not guarantee accuracy, availability or endorsement.",
+      "The destination website controls its own content, cookies and privacy practices."
     ],
     [
       "Linking to this portal",
-      "Link to public pages with a clear description of the source. Do not frame the portal as your own service, impersonate the council or imply endorsement. Public links can change; private account and tracking links should not be shared."
+      "Link to public pages with a clear description of the source.",
+      "Do not frame the portal as your own service, impersonate the council or imply endorsement.",
+      "Public links can change; private account and tracking links should not be shared."
     ],
     [
       "Broken links",
@@ -94,29 +147,39 @@
   "disclaimer": [
     [
       "Verify important information",
-      "This portal provides tourism and civic guidance. Confirm opening hours, travel conditions, fees, deadlines and legal requirements with the responsible authority before acting. Official orders and notifications take precedence over summaries."
+      "This portal provides tourism and civic guidance.",
+      "Confirm opening hours, travel conditions, fees, deadlines and legal requirements with the responsible authority before acting.",
+      "Official orders and notifications take precedence over summaries."
     ],
     [
       "Service limits",
-      "A submitted form is not a permit or an emergency report. For urgent situations, contact the relevant emergency service directly. Sample or unverified data and chatbot answers should not be relied on as official confirmation."
+      "A submitted form is not a permit or an emergency report.",
+      "For urgent situations, contact the relevant emergency service directly.",
+      "Sample or unverified data and chatbot answers should not be relied on as official confirmation."
     ],
     [
       "Report a problem",
-      "Use the contact page to report inaccurate content or unavailable services. Explain the affected page and the correction needed without including passwords or sensitive records."
+      "Use the contact page to report inaccurate content or unavailable services.",
+      "Explain the affected page and the correction needed without including passwords or sensitive records."
     ]
   ],
   "accessibility": [
     [
       "Access for everyone",
-      "The portal aims to provide readable text, labelled form controls, keyboard navigation and layouts that adapt to smaller screens. English, Marathi and Hindi are available. This statement is not a claim of WCAG certification."
+      "The portal aims to provide readable text, labelled form controls, keyboard navigation and layouts that adapt to smaller screens.",
+      "English, Marathi and Hindi are available.",
+      "This statement is not a claim of WCAG certification."
     ],
     [
       "Motion and browser tools",
-      "Use your browser zoom and accessibility tools. Photo slideshows have a pause control and respect reduced-motion settings. Third-party challenges, embedded content and older documents may have accessibility limitations."
+      "Use your browser zoom and accessibility tools.",
+      "Photo slideshows have a pause control and respect reduced-motion settings.",
+      "Third-party challenges, embedded content and older documents may have accessibility limitations."
     ],
     [
       "Request assistance",
-      "Tell the council which page or document caused difficulty, the task you were trying to complete and an accessible format that would help. Use the published contact details; do not send passwords or sensitive health details."
+      "Tell the council which page or document caused difficulty, the task you were trying to complete and an accessible format that would help.",
+      "Use the published contact details; do not send passwords or sensitive health details."
     ]
   ]
 }

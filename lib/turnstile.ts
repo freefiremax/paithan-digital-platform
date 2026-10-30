@@ -37,5 +37,5 @@ export function getTurnstileSiteKey(): string {
 }
 
 export function isTurnstileEnabled(): boolean {
-  return !!(env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && env.TURNSTILE_SECRET_KEY);
+  return process.env.NODE_ENV === "production" || !!(env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || env.TURNSTILE_SECRET_KEY);
 }
