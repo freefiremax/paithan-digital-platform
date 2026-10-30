@@ -29,7 +29,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const body = await req.json();
+    const maximumBody = 7 * 1024 * 1024;
+    if (Number(req.headers.get('content-length') || 0) > maximumBody) return new NextResponse(null, { status: 413 });
+    const reader = req.body?.getReader();
+    if (!reader) return new NextResponse(null, { status: 400 });
+    let length = 0;
+    const chunks: Uint8Array[] = [];
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        length += value.byteLength;
+        if (length > maximumBody) { await reader.cancel(); return new NextResponse(null, { status: 413 }); }
+        chunks.push(value);
+      }
+    } finally { reader.releaseLock(); }
+    let body;
+    try { body = JSON.parse(Buffer.concat(chunks).toString('utf8')); }
+    catch { return new NextResponse(null, { status: 400 }); }
+    if (!body || typeof body !== 'object') return new NextResponse(null, { status: 400 });
     const { file, folder } = body;
 
     if (!file || typeof file !== "string") {

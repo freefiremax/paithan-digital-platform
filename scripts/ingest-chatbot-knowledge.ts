@@ -91,6 +91,12 @@ for (const file of walk(path.join(root, "app/[locale]")).filter((name) => name.e
   } catch { report.failed.push(`${url}: extraction failed`); }
 }
 
+// Policy pages use structured localized copy rather than inline JSX text.
+for (const language of ["en", "mr", "hi"] as const) {
+  const documents = JSON.parse(fs.readFileSync(path.join(root, "content/policies", `${language}.json`), "utf8")) as Record<string, string[][]>;
+  for (const [kind, sections] of Object.entries(documents)) add(kind, `/policies/${kind}`, sections.flat().join("\n"), language, "policies", "page", "2026-10-31T00:00:00.000Z");
+}
+
 const groups: Array<[string, string, readonly unknown[]]> = [
   ["Tourist places", "/tourism/places-to-visit", publicData.TOURIST_PLACES],
   ["History timeline", "/heritage/history", publicData.HISTORY_TIMELINE],

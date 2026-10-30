@@ -7,7 +7,7 @@ test('cookie choices gate analytics and can be changed later', async ({ page, co
   const banner = page.getByRole('complementary', { name: 'Cookie choices' });
   await expect(banner).toBeVisible();
   expect(events).toBe(0);
-  await banner.getByRole('button', { name: 'Accept all cookies', exact: true }).click();
+  await banner.getByRole('button', { name: 'Accept cookies', exact: true }).click();
   await expect(banner).toBeHidden();
   await expect.poll(() => events).toBe(1);
   expect((await context.cookies()).find(cookie => cookie.name === 'paithan_consent')?.value).toBe('v1.a1');
@@ -80,4 +80,19 @@ test('mobile cookie preferences fit the screen', async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
   await dialog.getByRole('button', { name: 'Reject optional cookies' }).click();
   await expect(dialog).toBeHidden();
+});
+
+
+test('cookie banner waits for the complete entry animation', async ({ page }) => {
+  await page.goto('/en');
+  const intro = page.locator('.paithan-intro');
+  await expect(intro).toBeVisible();
+  const banner = page.getByRole('complementary', { name: 'Cookie choices' });
+  await expect(banner).toBeHidden();
+  await expect(intro).toHaveCount(0);
+  await expect(banner).toBeVisible();
+  await banner.getByRole('button', { name: 'Accept cookies', exact: true }).click();
+  const icon = page.getByRole('button', { name: 'Cookie preferences', exact: true });
+  await expect(icon).toBeVisible();
+  await expect(icon).toHaveText('');
 });

@@ -1,3 +1,13 @@
+# Security follow-up — 31 October 2026
+
+The latest update removes publicly known authentication/CSRF signing fallbacks, requires verified Google profiles and disables automatic linking by matching email, limits asset deletion to database-authorised admins and portal asset paths, caps streamed upload bodies before decoding, removes contact payload logging and false delivery confirmation, and adds security headers to API/static responses. Production CSP no longer permits eval or arbitrary form destinations. Dependency updates resolve the currently reported npm advisories (zero reported on this check).
+
+These are focused fixes, not a security certification or an antivirus scan. Important remaining work includes session invalidation after password changes, consistent mutation origin/CSRF enforcement across all APIs, grievance tracking through GET URLs and the sensitivity of public image delivery, security monitoring and incident response, restoring backups, and confirming production signing-secret rotation. The rate-limit fallback remains per-instance rather than distributed. Inline scripts remain allowed for the current static Next.js rendering approach; migrating to nonce-based CSP requires a separate rendering/cache review. An owner-supplied provider credential previously shared in chat still requires owner-controlled rotation. Do not interpret green tests or a clean dependency audit as proof that these risks are resolved.
+
+The dedicated analytics dashboard route has been removed at the owner's request; the existing consent-gated collector and daily Neon database metrics remain. Active engagement time and distinct visitor/session measurement are not implemented in that aggregate collector.
+
+---
+
 # Backend security review - 14 October 2026
 
 30 October follow-up: registration now rejects role/ward input, JWT reads refresh database authorization, credential login enforces configured Turnstile and IP/email limits, and public/admin credential forms provide matching widgets. Actual callback and registration regression tests were added. The numbered findings below describe the original review; upload deletion ownership and the additional hardening findings remain open. Google account storage was confirmed using aggregate read-only counts, not a fresh sign-in.

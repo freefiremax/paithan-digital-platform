@@ -32,12 +32,12 @@ for (const [locale, messages] of Object.entries({ en, mr, hi })) {
 }
 
 for (const [locale, messages] of Object.entries({ en, mr, hi })) {
-  it(`renders the ${locale} council sign-in with translated side panels`, () => {
+  it(`renders the ${locale} council sign-in with translated photo descriptions`, () => {
     const errors: unknown[] = [];
     const markup = renderToStaticMarkup(<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Kolkata" onError={error => errors.push(error)}><AdminLoginPage /></NextIntlClientProvider>);
     expect(errors).toEqual([]);
     expect(markup).toContain('data-auth-page="admin"');
-    expect(markup).toContain(messages.authDecor.admin.guideTitle);
+    expect(markup).toContain(messages.authPhotos.photo0);
     expect(markup).toContain('name="csrfToken"');
   });
 }

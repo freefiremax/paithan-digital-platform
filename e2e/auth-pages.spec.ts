@@ -13,7 +13,7 @@ for (const locale of ['en', 'mr', 'hi']) {
       await expect(page.locator('#auth-email')).toBeVisible();
       await expect(page.locator('#auth-password')).toBeVisible();
       await expect(page.locator('#auth-password')).toHaveAttribute('type', 'password');
-      const visibility = page.locator('button[aria-pressed]');
+      const visibility = page.locator('button[aria-pressed]').filter({ hasNot: page.locator('svg.lucide-pause, svg.lucide-play') });
       await visibility.click();
       await expect(page.locator('#auth-password')).toHaveAttribute('type', 'text');
       await visibility.click();
@@ -36,12 +36,16 @@ test('registration success displays a confirmation on the sign-in page', async (
   await expect(page.locator('#auth-email')).toHaveValue('citizen@example.com');
 });
 
-test('desktop auth pages show the heritage poster and civic guide', async ({ page }) => {
+test('desktop auth uses a full photo panel without arrows or thumbnails', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/en/register');
-  await expect(page.getByRole('complementary', { name: 'Paithan heritage' })).toBeVisible();
-  await expect(page.getByRole('complementary', { name: 'Portal guide' })).toBeVisible();
-  await expect(page.getByRole('link', { name: /Find a municipal service/ })).toHaveAttribute('href', '/en/services');
+  const panel = page.locator('[data-auth-slideshow]');
+  await expect(panel).toBeVisible();
+  await expect(panel.locator('img')).toHaveCount(4);
+  await expect(panel.locator('[data-active="true"] img')).toHaveAttribute('alt', /temple/);
+  await expect(panel.getByRole('button')).toHaveCount(1);
+  await panel.getByRole('button', { name: 'Pause photos' }).click();
+  await expect(panel.getByRole('button', { name: 'Resume photos' })).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('a missing account shows a registration action and carries the email forward', async ({ page }) => {
@@ -57,4 +61,23 @@ test('a missing account shows a registration action and carries the email forwar
   await expect(notice).toContainText('No account was found');
   await notice.getByRole('link', { name: 'Register as a citizen' }).click();
   await expect(page.locator('#auth-email')).toHaveValue('missing@example.com');
+});
+
+
+test('photo order is temple, dam, artisan and flamingos', async ({ page }) => {
+  await page.clock.install();
+  await page.goto('/en/login');
+  const active = page.locator('[data-auth-slideshow] [data-active="true"] img');
+  for (const description of [/temple/, /Jayakwadi Dam/, /artisan/, /Flamingos/]) {
+    await expect(active).toHaveAttribute('alt', description);
+    await page.clock.fastForward(6000);
+  }
+});
+
+test('reduced motion keeps the first photo still', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.clock.install();
+  await page.goto('/en/login');
+  await page.clock.fastForward(18000);
+  await expect(page.locator('[data-active="true"] img')).toHaveAttribute('alt', /temple/);
 });

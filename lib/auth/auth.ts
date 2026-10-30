@@ -21,9 +21,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET,
   pages: { signIn: "/login", error: "/login" },
   logger: {
-    error: (error) => console.error("[NextAuth Error]", error),
-    warn: (message) => console.warn("[NextAuth Warn]", message),
-    debug: (message) => console.debug("[NextAuth Debug]", message),
+    error: () => console.error("[auth] Authentication operation failed."),
+    warn: () => console.warn("[auth] Authentication configuration warning."),
+    debug: () => { /* Authentication payloads must not be logged. */ },
   },
   providers: [
     Google({
@@ -37,7 +37,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         process.env.GOOGLE_CLIENT_SECRET ||
         process.env.GOOGLE_SECRET ||
         env.GOOGLE_CLIENT_SECRET,
-      allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
           scope: "openid email profile",
@@ -89,7 +88,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn() {
+    async signIn({ account, profile }) {
+      if (account?.provider === "google") return profile?.email_verified === true;
       return true;
     },
     async jwt({ token, user, profile }) {
@@ -195,8 +195,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           });
         }
-      } catch (err) {
-        console.error("[auth][events.signIn] Failed to create audit log:", err);
+      } catch {
+        console.error("[auth] Sign-in audit write failed.");
       }
     },
     async signOut(message: { token?: { sub?: string } | null; session?: unknown }) {
@@ -213,8 +213,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           });
         }
-      } catch (err) {
-        console.error("[auth][events.signOut] Failed to create audit log:", err);
+      } catch {
+        console.error("[auth] Sign-out audit write failed.");
       }
     },
   },

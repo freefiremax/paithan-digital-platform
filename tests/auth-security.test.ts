@@ -94,3 +94,15 @@ describe("Citizen redirect destinations", () => {
     expect(citizenCallbackUrl("/mr/grievances/track?ticket=example", "mr")).toBe("/mr/grievances/track?ticket=example");
   });
 });
+
+
+describe('Google identity verification', () => {
+  it('does not automatically link accounts by matching an unverified email', () => {
+    const provider = captured.config!.providers.find(p => typeof p !== 'function' && p.id === 'google');
+    expect(provider).not.toHaveProperty('allowDangerousEmailAccountLinking', true);
+  });
+  it.each([false, undefined])('rejects Google profiles without verified email (%s)', async email_verified => {
+    const callback = captured.config!.callbacks!.signIn!;
+    expect(await callback({ account: { provider: 'google' }, profile: { email_verified } } as Parameters<typeof callback>[0])).toBe(false);
+  });
+});

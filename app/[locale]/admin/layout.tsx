@@ -7,7 +7,6 @@ import { useSession, signOut } from "next-auth/react";
 import { useTranslations, useLocale } from "next-intl";
 import {
   LayoutDashboard,
-  BarChart3,
   BellRing,
   Pickaxe,
   Map,
@@ -73,7 +72,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const userRole = user.role;
 
   const navItems = [
-    ...(userRole === "ADMIN" ? [{ label: t("visitorAnalytics"), href: `/${locale}/admin/analytics`, icon: BarChart3 }] : []),
     {
       label: t("dashboardTitle"),
       href: "/admin/dashboard",

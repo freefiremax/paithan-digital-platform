@@ -11,14 +11,13 @@ export async function DELETE(
   { params }: { params: Promise<{ publicId: string }> }
 ) {
   try {
-    // Require authentication (any authenticated user can delete their own uploads)
-    const authResult = await requireAuth();
-    const { user } = authResult;
-
+    // Asset ownership is not yet recorded. Until it is, only council admins
+    // may delete portal-owned assets; signing in alone is not ownership.
+    const { user } = await requireAuth("ADMIN");
     const { publicId } = await params;
-
-    // Optional: Verify the publicId belongs to the user (if we track ownership)
-    // For now, allow any authenticated user to delete (admin-only in future if needed)
+    if (!/^paithan\/(grievances|profile|documents)\/[a-zA-Z0-9_/-]+$/.test(publicId) || publicId.includes('..')) {
+      return NextResponse.json({ error: { code: 'VALIDATION_ERROR', message: 'Invalid portal asset identifier' } }, { status: 400 });
+    }
 
     const rateLimit = await checkRateLimit(`delete-upload:${user.id}`, RATE_LIMIT_CONFIGS.apiMutation);
     if (rateLimit && !rateLimit.success) {

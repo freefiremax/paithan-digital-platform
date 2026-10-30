@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Plus, Trash2, Edit, X, ShieldCheck, Search } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -80,7 +80,7 @@ export default function AdminFacilitiesPage() {
     dataStatus: "SAMPLE_TBD",
   });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const [facilitiesRes, wardsRes] = await Promise.all([
@@ -89,12 +89,12 @@ export default function AdminFacilitiesPage() {
       ]);
       if (facilitiesRes.ok) setFacilities(await facilitiesRes.json());
       if (wardsRes.ok) setWards(await wardsRes.json());
-    } catch (err) {
-      console.error("Failed to fetch data:", err);
+    } catch {
+      setError(t("loadError"));
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     let mounted = true;
@@ -106,7 +106,7 @@ export default function AdminFacilitiesPage() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [fetchData]);
 
   const filteredFacilities = facilities.filter((f) => {
     const matchesSector = selectedSector === "ALL" || f.sector === selectedSector;

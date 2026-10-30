@@ -36,49 +36,20 @@
 .page a:focus-visible, .page button:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 3px; }
 @media (max-width: 480px) { .mastheadInner { padding: 14px 16px; gap: 12px; } .brand { gap: 8px; font-size: 13px; } .brand svg { width: 42px; height: 42px; } .back { font-size: 12px; }  .card { padding: 23px 20px; } }
 
-/* The form stays central; the two flanks borrow the portal's textile identity. */
-.layout { max-width: 1480px; margin: auto; padding: 38px 44px 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
-.mastheadInner { max-width: 1392px; }
-.heritagePanel { max-width: 320px; margin: 70px auto 0; width: 100%; }
-.posterTop { display: flex; gap: 10px; align-items: center; justify-content: center; color: var(--teal-700); font-size: 12px; }
-.posterTop svg { width: 17px; height: 17px; }
-.heritagePanel h2 { margin: 19px auto 26px; max-width: 290px; font: 500 clamp(28px, 2.8vw, 39px)/1.22 var(--font-display); text-align: center; color: var(--portal-blue-900); text-wrap: balance; }
-.artwork { position: relative; padding: 12px 18px 27px 10px; }
-.photoArch { position: relative; width: 100%; aspect-ratio: .86; overflow: hidden; border-radius: 160px 160px 7px 7px; border: 6px solid var(--paper-50); outline: 1px solid var(--border-strong); }
-.weavingPhoto { object-fit: cover; object-position: 38% center; }
-.loomLines { position: absolute; inset: 12px 1px 0 32%; border: 1px solid var(--border-strong); border-radius: 150px 150px 0 0; background: repeating-linear-gradient(90deg, transparent 0 7px, #b6894d24 7px 8px); transform: rotate(6deg); }
-.roundel { position: absolute; right: -10px; bottom: 0; width: 108px; height: 108px; border: 1px solid var(--teal-700); outline: 5px solid var(--paper-50); border-radius: 50%; background: var(--paper-100); color: var(--teal-700); display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-9deg); }
-.roundel svg { width: 24px; height: 24px; margin-bottom: 4px; }
-.roundel span { font-family: var(--font-display); font-size: 26px; line-height: 1.2; }
-.roundel small { font-size: 10px; letter-spacing: 2px; margin-top: 2px; }
-.cornerMark { position: absolute; top: 3px; left: -9px; color: var(--portal-blue-800); transform: rotate(-12deg); }
-.cornerMark svg { width: 48px; height: 48px; }
-.wovenCorner { position: absolute; bottom: 14px; left: -5px; width: 105px; height: 20px; background: repeating-linear-gradient(45deg, var(--portal-blue-800) 0 5px, var(--paper-50) 5px 8px, var(--teal-700) 8px 13px, var(--paper-50) 13px 16px); transform: rotate(-5deg); }
-.posterCaption { margin: 19px auto 10px; max-width: 270px; color: var(--paper-700); font-size: 13px; line-height: 1.8; text-align: center; }
-.storyLink { display: flex; gap: 6px; justify-content: center; align-items: center; color: var(--portal-blue-900); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
-.civicPanel { max-width: 310px; width: 100%; margin: 104px auto 0; }
-.civicIllustration { position: relative; height: 178px; display: flex; align-items: center; justify-content: center; }
-.orbit { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--teal-700); opacity: .5; }
-.civicPass { position: relative; width: 272px; padding: 19px 15px; background: var(--paper-100); border: 1px solid var(--border-strong); border-radius: 7px; display: flex; align-items: center; gap: 12px; color: var(--portal-blue-900); transform: rotate(-7deg); box-shadow: 6px 7px 0 var(--paper-200); }
-.civicPass div { flex: 1; }
-.civicPass span { display: block; font-size: 11px; margin-bottom: 3px; color: var(--paper-600); }
-.civicPass strong { font-size: 14px; font-weight: 600; }
-.orbitStar { position: absolute; top: 5px; right: 15px; color: var(--portal-blue-800); }
-.orbitStar svg { width: 28px; height: 28px; }
-.civicPanel h2 { font: 500 29px/1.3 var(--font-display); color: var(--teal-700); margin: 21px 0 12px; text-wrap: balance; }
-.guideIntro { font-size: 13px; line-height: 1.8; color: var(--paper-700); }
-.serviceLinks { margin-top: 22px; }
-.serviceLinks a { display: flex; align-items: center; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--border-subtle); text-decoration: none; color: var(--portal-blue-900); }
-.serviceLinks a > span:nth-child(2) { flex: 1; }
-.serviceLinks strong { display: block; font-size: 13px; font-weight: 600; }
-.serviceLinks small { display: block; font-size: 11px; line-height: 1.6; color: var(--paper-600); margin-top: 3px; }
-.serviceIcon { width: 38px; height: 38px; border: 1px solid var(--border-subtle); border-radius: 50%; display: grid; place-items: center; background: var(--surface-card); flex-shrink: 0; color: var(--teal-700); }
-.serviceLinks a:hover strong { text-decoration: underline; text-underline-offset: 3px; }
-.townNote { display: flex; gap: 11px; align-items: center; margin-top: 27px; color: var(--teal-700); }
-.townNote svg { width: 25px; height: 25px; flex-shrink: 0; }
-.townNote p { font-size: 12px; line-height: 1.7; }
-.riverLines { width: 100%; height: 35px; margin-top: 17px; color: var(--teal-700); opacity: .45; }
-@media (max-width: 1179px) { .layout { grid-template-columns: minmax(0, 508px); justify-content: center; padding: 36px 24px 44px; gap: 42px; } .formColumn { order: 0; } .heritagePanel { order: 1; margin-top: 0; } .civicPanel { order: 2; margin-top: 0; max-width: 400px; } .heritagePanel h2 { font-size: 32px; } .civicPanel h2, .guideIntro { text-align: center; } .townNote { justify-content: center; } }
-@media (max-width: 480px) { .layout { padding: 28px 16px 32px; } .heritagePanel { max-width: 280px; } .civicPanel { max-width: 320px; } }
 
+.layout { max-width: 1200px; margin: 0 auto 48px; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #d8c7af; border-radius: 22px; overflow: hidden; background: #fffaf3; box-shadow: 0 14px 48px #4d0f2009; }
+.mastheadInner { max-width: 1200px; padding: 28px 0 22px; justify-content: flex-start; }
+.formColumn { padding: 48px clamp(28px, 4vw, 56px) 32px; border-left: 1px solid #d8c7af; align-self: stretch; }
+.heading { text-align: left; margin-bottom: 27px; }
+.heading h1 { font-size: clamp(27px, 2.7vw, 36px); }
+.card { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.photoPanel { position: relative; min-height: 720px; background: #e8decd; overflow: hidden; }
+.slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
+.activeSlide { opacity: 1; }
+.photo { object-fit: cover; }
+.pause { position: absolute; left: 18px; bottom: 18px; z-index: 1; width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #ffffffb3; border-radius: 50%; background: #fffaf3e8; color: #4d0f20; cursor: pointer; }
+.google, .submit, .input { border-radius: 8px; }
 .recoveryLink { display: inline-block; color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-top: 7px; }
+@media(max-width: 1280px) { .page { padding: 0 28px 1px; } }
+@media(max-width: 760px) { .page { padding: 0 16px 1px; } .mastheadInner { padding: 20px 0; } .layout { grid-template-columns: 1fr; border-radius: 16px; margin-bottom: 30px; } .photoPanel { min-height: 240px; } .formColumn { border-left: 0; border-top: 1px solid #d8c7af; padding: 30px 24px; } .heading h1 { font-size: 28px; } .card { padding: 0; } }
+@media(prefers-reduced-motion: reduce) { .slide { transition: none; } }

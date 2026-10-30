@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { turnstileToken, ...data } = parsed.data;
+    const { turnstileToken } = parsed.data;
     const turnstileOk = await verifyTurnstileToken(turnstileToken);
     if (!turnstileOk) {
       return NextResponse.json(
@@ -35,15 +35,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // In a real implementation, this would be saved to a database or sent via email
-    // For now, we'll just log it and return success
-    console.log("Contact form submission:", data);
-
+    // Email delivery is not configured yet. Never log citizen messages or
+    // claim that a message was delivered when it was only validated.
     return NextResponse.json(
-      {
-        message: "Your message has been sent successfully. We will get back to you soon.",
-      },
-      { status: 201 }
+      { error: { code: 'SERVICE_UNAVAILABLE', message: 'Online message delivery is not available. Please use the council email or telephone listed on the contact page.' } },
+      { status: 503 }
     );
   } catch (error) {
     return await handleApiError(error);

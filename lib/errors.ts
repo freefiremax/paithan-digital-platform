@@ -68,7 +68,7 @@ export async function createErrorResponse(error: unknown): Promise<{ error: { co
     }
   }
 
-  console.error("Unhandled error:", error);
+  console.error("[api] Unexpected server error.");
   try {
     const Sentry = await import("@sentry/nextjs");
     Sentry.captureException(error);

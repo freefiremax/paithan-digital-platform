@@ -779,7 +779,8 @@
     "errorInvalidEmail": "Please enter a valid email address",
     "errorInvalidPhone": "Please enter a valid 10-digit mobile number",
     "submitError": "Failed to send message. Please retry.",
-    "successMessage": "Your message has been sent successfully to the Municipal Council."
+    "successMessage": "Your message has been sent successfully to the Municipal Council.",
+    "deliveryUnavailable": "Online message delivery is not available yet. Please contact the council using the email or telephone listed on this page."
   },
   "register": {
     "title": "Citizen Registration",
@@ -989,7 +990,8 @@
     "typeWaterWorks": "Water Works",
     "typeCommunityCenter": "Community Center",
     "typeAnganwadi": "Anganwadi",
-    "typeOther": "Other"
+    "typeOther": "Other",
+    "loadError": "Unable to load records. Please refresh and try again."
   },
   "adminSectors": {
     "title": "Civic Sector Management",
@@ -1010,7 +1012,8 @@
     "save": "Save Changes",
     "saving": "Saving...",
     "labelDepartment": "Department:",
-    "labelContact": "Contact:"
+    "labelContact": "Contact:",
+    "loadError": "Unable to load records. Please refresh and try again."
   },
   "adminUsers": {
     "title": "User Management",
@@ -1046,7 +1049,8 @@
     "save": "Create User",
     "update": "Update User",
     "saving": "Saving...",
-    "deleteConfirm": "Are you sure you want to delete this user?"
+    "deleteConfirm": "Are you sure you want to delete this user?",
+    "loadError": "Unable to load records. Please refresh and try again."
   },
   "auth": {
     "councilName": "Paithan Municipal Council",
@@ -1141,7 +1145,7 @@
     "title": "Your privacy, your choice",
     "description": "We use essential cookies for sign-in and security. Optional analytics helps us understand which public pages are useful. You can accept or reject optional analytics and change your choice later.",
     "privacyLink": "Read our privacy policy",
-    "acceptAll": "Accept all cookies",
+    "acceptAll": "Accept cookies",
     "rejectOptional": "Reject optional cookies",
     "preferences": "Cookie preferences",
     "savePreferences": "Save preferences",
@@ -1152,5 +1156,14 @@
     "analyticsTitle": "Optional visitor analytics",
     "analyticsDescription": "Allows anonymous, aggregate public-page counts. No advertising cookies or individual visitor profiles are added. Browser privacy signals can still disable analytics.",
     "storageError": "Your browser could not save this choice. Check your cookie settings and try again."
+  },
+  "authPhotos": {
+    "label": "Paithan in pictures",
+    "photo0": "Shri Sant Eknath Maharaj temple in Paithan",
+    "photo1": "Water flowing through the gates of Jayakwadi Dam",
+    "photo2": "An artisan weaving a colourful Paithani sari",
+    "photo3": "Flamingos in the waters near Paithan at sunset",
+    "pause": "Pause photos",
+    "play": "Resume photos"
   }
 }

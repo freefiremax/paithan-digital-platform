@@ -13,7 +13,7 @@ function isAdminPath(pathname: string): boolean {
 
 const CSP_DIRECTIVES = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://va.vercel-scripts.com",
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''} https://challenges.cloudflare.com https://static.cloudflareinsights.com https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob: https: res.cloudinary.com",
   "font-src 'self' data: https://fonts.gstatic.com",
@@ -21,7 +21,8 @@ const CSP_DIRECTIVES = [
   "frame-src 'self' https://challenges.cloudflare.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",
-  "form-action *",
+  "form-action 'self' https://accounts.google.com",
+  "object-src 'none'",
 ].join('; ');
 
 const intlMiddleware = createIntlMiddleware({
@@ -50,10 +51,11 @@ export default async function middleware(request: NextRequest) {
 
   // Admin route authentication guard
   if (isAdminPath(pathname) && !pathname.includes('/admin/login')) {
-    const token = await getToken({
+    const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+    const token = secret ? await getToken({
       req: request,
-      secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "i1CFVlmHkFZmulYwQx9+lvmY1usQBpkEkGVHKiCh+wE=",
-    });
+      secret,
+    }) : null;
 
     if (!token) {
       const match = pathname.match(/^\/(en|mr|hi)/);

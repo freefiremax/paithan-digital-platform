@@ -20,7 +20,7 @@ const envSchema = z.object({
   ),
   NEXTAUTH_SECRET: z.preprocess(
     emptyToUndefined,
-    z.string().default("i1CFVlmHkFZmulYwQx9+lvmY1usQBpkEkGVHKiCh+wE=")
+    z.string().min(32).optional()
   ),
   NEXTAUTH_URL: z.preprocess(
     emptyToUndefined,
@@ -43,7 +43,7 @@ const envSchema = z.object({
   TURNSTILE_SECRET_KEY: optionalString,
   CSRF_SECRET: z.preprocess(
     emptyToUndefined,
-    z.string().default("csrf-secret-change-in-production-at-least-32-chars")
+    z.string().min(32).optional()
   ),
   GOOGLE_CLIENT_ID: optionalString,
   GOOGLE_CLIENT_SECRET: optionalString,

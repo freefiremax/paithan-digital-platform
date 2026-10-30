@@ -143,6 +143,7 @@ export function ContactForm({ locale: _locale }: ContactFormProps = {}) {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      <p role="status" className="mb-6 rounded-lg border border-[var(--border-subtle)] bg-[var(--paper-50)] p-4 text-sm leading-7">{t("deliveryUnavailable")}</p>
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
               {t("nameLabel")} <span className="text-red-500">*</span>

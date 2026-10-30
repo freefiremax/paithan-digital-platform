@@ -34,7 +34,7 @@ export default async function PoliciesIndexPage({ params }: PageProps) {
       <nav className="mb-6" aria-label="Breadcrumb">
         <ol className="flex items-center gap-2 text-sm text-slate-500">
           <li>
-            <Link href="/" className="hover:text-[var(--saffron-600)]">
+            <Link href={`/${locale}`} className="hover:text-[var(--saffron-600)]">
               {p.home}
             </Link>
           </li>
@@ -55,7 +55,7 @@ export default async function PoliciesIndexPage({ params }: PageProps) {
           {policies.map((policy) => (
             <Link
               key={policy.href}
-              href={policy.href}
+              href={`/${locale}${policy.href}`}
               className="block p-6 border border-slate-200 rounded-xl hover:border-[var(--saffron-300)] hover:bg-[var(--saffron-50)] transition"
             >
               <h2 className="text-xl font-semibold text-slate-900 mb-2">{p[policy.titleKey]}</h2>

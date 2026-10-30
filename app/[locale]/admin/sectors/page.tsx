@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Edit, ShieldCheck } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -55,17 +55,17 @@ export default function AdminSectorsPage() {
     dataStatus: "SAMPLE_TBD",
   });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await fetch("/api/sectors");
       if (res.ok) setSectors(await res.json());
-    } catch (err) {
-      console.error("Failed to fetch sectors:", err);
+    } catch {
+      setError(t("loadError"));
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     let mounted = true;
@@ -77,7 +77,7 @@ export default function AdminSectorsPage() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [fetchData]);
 
   const handleEdit = (sector: SectorInfo) => {
     setEditingSector(sector);

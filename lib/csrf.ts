@@ -1,8 +1,10 @@
 import { SignJWT, jwtVerify } from "jose";
 
-const CSRF_SECRET = new TextEncoder().encode(
-  process.env.CSRF_SECRET || "csrf-secret-change-in-production-at-least-32-chars"
-);
+function signingKey() {
+  const secret = process.env.CSRF_SECRET || process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+  if (!secret || secret.length < 32) throw new Error('CSRF signing secret is not configured');
+  return new TextEncoder().encode(secret);
+}
 const CSRF_TOKEN_NAME = "paithan_csrf";
 const CSRF_HEADER_NAME = "x-csrf-token";
 
@@ -11,12 +13,13 @@ export async function generateCsrfToken(): Promise<string> {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("1h")
-    .sign(CSRF_SECRET);
+    .sign(signingKey());
 }
 
 export async function validateCsrfToken(token: string): Promise<boolean> {
   try {
-    await jwtVerify(token, CSRF_SECRET);
+    const { payload } = await jwtVerify(token, signingKey(), { algorithms: ["HS256"] });
+    if (payload.csrf !== true) return false;
     return true;
   } catch {
     return false;
@@ -27,15 +30,6 @@ export function getCsrfTokenFromRequest(request: Request): string | null {
   const headerToken = request.headers.get(CSRF_HEADER_NAME);
   if (headerToken) return headerToken;
 
-  const cookieHeader = request.headers.get("cookie");
-  if (cookieHeader) {
-    const cookies = cookieHeader.split(";").map((c) => c.trim());
-    for (const cookie of cookies) {
-      if (cookie.startsWith(`${CSRF_TOKEN_NAME}=`)) {
-        return cookie.substring(CSRF_TOKEN_NAME.length + 1);
-      }
-    }
-  }
   return null;
 }
 

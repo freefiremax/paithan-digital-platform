@@ -86,10 +86,10 @@ export async function checkRateLimit(
       remaining: Math.max(0, limit - count),
       reset: Date.now() + ttlSeconds * 1_000,
     };
-  } catch (error) {
+  } catch {
     if (!didWarnAboutUpstashFallback) {
       didWarnAboutUpstashFallback = true;
-      console.error("[rate-limit] Upstash unavailable; using this instance's bounded fallback.", error);
+      console.error("[rate-limit] Distributed limiter unavailable; bounded instance fallback active.");
     }
     return localLimit(`${limit}:${window}:${identifier}`, limit, window);
   }

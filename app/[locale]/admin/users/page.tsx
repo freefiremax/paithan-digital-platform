@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Trash2, Edit, X, Search, UserPlus, Key } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -60,7 +60,7 @@ export default function AdminUsersPage() {
     wardId: "",
   });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const [usersRes, wardsRes] = await Promise.all([
@@ -72,12 +72,12 @@ export default function AdminUsersPage() {
         setUsers(data.data || []);
       }
       if (wardsRes.ok) setWards(await wardsRes.json());
-    } catch (err) {
-      console.error("Failed to fetch data:", err);
+    } catch {
+      setError(t("loadError"));
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     let mounted = true;
@@ -89,7 +89,7 @@ export default function AdminUsersPage() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [fetchData]);
 
   const filteredUsers = users.filter((u) => {
     const matchesRole = selectedRole === "ALL" || u.role === selectedRole;
