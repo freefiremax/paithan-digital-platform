@@ -23,13 +23,22 @@ describe('Turnstile SPA loader', () => {
     await vi.advanceTimersByTimeAsync(100);
     expect(await first).toBe(api);
   });
-  it('fails if the API never becomes ready', async () => {
-    environment({ render: vi.fn(), ready: vi.fn() });
+  it('fails if the API never loads', async () => {
+    environment();
     const { loadTurnstile } = await import('@/lib/turnstile-client');
     const promise = loadTurnstile();
     const rejected = expect(promise).rejects.toThrow('script-load-timeout');
     await vi.advanceTimersByTimeAsync(15000);
     await rejected;
+  });
+  it('does not call ready() on an asynchronously loaded Cloudflare script', async () => {
+    const api = { render: vi.fn(), ready: vi.fn(() => { throw new Error('Remove async/defer before ready()'); }), remove: vi.fn(), reset: vi.fn() };
+    environment(api);
+    const { loadTurnstile } = await import('@/lib/turnstile-client');
+    const promise = loadTurnstile();
+    await vi.advanceTimersByTimeAsync(100);
+    expect(await promise).toBe(api);
+    expect(api.ready).not.toHaveBeenCalled();
   });
   it('clears a failed script so a retry can load it again', async () => {
     const env = environment();

@@ -2,7 +2,7 @@
 
 ### Security-widget recovery and cookie choices — 2026-10-30
 
-Cloudflare Turnstile uses a shared, ready-aware SPA loader, explicit always-visible rendering, normal/compact sizing, provider error/expiry/interactive callbacks, bounded script/API/challenge waits and a visible retry panel. Empty or failed callbacks never mark verification complete. The server still validates challenge tokens; cookie rejection does not disable security. External domain authorization, browser/network blocks and successful human challenges remain provider/browser dependent.
+Cloudflare Turnstile uses a shared, load-event-aware SPA loader, explicit always-visible rendering, normal/compact sizing, provider error/expiry/interactive callbacks, bounded script/API/challenge waits and a visible retry panel. Empty or failed callbacks never mark verification complete. The server still validates challenge tokens; cookie rejection does not disable security. External domain authorization, browser/network blocks and successful human challenges remain provider/browser dependent.
 
 A translated first-visit cookie banner offers Accept all cookies, Reject optional cookies and preferences. Essential sign-in/security cookies remain active. Optional aggregate analytics is disabled until accepted in both the tracker and server route. Preferences can be reopened from the persistent page control, are remembered for up to 180 days, and can be withdrawn. DNT/GPC remain respected. No advertising category or visitor identity profiles are introduced. The privacy page describes the choices.
 

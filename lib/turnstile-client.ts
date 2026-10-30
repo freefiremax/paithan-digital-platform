@@ -22,25 +22,26 @@ export interface TurnstileAPI {
 declare global { interface Window { turnstile?: TurnstileAPI } }
 let pending: Promise<TurnstileAPI> | null = null;
 
-/** A single script for all SPA mounts; wait for the API, not just a script tag. */
+/** Share the asynchronous script across SPA mounts. Do not call ready() on async scripts. */
 export function loadTurnstile(): Promise<TurnstileAPI> {
   if (pending) return pending;
   pending = new Promise<TurnstileAPI>((resolve, reject) => {
     let script = document.querySelector<HTMLScriptElement>('script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]');
     let settled = false;
-    let readyRequested = false;
     const finish = (error?: string) => {
       if (settled) return;
       const api = window.turnstile;
       if (!error && !api?.render) return;
-      const cleanup = () => { clearInterval(poll); clearTimeout(timeout); script?.removeEventListener('error', onError); };
-      if (error) { settled = true; cleanup(); script?.remove(); reject(new Error(error)); return; }
-      if (readyRequested) return;
-      readyRequested = true;
-      const ready = () => { if (settled) return; settled = true; cleanup(); resolve(api!); };
-      if (api!.ready) api!.ready(ready); else ready();
+      const cleanup = () => {
+        clearInterval(poll); clearTimeout(timeout);
+        script?.removeEventListener('error', onError); script?.removeEventListener('load', onLoad);
+      };
+      settled = true; cleanup();
+      if (error) { script?.remove(); reject(new Error(error)); }
+      else resolve(api!);
     };
     const onError = () => finish('script-load-failed');
+    const onLoad = () => finish();
     const poll = window.setInterval(() => finish(), 100);
     const timeout = window.setTimeout(() => finish('script-load-timeout'), 15000);
     if (!script && !window.turnstile?.render) {
@@ -49,8 +50,9 @@ export function loadTurnstile(): Promise<TurnstileAPI> {
       script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
       script.async = true;
       script.addEventListener('error', onError);
+      script.addEventListener('load', onLoad);
       document.head.appendChild(script);
-    } else script?.addEventListener('error', onError);
+    } else { script?.addEventListener('error', onError); script?.addEventListener('load', onLoad); }
   }).catch(error => { pending = null; throw error; });
   return pending;
 }
