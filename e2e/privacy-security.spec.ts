@@ -84,11 +84,14 @@ test('mobile cookie preferences fit the screen', async ({ page }) => {
 
 
 test('cookie banner waits for the complete entry animation', async ({ page }) => {
-  await page.goto('/en');
+  await page.clock.install();
+  await page.goto('/en', { waitUntil: 'domcontentloaded' });
   const intro = page.locator('.paithan-intro');
   await expect(intro).toBeVisible();
+  await page.waitForFunction(() => document.documentElement.classList.contains('paithan-intro-locked'));
   const banner = page.getByRole('complementary', { name: 'Cookie choices' });
   await expect(banner).toBeHidden();
+  await page.clock.fastForward(6000);
   await expect(intro).toHaveCount(0);
   await expect(banner).toBeVisible();
   await banner.getByRole('button', { name: 'Accept cookies', exact: true }).click();

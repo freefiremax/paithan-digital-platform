@@ -6,6 +6,10 @@ These are focused fixes, not a security certification or an antivirus scan. Impo
 
 The dedicated analytics dashboard route has been removed at the owner's request; the existing consent-gated collector and daily Neon database metrics remain. Active engagement time and distinct visitor/session measurement are not implemented in that aggregate collector.
 
+## Live deployment verification
+
+Commit eac15e5 passed all four GitHub CI jobs and deployed successfully. An unauthenticated live sign-in page check reported zero browser exceptions and console errors. The initial browser suite passed 21 of 23 tests: the intro timing assertion needed a controlled clock, while the missing-account flow exposed HTTP 500 configuration errors at the live NextAuth providers/CSRF/session endpoints after the published signing fallback was removed. A private AUTH_SECRET must be configured in the owning Vercel project and the project redeployed; restoring a repository-published fallback would undo the security fix. The available CLI session belongs to revenex-ventures and does not have access to the Paithan project in the deployment's owning account/team. No successful live credential or Google sign-in is claimed for this release.
+
 ---
 
 # Backend security review - 14 October 2026

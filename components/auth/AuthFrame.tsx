@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
@@ -17,6 +17,7 @@ export function AuthFrame({ mode, title, subtitle, children, footerNote }: {
   const t = useTranslations('authPhotos');
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const loaded = useRef<boolean[]>(photos.map(() => false));
 
   useEffect(() => {
     if (paused) return;
@@ -24,7 +25,7 @@ export function AuthFrame({ mode, title, subtitle, children, footerNote }: {
     let timer: ReturnType<typeof setInterval> | undefined;
     const sync = () => {
       clearInterval(timer);
-      if (!motion.matches && !document.hidden) timer = setInterval(() => setCurrent(index => (index + 1) % photos.length), 6000);
+      if (!motion.matches && !document.hidden) timer = setInterval(() => setCurrent(index => loaded.current[index] && loaded.current[(index + 1) % photos.length] ? (index + 1) % photos.length : index), 6000);
     };
     sync();
     motion.addEventListener('change', sync);
@@ -39,7 +40,7 @@ export function AuthFrame({ mode, title, subtitle, children, footerNote }: {
     <main className={styles.layout}>
       <aside className={styles.photoPanel} aria-label={t('label')} data-auth-slideshow>
         {photos.map((photo, index) => <div key={photo} className={`${styles.slide} ${index === current ? styles.activeSlide : ''}`} aria-hidden={index !== current} data-active={index === current}>
-          <Image src={`/images/auth/${photo}`} alt={t(`photo${index}`)} fill sizes="(max-width: 760px) 100vw, (max-width: 1280px) 48vw, 600px" loading={index === 0 ? 'eager' : 'lazy'} className={styles.photo} style={{ objectPosition: index === 2 ? '54% center' : 'center' }} />
+          <Image src={`/images/auth/${photo}`} alt={t(`photo${index}`)} fill sizes="(max-width: 760px) 100vw, (max-width: 1280px) 48vw, 600px" loading="eager" fetchPriority={index === 0 ? 'high' : 'auto'} onLoad={() => { loaded.current[index] = true; }} className={styles.photo} style={{ objectPosition: index === 2 ? '54% center' : 'center' }} />
         </div>)}
         <button type="button" className={styles.pause} aria-label={paused ? t('play') : t('pause')} aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? <Play size={16} aria-hidden="true"/> : <Pause size={16} aria-hidden="true"/>}</button>
       </aside>
