@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, ChevronRight } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -178,7 +179,7 @@ export default function WardMapPage() {
                 id={`ward-${ward.number}`}
                 className="scroll-mt-32 flex flex-col justify-between border border-[var(--border-subtle)] bg-white p-0 transition-shadow hover:shadow-md target:border-[var(--portal-blue-700)] target:ring-2 target:ring-[var(--zari-gold-500)]"
               >
-                <img src={profile.image} alt="" className="h-44 w-full object-cover" />
+                <Image src={profile.image} alt="" width={720} height={480} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="h-44 w-full object-cover" />
                 <div className="p-5">
                 <div>
                   <div className="flex items-center justify-between">

@@ -1,6 +1,15 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { HeaderGlobalSearch } from '@/components/search/HeaderGlobalSearch';
 import fs from 'fs';
 import path from 'path';
+
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
+vi.mock('next-intl', () => ({
+  useLocale: () => 'en',
+  useTranslations: () => (key: string) => key,
+}));
 
 describe('Header Global Citizen Search & Alignment Verification', () => {
   const headerPath = path.join(process.cwd(), 'components/layout/Header.tsx');
@@ -28,14 +37,11 @@ describe('Header Global Citizen Search & Alignment Verification', () => {
     expect(headerContent).toMatch(/<HeaderGlobalSearch \/>[\s\S]*?<Link[\s\S]*?chatbot[\s\S]*?aiAssistant/);
   });
 
-  it('should include Satyameva Jayate horizontally aligned on the same row with vertical divider in HeaderGlobalSearch', () => {
-    const searchContent = fs.readFileSync(searchPath, 'utf8');
-    // Check horizontal flex container with search input, divider and satyamevajayate
-    expect(searchContent).toContain('hidden lg:flex items-center');
-    expect(searchContent).toContain('h-[44px]');
-    expect(searchContent).toContain('bg-slate-300'); // vertical divider
-    expect(searchContent).toContain('satyamevaJayate'); // Devanagari motto
-    expect(searchContent).toContain('inline-flex items-center text-[13px] font-semibold tracking-wider');
+  it('should render the desktop search input and an accessible compact search button', () => {
+    const markup = renderToStaticMarkup(createElement(HeaderGlobalSearch));
+    expect(markup).toMatch(/<input\b[^>]*placeholder="searchPlaceholder"/);
+    expect(markup).toMatch(/<button\b[^>]*aria-label="searchOpen"/);
+    expect(markup).toContain('lg:hidden');
   });
 
   it('should have symmetrical translation keys for search placeholder and motto across all 3 locales', () => {

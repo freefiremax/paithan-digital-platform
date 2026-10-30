@@ -11,8 +11,6 @@ import {
 import { useTranslations, useLocale } from "next-intl";
 import { PAITHAN_WARDS } from "@/lib/mock-data";
 
-type WardItem = (typeof PAITHAN_WARDS)[number];
-
 export default function AdminWardsPage() {
   const t = useTranslations("admin");
   const tNagar = useTranslations("nagarParishad");

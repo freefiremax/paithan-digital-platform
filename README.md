@@ -1,5 +1,11 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
+### CI maintenance — 2026-10-30
+
+Next.js and its ESLint configuration are pinned to 16.4.3; Zod requires 4.6.7 or newer within v4. The refreshed lockfile resolves the reported Next.js/Zod advisories and the previous Sharp advisory. CI runs `npm audit --audit-level=high` without advisory exceptions. Two moderate advisories remain in fast-uri and Vite. Header search verification renders the current search controls instead of requiring the retired motto/divider layout. Reveal relies on its existing reduced-motion CSS, avoiding a synchronous effect state update. Ward photographs use Next.js Image; unused imports/types were removed.
+
+Validation: ESLint and TypeScript pass, and all 171 tests excluding the database integration suite pass. Database integration requires a disposable PostgreSQL database as configured in CI. The local Windows production build remains blocked loading `next.config.ts` by the SWC native binding/cache ACL failure; Linux CI build verification is still required.
+
 ### Chatbot knowledge upgrade — 2026-10-14
 
 Security status: the [focused backend security review](docs/backend-security-review.md) found critical registration/session authorization gaps and a high-risk upload ownership gap. Anonymous admin API checks returned 401 and 58 existing backend tests passed, but these do not establish security readiness. Application fixes and negative regression tests are still required; this review changed documentation only.

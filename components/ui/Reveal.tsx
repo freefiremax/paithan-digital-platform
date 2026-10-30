@@ -79,9 +79,9 @@ export function Reveal({
     const node = ref.current;
     if (!node) return;
 
-    // Reduced motion: reveal immediately, never observe.
+    // Reduced-motion CSS already shows the content without a reveal class.
+    // No observer or synchronous state update is needed in that mode.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
       return;
     }
 

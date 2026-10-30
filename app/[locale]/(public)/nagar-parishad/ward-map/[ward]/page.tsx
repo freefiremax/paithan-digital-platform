@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound, useParams } from "next/navigation";
 import { ArrowLeft, ArrowRight, Landmark, MapPin, ShieldCheck, MessageSquare, Compass, FileText } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -36,7 +37,7 @@ export default function WardDetailPage() {
     <div className={styles.page} data-theme={profile.identity.theme}>
       <div className={styles.topline}><Link href={base}><ArrowLeft size={16}/>{t("wardMapTitle")}</Link><span>{c.directory}</span></div>
       <section className={styles.hero}>
-        <img src={profile.image} alt={profile.imageNote} className={styles.photo}/>
+        <Image src={profile.image} alt={profile.imageNote} width={1200} height={800} sizes="(max-width: 700px) 100vw, 50vw" className={styles.photo}/>
         <div className={styles.shade}/>
         <div className={styles.heroInner}>
           <span className={styles.wardNumber} aria-hidden="true">{ward.number.toString().padStart(2,"0")}</span>

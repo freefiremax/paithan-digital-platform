@@ -10,7 +10,6 @@ import {
   Menu,
   X,
   Bot,
-  FileText,
   ChevronDown,
   Globe,
   LogOut,

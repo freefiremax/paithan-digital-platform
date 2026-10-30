@@ -8,7 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
-import { notifications as initialNotifications, NotificationItem, NotificationCategory } from "@/lib/mock-data";
+import { notifications as initialNotifications, NotificationItem } from "@/lib/mock-data";
 
 export default function AdminNotificationsPage() {
   const t = useTranslations("admin");

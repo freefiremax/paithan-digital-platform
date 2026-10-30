@@ -1,5 +1,15 @@
 # Agent Change Log
 
+## 2026-10-30 — Codex — Repair CI test, lint and dependency audit failures
+
+- Prepared on `codex/fix-ci-checks` from `origin/main` in the managed `ci-repair` worktree. The original checkout is behind the remote and contains unrelated local changes; those edits were preserved.
+- Changed `package.json` and `package-lock.json`: Next.js/eslint-config-next 16.4.3, Zod ^4.6.7, and refreshed transitive dependencies resolve the four reported Next.js/Zod advisories and the prior Sharp advisory. `.github/workflows/ci.yml` now uses `npm audit --audit-level=high` without advisory exceptions or suppressed audit errors.
+- Changed `tests/header-search.test.ts`: render the actual search component with mocked routing/translations and check its input and accessible compact button, replacing the obsolete exact CSS/motto/divider assertions.
+- Changed `components/ui/Reveal.tsx`: reduced-motion mode uses the existing visible CSS state without calling setState inside the effect. Observer callbacks retain one-shot and reversible behavior.
+- Changed ward-map directory/detail pages to Next.js Image while preserving existing image classes; removed unused declarations in the public home, admin notifications/wards and Header. Updated README with versions and validation limits.
+- Validation: `npm ci` succeeded; `npm run lint` passed without warnings; `npx tsc --noEmit --incremental false` passed; `npm test -- --exclude tests/backend-services.test.ts` passed (171 tests, 12 suites); `npm audit --audit-level=high` passed (two moderate advisories remain in fast-uri and Vite). No live database or citizen data was changed.
+- `npm run build` completed ingestion and Prisma generation, then failed loading `next.config.ts` because the local Windows SWC native binding cache rejected an ancestor ACL. No application compilation was reached; Linux CI build and database integration verification remain outstanding. Discarded only the generated index changes produced by this validation run.
+
 ## 2026-10-14 — Codex — Backend security assessment
 
 - Added `docs/backend-security-review.md` and README status. Critical source findings: public registration persists accepted ADMIN/EDITOR roles; client session updates copy role/ward claims while some admin operations trust those claims. High findings: upload deletion lacks ownership enforcement; enabled credential Turnstile can be omitted and authorize lacks login-specific rate limiting.

@@ -32,7 +32,6 @@ import {
   electedRepresentatives,
   formatCivicDate,
   notifications,
-  paithanDemographics,
   TOURIST_PLACES,
 } from "@/lib/mock-data";
 

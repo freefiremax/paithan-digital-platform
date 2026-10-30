@@ -105,38 +105,9 @@ jobs:
         run: bash .github/scripts/install-dependencies.sh
 
       - name: Run npm audit
-        run: |
-          # High/critical advisories fail the build unless they are listed below.
-          # Only add an advisory here while no patched version exists upstream.
-          # GHSA-vfj7-8cjw-p6xm (braces, via micromatch -> fast-glob -> eslint-config-next/next-sitemap):
-          # every published braces version is affected and none is patched; impact is limited to
-          # pathological glob patterns at lint/build time, not request handling.
-          # GHSA-wq5f-xc86-pv6w (sharp, via next): vulnerability in librsvg dependency.
-          ALLOWED_ADVISORIES="GHSA-vfj7-8cjw-p6xm GHSA-wq5f-xc86-pv6w"
-
-          npm audit --json > audit-report.json || true
-          mapfile -t FOUND < <(
-            jq -r '.vulnerabilities | to_entries[]
-                   | select(.value.severity == "high" or .value.severity == "critical")
-                   | .value.via[] | select(type == "object") | .url' audit-report.json \
-              | sed -E 's|.*/advisories/||' | sort -u
-          )
-
-          if [ ${#FOUND[@]} -eq 0 ]; then
-            echo "No high or critical advisories found."
-            exit 0
-          fi
-
-          status=0
-          for advisory in "${FOUND[@]}"; do
-            if [[ " $ALLOWED_ADVISORIES " == *" $advisory "* ]]; then
-              echo "::warning::$advisory is accepted because no fixed version is published."
-            else
-              echo "::error::$advisory must be resolved (see npm audit)."
-              status=1
-            fi
-          done
-          exit $status
+        # Patched dependencies no longer need advisory exceptions. Preserve
+        # failures for high/critical vulnerabilities and audit service errors.
+        run: npm audit --audit-level=high
 
       - name: Check for committed secrets
         run: |
