@@ -43,13 +43,13 @@ test('desktop auth pages show the heritage poster and civic guide', async ({ pag
 test('a missing account shows a registration action and carries the email forward', async ({ page }) => {
   // Isolated UI test: stub both the challenge and auth response; no live credentials are sent.
   await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: 'window.turnstile={render:(el,o)=>{setTimeout(()=>o.callback("ui-test-token"),0);return "test";},reset(){},remove(){}};' }));
-  await page.route('**/api/auth/callback/credentials', route => route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ url: 'https://paithan-digital-platform.vercel.app/en/login?error=CredentialsSignin&code=account_not_found' }) }));
+  await page.route('**/api/auth/callback/credentials*', route => route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ url: 'https://paithan-digital-platform.vercel.app/en/login?error=CredentialsSignin&code=account_not_found' }) }));
   await page.goto('/en/login');
   await page.locator('#auth-email').fill('missing@example.com');
   await page.locator('#auth-password').fill('a-test-password');
   await expect(page.getByRole('status').filter({ hasText: 'Security check complete.' })).toBeVisible();
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-  const notice = page.getByRole('alert');
+  const notice = page.getByRole('region', { name: 'Citizen Sign In' }).getByRole('alert');
   await expect(notice).toContainText('No account was found');
   await notice.getByRole('link', { name: 'Register as a citizen' }).click();
   await expect(page.locator('#auth-email')).toHaveValue('missing@example.com');
