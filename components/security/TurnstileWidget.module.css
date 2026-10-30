@@ -13,3 +13,9 @@
 .spinner { animation: turn 1s linear infinite; }
 @keyframes turn { to { transform: rotate(360deg); } }
 @media(prefers-reduced-motion:reduce) { .spinner { animation: none; } }
+
+/* Keep the genuine challenge visible without making compact auth forms taller than the viewport. */
+.panel { padding: 6px; }
+.heading { margin-bottom: 5px; font-size: 11px; gap: 5px; }
+.heading small { font-size: 9px; }
+.message { margin-top: 5px; font-size: 11px; line-height: 1.5; }

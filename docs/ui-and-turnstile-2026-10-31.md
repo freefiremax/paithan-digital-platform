@@ -18,3 +18,7 @@ All six policy documents now use section headings and bullet points, with an anc
 Primary reference: [Cloudflare widget configuration](https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/widget-configurations/). Widget appearance settings cannot override an Invisible-mode key: if a visible checkbox is required, the account owner must configure the key in Managed mode and include the deployed hostname. Domain/provider outages and network-blocked scripts cannot be repaired by pretending a token was verified.
 
 The independent Vercel authentication-secret/access blocker recorded in backend-security-review.md remains separate from these widget/UI fixes. No successful real sign-in is asserted without resolving and rechecking that deployment configuration.
+
+## Compact authentication layout
+
+Citizen sign-in, registration and council sign-in now share a centered card with outer margins, smaller vertical gaps, a two-column registration form and full-photo containment rather than cropping. Compact-height views retain password guidance for assistive technology while the input placeholder still gives the minimum length. The page can grow when space is genuinely insufficient (for example browser zoom, an on-screen keyboard or additional error text); controls are never hidden with overflow clipping. Viewport checks cover all three languages and all three auth routes at 1366×768, 1280×720 and 390×844 using an explicitly isolated security fixture, not a real login or challenge.

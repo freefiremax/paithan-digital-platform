@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 for (const locale of ['en', 'mr', 'hi']) {
   test(`${locale} policy pages have readable sections and preserve locale`, async ({ page, context, baseURL }) => {
+    await page.setViewportSize({ width: locale === 'en' ? 1440 : 390, height: 900 });
     await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
