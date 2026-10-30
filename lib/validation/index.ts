@@ -108,6 +108,11 @@ export const createUserSchema = z.object({
   wardId: z.string().cuid().optional().nullable(),
 }).strict();
 
+// Public registration must never accept staff roles or ward assignments.
+export const citizenRegistrationSchema = createUserSchema.omit({ role: true, wardId: true }).extend({
+  turnstileToken: z.string().max(2048).optional(),
+}).strict();
+
 export const updateUserSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   password: z.string().min(12).max(128).optional(),

@@ -795,7 +795,20 @@
     "signUpWithGoogle": "गूगल से साइन अप करें",
     "orRegisterWithEmail": "या ईमेल से पंजीकरण करें",
     "backToPublic": "सार्वजनिक पोर्टल पर वापस जाएं",
-    "loading": "लोड हो रहा है..."
+    "loading": "लोड हो रहा है...",
+    "nameLabel": "पूरा नाम",
+    "namePlaceholder": "अपना पूरा नाम दर्ज करें",
+    "emailLabel": "ईमेल पता",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "पासवर्ड बनाएं",
+    "passwordPlaceholder": "कम से कम १२ अक्षर",
+    "confirmPasswordLabel": "पासवर्ड की पुष्टि करें",
+    "confirmPasswordPlaceholder": "पासवर्ड फिर दर्ज करें",
+    "passwordHint": "१२ से १२८ अक्षर इस्तेमाल करें। ऐसा पासवर्ड चुनें जो कहीं और इस्तेमाल न हो।",
+    "submitBtn": "खाता बनाएं",
+    "errorPasswordsMismatch": "दोनों पासवर्ड मेल नहीं खाते। कृपया फिर दर्ज करें।",
+    "emailExists": "इस ईमेल का खाता पहले से है। कृपया साइन इन करें।",
+    "submitError": "खाता नहीं बन सका। जानकारी जांचकर फिर प्रयास करें।"
   },
   "login": {
     "title": "नागरिक साइन इन",
@@ -809,7 +822,15 @@
     "forgotPassword": "पासवर्ड भूल गए?",
     "councilStaffLink": "क्या आप नगर परिषद कर्मचारी हैं? प्रशासनिक पोर्टल",
     "accountCreatedSuccess": "खाता सफलतापूर्वक बन गया! साइन इन करने के लिए कृपया अपना पासवर्ड दर्ज करें।",
-    "loading": "लोड हो रहा है..."
+    "loading": "लोड हो रहा है...",
+    "emailLabel": "ईमेल पता",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "पासवर्ड",
+    "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
+    "submitBtn": "साइन इन करें",
+    "errorInvalidCredentials": "साइन इन नहीं हुआ। ईमेल, पासवर्ड और सुरक्षा जांच देखकर फिर प्रयास करें।",
+    "needAccount": "नागरिक के रूप में पंजीकरण करें",
+    "continueWithGoogle": "Google के साथ जारी रखें"
   },
   "adminLogin": {
     "title": "नगर परिषद प्रशासनिक पोर्टल",
@@ -817,7 +838,19 @@
     "email": "आधिकारिक परिषद ईमेल",
     "password": "पासवर्ड",
     "signInButton": "प्रशासनिक CMS में साइन इन करें",
-    "notice": "केवल अधिकृत अधिकारी पहुंच। सभी लॉगिन प्रयासों को IT अधिनियम के तहत ऑडिट किया जाता है।"
+    "notice": "केवल अधिकृत अधिकारी पहुंच। सभी लॉगिन प्रयासों को IT अधिनियम के तहत ऑडिट किया जाता है।",
+    "officialPlatform": "पैठण नगर परिषद",
+    "orContinueWith": "या अपना ईमेल इस्तेमाल करें",
+    "emailLabel": "आधिकारिक परिषद ईमेल",
+    "passwordLabel": "पासवर्ड",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
+    "submitBtn": "प्रशासनिक CMS में साइन इन करें",
+    "signingIn": "लोड हो रहा है...",
+    "errorInvalidCredentials": "साइन इन नहीं हुआ। ईमेल, पासवर्ड और सुरक्षा जांच देखकर फिर प्रयास करें।",
+    "errorUnexpected": "कनेक्ट नहीं हो सका। कृपया फिर प्रयास करें।",
+    "backToPublic": "पोर्टल पर वापस जाएं",
+    "disclaimer": "केवल अधिकृत नगर परिषद कर्मचारियों के लिए।"
   },
   "admin": {
     "dashboardTitle": "प्रशासनिक डैशबोर्ड",
@@ -895,7 +928,13 @@
     "verifiedByCloudflare": "Cloudflare द्वारा सत्यापित",
     "connecting": "पैठण डिजिटल पोर्टल से जुड़ रहा है...",
     "proceedImmediately": "तुरंत आगे बढ़ने के लिए यहां क्लिक करें →",
-    "protectedNotice": "नागरिक सेवाओं की सुरक्षा के लिए पैठण नगर परिषद क्लाउडफ्लेयर सुरक्षा प्रणाली का उपयोग करती है।"
+    "protectedNotice": "नागरिक सेवाओं की सुरक्षा के लिए पैठण नगर परिषद क्लाउडफ्लेयर सुरक्षा प्रणाली का उपयोग करती है।",
+    "checkComplete": "सुरक्षा जांच पूरी हो गई।",
+    "checkFailed": "सुरक्षा जांच पूरी नहीं हुई। challenges.cloudflare.com की अनुमति देकर फिर प्रयास करें।",
+    "checkRequired": "आगे बढ़ने के लिए सुरक्षा जांच पूरी करें।",
+    "verificationError": "सत्यापन त्रुटि: {code}",
+    "retryCheck": "सुरक्षा जांच फिर करें",
+    "unavailable": "सुरक्षा सत्यापन उपलब्ध नहीं है। कृपया परिषद से संपर्क करें।"
   },
   "adminFacilities": {
     "title": "नागरिक सुविधा प्रबंधन",
@@ -1000,5 +1039,20 @@
     "update": "उपयोगकर्ता अपडेट करें",
     "saving": "सहेजा जा रहा है...",
     "deleteConfirm": "क्या आप वाकई इस उपयोगकर्ता को हटाना चाहते हैं?"
+  },
+  "auth": {
+    "councilName": "पैठण नगर परिषद",
+    "backToPortal": "पोर्टल पर वापस जाएं",
+    "continueWithGoogle": "Google के साथ जारी रखें",
+    "orUseEmail": "या अपना ईमेल इस्तेमाल करें",
+    "showPassword": "पासवर्ड दिखाएं",
+    "hidePassword": "पासवर्ड छिपाएं",
+    "googleError": "Google साइन इन पूरा नहीं हुआ। कृपया फिर प्रयास करें।",
+    "verificationRequired": "सुरक्षा जांच पूरी करके फिर प्रयास करें।",
+    "rateLimited": "बहुत अधिक प्रयास हुए हैं। एक मिनट रुककर फिर प्रयास करें।",
+    "unexpectedError": "कनेक्ट नहीं हो सका। कृपया फिर प्रयास करें।",
+    "privacyNote": "आपकी खाता जानकारी का उपयोग पोर्टल की सेवाएं देने के लिए किया जाता है।",
+    "privacyPolicy": "गोपनीयता नीति",
+    "terms": "उपयोग की शर्तें"
   }
 }

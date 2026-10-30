@@ -7,6 +7,8 @@ import { verify } from "@node-rs/argon2";
 import { prisma } from "@/lib/db";
 import { env } from "@/lib/env";
 import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
+import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
+import { loginSchema } from "@/lib/validation";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -48,20 +50,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
         turnstileToken: { label: "Turnstile Token", type: "text" },
       },
-      authorize: async (credentials) => {
-        if (!credentials?.email || !credentials?.password) return null;
+      authorize: async (credentials, request) => {
+        const parsed = loginSchema.safeParse({ email: credentials?.email, password: credentials?.password });
+        if (!parsed.success || parsed.data.password.length > 128) return null;
+        const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+        const [ipLimit, emailLimit] = await Promise.all([
+          checkRateLimit(`login:ip:${ip}`, RATE_LIMIT_CONFIGS.auth),
+          checkRateLimit(`login:email:${parsed.data.email.toLowerCase()}`, RATE_LIMIT_CONFIGS.auth),
+        ]);
+        if (!ipLimit.success || !emailLimit.success) return null;
 
-        if (isTurnstileEnabled() && credentials.turnstileToken) {
+        if (isTurnstileEnabled()) {
           const turnstileValid = await verifyTurnstileToken(credentials.turnstileToken as string | undefined);
           if (!turnstileValid) return null;
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
+          where: { email: parsed.data.email },
         });
         if (!user?.passwordHash) return null;
 
-        const valid = await verify(user.passwordHash, credentials.password as string);
+        const valid = await verify(user.passwordHash, parsed.data.password);
         if (!valid) return null;
 
         return {
@@ -78,7 +87,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn() {
       return true;
     },
-    async jwt({ token, user, trigger, session, profile }) {
+    async jwt({ token, user, profile }) {
       if (user) {
         token.id = user.id;
         token.role = (user.role as Role) || Role.PUBLIC;
@@ -95,11 +104,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.name = (profile as { name?: string }).name;
         }
       }
-      if (trigger === "update" && session) {
-        token.role = (session.role as Role) ?? token.role;
-        token.wardId = (session.wardId as string | null | undefined) ?? token.wardId;
-        if (session.name) token.name = session.name;
-        if (session.image) token.picture = session.image;
+      // Recheck authorization on session reads as well as client update requests.
+      if (!user && (token.id || token.sub)) {
+        const storedUser = await prisma.user.findUnique({ where: { id: (token.id || token.sub) as string } });
+        if (!storedUser) return null;
+        token.role = storedUser.role;
+        token.wardId = storedUser.wardId;
+        token.name = storedUser.name;
+        token.picture = storedUser.image;
       }
       return token;
     },

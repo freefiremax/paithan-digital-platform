@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { createUserSchema } from "@/lib/validation";
+import { citizenRegistrationSchema } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
 import { handleApiError } from "@/lib/errors";
 import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
+import { isTurnstileEnabled, verifyTurnstileToken } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const parsed = createUserSchema.safeParse(body);
+    const parsed = citizenRegistrationSchema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json(
@@ -30,6 +31,13 @@ export async function POST(req: NextRequest) {
             details: parsed.error.flatten().fieldErrors,
           },
         },
+        { status: 400 }
+      );
+    }
+
+    if (isTurnstileEnabled() && !(await verifyTurnstileToken(parsed.data.turnstileToken))) {
+      return NextResponse.json(
+        { error: { code: "TURNSTILE_FAILED", message: "Complete the security verification and try again." } },
         { status: 400 }
       );
     }
@@ -52,8 +60,7 @@ export async function POST(req: NextRequest) {
         email: parsed.data.email,
         name: parsed.data.name,
         passwordHash,
-        role: parsed.data.role,
-        wardId: parsed.data.wardId,
+        role: "PUBLIC",
       },
       select: {
         id: true,

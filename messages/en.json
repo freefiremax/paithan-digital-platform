@@ -795,7 +795,20 @@
     "signUpWithGoogle": "Sign up with Google",
     "orRegisterWithEmail": "Or register with email",
     "backToPublic": "Back to Public Portal",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "nameLabel": "Full name",
+    "namePlaceholder": "Enter your full name",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Create a password",
+    "passwordPlaceholder": "At least 12 characters",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Enter your password again",
+    "passwordHint": "Use 12–128 characters. Choose a password you do not use elsewhere.",
+    "submitBtn": "Create account",
+    "errorPasswordsMismatch": "The passwords do not match. Please enter them again.",
+    "emailExists": "An account already exists for this email. Please sign in.",
+    "submitError": "Your account could not be created. Check your details and try again."
   },
   "login": {
     "title": "Citizen Sign In",
@@ -809,7 +822,15 @@
     "forgotPassword": "Forgot password?",
     "councilStaffLink": "Are you municipal staff? Council admin portal",
     "accountCreatedSuccess": "Account created successfully! Please enter your password to sign in.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submitBtn": "Sign in",
+    "errorInvalidCredentials": "Sign-in failed. Check your email, password and security verification, then try again.",
+    "needAccount": "Register as a citizen",
+    "continueWithGoogle": "Continue with Google"
   },
   "adminLogin": {
     "title": "Municipal Admin Portal",
@@ -817,7 +838,19 @@
     "email": "Official Council Email",
     "password": "Password",
     "signInButton": "Sign In to Admin CMS",
-    "notice": "Restricted official access. All login attempts and IP addresses are audited under the IT Act."
+    "notice": "Restricted official access. All login attempts and IP addresses are audited under the IT Act.",
+    "officialPlatform": "Paithan Municipal Council",
+    "orContinueWith": "or use your email",
+    "emailLabel": "Official Council Email",
+    "passwordLabel": "Password",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "Enter your password",
+    "submitBtn": "Sign In to Admin CMS",
+    "signingIn": "Loading...",
+    "errorInvalidCredentials": "Sign-in failed. Check your email, password and security verification, then try again.",
+    "errorUnexpected": "Unable to connect. Please try again.",
+    "backToPublic": "Back to portal",
+    "disclaimer": "For authorized municipal staff only."
   },
   "admin": {
     "dashboardTitle": "Administrative Dashboard",
@@ -895,7 +928,13 @@
     "verifiedByCloudflare": "Verified by Cloudflare",
     "connecting": "Connecting to Paithan Digital Portal...",
     "proceedImmediately": "Click here to proceed immediately →",
-    "protectedNotice": "Paithan Municipal Council utilizes Cloudflare DDoS and automated threat mitigation to protect citizen services."
+    "protectedNotice": "Paithan Municipal Council utilizes Cloudflare DDoS and automated threat mitigation to protect citizen services.",
+    "checkComplete": "Security check complete.",
+    "checkFailed": "Security check could not complete. Allow challenges.cloudflare.com and try again.",
+    "checkRequired": "Complete the security check to continue.",
+    "verificationError": "Verification error: {code}",
+    "retryCheck": "Retry security check",
+    "unavailable": "Security verification is unavailable. Please contact the council."
   },
   "adminFacilities": {
     "title": "Facilities Management",
@@ -1000,5 +1039,20 @@
     "update": "Update User",
     "saving": "Saving...",
     "deleteConfirm": "Are you sure you want to delete this user?"
+  },
+  "auth": {
+    "councilName": "Paithan Municipal Council",
+    "backToPortal": "Back to portal",
+    "continueWithGoogle": "Continue with Google",
+    "orUseEmail": "or use your email",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "googleError": "Google sign-in could not complete. Please try again.",
+    "verificationRequired": "Complete the security check and try again.",
+    "rateLimited": "Too many attempts. Please wait a minute and try again.",
+    "unexpectedError": "Unable to connect. Please try again.",
+    "privacyNote": "Your account information is used to provide portal services.",
+    "privacyPolicy": "Privacy policy",
+    "terms": "Terms of use"
   }
 }

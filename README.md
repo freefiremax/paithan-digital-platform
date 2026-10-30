@@ -1,5 +1,11 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
+### Citizen authentication — 2026-10-30
+
+Sign-in and registration now share the portal's light paper, burgundy and teal palette, council masthead, accessible labelled controls and complete English/Marathi/Hindi translations. Password registration creates a PUBLIC account, then opens sign-in with a confirmation; it does not reuse a single-use Turnstile token for automatic login. Google OAuth continues through the Prisma adapter into PostgreSQL User/Account records. Sessions use JWT cookies, so an empty Session table is expected for this configuration. Cloudflare Turnstile validates challenges; it is not the citizen account database.
+
+Credential login is rate limited by IP and email, requires server-verified Turnstile when configured, and has a matching widget on public/admin forms. Registration rejects supplied role/ward fields and requires configured challenge verification. JWT reads reload database authorization instead of trusting client role updates. Existing local configuration was checked read-only: the database connected and contained two Google accounts linked to two users. Live provider/session/search/sector endpoints responded successfully; anonymous admin requests and an invalid challenge were rejected. These checks do not establish that every backend feature is complete: upload ownership and the remaining findings in `docs/backend-security-review.md` still require remediation. A fresh Google consent flow and successful human Turnstile verification are separate end-to-end checks.
+
 ### CI maintenance — 2026-10-30
 
 Next.js and its ESLint configuration are pinned to 16.4.3; Zod requires 4.6.7 or newer within v4. The refreshed lockfile resolves the reported Next.js/Zod advisories and the previous Sharp advisory. CI runs `npm audit --audit-level=high` without advisory exceptions. Two moderate advisories remain in fast-uri and Vite. Header search verification renders the current search controls instead of requiring the retired motto/divider layout. Reveal relies on its existing reduced-motion CSS, avoiding a synchronous effect state update. Ward photographs use Next.js Image; unused imports/types were removed.

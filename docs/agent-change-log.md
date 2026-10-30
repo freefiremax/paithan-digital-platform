@@ -1,5 +1,14 @@
 # Agent Change Log
 
+## 2026-10-30 — Codex — Light citizen authentication and auth storage verification
+
+- Replaced public login/register implementations with `components/auth/CitizenAuth.tsx` and its scoped CSS module. Reused existing paper/burgundy/teal tokens and council seal; added responsive light forms, associated labels, autocomplete, password visibility, localized feedback and policy links. Filled missing public/admin auth and security widget messages in all three dictionaries.
+- Added `lib/auth/redirect.ts` for local public callback destinations. Registration now confirms creation on a fresh sign-in form; failed sign-ins remain on the form. Challenge tokens reset between attempts. Updated TurnstileWidget messages and admin credential form to support server-enforced verification.
+- Added a dedicated public registration schema and enforced PUBLIC role; protected role/ward fields are rejected. Credential attempts have IP/email limits, missing/invalid challenge tokens fail when configured, and JWT reads refresh role/ward from the database, including invalidation for deleted users. No database migrations or live account mutations.
+- Added actual callback/registration negative tests in `tests/auth-security.test.ts`, translated SSR coverage in `tests/auth-pages.test.tsx`, and light/mobile browser checks in `e2e/auth-pages.spec.ts`. Vitest now includes TSX test files. Updated README.
+- Read-only configured database verification: connection succeeded; two Google OAuth accounts link to two User records. Only aggregate counts were read; no names, emails, passwords or tokens were output. Live sectors/search/providers/session returned 200; anonymous admin users/db-health returned 401; invalid security token returned 400. Account storage is PostgreSQL via Prisma, not Cloudflare; JWT sessions need no Session rows.
+- Offline validation: 195 tests passed across 14 suites; TypeScript passed. Local Next preview remains affected by the previously documented Windows SWC cache ACL issue. Deployment/browser verification and CI results are recorded after publication. Fresh human Google consent and Turnstile challenge completion are not simulated by these checks; other documented backend findings remain outside this focused auth/UI repair.
+
 ## 2026-10-30 — Codex — Repair CI test, lint and dependency audit failures
 
 - Prepared on `codex/fix-ci-checks` from `origin/main` in the managed `ci-repair` worktree. The original checkout is behind the remote and contains unrelated local changes; those edits were preserved.

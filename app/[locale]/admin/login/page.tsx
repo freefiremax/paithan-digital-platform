@@ -6,6 +6,7 @@ import Link from "next/link";
 import { signIn, useSession, getCsrfToken } from "next-auth/react";
 import { ShieldCheck, Lock, Mail, ArrowRight, Building2, AlertCircle } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 
 function AdminLoginForm() {
   const router = useRouter();
@@ -35,6 +36,9 @@ function AdminLoginForm() {
       : ""
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [challenge, setChallenge] = useState(0);
+  const turnstileConfigured = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -67,12 +71,14 @@ function AdminLoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    if (turnstileConfigured && !turnstileToken) { setError(tLogin("errorInvalidCredentials")); return; }
     setIsLoading(true);
 
     try {
       const result = await signIn("credentials", {
         email,
         password,
+        turnstileToken,
         redirect: false,
         callbackUrl: targetCallbackUrl,
       });
@@ -87,6 +93,8 @@ function AdminLoginForm() {
       setError(t("errorUnexpected"));
     } finally {
       setIsLoading(false);
+      setTurnstileToken("");
+      setChallenge(value => value + 1);
     }
   };
 
@@ -205,6 +213,7 @@ function AdminLoginForm() {
                 </div>
               )}
 
+              {turnstileConfigured && <TurnstileWidget key={challenge} theme="light" onVerify={setTurnstileToken} />}
               <button
                 type="submit"
                 disabled={isLoading}

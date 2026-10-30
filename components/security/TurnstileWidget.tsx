@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Script from "next/script";
+import { useTranslations } from "next-intl";
 
 declare global {
   interface Window {
@@ -28,6 +29,7 @@ interface TurnstileWidgetProps {
 }
 
 export function TurnstileWidget({ onVerify, onError, theme = "light", className = "" }: TurnstileWidgetProps) {
+  const t = useTranslations("security");
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const callbacks = useRef({ onVerify, onError });
@@ -75,16 +77,16 @@ export function TurnstileWidget({ onVerify, onError, theme = "light", className 
       <Script id="cloudflare-turnstile" src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
         strategy="afterInteractive" onReady={renderWidget} onError={() => fail("script-load-failed")} />
       <div ref={containerRef} className="min-h-[65px] w-full" />
-      <p role="status" className="mt-2 text-xs">{status === "verified" ? "Security check complete." : status === "error" ? "Security check could not complete. Allow challenges.cloudflare.com and try again." : "Complete the security check to continue."}</p>
+      <p role="status" className="mt-2 text-xs">{t(status === "verified" ? "checkComplete" : status === "error" ? "checkFailed" : "checkRequired")}</p>
       {status === "error" && <>
-        {errorCode && <p className="mt-1 text-xs">Verification error: {errorCode}</p>}
+        {errorCode && <p className="mt-1 text-xs">{t("verificationError", { code: errorCode })}</p>}
         <button type="button" className="mt-2 text-sm underline" onClick={() => {
           setStatus("loading"); setErrorCode(""); callbacks.current.onVerify("");
           if (widgetIdRef.current !== null) window.turnstile?.reset(widgetIdRef.current);
           else if (window.turnstile) renderWidget();
           else window.location.reload();
-        }}>Retry security check</button>
+        }}>{t("retryCheck")}</button>
       </>}
-    </> : <p role="alert" className="text-sm">Security verification is unavailable. Please contact the council.</p>}
+    </> : <p role="alert" className="text-sm">{t("unavailable")}</p>}
   </div>;
 }
