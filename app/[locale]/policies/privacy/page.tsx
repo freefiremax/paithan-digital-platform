@@ -39,6 +39,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
           <li>{p.privacyDataAnalytics}</li>
           <li>{p.privacyVisitorAnalytics}</li>
           <li>{p.privacyDataCookies}</li>
+          <li>{p.privacyCookieChoices}</li>
         </ul>
       </section>
 

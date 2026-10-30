@@ -4,6 +4,7 @@ import React, { ReactNode, useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { useLocale } from "next-intl";
 import { VisitorAnalytics } from "./VisitorAnalytics";
+import { CookiePreferences } from "@/components/privacy/CookiePreferences";
 
 export function ClientProviders({ children }: { children: ReactNode }) {
   const locale = useLocale();
@@ -18,6 +19,7 @@ export function ClientProviders({ children }: { children: ReactNode }) {
     <SessionProvider>
       <VisitorAnalytics />
       {children}
+      <CookiePreferences />
     </SessionProvider>
   );
 }

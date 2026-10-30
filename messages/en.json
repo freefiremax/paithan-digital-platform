@@ -655,7 +655,8 @@
     "privacyChanges": "Any amendments will be published on this page with an updated revision date. Material changes will be highlighted through official portal announcements.",
     "privacyContactTitle": "10. Contact Us",
     "privacyContact": "For privacy questions or rights requests, contact Paithan Municipal Council, Main Road, Paithan - 431107.",
-    "privacyVisitorAnalytics": "Visitor analytics stores daily public-page counts by page, language, device category and traffic-source category. It does not store account identities, IP addresses, cookies or URL query strings. Private account/admin pages are excluded. Browser Do Not Track and Global Privacy Control preferences are respected."
+    "privacyVisitorAnalytics": "Visitor analytics stores daily public-page counts by page, language, device category and traffic-source category. It does not store account identities, IP addresses, cookies or URL query strings. Private account/admin pages are excluded. Browser Do Not Track and Global Privacy Control preferences are respected.",
+    "privacyCookieChoices": "Cookie preferences: essential sign-in/security cookies stay enabled. Optional visitor analytics is off until accepted. Use Cookie preferences at the bottom of the page to accept, reject or change analytics. Your choice is remembered for up to 180 days. Rejecting optional cookies does not disable Cloudflare security verification."
   },
   "search": {
     "title": "Portal Search",
@@ -933,11 +934,15 @@
     "proceedImmediately": "Click here to proceed immediately →",
     "protectedNotice": "Paithan Municipal Council utilizes Cloudflare DDoS and automated threat mitigation to protect citizen services.",
     "checkComplete": "Security check complete.",
-    "checkFailed": "Security check could not complete. Allow challenges.cloudflare.com and try again.",
+    "checkFailed": "The Cloudflare check could not finish. Allow challenges.cloudflare.com, then retry. If it stays blank, reload the page or try another browser.",
     "checkRequired": "Complete the security check to continue.",
     "verificationError": "Verification error: {code}",
     "retryCheck": "Retry security check",
-    "unavailable": "Security verification is unavailable. Please contact the council."
+    "unavailable": "Security verification is unavailable. Please contact the council.",
+    "checkLoading": "Loading the Cloudflare security check…",
+    "checkChecking": "Cloudflare is verifying your browser. Please wait.",
+    "checkInteractive": "Complete the Cloudflare challenge above.",
+    "domainError": "Cloudflare has not authorized this domain. Please contact the council so the website hostname can be added."
   },
   "adminFacilities": {
     "title": "Facilities Management",
@@ -1115,7 +1120,7 @@
     "sources": "Traffic sources",
     "empty": "No visits recorded yet. Real traffic will appear here after tracking starts.",
     "unavailable": "Visitor analytics is temporarily unavailable. Check the database connection and migration status.",
-    "privacyNote": "Aggregate public-page counts only. No account identity, cookie ID, IP address or query string is stored in analytics. Private forms and admin pages are excluded. Do Not Track and Global Privacy Control are respected; obvious bots are filtered, but these are approximate traffic counts.",
+    "privacyNote": "Aggregate public-page counts only. No account identity, cookie ID, IP address or query string is stored in analytics. Private forms and admin pages are excluded. Do Not Track and Global Privacy Control are respected; obvious bots are filtered, but these are approximate traffic counts. Optional analytics is recorded only after the visitor accepts it.",
     "labels": {
       "en": "English",
       "mr": "Marathi",
@@ -1130,5 +1135,22 @@
       "other": "Other websites"
     },
     "restricted": "Visitor analytics is available to council administrators only."
+  },
+  "cookies": {
+    "bannerLabel": "Cookie choices",
+    "title": "Your privacy, your choice",
+    "description": "We use essential cookies for sign-in and security. Optional analytics helps us understand which public pages are useful. You can accept or reject optional analytics and change your choice later.",
+    "privacyLink": "Read our privacy policy",
+    "acceptAll": "Accept all cookies",
+    "rejectOptional": "Reject optional cookies",
+    "preferences": "Cookie preferences",
+    "savePreferences": "Save preferences",
+    "close": "Close cookie preferences",
+    "essentialTitle": "Essential cookies",
+    "essentialDescription": "Required for sign-in, security verification and remembering your cookie choice. These remain enabled.",
+    "alwaysOn": "Always on",
+    "analyticsTitle": "Optional visitor analytics",
+    "analyticsDescription": "Allows anonymous, aggregate public-page counts. No advertising cookies or individual visitor profiles are added. Browser privacy signals can still disable analytics.",
+    "storageError": "Your browser could not save this choice. Check your cookie settings and try again."
   }
 }

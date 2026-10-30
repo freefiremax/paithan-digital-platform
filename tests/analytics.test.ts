@@ -8,7 +8,7 @@ import { POST } from '@/app/api/analytics/route';
 import { publicAnalyticsPath, visitorDevice, visitorSource } from '@/lib/analytics-path';
 
 function event(body: unknown = { path: '/mr/tourism/jayakwadi', referrer: 'www.google.com' }, headers: Record<string, string> = {}) {
-  return new NextRequest('https://portal.test/api/analytics', { method: 'POST', body: JSON.stringify(body), headers: { origin: 'https://portal.test', 'user-agent': 'Mozilla/5.0 (iPhone; Mobile)', ...headers } });
+  return new NextRequest('https://portal.test/api/analytics', { method: 'POST', body: JSON.stringify(body), headers: { cookie: 'paithan_consent=v1.a1', origin: 'https://portal.test', 'user-agent': 'Mozilla/5.0 (iPhone; Mobile)', ...headers } });
 }
 beforeEach(() => {
   vi.resetAllMocks();
@@ -23,6 +23,10 @@ describe('Aggregate visitor ingestion', () => {
     expect(Object.keys(call.create).sort()).toEqual(['day','device','locale','path','source']);
     expect((call.create.day as Date).getUTCHours()).toBe(0);
     expect(call.update).toEqual({ pageViews: { increment: 1 } });
+  });
+  it.each(['', 'paithan_consent=v1.a0', 'paithan_consent=unknown'])('does not record views without optional consent: %s', async cookie => {
+    expect((await POST(event(undefined, { cookie }))).status).toBe(204);
+    expect(prisma.visitorDailyMetric.upsert).not.toHaveBeenCalled();
   });
   it('rejects cross-origin submissions before database access', async () => {
     expect((await POST(event(undefined, { origin: 'https://other.test' }))).status).toBe(403);

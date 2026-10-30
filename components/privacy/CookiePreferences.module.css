@@ -1,0 +1,27 @@
+.banner { position: fixed; z-index: 1000; bottom: 20px; left: 50%; transform: translateX(-50%); width: min(1120px, calc(100% - 32px)); background: #fffdf9; color: var(--paper-900); border: 1px solid var(--border-strong); border-top: 3px solid var(--portal-blue-800); border-radius: 7px; box-shadow: 0 8px 40px #2e281f24; padding: 22px 25px; display: flex; align-items: center; gap: 30px; }
+.copy { flex: 1; min-width: 0; }
+.title { display: flex; gap: 9px; align-items: center; color: var(--portal-blue-900); margin-bottom: 7px; }
+.title h2 { font: 600 21px/1.3 var(--font-display); }
+.copy p { font-size: 12px; line-height: 1.8; color: var(--paper-700); }
+.copy a, .privacy { color: var(--portal-blue-900); text-decoration: underline; text-underline-offset: 3px; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; flex-shrink: 0; }
+.primary, .secondary { min-height: 43px; border-radius: 4px; padding: 10px 15px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--portal-blue-800); }
+.primary { background: var(--portal-blue-800); color: white; }
+.secondary { background: white; color: var(--portal-blue-900); }
+.configure { grid-column: 1 / -1; padding: 5px 0; min-height: 30px; text-align: center; color: var(--portal-blue-900); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.reopen { position: fixed; z-index: 90; bottom: 12px; left: 12px; display: flex; gap: 6px; align-items: center; border: 1px solid var(--border-strong); border-radius: 20px; padding: 8px 12px; min-height: 36px; background: #fffdf9; color: var(--portal-blue-900); font-size: 11px; box-shadow: 0 2px 8px #2e281f12; cursor: pointer; }
+.dialog { margin: auto; width: min(540px, calc(100% - 28px)); max-height: calc(100svh - 40px); overflow: auto; border: 1px solid var(--border-strong); border-top: 3px solid var(--portal-blue-800); border-radius: 8px; padding: 25px; color: var(--paper-900); background: #fffdf9; box-shadow: 0 20px 80px #2e281f40; }
+.dialog::backdrop { background: #2e281f66; }
+.dialogHeader { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 12px; }
+.dialogHeader h2 { font: 600 25px/1.3 var(--font-display); color: var(--portal-blue-900); }
+.close { display: grid; place-items: center; width: 36px; height: 36px; cursor: pointer; }
+.dialog p { font-size: 13px; line-height: 1.8; color: var(--paper-700); }
+.category { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border-subtle); }
+.category h3, .category label { font-size: 14px; font-weight: 600; }
+.category p { font-size: 12px; margin-top: 5px; }
+.category input { width: 22px; height: 22px; accent-color: var(--teal-700); flex-shrink: 0; cursor: pointer; }
+.required { font-size: 11px; white-space: nowrap; color: var(--teal-700); }
+.dialogActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 23px; }
+.privacy { display: inline-block; margin-top: 17px; font-size: 12px; }
+.banner button:focus-visible, .dialog button:focus-visible, .reopen:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 3px; }
+@media(max-width:760px) { .banner { bottom: 10px; padding: 18px; display: block; } .actions { margin-top: 14px; } .title h2 { font-size: 20px; } }

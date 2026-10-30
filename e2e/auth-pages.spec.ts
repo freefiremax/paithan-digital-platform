@@ -1,5 +1,9 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ context, baseURL }) => {
+  await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
+});
+
 for (const locale of ['en', 'mr', 'hi']) {
   for (const mode of ['login', 'register', 'admin/login']) {
     test(`${locale} ${mode} stays light and readable on mobile`, async ({ page }) => {
