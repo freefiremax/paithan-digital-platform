@@ -1,5 +1,7 @@
 # Backend security review - 14 October 2026
 
+30 October follow-up: registration now rejects role/ward input, JWT reads refresh database authorization, credential login enforces configured Turnstile and IP/email limits, and public/admin credential forms provide matching widgets. Actual callback and registration regression tests were added. The numbered findings below describe the original review; upload deletion ownership and the additional hardening findings remain open. Google account storage was confirmed using aggregate read-only counts, not a fresh sign-in.
+
 Verdict: functional protections exist, but the backend cannot currently be considered secure for sensitive citizen data. This is a focused code review and read-only production check, not a penetration test or certification. No application code, accounts or assets were changed during this review.
 
 ## Priority findings
