@@ -1,5 +1,13 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
+### Illustrated authentication and visitor analytics — 2026-10-30
+
+Citizen sign-in, registration and council sign-in now share a light three-column layout: a Paithani heritage poster on the left, the form in the centre, and a useful civic guide on the right. On smaller screens the form comes first. All panels are translated. A challenge-verified password sign-in for an unknown email shows a registration notice/link and carries the email into registration; council staff are directed to their administrator.
+
+The existing council dashboard now includes ADMIN-only Visitor analytics at `/{locale}/admin/analytics`. It reads actual daily public-page view totals for the last 30 UTC days, top pages, language, device and traffic-source categories from Neon. It has no sample data or unique-person claims. Tracking is cookie-free, excludes private/account/admin paths and query strings, respects DNT/GPC and filters obvious bots. Vercel preview deployments do not add traffic. The privacy page describes the collection.
+
+Apply `prisma migrate deploy` before enabling this release in another environment; migration `20261030060000_add_visitor_daily_metrics` adds only the aggregate metrics table. It was applied to the configured Neon database. Run `node --env-file=.env --import tsx scripts/verify-backend-health.ts` for read-only table/relationship checks. Database health does not mean all CMS content is populated: many content tables are empty and public pages still use bundled records.
+
 ### Citizen authentication — 2026-10-30
 
 Sign-in and registration now share the portal's light paper, burgundy and teal palette, council masthead, accessible labelled controls and complete English/Marathi/Hindi translations. Password registration creates a PUBLIC account, then opens sign-in with a confirmation; it does not reuse a single-use Turnstile token for automatic login. Google OAuth continues through the Prisma adapter into PostgreSQL User/Account records. Sessions use JWT cookies, so an empty Session table is expected for this configuration. Cloudflare Turnstile validates challenges; it is not the citizen account database.

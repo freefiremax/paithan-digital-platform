@@ -37,6 +37,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
           <li>{p.privacyDataGrievance}</li>
           <li>{p.privacyDataFeedback}</li>
           <li>{p.privacyDataAnalytics}</li>
+          <li>{p.privacyVisitorAnalytics}</li>
           <li>{p.privacyDataCookies}</li>
         </ul>
       </section>

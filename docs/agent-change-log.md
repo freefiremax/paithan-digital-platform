@@ -1,5 +1,13 @@
 # Agent Change Log
 
+## 2026-10-30 — Codex — Illustrated auth pages, account recovery notice and visitor analytics
+
+- Added shared `AuthFrame` and Google mark; expanded the scoped auth CSS with a Paithani photo poster, textile motifs and civic links on both sides. Council sign-in now uses the same light layout. Existing credential/Google/Turnstile handlers were retained. Mobile/tablet layouts put the form first. Added complete auth-panel translations.
+- Missing accounts now return a CredentialsSignin code only after rate limiting and configured challenge verification. Citizen sign-in displays a registration notification/link and preserves the email; staff are told to contact their administrator. Added regression and isolated browser recovery tests.
+- User selected existing Neon/dashboard instead of Supabase. Added `VisitorDailyMetric`, an additive migration, public-page tracker/ingestion route, and ADMIN-only analytics page/sidebar link. Metrics are daily page views (not unique people), with top pages, languages, device categories and broad traffic-source categories. No cookies, identities, query strings or IPs are stored in metrics; DNT/GPC, origin checks, bounded input, rate limits, private-path/bot exclusions and Vercel preview exclusions apply. Updated the privacy notice.
+- Applied the single analytics migration to configured Neon. Read-only health audit found all 26 models present, no pending/failed migrations, no orphan OAuth/grievance/work relationships, and valid credential hash formats. Two Google accounts link to user records. Many civic/heritage content tables are empty; no fabricated content was seeded. Tested analytics upsert inside a rolled-back transaction so no synthetic visitor totals remained. Added `scripts/verify-backend-health.ts` for repeatable read-only checks.
+- Offline validation: 216 tests across 15 suites passed; ESLint and TypeScript passed. Expanded browser coverage for all three auth routes, desktop panels and the mocked missing-account flow. Local Windows Next preview remains subject to the existing SWC cache issue; deployed browser verification follows publication.
+
 ## 2026-10-30 — Codex — Light citizen authentication and auth storage verification
 
 - Replaced public login/register implementations with `components/auth/CitizenAuth.tsx` and its scoped CSS module. Reused existing paper/burgundy/teal tokens and council seal; added responsive light forms, associated labels, autocomplete, password visibility, localized feedback and policy links. Filled missing public/admin auth and security widget messages in all three dictionaries.

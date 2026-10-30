@@ -1,0 +1,21 @@
+.page { color: var(--paper-900); max-width: 1180px; margin: auto; }
+.page h1 { font-family: var(--font-display); font-size: 30px; color: var(--portal-blue-900); }
+.page header p, .note { font-size: 13px; line-height: 1.8; color: var(--paper-700); margin-top: 8px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin: 24px 0; }
+.stats section { padding: 22px; border: 1px solid var(--border-subtle); border-top: 3px solid var(--teal-700); background: white; border-radius: 6px; }
+.stats span { display: block; font-size: 13px; }
+.stats strong { display: block; font-size: 32px; margin-top: 8px; font-weight: 600; color: var(--portal-blue-900); }
+.panel { padding: 24px; border: 1px solid var(--border-subtle); background: white; border-radius: 6px; margin-bottom: 20px; min-width: 0; }
+.panel h2 { font-size: 17px; font-weight: 600; margin-bottom: 14px; }
+.panel p { font-size: 13px; color: var(--paper-600); line-height: 1.7; }
+.chart { height: 170px; display: flex; gap: 5px; align-items: end; margin-top: 22px; border-bottom: 1px solid var(--border-subtle); }
+.chart > div { height: 100%; flex: 1; display: flex; align-items: end; }
+.chart span { display: block; width: 100%; background: var(--teal-700); border-radius: 3px 3px 0 0; }
+.axis { display: flex; justify-content: space-between; gap: 10px; font-size: 11px; color: var(--paper-600); margin-top: 9px; }
+.tableScroll { overflow-x: auto; }
+.panel table { width: 100%; text-align: left; font-size: 13px; }
+.panel th, .panel td { padding: 12px 8px; border-bottom: 1px solid var(--border-subtle); }
+.panel td:last-child, .panel th:last-child { text-align: right; }
+.breakdowns { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; }
+.panel li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; font-size: 13px; border-bottom: 1px solid var(--border-subtle); }
+@media(max-width:700px) { .stats { gap: 8px; } .stats section { padding: 15px 10px; } .stats span { font-size: 11px; } .stats strong { font-size: 26px; } .breakdowns { grid-template-columns: 1fr; gap: 0; } .panel { padding: 18px; } }

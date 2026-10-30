@@ -3,7 +3,7 @@ import type { NextAuthConfig } from "next-auth";
 import { NextRequest } from "next/server";
 
 const captured = vi.hoisted(() => ({ config: undefined as NextAuthConfig | undefined }));
-vi.mock("next-auth", () => ({ default: (config: NextAuthConfig) => { captured.config = config; return {}; } }));
+vi.mock("next-auth", () => ({ CredentialsSignin: class extends Error { code = "credentials"; }, default: (config: NextAuthConfig) => { captured.config = config; return {}; } }));
 vi.mock("next-auth/providers/credentials", () => ({ default: (options: unknown) => ({ id: "credentials", ...options as object }) }));
 vi.mock("next-auth/providers/google", () => ({ default: (options: unknown) => ({ id: "google", ...options as object }) }));
 vi.mock("@auth/prisma-adapter", () => ({ PrismaAdapter: () => ({}) }));
@@ -62,6 +62,10 @@ describe("Actual authentication callbacks", () => {
   it("accepts verified credentials using the stored account role", async () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValue({ id: "citizen", email: "citizen@example.com", name: "Citizen", passwordHash: "hashed-password", role: "PUBLIC", wardId: null } as Awaited<ReturnType<typeof prisma.user.findUnique>>);
     expect(await credentials().authorize({ email: "citizen@example.com", password: "password", turnstileToken: "token", role: "ADMIN" }, request())).toMatchObject({ id: "citizen", role: "PUBLIC" });
+    expect(verifyTurnstileToken).toHaveBeenCalledWith("token");
+  });
+  it("reports a missing account only after rate limiting and challenge verification", async () => {
+    await expect(credentials().authorize({ email: "missing@example.com", password: "password", turnstileToken: "token" }, request())).rejects.toMatchObject({ code: "account_not_found" });
     expect(verifyTurnstileToken).toHaveBeenCalledWith("token");
   });
   it("rate limits password attempts before verifying credentials", async () => {

@@ -3,6 +3,7 @@
 import React, { ReactNode, useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { useLocale } from "next-intl";
+import { VisitorAnalytics } from "./VisitorAnalytics";
 
 export function ClientProviders({ children }: { children: ReactNode }) {
   const locale = useLocale();
@@ -15,6 +16,7 @@ export function ClientProviders({ children }: { children: ReactNode }) {
 
   return (
     <SessionProvider>
+      <VisitorAnalytics />
       {children}
     </SessionProvider>
   );

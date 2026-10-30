@@ -654,7 +654,8 @@
     "privacyChangesTitle": "9. Updates to this Policy",
     "privacyChanges": "Any amendments will be published on this page with an updated revision date. Material changes will be highlighted through official portal announcements.",
     "privacyContactTitle": "10. Contact Us",
-    "privacyContact": "For privacy questions or rights requests, contact Paithan Municipal Council, Main Road, Paithan - 431107."
+    "privacyContact": "For privacy questions or rights requests, contact Paithan Municipal Council, Main Road, Paithan - 431107.",
+    "privacyVisitorAnalytics": "Visitor analytics stores daily public-page counts by page, language, device category and traffic-source category. It does not store account identities, IP addresses, cookies or URL query strings. Private account/admin pages are excluded. Browser Do Not Track and Global Privacy Control preferences are respected."
   },
   "search": {
     "title": "Portal Search",
@@ -830,7 +831,8 @@
     "submitBtn": "Sign in",
     "errorInvalidCredentials": "Sign-in failed. Check your email, password and security verification, then try again.",
     "needAccount": "Register as a citizen",
-    "continueWithGoogle": "Continue with Google"
+    "continueWithGoogle": "Continue with Google",
+    "accountNotFound": "No account was found for this email. Please register to create your citizen account."
   },
   "adminLogin": {
     "title": "Municipal Admin Portal",
@@ -896,7 +898,8 @@
     "editRecord": "Edit",
     "deleteRecord": "Delete",
     "confirmDelete": "Are you sure you want to delete this record?",
-    "refNo": "Ref No."
+    "refNo": "Ref No.",
+    "visitorAnalytics": "Visitor analytics"
   },
   "chatbot": {
     "title": "Paithan Citizen AI Assistant",
@@ -1053,6 +1056,79 @@
     "unexpectedError": "Unable to connect. Please try again.",
     "privacyNote": "Your account information is used to provide portal services.",
     "privacyPolicy": "Privacy policy",
-    "terms": "Terms of use"
+    "terms": "Terms of use",
+    "citizenSignIn": "Looking for citizen sign-in?",
+    "staffAccountMissing": "No council account was found. Please contact your council administrator for staff access."
+  },
+  "authDecor": {
+    "heritagePanel": "Paithan heritage",
+    "civicPanel": "Portal guide",
+    "heritageLabel": "Made of heritage. Made for people.",
+    "heritageCaption": "The threads of Paithani. The spirit of the Godavari. A town with a story of its own.",
+    "discoverHeritage": "Discover our living heritage",
+    "weavingAlt": "A weaver working at a traditional Paithani loom",
+    "civicPassTitle": "Paithan Municipal Council",
+    "citizenPass": "Your citizen connection",
+    "staffPass": "Council service desk",
+    "citizenGrievances": "Have a civic concern?",
+    "citizenGrievancesDetail": "Reach the right department",
+    "citizenServices": "Find a municipal service",
+    "citizenServicesDetail": "Information for everyday needs",
+    "citizenExplore": "Make a day of Paithan",
+    "citizenExploreDetail": "Places, heritage and visitor routes",
+    "staffGrievances": "Citizen grievances",
+    "staffGrievancesDetail": "Review and respond to requests",
+    "staffWorks": "Ward development works",
+    "staffWorksDetail": "Manage local project updates",
+    "staffNotices": "Council notices",
+    "staffNoticesDetail": "Review the publication desk",
+    "communityNote": "17 wards. One connected community.",
+    "login": {
+      "posterTitle": "Welcome back to your town.",
+      "guideTitle": "A little closer to Paithan.",
+      "guideIntro": "The things you need, and the places you love, in one municipal portal."
+    },
+    "register": {
+      "posterTitle": "Every citizen is part of the weave.",
+      "guideTitle": "Your town. Your connection.",
+      "guideIntro": "Join the portal, find the right services and stay connected with Paithan."
+    },
+    "admin": {
+      "posterTitle": "Serving a town with a living legacy.",
+      "guideTitle": "Care for the city starts here.",
+      "guideIntro": "A dedicated workspace for the people who keep Paithan moving."
+    }
+  },
+  "analytics": {
+    "title": "Visitor analytics",
+    "subtitle": "Public portal activity over the last 30 days. Counts are page views, not unique people.",
+    "pageViews": "Page views",
+    "today": "Views today",
+    "pages": "Pages visited",
+    "daily": "Daily page views",
+    "chartLabel": "Daily page views over 30 days: {count} views",
+    "utcDays": "Daily totals · UTC",
+    "topPages": "Most visited pages",
+    "page": "Page",
+    "languages": "Languages",
+    "devices": "Devices",
+    "sources": "Traffic sources",
+    "empty": "No visits recorded yet. Real traffic will appear here after tracking starts.",
+    "unavailable": "Visitor analytics is temporarily unavailable. Check the database connection and migration status.",
+    "privacyNote": "Aggregate public-page counts only. No account identity, cookie ID, IP address or query string is stored in analytics. Private forms and admin pages are excluded. Do Not Track and Global Privacy Control are respected; obvious bots are filtered, but these are approximate traffic counts.",
+    "labels": {
+      "en": "English",
+      "mr": "Marathi",
+      "hi": "Hindi",
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "desktop": "Desktop",
+      "direct": "Direct / unknown",
+      "search": "Search engines",
+      "social": "Social networks",
+      "internal": "Within the portal",
+      "other": "Other websites"
+    },
+    "restricted": "Visitor analytics is available to council administrators only."
   }
 }

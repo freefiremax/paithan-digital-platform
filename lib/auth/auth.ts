@@ -1,4 +1,4 @@
-import NextAuth, { type NextAuthConfig } from "next-auth";
+import NextAuth, { CredentialsSignin, type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -9,6 +9,10 @@ import { env } from "@/lib/env";
 import { verifyTurnstileToken, isTurnstileEnabled } from "@/lib/turnstile";
 import { checkRateLimit, RATE_LIMIT_CONFIGS } from "@/lib/rate-limit";
 import { loginSchema } from "@/lib/validation";
+
+class AccountNotFoundError extends CredentialsSignin {
+  code = "account_not_found";
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -68,7 +72,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const user = await prisma.user.findUnique({
           where: { email: parsed.data.email },
         });
-        if (!user?.passwordHash) return null;
+        if (!user) throw new AccountNotFoundError();
+        if (!user.passwordHash) return null;
 
         const valid = await verify(user.passwordHash, parsed.data.password);
         if (!valid) return null;

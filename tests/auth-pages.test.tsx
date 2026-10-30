@@ -1,13 +1,14 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { NextIntlClientProvider } from "next-intl";
+import AdminLoginPage from "@/app/[locale]/admin/login/page";
 import { CitizenAuth } from "@/components/auth/CitizenAuth";
 import en from "@/messages/en.json";
 import mr from "@/messages/mr.json";
 import hi from "@/messages/hi.json";
 
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), useRouter: () => ({ push: vi.fn() }) }));
-vi.mock("next-auth/react", () => ({ signIn: vi.fn() }));
+vi.mock("next-auth/react", () => ({ signIn: vi.fn(), useSession: () => ({ data: null, status: "unauthenticated" }), getCsrfToken: vi.fn(async () => "test-token") }));
 
 // Render with real dictionaries: any missing key is a regression, not a fallback.
 for (const [locale, messages] of Object.entries({ en, mr, hi })) {
@@ -27,5 +28,16 @@ for (const [locale, messages] of Object.entries({ en, mr, hi })) {
         if (mode === "register") expect(markup).toContain('autoComplete="new-password"');
       });
     }
+  });
+}
+
+for (const [locale, messages] of Object.entries({ en, mr, hi })) {
+  it(`renders the ${locale} council sign-in with translated side panels`, () => {
+    const errors: unknown[] = [];
+    const markup = renderToStaticMarkup(<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Kolkata" onError={error => errors.push(error)}><AdminLoginPage /></NextIntlClientProvider>);
+    expect(errors).toEqual([]);
+    expect(markup).toContain('data-auth-page="admin"');
+    expect(markup).toContain(messages.authDecor.admin.guideTitle);
+    expect(markup).toContain('name="csrfToken"');
   });
 }

@@ -449,3 +449,17 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+// Aggregate public page views only; no user IDs, IPs, cookies or query strings.
+model VisitorDailyMetric {
+  id        String   @id @default(cuid())
+  day       DateTime @db.Date
+  path      String   @db.VarChar(180)
+  locale    String   @db.VarChar(2)
+  device    String   @db.VarChar(10)
+  source    String   @db.VarChar(10)
+  pageViews Int      @default(1)
+
+  @@unique([day, path, locale, device, source])
+  @@index([day])
+}
