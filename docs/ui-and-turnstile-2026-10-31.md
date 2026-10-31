@@ -38,3 +38,5 @@ Normal-browser feedback confirmed genuine checkbox/success, while the earlier sc
 ## Right-hand cookie notice
 
 The initial consent notice is now a compact bottom-right card in the portal's light theme, with a cookie illustration, accept/reject choices, settings and a close action. It still waits for entry-intro completion. Closing the notice only dismisses it for the current page load; it neither saves consent nor starts optional analytics. The icon remains available for later settings, and saved choices retain the existing persistence. Keyboard focus moves to the icon on dismissal and returns safely when the settings dialog closes.
+
+Visual QA of the cookie card exposed an independent mobile masthead overflow (851px document width in a 390px viewport): the council brand used a non-shrinking desktop flex row and pushed all mobile action buttons off-screen. The masthead now wraps into bounded rows below desktop width, with smaller crest/type on phones. The fix addresses the content layout rather than clipping the document to hide the overflow.

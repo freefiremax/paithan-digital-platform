@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   LogIn,
 } from 'lucide-react';
+import styles from './Header.module.css';
 import { CouncilSeal } from '@/components/layout/CouncilSeal';
 import { HeaderGlobalSearch } from '@/components/search/HeaderGlobalSearch';
 import {
@@ -197,23 +198,23 @@ export default function Header() {
         <div className="header-masthead">
           <div className="loom-warp">
             <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
-              <div className="flex items-center justify-between gap-6 py-6 lg:gap-10 lg:py-7">
+              <div className={`${styles.mastheadRow} flex items-center justify-between gap-6 py-6 lg:gap-10 lg:py-7`}>
 
                 {/* Crest plate: the seal in a woven frame, joined by a zari rule
                     to the identity stack. The plate is the one ornament the eye
                     lands on first. */}
                 <Link
                   href={`/${locale}`}
-                  className="group flex shrink-0 items-center gap-5 lg:gap-6 lg:pl-4 xl:pl-6"
+                  className={`${styles.brand} group flex shrink-0 items-center gap-5 lg:gap-6 lg:pl-4 xl:pl-6`}
                 >
-                  <span className="crest-plate">
+                  <span className={`crest-plate ${styles.crest}`}>
                     <CouncilSeal size={72} />
                   </span>
-                  <span className="min-w-0">
-                    <span className="block font-display text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--saffron-700)]">
+                  <span className={`min-w-0 ${styles.brandText}`}>
+                    <span className={`${styles.district} block font-display text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--saffron-700)]`}>
                       {tHeader('district')}
                     </span>
-                    <span className="mt-1 block font-display text-2xl font-semibold leading-[1.08] tracking-tight text-[var(--portal-blue-900)] sm:text-[2rem] lg:text-[2.4rem]">
+                    <span className={`${styles.title} mt-1 block font-display text-2xl font-semibold leading-[1.08] tracking-tight text-[var(--portal-blue-900)] sm:text-[2rem] lg:text-[2.4rem]`}>
                       {tHeader('paithanMunicipalCouncil')}
                     </span>
                     <span
@@ -233,11 +234,11 @@ export default function Header() {
                     action cluster. Clear breathing room on both sides so the
                     heading never crowds the controls. */}
                 <span
-                  className="hidden h-16 w-px shrink-0 bg-gradient-to-b from-transparent via-[var(--zari-gold-400)] to-transparent lg:block"
+                  className={`${styles.divider} hidden h-16 w-px shrink-0 bg-gradient-to-b from-transparent via-[var(--zari-gold-400)] to-transparent lg:block`}
                   aria-hidden="true"
                 />
 
-                <div className="flex flex-1 flex-col items-stretch gap-2.5 min-w-0">
+                <div className={`${styles.desktopActions} flex flex-1 flex-col items-stretch gap-2.5 min-w-0`}>
                 {/* Top row: language, sign-in / register, AI assistant — the
                     account strip, held to the right within the same column as
                     the search beneath it. */}
@@ -357,7 +358,7 @@ export default function Header() {
 
                 {/* Mobile actions: phone, AI assistant and the menu — shown
                     until the account strip takes over at lg. */}
-                <div className="flex items-center gap-2 lg:hidden shrink-0">
+                <div className={`${styles.mobileActions} flex items-center gap-2 lg:hidden shrink-0`}>
                 <a
                   href="tel:02431223010"
                   aria-label="Call 02431-223010"

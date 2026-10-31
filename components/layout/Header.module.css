@@ -1,0 +1,19 @@
+/* Let the masthead wrap its content instead of widening the mobile document. */
+@media(max-width: 1279px) {
+  .mastheadRow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .brand { min-width: 0; max-width: 100%; width: 100%; gap: 14px; }
+  .brandText { min-width: 0; max-width: 100%; }
+  .district { font-size: 10px; letter-spacing: .14em; line-height: 1.6; white-space: normal; }
+  .title { font-size: 30px; line-height: 1.2; white-space: normal; overflow-wrap: break-word; }
+  .divider { display: none; }
+  .desktopActions { min-width: 0; width: 100%; }
+  .mobileActions { justify-self: end; }
+}
+@media(max-width: 1023px) { .desktopActions { display: none; } }
+@media(max-width: 480px) {
+  .mastheadRow { gap: 12px; padding-top: 16px; padding-bottom: 16px; }
+  .crest { flex-shrink: 0; }
+  .crest svg { width: 52px; height: 52px; }
+  .district { font-size: 9px; letter-spacing: .1em; line-height: 1.5; }
+  .title { font-size: 22px; line-height: 1.2; }
+}

@@ -13,3 +13,22 @@ for (const locale of ['en', 'mr', 'hi']) {
     });
   }
 }
+
+
+for (const [locale, width] of [['en', 390], ['mr', 390], ['hi', 390], ['en', 1024]] as const) {
+  test(`${locale} homepage masthead fits ${width}px and keeps navigation reachable`, async ({ page, context, baseURL }) => {
+    await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto(`/${locale}`, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('.header-masthead')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
+    const branding = page.locator('.header-masthead a').first();
+    const box = await branding.boundingBox();
+    expect(box!.x).toBeGreaterThanOrEqual(0);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(width);
+    if (width < 1024) {
+      const buttons = await page.locator('.header-masthead button[aria-expanded]').all();
+      for (const button of buttons) if (await button.isVisible()) await expect(button).toBeInViewport();
+    }
+  });
+}
