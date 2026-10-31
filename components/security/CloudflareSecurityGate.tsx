@@ -80,7 +80,7 @@ export function CloudflareSecurityGate({ children }: { children: React.ReactNode
       <p className="mb-3 text-xs text-slate-600">{tHeader("topbarTagline")}</p>
       <h1 id="security-title" className="text-xl font-semibold text-[#652b3d]">{t("checkingConnection")}</h1>
       <p className="mt-2 text-sm text-slate-600">{t("verifyingBrowser")}</p>
-      <TurnstileWidget key={attempt} appearance="interaction-only" onVerify={verify} />
+      <TurnstileWidget key={attempt} appearance="interaction-only" action="gate" onVerify={verify} />
       {checking && <p role="status" className="mt-3 text-sm">Validating the security check…</p>}
       {error && <p role="alert" className="mt-3 text-sm text-red-700">{error}</p>}
       {canBypass && !verified && (

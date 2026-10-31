@@ -14,8 +14,10 @@ export interface TurnstileOptions {
   'retry-interval'?: number;
   'refresh-expired'?: 'auto' | 'manual' | 'never';
   'refresh-timeout'?: 'auto' | 'manual' | 'never';
-  appearance?: 'always';
-  execution?: 'render';
+  appearance?: 'always' | 'execute' | 'interaction-only';
+  action?: string;
+  cdata?: string;
+  execution?: 'render' | 'execute';
   language?: string;
 }
 export interface TurnstileAPI {

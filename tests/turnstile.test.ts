@@ -28,6 +28,23 @@ describe("Turnstile server validation", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(body, { status })));
     expect(await verifyTurnstileToken("browser-token")).toBe(false);
   });
+  it("sends remoteip when provided", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{"success":true}'));
+    vi.stubGlobal("fetch", fetchMock);
+    expect(await verifyTurnstileToken("browser-token", { remoteip: "192.0.2.1" })).toBe(true);
+    const options = fetchMock.mock.calls[0][1];
+    expect(options.body.get("remoteip")).toBe("192.0.2.1");
+  });
+  it("validates action when specified", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response('{"success":true,"action":"login"}')));
+    expect(await verifyTurnstileToken("browser-token", { action: "login" })).toBe(true);
+    expect(await verifyTurnstileToken("browser-token", { action: "contact" })).toBe(false);
+  });
+  it("validates hostname when specified", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response('{"success":true,"hostname":"paithan.gov.in"}')));
+    expect(await verifyTurnstileToken("browser-token", { expectedHostnames: ["paithan.gov.in"] })).toBe(true);
+    expect(await verifyTurnstileToken("browser-token", { expectedHostnames: ["other.gov.in"] })).toBe(false);
+  });
   it("rejects network failures", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
     expect(await verifyTurnstileToken("browser-token")).toBe(false);

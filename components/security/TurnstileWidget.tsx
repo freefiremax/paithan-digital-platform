@@ -11,6 +11,8 @@ interface Props {
   onError?: () => void;
   theme?: 'light' | 'dark' | 'auto';
   appearance?: 'always' | 'execute' | 'interaction-only';
+  action?: string;
+  cdata?: string;
   className?: string;
 }
 type Status = 'loading' | 'checking' | 'interactive' | 'verified' | 'error';
@@ -20,6 +22,8 @@ export function TurnstileWidget({
   onError,
   theme = 'light',
   appearance = 'interaction-only',
+  action,
+  cdata,
   className = '',
 }: Props) {
   const t = useTranslations('security');
@@ -85,7 +89,7 @@ export function TurnstileWidget({
       update('checking'); watch();
       id = api.render(container.current, {
         sitekey: siteKey, theme, size: container.current.clientWidth < 300 ? 'compact' : 'normal',
-        appearance, execution: 'render', language: locale,
+        appearance, action, cdata, execution: 'render', language: locale,
         'response-field': false, retry: 'auto', 'retry-interval': 1000,
         'refresh-expired': 'auto', 'refresh-timeout': 'auto',
         callback: token => {
@@ -109,7 +113,7 @@ export function TurnstileWidget({
       document.removeEventListener('visibilitychange', resume); window.removeEventListener('online', resume);
       if (id !== null) { try { api?.remove(id); } catch { /* Already removed. */ } }
     };
-  }, [siteKey, theme, appearance, locale, attempt]);
+  }, [siteKey, theme, appearance, locale, attempt, action, cdata]);
 
   const retry = () => { automaticRetries.current = 0; callbacks.current.onVerify(''); setRetryAvailable(false); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
   const text = !siteKey ? 'unavailable' : status === 'verified' ? 'checkComplete' : status === 'error' ? (errorCode === '110200' ? 'domainError' : 'checkFailed') : status === 'interactive' ? 'checkInteractive' : status === 'loading' ? 'checkLoading' : 'checkChecking';

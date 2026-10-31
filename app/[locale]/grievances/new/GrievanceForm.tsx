@@ -412,6 +412,7 @@ export function GrievanceForm({ }: GrievanceFormProps) {
                 <p className="font-medium text-slate-900">{t("turnstileLabel")}</p>
                 <p className="text-sm text-slate-600 mb-2">{t("turnstileNote")}</p>
                 <TurnstileWidget key={turnstileAttempt}
+                  action="grievance"
                   onVerify={(token) => {
                     setFormData((prev) => ({ ...prev, turnstileToken: token }));
                     setErrors((prev) => {

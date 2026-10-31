@@ -88,7 +88,7 @@ function AdminLoginForm() {
       <form onSubmit={handleSubmit} className={styles.form} aria-busy={isLoading}>
         <div className={styles.field}><label htmlFor="auth-email">{t("emailLabel")}</label><div className={styles.inputWrap}><Mail size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-email" name="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} className={styles.input} placeholder={t("emailPlaceholder")}/></div></div>
         <div className={styles.field}><label htmlFor="auth-password">{t("passwordLabel")}</label><div className={styles.inputWrap}><Lock size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" required value={password} onChange={e => setPassword(e.target.value)} className={styles.input} placeholder={t("passwordPlaceholder")}/><button type="button" className={styles.toggle} onClick={() => setShowPassword(value => !value)} aria-label={common(showPassword ? "hidePassword" : "showPassword")} aria-pressed={showPassword}>{showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}</button></div></div>
-        {turnstileConfigured && <TurnstileWidget key={challenge} theme="light" onVerify={setTurnstileToken} />}
+        {turnstileConfigured && <TurnstileWidget key={challenge} theme="light" action="admin-login" onVerify={setTurnstileToken} />}
         <button type="submit" className={styles.submit} disabled={isLoading}>{isLoading ? t("signingIn") : t("submitBtn")}</button>
       </form>
       <p className={styles.switch}><Link href={`/${locale}/login`}>{common("citizenSignIn")}</Link></p>
