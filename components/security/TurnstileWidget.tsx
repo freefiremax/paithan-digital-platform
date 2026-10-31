@@ -120,7 +120,7 @@ export function TurnstileWidget({
   const retry = () => { automaticRetries.current = 0; callbacks.current.onVerify(''); setRetryAvailable(false); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
   const text = !siteKey ? 'unavailable' : status === 'verified' ? 'checkComplete' : status === 'error' ? (errorCode === '110200' ? 'domainError' : 'checkFailed') : status === 'interactive' ? 'checkInteractive' : status === 'loading' ? 'checkLoading' : 'checkChecking';
   return <>
-    {siteKey && <><link rel="preconnect" href="https://challenges.cloudflare.com"/><link rel="preload" as="script" fetchPriority="high" href="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"/></>}
+    {siteKey && <link rel="preconnect" href="https://challenges.cloudflare.com" />}
     <section className={`${styles.panel} ${className}`} aria-label={t('title')} data-turnstile-status={!siteKey ? 'unavailable' : status}>
     <div className={styles.heading}><ShieldCheck size={16} aria-hidden="true"/><span>{t('title')}</span><small>Cloudflare Turnstile</small></div>
     {showPrompt && status !== 'verified' && (
@@ -129,35 +129,34 @@ export function TurnstileWidget({
       </div>
     )}
     {siteKey && <div className={styles.slot}>
-      <div ref={container} className={styles.widget}>
-        {(status === 'loading' || status === 'checking') && (
-          <div className={styles.cfPlaceholder} aria-hidden="true">
-            <div className={styles.cfPlaceholderLeft}>
-              <svg className={styles.cfSpinner} width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="3" r="1.8" fill="#16a34a" opacity="1" />
-                <circle cx="18.36" cy="5.64" r="1.8" fill="#16a34a" opacity="0.875" />
-                <circle cx="21" cy="12" r="1.8" fill="#16a34a" opacity="0.75" />
-                <circle cx="18.36" cy="18.36" r="1.8" fill="#16a34a" opacity="0.625" />
-                <circle cx="12" cy="21" r="1.8" fill="#16a34a" opacity="0.5" />
-                <circle cx="5.64" cy="18.36" r="1.8" fill="#16a34a" opacity="0.375" />
-                <circle cx="3" cy="12" r="1.8" fill="#16a34a" opacity="0.25" />
-                <circle cx="5.64" cy="5.64" r="1.8" fill="#16a34a" opacity="0.125" />
-              </svg>
-              <span className={styles.cfPlaceholderText}>{t('verifyingDots')}</span>
-            </div>
-            <div className={styles.cfPlaceholderRight}>
-              <div className={styles.cfBrand}>
-                <svg width="22" height="14" viewBox="0 0 32 20" fill="none">
-                  <path d="M19.5 13.5c0-.4-.1-.8-.1-1.2 2.3-.5 4.1-2.6 4.1-5.1 0-2.9-2.4-5.3-5.3-5.3-.8 0-1.6.2-2.3.5C14.9 1 10.3 0 6.3 0 .2 0-4.8 4.1-6.3 9.8c-.9-.3-1.7-.5-2.7-.5-4.4 0-8 3.6-8 8 0 .5.1 1.1.2 1.7h36.3v-5.5z" transform="translate(17, 0)" fill="#F38020"/>
-                  <path d="M23.5 15.5c-.2 0-.4 0-.6.1-.8 0-1.5-.2-2.1-.5.4-.7.7-1.6.7-2.5 2.3-.5 4.1-2.6 4.1-5.1 0-2.9-2.4-5.3-5.3-5.3-.8 0-1.6.2-2.3.5C17 1.3 12.4.3 8.4.3 2.3.3-2.7 4.4-4.2 10.1c-.9-.3-1.7-.5-2.7-.5-4.4 0-8 3.6-8 8 0 .5.1 1.1.2 1.7h38.2v-3.8z" transform="translate(17, 0)" fill="#FAAD3F"/>
-                </svg>
-                <span className={styles.cfBrandName}>CLOUDFLARE</span>
-              </div>
-              <span className={styles.cfLegal}>Privacy • Terms</span>
-            </div>
+      {(status === 'loading' || status === 'checking') && (
+        <div className={styles.cfPlaceholder} aria-hidden="true">
+          <div className={styles.cfPlaceholderLeft}>
+            <svg className={styles.cfSpinner} width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="3" r="1.8" fill="#16a34a" opacity="1" />
+              <circle cx="18.36" cy="5.64" r="1.8" fill="#16a34a" opacity="0.875" />
+              <circle cx="21" cy="12" r="1.8" fill="#16a34a" opacity="0.75" />
+              <circle cx="18.36" cy="18.36" r="1.8" fill="#16a34a" opacity="0.625" />
+              <circle cx="12" cy="21" r="1.8" fill="#16a34a" opacity="0.5" />
+              <circle cx="5.64" cy="18.36" r="1.8" fill="#16a34a" opacity="0.375" />
+              <circle cx="3" cy="12" r="1.8" fill="#16a34a" opacity="0.25" />
+              <circle cx="5.64" cy="5.64" r="1.8" fill="#16a34a" opacity="0.125" />
+            </svg>
+            <span className={styles.cfPlaceholderText}>{t('verifyingDots')}</span>
           </div>
-        )}
-      </div>
+          <div className={styles.cfPlaceholderRight}>
+            <div className={styles.cfBrand}>
+              <svg width="22" height="14" viewBox="0 0 32 20" fill="none">
+                <path d="M19.5 13.5c0-.4-.1-.8-.1-1.2 2.3-.5 4.1-2.6 4.1-5.1 0-2.9-2.4-5.3-5.3-5.3-.8 0-1.6.2-2.3.5C14.9 1 10.3 0 6.3 0 .2 0-4.8 4.1-6.3 9.8c-.9-.3-1.7-.5-2.7-.5-4.4 0-8 3.6-8 8 0 .5.1 1.1.2 1.7h36.3v-5.5z" transform="translate(17, 0)" fill="#F38020"/>
+                <path d="M23.5 15.5c-.2 0-.4 0-.6.1-.8 0-1.5-.2-2.1-.5.4-.7.7-1.6.7-2.5 2.3-.5 4.1-2.6 4.1-5.1 0-2.9-2.4-5.3-5.3-5.3-.8 0-1.6.2-2.3.5C17 1.3 12.4.3 8.4.3 2.3.3-2.7 4.4-4.2 10.1c-.9-.3-1.7-.5-2.7-.5-4.4 0-8 3.6-8 8 0 .5.1 1.1.2 1.7h38.2v-3.8z" transform="translate(17, 0)" fill="#FAAD3F"/>
+              </svg>
+              <span className={styles.cfBrandName}>CLOUDFLARE</span>
+            </div>
+            <span className={styles.cfLegal}>Privacy • Terms</span>
+          </div>
+        </div>
+      )}
+      <div ref={container} className={styles.widget} />
     </div>}
     <p role={status === 'error' || !siteKey ? 'alert' : 'status'} className={status === 'error' ? styles.errorMessage : styles.srOnly}>{t(text)}</p>
     {(status === 'error' || retryAvailable) && <div className={styles.recovery}>{status === 'error' && <details><summary>{t('errorDetails')}</summary><span>{t('verificationError', { code: errorCode })}</span></details>}<button type="button" onClick={retry}>{t('retryCheck')}</button></div>}
