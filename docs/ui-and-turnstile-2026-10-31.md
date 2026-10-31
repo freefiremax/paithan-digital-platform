@@ -22,3 +22,9 @@ The independent Vercel authentication-secret/access blocker recorded in backend-
 ## Compact authentication layout
 
 Citizen sign-in, registration and council sign-in now share a centered card with outer margins, smaller vertical gaps, a two-column registration form and full-photo containment rather than cropping. Compact-height views retain password guidance for assistive technology while the input placeholder still gives the minimum length. The page can grow when space is genuinely insufficient (for example browser zoom, an on-screen keyboard or additional error text); controls are never hidden with overflow clipping. Viewport checks cover all three languages and all three auth routes at 1366×768, 1280×720 and 390×844 using an explicitly isolated security fixture, not a real login or challenge.
+
+## Photo fill and visible-widget follow-up
+
+The latest user direction supersedes photo containment: slideshow images now use cover to fill the left panel edge-to-edge, accepting cropping instead of beige bands. The compact form dimensions are preserved. The custom security wrapper no longer draws a second oversized box around the provider UI or reserves a blank 65px placeholder when no provider content has appeared. Technical errors can be expanded separately; the retry action remains visible.
+
+Read-only live diagnostics confirmed that the production key reports Managed mode and creates a genuine Cloudflare challenge iframe. This is not evidence that a real human verification completed. Standard normal/compact sizes replace flexible sizing; the provider script is preloaded and its origin preconnected during server rendering. A no-progress message offers retry after 15 seconds without removing or falsifying the live challenge. Provider decisions, network restrictions and the separate deployment authentication configuration still govern real end-to-end success.

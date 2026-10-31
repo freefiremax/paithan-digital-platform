@@ -37,7 +37,7 @@
 .photoPanel { position: relative; min-height: 0; align-self: stretch; background: var(--paper-100); overflow: hidden; }
 .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
 .activeSlide { opacity: 1; }
-.photo { object-fit: contain; }
+.photo { object-fit: cover; }
 .pause { position: absolute; left: 14px; bottom: 14px; z-index: 1; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--border-subtle); border-radius: 50%; background: #fffaf3ed; color: #4d0f20; cursor: pointer; }
 .recoveryLink { display: inline-block; color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-top: 6px; }
 .page a:focus-visible, .page button:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 3px; }

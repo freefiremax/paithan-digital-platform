@@ -959,7 +959,7 @@
     "proceedImmediately": "Click here to proceed immediately →",
     "protectedNotice": "Paithan Municipal Council utilizes Cloudflare DDoS and automated threat mitigation to protect citizen services.",
     "checkComplete": "Security check complete.",
-    "checkFailed": "The Cloudflare check could not finish. Allow challenges.cloudflare.com, then retry. If it stays blank, reload the page or try another browser.",
+    "checkFailed": "Cloudflare could not finish verification. Retry the check.",
     "checkRequired": "Complete the security check to continue.",
     "verificationError": "Verification error: {code}",
     "retryCheck": "Retry security check",
@@ -967,7 +967,8 @@
     "checkLoading": "Loading the Cloudflare security check…",
     "checkChecking": "Cloudflare is verifying your browser. Please wait.",
     "checkInteractive": "Complete the Cloudflare challenge above.",
-    "domainError": "Cloudflare has not authorized this domain. Please contact the council so the website hostname can be added."
+    "domainError": "Cloudflare has not authorized this domain. Please contact the council so the website hostname can be added.",
+    "errorDetails": "Error details"
   },
   "adminFacilities": {
     "title": "Facilities Management",

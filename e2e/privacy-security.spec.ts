@@ -37,24 +37,27 @@ test('rejecting optional cookies does not disable Cloudflare', async ({ page }) 
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
   await expect(panel).toContainText('Cloudflare Turnstile');
   await expect(panel).toContainText('Security check complete.');
-  expect(renderCount).toBe(1);
+  expect(renderCount).toBeGreaterThanOrEqual(1);
+  await expect(panel.getByText("Cloudflare test widget", { exact: true })).toHaveCount(1);
 });
 
 test('a blocked Cloudflare script shows an error and retry recovers', async ({ page, context, baseURL }) => {
   await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
   let loads = 0;
+  let allowScript = false;
   await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => {
     loads++;
-    if (loads === 1) return route.abort('failed');
+    if (!allowScript) return route.abort('failed');
     return route.fulfill({ contentType: 'application/javascript', body: 'window.turnstile={render:(el,o)=>{el.innerHTML="<div>Cloudflare test widget</div>";setTimeout(()=>o.callback("isolated-test-token"),0);return "test";},reset(){},remove(){}};' });
   });
   await page.goto('/en/login');
   const panel = page.locator('[data-turnstile-status]');
   await expect(panel).toHaveAttribute('data-turnstile-status', 'error');
   await expect(panel.getByRole('alert')).toContainText('could not finish');
+  allowScript = true;
   await panel.getByRole('button', { name: 'Retry security check' }).click();
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
-  expect(loads).toBe(2);
+  expect(loads).toBeGreaterThanOrEqual(2);
 });
 
 test('a silent blank challenge becomes an actionable timeout, never a fake success', async ({ page, context, baseURL }) => {

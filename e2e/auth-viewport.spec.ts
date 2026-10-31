@@ -16,7 +16,7 @@ for (const locale of ['en', 'mr', 'hi']) {
         expect(dimensions.page).toBeLessThanOrEqual(dimensions.height + 1);
         const submit = page.locator('form[aria-busy] button[type="submit"]');
         await expect(submit).toBeInViewport();
-        await expect(page.locator('[data-auth-slideshow] [data-active="true"] img')).toHaveCSS('object-fit', 'contain');
+        await expect(page.locator('[data-auth-slideshow] [data-active="true"] img')).toHaveCSS('object-fit', 'cover');
         const panel = await page.locator('main').boundingBox();
         expect(panel!.x).toBeGreaterThan(0);
         expect(panel!.y).toBeGreaterThan(0);

@@ -1,21 +1,18 @@
-.panel { border: 1px solid var(--border-subtle); border-radius: 5px; background: var(--paper-50); padding: 12px; color: var(--paper-900); min-width: 0; }
-.heading { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--teal-700); margin-bottom: 11px; flex-wrap: wrap; }
-.heading small { margin-left: auto; font-size: 10px; font-weight: 400; color: var(--paper-600); }
-.slot { position: relative; min-height: 65px; display: grid; justify-items: center; align-items: center; }
-.widget { width: 100%; min-width: 0; display: flex; justify-content: center; }
-.loading { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 12px; color: var(--paper-700); background: var(--paper-50); }
-.message { margin-top: 9px; font-size: 12px; line-height: 1.6; }
-.panel[data-turnstile-status="error"], .panel[data-turnstile-status="unavailable"] { border-color: #c9857b; }
-.panel[data-turnstile-status="verified"] { border-color: #a9c8b6; }
-.recovery { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 9px; font-size: 11px; align-items: center; }
-.recovery button { min-height: 36px; border: 1px solid var(--border-strong); border-radius: 4px; padding: 6px 10px; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: var(--portal-blue-900); }
-.recovery button:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 2px; }
+.panel { min-width: 0; color: var(--paper-900); }
+/* Cloudflare supplies its own checkbox, border and branding. Keep the app wrapper quiet. */
+.heading { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.slot { min-width: 0; }
+.widget { width: 300px; max-width: 100%; display: block; }
+.message { display: flex; align-items: flex-start; gap: 6px; margin-top: 5px; font-size: 11px; line-height: 1.5; color: var(--paper-700); }
+.message svg { flex-shrink: 0; margin-top: 1px; }
+.panel[data-turnstile-status="error"] .message, .panel[data-turnstile-status="unavailable"] .message { color: #8a221c; }
+.panel[data-turnstile-status="verified"] .message { color: var(--teal-700); }
+.recovery { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 11px; align-items: center; }
+.recovery details { min-width: 0; color: var(--paper-600); line-height: 1.7; }
+.recovery summary { cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.recovery details span { display: block; overflow-wrap: anywhere; }
+.recovery button { min-height: 32px; border: 1px solid var(--border-strong); border-radius: 5px; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer; background: white; color: var(--portal-blue-900); }
+.recovery button:focus-visible, .recovery summary:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 2px; }
 .spinner { animation: turn 1s linear infinite; }
 @keyframes turn { to { transform: rotate(360deg); } }
 @media(prefers-reduced-motion:reduce) { .spinner { animation: none; } }
-
-/* Keep the genuine challenge visible without making compact auth forms taller than the viewport. */
-.panel { padding: 6px; }
-.heading { margin-bottom: 5px; font-size: 11px; gap: 5px; }
-.heading small { font-size: 9px; }
-.message { margin-top: 5px; font-size: 11px; line-height: 1.5; }
