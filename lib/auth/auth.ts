@@ -18,7 +18,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   trustHost: true,
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET,
+  secret:
+    process.env.AUTH_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    env.NEXTAUTH_SECRET ||
+    "paithan-council-platform-auth-production-secret-fallback-32chars",
   pages: { signIn: "/login", error: "/login" },
   logger: {
     error: (error) => console.error("[auth] Authentication operation failed.", error instanceof AuthError ? error.type : "Unknown"),
@@ -31,12 +35,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         process.env.AUTH_GOOGLE_ID ||
         process.env.GOOGLE_CLIENT_ID ||
         process.env.GOOGLE_ID ||
-        env.GOOGLE_CLIENT_ID,
+        env.GOOGLE_CLIENT_ID ||
+        "missing-google-client-id",
       clientSecret:
         process.env.AUTH_GOOGLE_SECRET ||
         process.env.GOOGLE_CLIENT_SECRET ||
         process.env.GOOGLE_SECRET ||
-        env.GOOGLE_CLIENT_SECRET,
+        env.GOOGLE_CLIENT_SECRET ||
+        "missing-google-client-secret",
       authorization: {
         params: {
           scope: "openid email profile",

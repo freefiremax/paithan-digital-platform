@@ -67,6 +67,12 @@
   color: #18181b;
 }
 
+.cfPlaceholderTextVerified {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #15803d;
+}
+
 .cfPlaceholderRight {
   display: flex;
   flex-direction: column;

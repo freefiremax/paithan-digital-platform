@@ -22,18 +22,24 @@ export function GoogleSignIn({ callbackUrl, disabled = false, onStart, onFailure
     // Prepare CSRF in parallel with the security widget, rather than after a click.
     void fetch('/api/auth/csrf', { credentials: 'same-origin', cache: 'no-store', signal: controller.signal }).then(async response => {
       if (!active) return;
-      if (!response.ok) { setFailed(true); callbacks.current.onFailure('signInUnavailable'); return; }
+      if (!response.ok) { setFailed(true); return; }
       const body = await response.json();
       if (!active) return;
       if (typeof body?.csrfToken !== 'string' || !body.csrfToken.trim() || body.csrfToken.length > 1024) {
-        setFailed(true); callbacks.current.onFailure('signInUnavailable'); return;
+        setFailed(true); return;
       }
       setCsrfToken(body.csrfToken); setFailed(false);
-    }).catch(() => { if (active) { setFailed(true); callbacks.current.onFailure('unexpectedError'); } }).finally(() => clearTimeout(timeout));
+    }).catch(() => { if (active) { setFailed(true); } }).finally(() => clearTimeout(timeout));
     return () => { active = false; clearTimeout(timeout); controller.abort(); };
   }, [attempt]);
   function submit(event: FormEvent<HTMLFormElement>) {
-    if (!csrfToken || disabled || submitting) { event.preventDefault(); return; }
+    if (!csrfToken || disabled || submitting) {
+      event.preventDefault();
+      if (!csrfToken) {
+        callbacks.current.onFailure('signInUnavailable');
+      }
+      return;
+    }
     setSubmitting(true); callbacks.current.onStart();
     // Native Auth.js POST preserves CSRF/state/PKCE checks and avoids getProviders().
   }

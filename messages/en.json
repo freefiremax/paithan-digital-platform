@@ -970,6 +970,7 @@
     "domainError": "Cloudflare has not authorized this domain. Please contact the council so the website hostname can be added.",
     "verifyingHuman": "Verifying you are human. This may take a few seconds.",
     "verifyingDots": "Verifying...",
+    "success": "Success!",
     "errorDetails": "Error details"
   },
   "adminFacilities": {
