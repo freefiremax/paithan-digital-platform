@@ -1,14 +1,23 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
-### Cloudflare Turnstile canonical integration & CI/CD pipeline reliability — 2026-10-31
+### User Authentication, Database Persistence & Cloudflare Turnstile Integration — 2026-10-31
 
-- **Cloudflare Turnstile canonical integration:** Fully integrated `paithan-portal` (Site key: `0x4AAAAAAFI-1fVzxY9hvD8P`) following Cloudflare's canonical existing-widget integration flow. Added server-side validation supporting both `TURNSTILE_SECRET` and `TURNSTILE_SECRET_KEY` with client IP (`remoteip`) forwarding and action verification. Form widgets pass explicit action tags (`login`, `register`, `admin-login`, `contact`, `grievance`, `gate`) and automatically reset on validation retry. Recommended widget mode: **Non-interactive** for instant sub-300ms verification without interactive challenge delays.
-- **CI/CD pipeline hardening:**
-  - Resolved TypeScript type mismatches in `notifications/page.tsx` categories (`NotificationCategory | "ALL"`) and `CitizenAuth.tsx` action prop.
-  - Resolved ESLint React 19 `react-hooks/set-state-in-effect` warning in `admin/analytics/page.tsx`.
-  - Configured `eslint.config.mjs` and `.gitignore` to ignore temporary scratch directories (`tmp/**`, `output/**`).
-  - Standardized Next.js 16 production build via `--webpack` to eliminate Turbopack Google Font resolution errors.
-  - All 280 test cases across 22 test suites pass with zero regressions.
+- **Citizen Authentication & Neon PostgreSQL Storage:**
+  - **Registration Flow (`/api/auth/register`):** Validates registration payloads with Zod (`citizenRegistrationSchema`), verifies Cloudflare Turnstile tokens, hashes passwords using cryptographic Argon2 (`@node-rs/argon2`), and securely stores citizen records directly in the Neon PostgreSQL `User` table with `role: "PUBLIC"`. Rejects role/ward escalation attempts.
+  - **Login Flow (`/login` & `lib/auth/auth.ts`):** NextAuth v5 (Beta) credentials and Google OAuth. Verifies Argon2 password hashes against stored database records, enforces IP/email rate limits via Upstash Redis with in-memory fallbacks, and issues tamper-proof 7-day JWT session cookies (`strategy: "jwt"`).
+  - **Live Database Health:** Verified active connectivity and user persistence against live Neon PostgreSQL (5 active administrative and citizen accounts; verified end-to-end registration insertion and credential authentication).
+
+- **Cloudflare Turnstile Canonical Integration & Visible Security Check:**
+  - **Site Key:** `0x4AAAAAAFI-1fVzxY9hvD8P` (Widget name: `paithan-portal`).
+  - **Visible Security Check (`appearance="always"`):** Configured widget to render with `appearance="always"` across all authentication forms (`login`, `register`, `admin-login`), contact forms, grievance submissions, and the security gate (`CloudflareSecurityGate`). Shows visible spinner ("Verifying you are human...") and green success checkmark upon verification.
+  - **Zero Layout Shift:** Enforced `min-height: 65px` in `TurnstileWidget.module.css` to prevent cumulative layout shift (CLS) during Cloudflare iframe mounting.
+  - **Dual-Key Server Validation:** Added backend validation supporting both `TURNSTILE_SECRET` and `TURNSTILE_SECRET_KEY` with client IP (`remoteip`) forwarding and action verification.
+
+- **CI/CD Pipeline Hardening & Build Reliability:**
+  - **TypeScript:** Resolved type mismatches in `notifications/page.tsx` categories (`NotificationCategory | "ALL"`) and `CitizenAuth.tsx` action prop.
+  - **ESLint:** Resolved React 19 `react-hooks/set-state-in-effect` warning in `admin/analytics/page.tsx` using asynchronous `.then()` promise handlers without mount-time synchronous state updates.
+  - **Clean Build Standard:** Configured `eslint.config.mjs` and `.gitignore` to ignore temporary scratch directories (`tmp/**`, `output/**`, `.next/**`). Standardized Next.js 16 production build via `--webpack` to eliminate Turbopack Google Font resolution issues on Windows.
+  - **GitHub Actions Verified:** GitHub Actions Run [#41208188206](https://github.com/freefiremax/paithan-digital-platform/actions/runs/41208188206) passed 100% across all 4 jobs (Lint & TypeCheck, 280 automated tests across 22 suites, Security Audit, and Next.js Production Build).
 
 ### Security-widget recovery and cookie choices — 2026-10-30
 
