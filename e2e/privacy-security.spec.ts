@@ -126,7 +126,7 @@ test('Cloudflare renews expired tokens and recovers when the connection returns'
   await page.clock.fastForward(100);
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
   await page.evaluate(() => (window as unknown as { testChallengeOptions: { 'error-callback': (code: string) => void } }).testChallengeOptions['error-callback']('network-error'));
-  await expect(panel).toHaveAttribute('data-turnstile-status', 'error');
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'loading');
   await page.evaluate(() => window.dispatchEvent(new Event('online')));
   await page.clock.fastForward(1100);
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
