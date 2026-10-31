@@ -19,15 +19,16 @@
 .document { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; align-items: start; }
 .contents { position: sticky; top: 24px; border-left: 2px solid var(--border-subtle); padding-left: 18px; }
 .contents h2 { color: var(--teal-700); font-size: 13px; font-weight: 600; margin-bottom: 14px; }
-.contents ol { display: grid; gap: 13px; }
+.contents ol { display: grid; gap: 13px; list-style: decimal; padding-left: 18px; }
+.contents li::marker { color: var(--paper-600); font-size: 12px; }
 .contents a { font-size: 12px; color: var(--paper-700); line-height: 1.6; text-decoration: none; display: block; }
 .contents a:hover { color: var(--portal-blue-900); text-decoration: underline; }
 .sections { min-width: 0; }
 .section { scroll-margin-top: 24px; padding: 0 0 28px; margin-bottom: 27px; border-bottom: 1px solid var(--border-subtle); }
-.section h2 { color: var(--portal-blue-900); font: 500 23px/1.5 var(--font-display); margin: 0 0 17px; }
-.section ul { display: grid; gap: 12px; padding-left: 21px; list-style: disc; }
-.section li { padding-left: 4px; font-size: 14px; line-height: 1.95; color: var(--paper-800); overflow-wrap: anywhere; }
-.section li::marker { color: var(--teal-700); }
+.section h2, .accordion h2 { display: flex; align-items: baseline; gap: 10px; color: var(--portal-blue-900); font: 500 23px/1.5 var(--font-display); margin: 0 0 17px; }
+.section ul, .accordionBody ul { display: grid; gap: 12px; padding-left: 21px; list-style: disc; }
+.section li, .accordionBody li { padding-left: 4px; font-size: 14px; line-height: 1.95; color: var(--paper-800); overflow-wrap: anywhere; }
+.section li::marker, .accordionBody li::marker { color: var(--teal-700); }
 .help { padding: 22px; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--paper-100); font-size: 13px; line-height: 1.9; }
 .help a { color: var(--portal-blue-900); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .providers { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; font-size: 12px; }
@@ -38,4 +39,18 @@
 .indexLink p { color: var(--paper-700); font-size: 13px; line-height: 1.8; }
 .page a:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 4px; border-radius: 2px; }
 @media(max-width: 900px) { .document { grid-template-columns: 1fr; gap: 28px; } .contents { position: static; } .contents ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; } }
-@media(max-width: 560px) { .mastheadInner { padding: 16px; gap: 14px; } .brand { font-size: 12px; gap: 8px; max-width: 215px; } .brand svg { width: 40px; height: 40px; } .back { font-size: 12px; } .main { padding: 20px 16px 52px; } .header, .content { padding: 24px 22px; } .policyNav { padding: 15px 22px; gap: 9px 16px; } .contents ol, .indexGrid { grid-template-columns: 1fr; } .section h2 { font-size: 22px; } }
+@media(max-width: 560px) { .mastheadInner { padding: 16px; gap: 14px; } .brand { font-size: 12px; gap: 8px; max-width: 215px; } .brand svg { width: 40px; height: 40px; } .back { font-size: 12px; } .main { padding: 20px 16px 52px; } .header, .content { padding: 24px 22px; } .policyNav { padding: 15px 22px; gap: 9px 16px; } .contents ol, .indexGrid { grid-template-columns: 1fr; } .section h2, .accordion h2 { display: flex; align-items: baseline; gap: 10px; font-size: 22px; } }
+
+.sectionNumber { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.accordion { border-bottom: 1px solid var(--border-subtle); }
+.accordion summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; cursor: pointer; list-style: none; }
+.accordion summary::-webkit-details-marker { display: none; }
+.accordion summary h2 { min-width: 0; margin: 0; font-size: 21px; line-height: 1.55; }
+.accordion summary:hover { color: var(--portal-blue-900); background: var(--paper-50); }
+.accordion summary:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 4px; border-radius: 4px; }
+.chevron { flex: 0 0 auto; color: var(--portal-blue-900); transition: transform 150ms ease; }
+.accordion[open] > summary .chevron { transform: rotate(180deg); }
+.accordionBody { padding: 0 0 24px; scroll-margin-top: 100px; }
+.accordion + .help { margin-top: 28px; }
+@media (prefers-reduced-motion: reduce) { .chevron { transition: none; } }
+@media print { .contents, .policyNav { display: none; } .document { display: block; } .accordion::details-content { content-visibility: visible; } .accordionBody { display: block; } .chevron { display: none; } }
