@@ -7,7 +7,8 @@ import en from "@/messages/en.json";
 import mr from "@/messages/mr.json";
 import hi from "@/messages/hi.json";
 
-vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(), useRouter: () => ({ push: vi.fn() }) }));
+const navigation = vi.hoisted(() => ({ query: "" }));
+vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams(navigation.query), useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("next-auth/react", () => ({ signIn: vi.fn(), useSession: () => ({ data: null, status: "unauthenticated" }), getCsrfToken: vi.fn(async () => "test-token") }));
 
 // Render with real dictionaries: any missing key is a regression, not a fallback.
@@ -41,3 +42,23 @@ for (const [locale, messages] of Object.entries({ en, mr, hi })) {
     expect(markup).toContain('name="csrfToken"');
   });
 }
+
+
+it('identifies a server configuration failure instead of blaming Google', () => {
+  navigation.query = 'error=Configuration';
+  try {
+    const html = renderToStaticMarkup(<NextIntlClientProvider locale="en" messages={en} timeZone="Asia/Kolkata"><CitizenAuth mode="login"/></NextIntlClientProvider>);
+    expect(html).toContain(en.auth.signInUnavailable);
+    expect(html).not.toContain(en.auth.googleError);
+    expect(html).toContain('action="/api/auth/signin/google"');
+  } finally { navigation.query = ''; }
+});
+
+it('does not reflect arbitrary authentication error text from a URL', () => {
+  navigation.query = 'error=Untrusted-message-not-from-the-council';
+  try {
+    const html = renderToStaticMarkup(<NextIntlClientProvider locale="en" messages={en} timeZone="Asia/Kolkata"><AdminLoginPage/></NextIntlClientProvider>);
+    expect(html).toContain(en.auth.signInError);
+    expect(html).not.toContain('Untrusted-message-not-from-the-council');
+  } finally { navigation.query = ''; }
+});

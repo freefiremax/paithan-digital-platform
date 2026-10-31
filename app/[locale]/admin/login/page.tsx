@@ -3,10 +3,12 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { signIn, useSession, getCsrfToken } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { AuthFrame } from "@/components/auth/AuthFrame";
-import { GoogleMark } from "@/components/auth/GoogleMark";
+import { GoogleSignIn } from "@/components/auth/GoogleSignIn";
+import { signInErrorMessage } from "@/lib/auth/error-message";
+import { citizenCallbackUrl } from "@/lib/auth/redirect";
 import styles from "@/components/auth/CitizenAuth.module.css";
 import { useTranslations, useLocale } from "next-intl";
 import { TurnstileWidget } from "@/components/security/TurnstileWidget";
@@ -18,11 +20,7 @@ function AdminLoginForm() {
   const { data: session, status } = useSession();
 
   const rawCallbackUrl = searchParams.get("callbackUrl");
-  const homePageUrl = `/${locale}`;
-  const targetCallbackUrl =
-    rawCallbackUrl && !rawCallbackUrl.includes("/admin") && !rawCallbackUrl.includes("/login")
-      ? rawCallbackUrl
-      : homePageUrl;
+  const targetCallbackUrl = citizenCallbackUrl(rawCallbackUrl, locale);
   const emailParam = searchParams.get("email") || "";
   const isRegistered = searchParams.get("registered") === "1";
   const errorParam = searchParams.get("error");
@@ -33,34 +31,12 @@ function AdminLoginForm() {
 
   const [email, setEmail] = useState(emailParam);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(
-    errorParam
-      ? errorParam === "OAuthCallback" || errorParam === "Callback"
-        ? "Google sign-in encountered an issue. Please try again."
-        : `Authentication error: ${errorParam}`
-      : ""
-  );
+  const initialError = signInErrorMessage(errorParam);
+  const [error, setError] = useState(initialError ? common(initialError) : '');
   const [isLoading, setIsLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [challenge, setChallenge] = useState(0);
   const turnstileConfigured = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const [csrfToken, setCsrfToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    getCsrfToken().then((token) => {
-      if (token) setCsrfToken(token);
-    });
-  }, []);
-
-  const handleGoogleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = e.currentTarget;
-    const csrfInput = form.querySelector('input[name="csrfToken"]') as HTMLInputElement;
-    if (!csrfInput?.value) {
-      e.preventDefault();
-      return;
-    }
-  };
-
   // If already authenticated, redirect immediately away from login page
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
@@ -107,11 +83,7 @@ function AdminLoginForm() {
     <section className={styles.card} aria-label={t("title")}>
       {isRegistered && <p className={styles.success} role="status">{tLogin("accountCreatedSuccess")}</p>}
       {error && <p className={styles.error} role="alert">{error}</p>}
-      <form action="/api/auth/signin/google" method="POST" onSubmit={handleGoogleSubmit}>
-        <input type="hidden" name="callbackUrl" value={targetCallbackUrl} />
-        <input type="hidden" name="csrfToken" value={csrfToken || ""} />
-        <button type="submit" disabled={isLoading || !csrfToken} className={styles.google}><GoogleMark />{common("continueWithGoogle")}</button>
-      </form>
+      <GoogleSignIn callbackUrl={targetCallbackUrl} disabled={isLoading} onStart={() => { setError(''); setIsLoading(true); }} onFailure={key => setError(common(key))} onRetry={() => setError('')}/>
       <div className={styles.divider}>{common("orUseEmail")}</div>
       <form onSubmit={handleSubmit} className={styles.form} aria-busy={isLoading}>
         <div className={styles.field}><label htmlFor="auth-email">{t("emailLabel")}</label><div className={styles.inputWrap}><Mail size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-email" name="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} className={styles.input} placeholder={t("emailPlaceholder")}/></div></div>

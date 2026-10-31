@@ -1092,7 +1092,12 @@
     "privacyPolicy": "Privacy policy",
     "terms": "Terms of use",
     "citizenSignIn": "Looking for citizen sign-in?",
-    "staffAccountMissing": "No council account was found. Please contact your council administrator for staff access."
+    "staffAccountMissing": "No council account was found. Please contact your council administrator for staff access.",
+    "signInUnavailable": "Sign-in is temporarily unavailable. Please try again later or contact the council.",
+    "accountLinkRequired": "This email already has an account. Sign in using your existing method; Google cannot be linked automatically.",
+    "googleDenied": "Google sign-in was not authorised. Try again or use your existing sign-in method.",
+    "signInError": "Sign-in could not complete. Please try again.",
+    "retrySignIn": "Retry sign-in"
   },
   "authDecor": {
     "heritagePanel": "Paithan heritage",

@@ -7,7 +7,8 @@ import { signIn } from 'next-auth/react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 import { AuthFrame } from './AuthFrame';
-import { GoogleMark } from './GoogleMark';
+import { GoogleSignIn } from './GoogleSignIn';
+import { signInErrorMessage } from '@/lib/auth/error-message';
 import { TurnstileWidget } from '@/components/security/TurnstileWidget';
 import { citizenCallbackUrl } from '@/lib/auth/redirect';
 import styles from './CitizenAuth.module.css';
@@ -25,19 +26,13 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(params.has('error') ? common('googleError') : '');
+  const initialError = signInErrorMessage(params.get('error'));
+  const [error, setError] = useState(initialError ? common(initialError) : '');
   const [registrationSuggested, setRegistrationSuggested] = useState(false);
   const [busy, setBusy] = useState(false);
   const [token, setToken] = useState('');
   const [challenge, setChallenge] = useState(0);
   const turnstileConfigured = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
-  async function googleSignIn() {
-    setError('');
-    setBusy(true);
-    try { await signIn('google', { callbackUrl }); }
-    catch { setError(common('googleError')); setBusy(false); }
-  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -76,10 +71,7 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
       <section className={styles.card} aria-label={t('title')}>
         {!registering && params.get('registered') === '1' && <p className={styles.success} role="status">{t('accountCreatedSuccess')}</p>}
         {error && <div className={styles.error} role="alert"><p>{error}</p>{registrationSuggested && <Link href={alternate} className={styles.recoveryLink}>{t('registerLink')}</Link>}</div>}
-        <button type="button" className={styles.google} onClick={googleSignIn} disabled={busy}>
-          <GoogleMark />
-          {common('continueWithGoogle')}
-        </button>
+        <GoogleSignIn callbackUrl={callbackUrl} disabled={busy} onStart={() => { setError(''); setBusy(true); }} onFailure={key => setError(common(key))} onRetry={() => setError('')}/>
         <div className={styles.divider}>{common('orUseEmail')}</div>
         <form onSubmit={submit} className={`${styles.form} ${registering ? styles.registerForm : ''}`} aria-busy={busy}>
           {registering && <div className={styles.field}><label htmlFor="auth-name">{t('nameLabel')}</label><div className={styles.inputWrap}><User size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-name" name="name" autoComplete="name" required maxLength={100} value={name} onChange={e => setName(e.target.value)} className={styles.input} placeholder={t('namePlaceholder')} /></div></div>}

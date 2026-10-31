@@ -1,4 +1,4 @@
-import NextAuth, { CredentialsSignin, type NextAuthConfig } from "next-auth";
+import NextAuth, { AuthError, CredentialsSignin, type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -21,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || env.NEXTAUTH_SECRET,
   pages: { signIn: "/login", error: "/login" },
   logger: {
-    error: () => console.error("[auth] Authentication operation failed."),
+    error: (error) => console.error("[auth] Authentication operation failed.", error instanceof AuthError ? error.type : "Unknown"),
     warn: () => console.warn("[auth] Authentication configuration warning."),
     debug: () => { /* Authentication payloads must not be logged. */ },
   },
