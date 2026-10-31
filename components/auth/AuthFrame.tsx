@@ -40,7 +40,7 @@ export function AuthFrame({ mode, title, subtitle, children, footerNote }: {
     <main className={styles.layout}>
       <aside className={styles.photoPanel} aria-label={t('label')} data-auth-slideshow>
         {photos.map((photo, index) => <div key={photo} className={`${styles.slide} ${index === current ? styles.activeSlide : ''}`} aria-hidden={index !== current} data-active={index === current}>
-          <Image src={`/images/auth/${photo}`} alt={t(`photo${index}`)} fill sizes="(max-width: 760px) 100vw, (max-width: 1280px) 48vw, 600px" loading="eager" fetchPriority={index === 0 ? 'high' : 'auto'} onLoad={() => { loaded.current[index] = true; }} className={styles.photo} style={{ objectPosition: index === 2 ? '50% 28%' : 'center' }} />
+          <Image src={`/images/auth/${photo}`} alt={t(`photo${index}`)} fill sizes="(max-width: 760px) 100vw, (max-width: 1280px) 48vw, 600px" loading={index === current || index === (current + 1) % photos.length ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'low'} onLoad={() => { loaded.current[index] = true; }} className={styles.photo} style={{ objectPosition: index === 2 ? '50% 28%' : 'center' }} />
         </div>)}
         <button type="button" className={styles.pause} aria-label={paused ? t('play') : t('pause')} aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? <Play size={16} aria-hidden="true"/> : <Pause size={16} aria-hidden="true"/>}</button>
       </aside>

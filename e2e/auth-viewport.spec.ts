@@ -9,7 +9,7 @@ for (const locale of ['en', 'mr', 'hi']) {
         await page.route('**/api/auth/session', route => route.fulfill({ contentType: 'application/json', body: 'null' }));
         await page.route('**/api/auth/csrf', route => route.fulfill({ contentType: 'application/json', body: '{"csrfToken":"layout-only"}' }));
         await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: 'window.turnstile={render:(el,o)=>{const box=document.createElement("div");box.style.height="65px";box.textContent="Cloudflare layout fixture";el.appendChild(box);setTimeout(()=>o.callback("layout-only-token"),0);return "fixture";},reset(){},remove(){}};' }));
-        await page.goto(`/${locale}/${mode}`);
+        await page.goto(`/${locale}/${mode}`, { waitUntil: 'domcontentloaded' });
         await expect(page.locator('[data-turnstile-status]')).toHaveAttribute('data-turnstile-status', 'verified');
         const dimensions = await page.evaluate(() => ({ page: document.documentElement.scrollHeight, height: innerHeight, width: document.documentElement.scrollWidth, viewport: innerWidth }));
         expect(dimensions.width).toBeLessThanOrEqual(dimensions.viewport);

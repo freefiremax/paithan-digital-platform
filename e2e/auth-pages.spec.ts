@@ -68,9 +68,13 @@ test('photo order is temple, dam, artisan and flamingos', async ({ page }) => {
   await page.clock.install();
   await page.goto('/en/login');
   const active = page.locator('[data-auth-slideshow] [data-active="true"] img');
-  for (const description of [/temple/, /Jayakwadi Dam/, /artisan/, /Flamingos/]) {
-    await expect(active).toHaveAttribute('alt', description);
-    await page.clock.fastForward(6000);
+  const descriptions = [/temple/, /Jayakwadi Dam/, /artisan/, /Flamingos/];
+  for (let index = 0; index < descriptions.length; index++) {
+    await expect(active).toHaveAttribute('alt', descriptions[index]);
+    if (index + 1 < descriptions.length) {
+      await page.locator('[data-auth-slideshow] img').nth(index + 1).evaluate(node => (node as HTMLImageElement).decode());
+      await page.clock.fastForward(6000);
+    }
   }
 });
 

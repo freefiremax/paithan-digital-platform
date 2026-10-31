@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('cookie choices gate analytics and can be changed later', async ({ page, context }) => {
   let events = 0;
   await page.route('**/api/analytics', route => { events++; return route.fulfill({ status: 204 }); });
-  await page.goto('/en/contact');
+  await page.goto('/en/contact', { waitUntil: 'domcontentloaded' });
   const banner = page.getByRole('complementary', { name: 'Cookie choices' });
   await expect(banner).toBeVisible();
   expect(events).toBe(0);
@@ -31,7 +31,7 @@ test('rejecting optional cookies does not disable Cloudflare', async ({ page }) 
     renderCount++;
     return route.fulfill({ contentType: 'application/javascript', body: 'window.turnstile={render:(el,o)=>{el.innerHTML="<div>Cloudflare test widget</div>";setTimeout(()=>o.callback("isolated-test-token"),0);return "test";},reset(){},remove(){}};' });
   });
-  await page.goto('/en/login');
+  await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
   await page.getByRole('button', { name: 'Reject optional cookies', exact: true }).click();
   const panel = page.locator('[data-turnstile-status]');
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
@@ -50,7 +50,7 @@ test('a blocked Cloudflare script shows an error and retry recovers', async ({ p
     if (!allowScript) return route.abort('failed');
     return route.fulfill({ contentType: 'application/javascript', body: 'window.turnstile={render:(el,o)=>{el.innerHTML="<div>Cloudflare test widget</div>";setTimeout(()=>o.callback("isolated-test-token"),0);return "test";},reset(){},remove(){}};' });
   });
-  await page.goto('/en/login');
+  await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
   const panel = page.locator('[data-turnstile-status]');
   await expect(panel).toHaveAttribute('data-turnstile-status', 'error');
   await expect(panel.getByRole('alert')).toContainText('could not finish');
@@ -64,7 +64,7 @@ test('a silent blank challenge becomes an actionable timeout, never a fake succe
   await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
   await page.clock.install();
   await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: 'window.turnstile={render:()=>"silent-test",reset(){},remove(){}};' }));
-  await page.goto('/en/login');
+  await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
   const panel = page.locator('[data-turnstile-status]');
   await expect(panel).toHaveAttribute('data-turnstile-status', 'checking');
   await page.clock.fastForward(31000);
@@ -76,7 +76,7 @@ test('a silent blank challenge becomes an actionable timeout, never a fake succe
 
 test('mobile cookie preferences fit the screen', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/en/register');
+  await page.goto('/en/register', { waitUntil: 'domcontentloaded' });
   await page.getByRole('button', { name: 'Cookie preferences', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Cookie preferences' });
   await expect(dialog).toBeVisible();
@@ -108,7 +108,7 @@ test('Cloudflare renews expired tokens and recovers when the connection returns'
   await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
   await page.clock.install();
   await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: `window.testChallengeOptions=null;window.challengeResets=0;window.turnstile={render:(el,o)=>{window.testChallengeOptions=o;setTimeout(()=>o.callback('isolated-token'),0);return 'widget';},reset(){window.challengeResets++;setTimeout(()=>window.testChallengeOptions.callback('fresh-isolated-token'),0);},remove(){}};` }));
-  await page.goto('/en/login');
+  await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
   const panel = page.locator('[data-turnstile-status]');
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
   await page.clock.fastForward(240001);

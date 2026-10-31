@@ -55,7 +55,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
     void loadTurnstile().then(loaded => {
       if (!active || !container.current) return;
       api = loaded;
-      update('checking');
+      update('checking'); watch();
       id = api.render(container.current, {
         sitekey: siteKey, theme, size: container.current.clientWidth < 300 ? 'compact' : 'normal',
         appearance: 'always', execution: 'render', language: locale,
@@ -86,7 +86,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
   const retry = () => { callbacks.current.onVerify(''); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
   const text = !siteKey ? 'unavailable' : status === 'verified' ? 'checkComplete' : status === 'error' ? (errorCode === '110200' ? 'domainError' : 'checkFailed') : status === 'interactive' ? 'checkInteractive' : status === 'loading' ? 'checkLoading' : 'checkChecking';
   return <>
-    {siteKey && <><link rel="preconnect" href="https://challenges.cloudflare.com"/><link rel="preload" as="script" href="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"/></>}
+    {siteKey && <><link rel="preconnect" href="https://challenges.cloudflare.com"/><link rel="preload" as="script" fetchPriority="high" href="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"/></>}
     <section className={`${styles.panel} ${className}`} aria-label={t('title')} data-turnstile-status={!siteKey ? 'unavailable' : status}>
     <div className={styles.heading}><ShieldCheck size={16} aria-hidden="true"/><span>{t('title')}</span><small>Cloudflare Turnstile</small></div>
     {siteKey && <div className={styles.slot}>
