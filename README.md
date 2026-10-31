@@ -1,5 +1,15 @@
 # Paithan Digital Platform (पैठण डिजिटल प्लॅटफॉर्म)
 
+### Cloudflare Turnstile canonical integration & CI/CD pipeline reliability — 2026-10-31
+
+- **Cloudflare Turnstile canonical integration:** Fully integrated `paithan-portal` (Site key: `0x4AAAAAAFI-1fVzxY9hvD8P`) following Cloudflare's canonical existing-widget integration flow. Added server-side validation supporting both `TURNSTILE_SECRET` and `TURNSTILE_SECRET_KEY` with client IP (`remoteip`) forwarding and action verification. Form widgets pass explicit action tags (`login`, `register`, `admin-login`, `contact`, `grievance`, `gate`) and automatically reset on validation retry. Recommended widget mode: **Non-interactive** for instant sub-300ms verification without interactive challenge delays.
+- **CI/CD pipeline hardening:**
+  - Resolved TypeScript type mismatches in `notifications/page.tsx` categories (`NotificationCategory | "ALL"`) and `CitizenAuth.tsx` action prop.
+  - Resolved ESLint React 19 `react-hooks/set-state-in-effect` warning in `admin/analytics/page.tsx`.
+  - Configured `eslint.config.mjs` and `.gitignore` to ignore temporary scratch directories (`tmp/**`, `output/**`).
+  - Standardized Next.js 16 production build via `--webpack` to eliminate Turbopack Google Font resolution errors.
+  - All 280 test cases across 22 test suites pass with zero regressions.
+
 ### Security-widget recovery and cookie choices — 2026-10-30
 
 Cloudflare Turnstile uses a shared, load-event-aware SPA loader, explicit always-visible rendering, normal/compact sizing, provider error/expiry/interactive callbacks, bounded script/API/challenge waits and a visible retry panel. Empty or failed callbacks never mark verification complete. The server still validates challenge tokens; cookie rejection does not disable security. External domain authorization, browser/network blocks and successful human challenges remain provider/browser dependent.

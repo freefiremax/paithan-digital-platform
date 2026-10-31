@@ -47,6 +47,7 @@ const ORDER = ["rep-mla", "rep-mp"] as const;
 
 export function RepresentativesShowcase() {
   const t = useTranslations("home");
+  const tCommon = useTranslations("common");
 
   const reps = ORDER.map((id) => electedRepresentatives.find((r) => r.id === id)).filter(
     (r): r is Representative => Boolean(r)
@@ -183,7 +184,7 @@ export function RepresentativesShowcase() {
                               className="h-3.5 w-3.5 shrink-0 text-[var(--zari-gold-400)]"
                               aria-hidden="true"
                             />
-                            <dt className="sr-only">{t("officeHours")}</dt>
+                            <dt className="sr-only">{tCommon("phone")}</dt>
                             <dd className="tabular-nums">{rep.phone}</dd>
                           </div>
                         ) : null}

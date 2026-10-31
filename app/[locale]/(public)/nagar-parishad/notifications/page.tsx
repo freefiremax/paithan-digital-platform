@@ -32,9 +32,8 @@ export default function NotificationsPage() {
     });
   }, [selectedCategory, searchQuery]);
 
-  const categoryLabels: Record<string, string> = {
+  const categoryLabels: Record<NotificationCategory | "ALL", string> = {
     ALL: tCommon("allCategories"),
-    TENDER: t("categoryTender"),
     NOTICE: t("categoryNotice"),
     SCHEME: t("categoryScheme"),
     ANNOUNCEMENT: t("categoryAnnouncement"),
@@ -95,7 +94,7 @@ export default function NotificationsPage() {
           </div>
 
           <div className="reg-tabs" role="group" aria-label={tCommon("filterBy")}>
-            {(["ALL", "TENDER", "NOTICE", "SCHEME", "ANNOUNCEMENT"] as const).map((cat) => (
+            {(["ALL", "NOTICE", "SCHEME", "ANNOUNCEMENT"] as const).map((cat) => (
               <button
                 key={cat}
                 type="button"

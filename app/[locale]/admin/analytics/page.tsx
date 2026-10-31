@@ -19,7 +19,6 @@ import {
   FileText,
 } from "lucide-react";
 import Link from "next/link";
-import { useLocale } from "next-intl";
 
 interface AnalyticsData {
   status: string;
@@ -63,7 +62,6 @@ interface AnalyticsData {
 }
 
 export default function AdminAnalyticsPage() {
-  const locale = useLocale();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +84,27 @@ export default function AdminAnalyticsPage() {
   };
 
   useEffect(() => {
-    fetchAnalytics();
+    let active = true;
+    fetch("/api/admin/analytics")
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch analytics from Neon`);
+        return res.json();
+      })
+      .then((json) => {
+        if (active) {
+          setData(json);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (active) {
+          setError(err instanceof Error ? err.message : "Failed to load analytics");
+          setLoading(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const formatDuration = (seconds: number) => {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run chatbot:ingest && prisma generate && next build",
+    "build": "npm run chatbot:ingest && prisma generate && next build --webpack",
     "chatbot:ingest": "tsx scripts/ingest-chatbot-knowledge.ts",
     "chatbot:publish": "tsx --env-file=.env scripts/publish-chatbot-knowledge.ts",
     "chatbot:evaluate": "vitest run tests/chatbot.test.ts tests/chatbot-knowledge.test.ts tests/rate-limit.test.ts",
