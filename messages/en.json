@@ -1167,8 +1167,8 @@
   },
   "cookies": {
     "bannerLabel": "Cookie choices",
-    "title": "Your privacy, your choice",
-    "description": "We use essential cookies for sign-in and security. Optional analytics helps us understand which public pages are useful. You can accept or reject optional analytics and change your choice later.",
+    "title": "Website cookies",
+    "description": "Essential cookies keep sign-in and security working. Optional visitor analytics helps us improve public pages. Choose what you allow.",
     "privacyLink": "Read our privacy policy",
     "acceptAll": "Accept cookies",
     "rejectOptional": "Reject optional cookies",
@@ -1180,7 +1180,8 @@
     "alwaysOn": "Always on",
     "analyticsTitle": "Optional visitor analytics",
     "analyticsDescription": "Allows anonymous, aggregate public-page counts. No advertising cookies or individual visitor profiles are added. Browser privacy signals can still disable analytics.",
-    "storageError": "Your browser could not save this choice. Check your cookie settings and try again."
+    "storageError": "Your browser could not save this choice. Check your cookie settings and try again.",
+    "dismiss": "Close cookie notice"
   },
   "authPhotos": {
     "label": "Paithan in pictures",

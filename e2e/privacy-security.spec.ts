@@ -128,3 +128,29 @@ test('Cloudflare renews expired tokens and recovers when the connection returns'
   await page.clock.fastForward(100);
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
 });
+
+
+test('cookie notice is a right-hand card and dismissal never grants analytics consent', async ({ page, context }) => {
+  let events = 0;
+  await page.route('**/api/analytics', route => { events++; return route.fulfill({ status: 204 }); });
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
+  const banner = page.getByRole('complementary', { name: 'Cookie choices' });
+  await expect(banner).toBeVisible();
+  const box = await banner.boundingBox();
+  expect(box!.width).toBeLessThanOrEqual(360);
+  expect(box!.x).toBeGreaterThan(640);
+  expect(box!.x + box!.width).toBeLessThan(1280);
+  await banner.getByRole('button', { name: 'Close cookie notice' }).click();
+  await expect(banner).toBeHidden();
+  const icon = page.getByRole('button', { name: 'Cookie preferences', exact: true });
+  await expect(icon).toBeFocused();
+  expect((await context.cookies()).some(cookie => cookie.name === 'paithan_consent')).toBe(false);
+  expect(events).toBe(0);
+  await icon.click();
+  const dialog = page.getByRole('dialog', { name: 'Cookie preferences' });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByLabel('Optional visitor analytics')).not.toBeChecked();
+  await dialog.getByRole('button', { name: 'Reject optional cookies', exact: true }).click();
+  await expect(dialog).toBeHidden();
+});

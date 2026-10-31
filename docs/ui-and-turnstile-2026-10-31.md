@@ -34,3 +34,7 @@ Live follow-up diagnostics with the real production key measured an interactive,
 ## Remove premature failure classification
 
 Normal-browser feedback confirmed genuine checkbox/success, while the earlier screenshot showed the application's `verification-timeout`. The application's elapsed-time watchdog now only offers Retry; it does not declare a challenge failed or reset it on tab visibility changes while verification is still pending. A real script/render/provider error is still an error, and only a valid provider callback yields verified state. A regression scenario waits past the soft retry threshold, checks that the original challenge was neither removed nor reset, then delivers a late success callback. This supersedes the earlier elapsed-time failure behaviour; it does not claim to accelerate Cloudflare's external challenge computation.
+
+## Right-hand cookie notice
+
+The initial consent notice is now a compact bottom-right card in the portal's light theme, with a cookie illustration, accept/reject choices, settings and a close action. It still waits for entry-intro completion. Closing the notice only dismisses it for the current page load; it neither saves consent nor starts optional analytics. The icon remains available for later settings, and saved choices retain the existing persistence. Keyboard focus moves to the icon on dismissal and returns safely when the settings dialog closes.
