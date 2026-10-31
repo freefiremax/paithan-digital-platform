@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { LoaderCircle, ShieldCheck } from 'lucide-react';
-import { loadTurnstile } from '@/lib/turnstile-client';
+import { isRetryableTurnstileError, loadTurnstile } from '@/lib/turnstile-client';
 import styles from './TurnstileWidget.module.css';
 
 interface Props { onVerify: (token: string) => void; onError?: () => void; theme?: 'light' | 'dark' | 'auto'; className?: string }
@@ -19,6 +19,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
   const [errorCode, setErrorCode] = useState('');
   const [retryAvailable, setRetryAvailable] = useState(false);
   const [attempt, setAttempt] = useState(0);
+  const automaticRetries = useRef(0);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   useEffect(() => {
@@ -29,11 +30,21 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
     let api: Awaited<ReturnType<typeof loadTurnstile>> | undefined;
     let phase: Status = 'loading';
     let verifiedAt = 0;
+    let failureCode = '';
     const update = (next: Status) => { phase = next; setStatus(next); setRetryAvailable(false); };
     const fail = (code = 'challenge-failed') => {
       if (!active) return;
-      clearTimeout(timer); verifiedAt = 0; update('error'); setErrorCode(code);
+      clearTimeout(timer); verifiedAt = 0; failureCode = code;
       callbacks.current.onVerify(''); callbacks.current.onError?.();
+      if (isRetryableTurnstileError(code) && automaticRetries.current < 2) {
+        automaticRetries.current += 1;
+        update('loading'); setErrorCode('');
+        // Retry a failed challenge, never interrupt one that is still pending.
+        // A cap prevents blocked browsers from entering an endless restart loop.
+        timer = setTimeout(() => { if (active) setAttempt(value => value + 1); }, automaticRetries.current * 1000);
+        return;
+      }
+      update('error'); setErrorCode(code);
     };
     // A slow challenge is not a failed challenge. Keep Cloudflare mounted and
     // let its actual callbacks decide success/failure; offer a non-blocking retry.
@@ -49,7 +60,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
     };
     const resume = () => {
       if (document.hidden || !active) return;
-      if (phase === 'error') { callbacks.current.onVerify(''); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); return; }
+      if (phase === 'error' && isRetryableTurnstileError(failureCode)) { callbacks.current.onVerify(''); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); return; }
       // Browser timers and iframe callbacks may pause in a background tab.
       if (phase === 'verified' && Date.now() - verifiedAt >= 240000) refresh();
     };
@@ -63,16 +74,17 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
       id = api.render(container.current, {
         sitekey: siteKey, theme, size: container.current.clientWidth < 300 ? 'compact' : 'normal',
         appearance: 'always', execution: 'render', language: locale,
-        'response-field': false, retry: 'auto', 'retry-interval': 8000,
+        'response-field': false, retry: 'never',
         'refresh-expired': 'auto', 'refresh-timeout': 'auto',
         callback: token => {
           if (!active) return;
           if (typeof token !== 'string' || !token.trim() || token.length > 2048) { fail('invalid-token'); return; }
+          automaticRetries.current = 0;
           clearTimeout(timer); verifiedAt = Date.now(); update('verified'); setErrorCode(''); callbacks.current.onVerify(token);
           // Refresh before the provider's five-minute expiry, even if an iframe callback is lost.
           timer = setTimeout(() => { if (!document.hidden) refresh(); }, 240000);
         },
-        'error-callback': code => fail(code),
+        'error-callback': code => { fail(code); return true; },
         'timeout-callback': () => fail('challenge-timeout'),
         'unsupported-callback': () => fail('unsupported-browser'),
         'before-interactive-callback': () => { if (!active) return; update('interactive'); watch(120000); },
@@ -87,7 +99,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
     };
   }, [siteKey, theme, locale, attempt]);
 
-  const retry = () => { callbacks.current.onVerify(''); setRetryAvailable(false); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
+  const retry = () => { automaticRetries.current = 0; callbacks.current.onVerify(''); setRetryAvailable(false); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
   const text = !siteKey ? 'unavailable' : status === 'verified' ? 'checkComplete' : status === 'error' ? (errorCode === '110200' ? 'domainError' : 'checkFailed') : status === 'interactive' ? 'checkInteractive' : status === 'loading' ? 'checkLoading' : 'checkChecking';
   return <>
     {siteKey && <><link rel="preconnect" href="https://challenges.cloudflare.com"/><link rel="preload" as="script" fetchPriority="high" href="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"/></>}

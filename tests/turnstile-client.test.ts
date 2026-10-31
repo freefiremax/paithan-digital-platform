@@ -73,3 +73,9 @@ it('reloads a resolved API that disappears during navigation or network recovery
   await vi.advanceTimersByTimeAsync(100);
   expect(await second).toBe(restored);
 });
+
+it('only retries documented temporary failures and never configuration failures', async () => {
+  const { isRetryableTurnstileError } = await import('@/lib/turnstile-client');
+  for (const code of ['script-load-failed', 'script-load-timeout', '200500', '110600', '110620', '300030', '600010']) expect(isRetryableTurnstileError(code)).toBe(true);
+  for (const code of ['110100', '110110', '110200', '200100', '400020', '400021', '400070', 'unsupported-browser', 'invalid-token', '300', 'unknown']) expect(isRetryableTurnstileError(code)).toBe(false);
+});

@@ -1,7 +1,7 @@
 export interface TurnstileOptions {
   sitekey: string;
   callback?: (token: string) => void;
-  'error-callback'?: (code?: string) => void;
+  'error-callback'?: (code?: string) => boolean | void;
   'expired-callback'?: () => void;
   'timeout-callback'?: () => void;
   'unsupported-callback'?: () => void;
@@ -59,10 +59,18 @@ export function loadTurnstile(): Promise<TurnstileAPI> {
       script.id = 'cloudflare-turnstile';
       script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
       script.async = true;
+      script.fetchPriority = 'high';
       script.addEventListener('error', onError);
       script.addEventListener('load', onLoad);
       document.head.appendChild(script);
     } else { script?.addEventListener('error', onError); script?.addEventListener('load', onLoad); }
+    finish();
   }).catch(error => { pending = null; throw error; });
   return pending;
+}
+
+/** Retry temporary provider/network failures, never invalid keys or hostnames. */
+export function isRetryableTurnstileError(code: string): boolean {
+  return ['script-load-failed', 'script-load-timeout', 'render-failed', 'challenge-timeout', 'network-error', '110600', '110620', '200500'].includes(code)
+    || /^(300|600)\d{3}$/.test(code);
 }

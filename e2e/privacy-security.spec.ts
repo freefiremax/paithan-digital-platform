@@ -128,7 +128,7 @@ test('Cloudflare renews expired tokens and recovers when the connection returns'
   await page.evaluate(() => (window as unknown as { testChallengeOptions: { 'error-callback': (code: string) => void } }).testChallengeOptions['error-callback']('network-error'));
   await expect(panel).toHaveAttribute('data-turnstile-status', 'error');
   await page.evaluate(() => window.dispatchEvent(new Event('online')));
-  await page.clock.fastForward(100);
+  await page.clock.fastForward(1100);
   await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
 });
 
@@ -194,4 +194,43 @@ for (const [locale, messages] of Object.entries({ en, mr, hi })) {
       } finally { await fresh.close(); }
     });
   }
+}
+
+test('first-visit script failure recovers automatically without a page refresh', async ({ page, context, baseURL }) => {
+  await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
+  let loads = 0;
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => {
+    if (++loads === 1) return route.abort('failed');
+    return route.fulfill({ contentType: 'application/javascript', body: `window.turnstile={render:(el,o)=>{el.textContent='Recovered challenge fixture';setTimeout(()=>o.callback('valid-recovery-fixture'),0);return 'recovered';},reset(){},remove(){}};` });
+  });
+  await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
+  const panel = page.locator('[data-turnstile-status]');
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
+  expect(loads).toBe(2);
+  await expect(panel.getByRole('alert')).toHaveCount(0);
+});
+
+test('first challenge iframe failure retries on the same page and uses a real callback', async ({ page, context, baseURL }) => {
+  await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: `window.renders=0;window.turnstile={render:(el,o)=>{window.renders++;setTimeout(()=>window.renders===1?o['error-callback']('200500'):o.callback('valid-iframe-recovery-fixture'),0);return String(window.renders);},reset(){},remove(){}};` }));
+  await page.goto('/en/register', { waitUntil: 'domcontentloaded' });
+  const panel = page.locator('[data-turnstile-status]');
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
+  expect(await page.evaluate(() => (window as unknown as { renders:number }).renders)).toBe(2);
+});
+
+for (const [code, renders] of [['300030', 3], ['110200', 1]] as const) {
+  test(`Cloudflare ${code} stops after ${renders} attempts and never claims verification`, async ({ page, context, baseURL }) => {
+    await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
+    await page.clock.install();
+    await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: `window.renders=0;window.turnstile={render:(el,o)=>{window.renders++;setTimeout(()=>o['error-callback']('${code}'),0);return String(window.renders);},reset(){},remove(){}};` }));
+    await page.goto('/en/admin/login', { waitUntil: 'domcontentloaded' });
+    const panel = page.locator('[data-turnstile-status]');
+    await expect.poll(() => page.evaluate(() => (window as unknown as { renders:number }).renders)).toBeGreaterThan(0);
+    for (let i = 0; i < 5; i++) await page.clock.fastForward(2000);
+    await expect(panel).toHaveAttribute('data-turnstile-status', 'error');
+    expect(await page.evaluate(() => (window as unknown as { renders:number }).renders)).toBe(renders);
+    await expect(panel).not.toContainText('Security check complete.');
+    await expect(panel.getByRole('button', { name: 'Retry security check' })).toBeVisible();
+  });
 }
