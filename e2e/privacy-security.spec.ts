@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test';
+import en from '../messages/en.json';
+import mr from '../messages/mr.json';
+import hi from '../messages/hi.json';
 
 test('cookie choices gate analytics and can be changed later', async ({ page, context }) => {
   let events = 0;
@@ -154,3 +157,41 @@ test('cookie notice is a right-hand card and dismissal never grants analytics co
   await dialog.getByRole('button', { name: 'Reject optional cookies', exact: true }).click();
   await expect(dialog).toBeHidden();
 });
+
+for (const [locale, messages] of Object.entries({ en, mr, hi })) {
+  for (const viewport of [{ width: 1366, height: 768 }, { width: 390, height: 844 }]) {
+    test(`${locale} ${viewport.width}px cookie choice moves from bottom right to bottom left and persists`, async ({ page, context, browser, baseURL }) => {
+      await page.setViewportSize(viewport);
+      await page.route('**/api/analytics', route => route.fulfill({ status: 204 }));
+      await page.goto(`/${locale}/login`, { waitUntil: 'domcontentloaded' });
+      const notice = page.locator('[data-cookie-notice]');
+      const launcher = page.locator('[data-cookie-launcher]');
+      await expect(notice).toBeVisible();
+      await expect(launcher).toHaveCount(0);
+      const box = (await notice.boundingBox())!;
+      expect(box.x).toBeGreaterThanOrEqual(10);
+      expect(viewport.width - box.x - box.width).toBeLessThan(65);
+      expect(viewport.height - box.y - box.height).toBeLessThan(30);
+      await notice.getByRole('button', { name: messages.cookies.acceptAll, exact: true }).click();
+      await expect(notice).toHaveCount(0);
+      await expect(launcher).toBeVisible();
+      await expect(launcher).toBeFocused();
+      await expect(launcher).toHaveText('');
+      const icon = (await launcher.boundingBox())!;
+      expect(icon.x).toBeLessThan(65);
+      expect(viewport.height - icon.y - icon.height).toBeLessThan(30);
+      expect((await context.cookies()).find(cookie => cookie.name === 'paithan_consent')?.value).toBe('v1.a1');
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await expect(launcher).toBeVisible();
+      await expect(notice).toHaveCount(0);
+      // Another visitor's browser must receive its own first-visit choice.
+      const fresh = await browser.newContext({ viewport });
+      try {
+        const other = await fresh.newPage();
+        await other.goto(`${baseURL}/${locale}/login`, { waitUntil: 'domcontentloaded' });
+        await expect(other.locator('[data-cookie-notice]')).toBeVisible();
+        await expect(other.locator('[data-cookie-launcher]')).toHaveCount(0);
+      } finally { await fresh.close(); }
+    });
+  }
+}
