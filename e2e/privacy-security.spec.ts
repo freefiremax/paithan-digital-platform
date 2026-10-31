@@ -60,18 +60,25 @@ test('a blocked Cloudflare script shows an error and retry recovers', async ({ p
   expect(loads).toBeGreaterThanOrEqual(2);
 });
 
-test('a silent blank challenge becomes an actionable timeout, never a fake success', async ({ page, context, baseURL }) => {
+test('slow verification stays pending and can still complete after the retry appears', async ({ page, context, baseURL }) => {
   await context.addCookies([{ name: 'paithan_consent', value: 'v1.a0', url: baseURL! }]);
   await page.clock.install();
-  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: 'window.turnstile={render:()=>"silent-test",reset(){},remove(){}};' }));
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', route => route.fulfill({ contentType: 'application/javascript', body: `window.challengeRenders=0;window.challengeRemovals=0;window.challengeResets=0;window.turnstile={render:(el,o)=>{window.challengeRenders++;window.challengeOptions=o;return 'slow-test';},reset(){window.challengeResets++;},remove(){window.challengeRemovals++;}};` }));
   await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
   const panel = page.locator('[data-turnstile-status]');
   await expect(panel).toHaveAttribute('data-turnstile-status', 'checking');
   await page.clock.fastForward(31000);
-  await expect(panel).toHaveAttribute('data-turnstile-status', 'error');
-  await expect(panel).toContainText('verification-timeout');
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'checking');
+  await expect(panel.getByRole('alert')).toHaveCount(0);
   await expect(panel.getByRole('button', { name: 'Retry security check' })).toBeVisible();
   await expect(panel).not.toContainText('Security check complete.');
+  // Returning to a tab must not restart a legitimate in-flight challenge.
+  await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+  const counters = await page.evaluate(() => { const w = window as unknown as { challengeRenders: number; challengeRemovals: number; challengeResets: number }; return [w.challengeRenders, w.challengeRemovals, w.challengeResets]; });
+  expect(counters).toEqual([1, 0, 0]);
+  await page.evaluate(() => (window as unknown as { challengeOptions: { callback: (token: string) => void } }).challengeOptions.callback('late-but-genuine-fixture-token'));
+  await expect(panel).toHaveAttribute('data-turnstile-status', 'verified');
+  await expect(panel.getByRole('button', { name: 'Retry security check' })).toHaveCount(0);
 });
 
 test('mobile cookie preferences fit the screen', async ({ page }) => {

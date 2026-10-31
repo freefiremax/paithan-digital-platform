@@ -17,6 +17,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
   useEffect(() => { callbacks.current = { onVerify, onError }; }, [onVerify, onError]);
   const [status, setStatus] = useState<Status>('loading');
   const [errorCode, setErrorCode] = useState('');
+  const [retryAvailable, setRetryAvailable] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -27,15 +28,19 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
     let timer: ReturnType<typeof setTimeout>;
     let api: Awaited<ReturnType<typeof loadTurnstile>> | undefined;
     let phase: Status = 'loading';
-    let changedAt = Date.now();
     let verifiedAt = 0;
-    const update = (next: Status) => { phase = next; changedAt = Date.now(); setStatus(next); };
+    const update = (next: Status) => { phase = next; setStatus(next); setRetryAvailable(false); };
     const fail = (code = 'challenge-failed') => {
       if (!active) return;
       clearTimeout(timer); verifiedAt = 0; update('error'); setErrorCode(code);
       callbacks.current.onVerify(''); callbacks.current.onError?.();
     };
-    const watch = (milliseconds = 15000) => { clearTimeout(timer); timer = setTimeout(() => fail('verification-timeout'), milliseconds); };
+    // A slow challenge is not a failed challenge. Keep Cloudflare mounted and
+    // let its actual callbacks decide success/failure; offer a non-blocking retry.
+    const watch = (milliseconds = 15000) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { if (active) setRetryAvailable(true); }, milliseconds);
+    };
     const refresh = () => {
       if (!active) return;
       verifiedAt = 0; callbacks.current.onVerify(''); setErrorCode(''); update('checking'); watch();
@@ -46,8 +51,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
       if (document.hidden || !active) return;
       if (phase === 'error') { callbacks.current.onVerify(''); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); return; }
       // Browser timers and iframe callbacks may pause in a background tab.
-      if ((phase === 'verified' && Date.now() - verifiedAt >= 240000) ||
-          (phase === 'checking' && Date.now() - changedAt >= 15000)) refresh();
+      if (phase === 'verified' && Date.now() - verifiedAt >= 240000) refresh();
     };
     document.addEventListener('visibilitychange', resume);
     window.addEventListener('online', resume);
@@ -83,7 +87,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
     };
   }, [siteKey, theme, locale, attempt]);
 
-  const retry = () => { callbacks.current.onVerify(''); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
+  const retry = () => { callbacks.current.onVerify(''); setRetryAvailable(false); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
   const text = !siteKey ? 'unavailable' : status === 'verified' ? 'checkComplete' : status === 'error' ? (errorCode === '110200' ? 'domainError' : 'checkFailed') : status === 'interactive' ? 'checkInteractive' : status === 'loading' ? 'checkLoading' : 'checkChecking';
   return <>
     {siteKey && <><link rel="preconnect" href="https://challenges.cloudflare.com"/><link rel="preload" as="script" fetchPriority="high" href="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"/></>}
@@ -94,6 +98,6 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
 
     </div>}
     <p role={status === 'error' || !siteKey ? 'alert' : 'status'} className={styles.message}>{(status === 'loading' || status === 'checking') && siteKey && <LoaderCircle size={14} className={styles.spinner} aria-hidden="true"/>}{t(text)}</p>
-    {status === 'error' && <div className={styles.recovery}><details><summary>{t('errorDetails')}</summary><span>{t('verificationError', { code: errorCode })}</span></details><button type="button" onClick={retry}>{t('retryCheck')}</button></div>}
+    {(status === 'error' || retryAvailable) && <div className={styles.recovery}>{status === 'error' && <details><summary>{t('errorDetails')}</summary><span>{t('verificationError', { code: errorCode })}</span></details>}<button type="button" onClick={retry}>{t('retryCheck')}</button></div>}
   </section></>;
 }
