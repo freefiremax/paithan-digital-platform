@@ -968,6 +968,8 @@
     "checkChecking": "Cloudflare आपला ब्राउझर तपासत आहे. कृपया थांबा.",
     "checkInteractive": "वरील Cloudflare पडताळणी पूर्ण करा.",
     "domainError": "Cloudflare ने या डोमेनला परवानगी दिलेली नाही. संकेतस्थळाचे नाव जोडण्यासाठी परिषदेशी संपर्क साधा.",
+    "verifyingHuman": "तुम्ही मानव आहात याची पडताळणी सुरू आहे. कृपया काही सेकंद प्रतीक्षा करा.",
+    "verifyingDots": "पडताळणी सुरू आहे...",
     "errorDetails": "त्रुटी तपशील"
   },
   "adminFacilities": {

@@ -968,6 +968,8 @@
     "checkChecking": "Cloudflare is verifying your browser. Please wait.",
     "checkInteractive": "Complete the Cloudflare challenge above.",
     "domainError": "Cloudflare has not authorized this domain. Please contact the council so the website hostname can be added.",
+    "verifyingHuman": "Verifying you are human. This may take a few seconds.",
+    "verifyingDots": "Verifying...",
     "errorDetails": "Error details"
   },
   "adminFacilities": {

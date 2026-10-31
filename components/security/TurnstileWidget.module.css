@@ -1,18 +1,120 @@
 .panel { min-width: 0; color: var(--paper-900); }
 /* Cloudflare supplies its own checkbox, border and branding. Keep the app wrapper quiet. */
 .heading { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.slot { min-width: 0; }
-.widget { width: 300px; min-height: 65px; max-width: 100%; display: block; }
-.message { display: flex; align-items: flex-start; gap: 6px; margin-top: 5px; font-size: 11px; line-height: 1.5; color: var(--paper-700); }
-.message svg { flex-shrink: 0; margin-top: 1px; }
-.panel[data-turnstile-status="error"] .message, .panel[data-turnstile-status="unavailable"] .message { color: #8a221c; }
-.panel[data-turnstile-status="verified"] .message { color: var(--teal-700); }
+
+.promptHeader {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 7px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.slot {
+  min-width: 0;
+  position: relative;
+}
+
+.widget {
+  width: 300px;
+  min-height: 65px;
+  max-width: 100%;
+  display: block;
+  position: relative;
+}
+
+/* Authentic Cloudflare buffering skeleton */
+.cfPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 65px;
+  max-width: 100%;
+  background: #fafafa;
+  border: 1px solid #d4d4d8;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  box-sizing: border-box;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cfPlaceholderLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cfSpinner {
+  animation: cfRotate 1s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes cfRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cfPlaceholderText {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #18181b;
+}
+
+.cfPlaceholderRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.cfBrand {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cfBrandName {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #0f172a;
+}
+
+.cfLegal {
+  font-size: 8.5px;
+  color: #71717a;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.errorMessage {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #b91c1c;
+}
+
 .recovery { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 11px; align-items: center; }
 .recovery details { min-width: 0; color: var(--paper-600); line-height: 1.7; }
 .recovery summary { cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .recovery details span { display: block; overflow-wrap: anywhere; }
 .recovery button { min-height: 32px; border: 1px solid var(--border-strong); border-radius: 5px; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer; background: white; color: var(--portal-blue-900); }
 .recovery button:focus-visible, .recovery summary:focus-visible { outline: 2px solid var(--teal-700); outline-offset: 2px; }
-.spinner { animation: turn 1s linear infinite; }
-@keyframes turn { to { transform: rotate(360deg); } }
-@media(prefers-reduced-motion:reduce) { .spinner { animation: none; } }
+
+@media(prefers-reduced-motion:reduce) { .cfSpinner { animation: none; } }

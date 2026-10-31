@@ -32,6 +32,10 @@ let resolvedAPI: TurnstileAPI | null = null;
 
 /** Share the asynchronous script across SPA mounts. Do not call ready() on async scripts. */
 export function loadTurnstile(): Promise<TurnstileAPI> {
+  if (typeof window !== 'undefined' && window.turnstile?.render) {
+    resolvedAPI = window.turnstile;
+    return Promise.resolve(window.turnstile);
+  }
   if (pending && resolvedAPI && window.turnstile !== resolvedAPI) {
     pending = null; resolvedAPI = null;
     document.querySelector('script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]')?.remove();
