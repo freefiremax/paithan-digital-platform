@@ -21,7 +21,7 @@ export function TurnstileWidget({
   onVerify,
   onError,
   theme = 'light',
-  appearance = 'interaction-only',
+  appearance = 'always',
   action,
   cdata,
   className = '',

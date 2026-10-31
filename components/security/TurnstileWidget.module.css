@@ -2,7 +2,7 @@
 /* Cloudflare supplies its own checkbox, border and branding. Keep the app wrapper quiet. */
 .heading { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .slot { min-width: 0; }
-.widget { width: 300px; max-width: 100%; display: block; }
+.widget { width: 300px; min-height: 65px; max-width: 100%; display: block; }
 .message { display: flex; align-items: flex-start; gap: 6px; margin-top: 5px; font-size: 11px; line-height: 1.5; color: var(--paper-700); }
 .message svg { flex-shrink: 0; margin-top: 1px; }
 .panel[data-turnstile-status="error"] .message, .panel[data-turnstile-status="unavailable"] .message { color: #8a221c; }
