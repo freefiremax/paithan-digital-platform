@@ -102,7 +102,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${inter.variable} ${notoSansDevanagari.variable} ${besley.variable} ${tiroDevanagari.variable} ${imFellEnglish.variable} ${shrikhand.variable} ${rozhaOne.variable}`}
     >
       <head>
-        <link rel="preconnect" href="https://challenges.cloudflare.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://challenges.cloudflare.com" />
         <link rel="dns-prefetch" href="https://challenges.cloudflare.com" />
         <link rel="preload" as="script" fetchPriority="high" href="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" />
       </head>

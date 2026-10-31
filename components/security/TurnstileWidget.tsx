@@ -59,8 +59,8 @@ export function TurnstileWidget({
       update('error'); setErrorCode(code);
     };
     // A slow challenge is not a failed challenge. Keep Cloudflare mounted and
-    // let its actual callbacks decide success/failure; offer a non-blocking retry.
-    const watch = (milliseconds = 15000) => {
+    // let its actual callbacks decide success/failure; offer a fast retry.
+    const watch = (milliseconds = 6000) => {
       clearTimeout(timer);
       timer = setTimeout(() => { if (active) setRetryAvailable(true); }, milliseconds);
     };
@@ -86,7 +86,7 @@ export function TurnstileWidget({
       id = api.render(container.current, {
         sitekey: siteKey, theme, size: container.current.clientWidth < 300 ? 'compact' : 'normal',
         appearance, execution: 'render', language: locale,
-        'response-field': false, retry: 'never',
+        'response-field': false, retry: 'auto', 'retry-interval': 1000,
         'refresh-expired': 'auto', 'refresh-timeout': 'auto',
         callback: token => {
           if (!active) return;
