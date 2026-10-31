@@ -22,7 +22,7 @@ export default function AdminDashboardPage() {
   const locale = useLocale();
   const isMr = locale === "mr";
 
-  const activeTenders = notifications.filter((n) => n.category === "TENDER").length;
+  const activeNotices = notifications.filter((n) => n.category === "NOTICE").length;
   const activeWorks = developmentWorks.length;
   const totalBudgetLakhs = developmentWorks.reduce((acc, curr) => acc + curr.budgetInLakhs, 0);
 
@@ -71,7 +71,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-3xl font-extrabold text-[#071224]">{activeTenders}</div>
+            <div className="text-3xl font-extrabold text-[#071224]">{activeNotices}</div>
             <div className="text-[11px] text-emerald-600 font-medium flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3" />
               <span>{t("tendersCirculars")}</span>

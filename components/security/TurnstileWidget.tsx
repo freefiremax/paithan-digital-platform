@@ -6,10 +6,22 @@ import { LoaderCircle, ShieldCheck } from 'lucide-react';
 import { isRetryableTurnstileError, loadTurnstile } from '@/lib/turnstile-client';
 import styles from './TurnstileWidget.module.css';
 
-interface Props { onVerify: (token: string) => void; onError?: () => void; theme?: 'light' | 'dark' | 'auto'; className?: string }
+interface Props {
+  onVerify: (token: string) => void;
+  onError?: () => void;
+  theme?: 'light' | 'dark' | 'auto';
+  appearance?: 'always' | 'execute' | 'interaction-only';
+  className?: string;
+}
 type Status = 'loading' | 'checking' | 'interactive' | 'verified' | 'error';
 
-export function TurnstileWidget({ onVerify, onError, theme = 'light', className = '' }: Props) {
+export function TurnstileWidget({
+  onVerify,
+  onError,
+  theme = 'light',
+  appearance = 'interaction-only',
+  className = '',
+}: Props) {
   const t = useTranslations('security');
   const locale = useLocale();
   const container = useRef<HTMLDivElement>(null);
@@ -73,7 +85,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
       update('checking'); watch();
       id = api.render(container.current, {
         sitekey: siteKey, theme, size: container.current.clientWidth < 300 ? 'compact' : 'normal',
-        appearance: 'always', execution: 'render', language: locale,
+        appearance, execution: 'render', language: locale,
         'response-field': false, retry: 'never',
         'refresh-expired': 'auto', 'refresh-timeout': 'auto',
         callback: token => {
@@ -97,7 +109,7 @@ export function TurnstileWidget({ onVerify, onError, theme = 'light', className 
       document.removeEventListener('visibilitychange', resume); window.removeEventListener('online', resume);
       if (id !== null) { try { api?.remove(id); } catch { /* Already removed. */ } }
     };
-  }, [siteKey, theme, locale, attempt]);
+  }, [siteKey, theme, appearance, locale, attempt]);
 
   const retry = () => { automaticRetries.current = 0; callbacks.current.onVerify(''); setRetryAvailable(false); setStatus('loading'); setErrorCode(''); setAttempt(value => value + 1); };
   const text = !siteKey ? 'unavailable' : status === 'verified' ? 'checkComplete' : status === 'error' ? (errorCode === '110200' ? 'domainError' : 'checkFailed') : status === 'interactive' ? 'checkInteractive' : status === 'loading' ? 'checkLoading' : 'checkChecking';

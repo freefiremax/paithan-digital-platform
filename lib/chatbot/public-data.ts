@@ -29,7 +29,7 @@ async function loadPublicData(): Promise<KnowledgeSource[]> {
     prisma.civicSectorInfo.findMany({ where: { dataStatus: "VERIFIED" }, take: 30, select: { id: true, sector: true, titleEn: true, titleMr: true, overviewEn: true, overviewMr: true, department: true, updatedAt: true } }),
     prisma.facility.findMany({ where: { dataStatus: "VERIFIED", isOperational: true }, take: 150, select: { id: true, sector: true, nameEn: true, nameMr: true, address: true, type: true, updatedAt: true } }),
     prisma.developmentWork.findMany({ where: { dataStatus: "VERIFIED" }, take: 150, select: { id: true, title: true, titleMr: true, description: true, descriptionMr: true, department: true, status: true, progressPct: true, updatedAt: true } }),
-    prisma.notification.findMany({ where: { publishedAt: { lte: new Date() } }, take: 100, orderBy: { publishedAt: "desc" }, select: { id: true, title: true, titleMr: true, body: true, bodyMr: true, category: true, publishedAt: true, updatedAt: true } }),
+    prisma.notification.findMany({ where: { publishedAt: { lte: new Date() }, category: { not: "TENDER" } }, take: 100, orderBy: { publishedAt: "desc" }, select: { id: true, title: true, titleMr: true, body: true, bodyMr: true, category: true, publishedAt: true, updatedAt: true } }),
   ]);
   return [...recordsToSources(sectors, "services", "/services"), ...recordsToSources(facilities, "facilities", "/services"), ...recordsToSources(works, "works", "/nagar-parishad/development-works"), ...recordsToSources(notices, "notices", "/nagar-parishad/notifications")];
 }

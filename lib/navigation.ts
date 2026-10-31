@@ -50,7 +50,7 @@ export const navSections: readonly NavSection[] = [
       {
         label: "Notifications",
         href: "/nagar-parishad/notifications",
-        description: "Announcements, schemes, tenders and public notices",
+        description: "Announcements, schemes and public notices",
       },
     ],
   },

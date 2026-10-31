@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-30T19:16:30.734Z",
+  "generatedAt": "2026-10-31T12:13:02.033Z",
   "sources": [
     {
       "id": "4cc35d28fc30c77c26e9d48c",
@@ -402,37 +402,37 @@
       "id": "93cc7e5e3481b46e2be267f6",
       "title": "notifications",
       "url": "/nagar-parishad/notifications",
-      "content": "home\nnagarParishad\nnoticesTitle\nmahatenders.gov.in\n/\n:\n—\nAll Categories\nTender\nNotice\nScheme\nAnnouncement\nHome\nNagar Parishad\nOfficial Notices & Tenders\nE-tenders, municipal council circulars, welfare announcements, and public advisories.\nSearch works by title, department, or keyword...\nFilter by\nPublished\nRef\nClosing date\nDownload notice\nDepartment",
-      "hash": "adbdec7c82c4e9f8f5281b0b4b15e691738150430de27e84de0d84a81c948f4b",
+      "content": "home\nnagarParishad\nnoticesTitle\nmahatenders.gov.in\n/\n=======\n>>>>>>> Stashed changes\n:\n—\nAll Categories\nNotice\nScheme\nAnnouncement\nHome\nNagar Parishad\nPublic notices\nPublic notices, civic services and local information.\nSearch works by title, department, or keyword...\nFilter by\nPublished\nRef\nClosing date\nDownload notice\nDepartment",
+      "hash": "c4e74a909936d47ba037aaae0e7b6dceccf457658d6430a4c24dea065fe7b02c",
       "language": "en",
       "category": "nagar-parishad",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:37:07.972Z"
+      "updatedAt": "2026-10-31T12:10:32.042Z"
     },
     {
       "id": "6144fdfca4ba53998fb22266",
       "title": "notifications",
       "url": "/nagar-parishad/notifications",
-      "content": "home\nnagarParishad\nnoticesTitle\nmahatenders.gov.in\n/\n:\n—\nसर्व वर्ग\nनिविदा\nसूचना\nयोजना\nघोषणा\nमुख्यपृष्ठ\nनगर परिषद\nअधिकृत जाहीर सूचना व निविदा\nई-निविदा, नगर परिषद परिपत्रके, शासकीय योजना व सार्वजनिक सूचना.\nकामे, विभाग किंवा कीवर्डने शोधा...\nयानुसार फिल्टर करा\nप्रसिद्ध दिनांक\nसंदर्भ क्र.\nअंतिम मुदत\nसूचना पहा\nविभाग",
-      "hash": "55d1b465118719f53d44b58f233ea6f9eca59a497399a86ef1e711526babe227",
+      "content": "home\nnagarParishad\nnoticesTitle\nmahatenders.gov.in\n/\n=======\n>>>>>>> Stashed changes\n:\n—\nसर्व वर्ग\nसूचना\nयोजना\nघोषणा\nमुख्यपृष्ठ\nनगर परिषद\nसार्वजनिक सूचना\nसार्वजनिक सूचना, नागरी सेवा आणि स्थानिक माहिती.\nकामे, विभाग किंवा कीवर्डने शोधा...\nयानुसार फिल्टर करा\nप्रसिद्ध दिनांक\nसंदर्भ क्र.\nअंतिम मुदत\nसूचना पहा\nविभाग",
+      "hash": "b82e3e196611c990c8b7fe3dc2819faf504c9c23817f9216509c201fef97f350",
       "language": "mr",
       "category": "nagar-parishad",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:37:07.972Z"
+      "updatedAt": "2026-10-31T12:10:32.042Z"
     },
     {
       "id": "8156080ec41dbd204db3afc7",
       "title": "notifications",
       "url": "/nagar-parishad/notifications",
-      "content": "home\nnagarParishad\nnoticesTitle\nmahatenders.gov.in\n/\n:\n—\nसभी श्रेणियां\nनिविदा\nसूचना\nयोजना\nघोषणा\nमुख्य पृष्ठ\nनगर परिषद\nआधिकारिक सार्वजनिक सूचनाएं और निविदाएं\nई-निविदाएं, नगर परिषद परिपत्र, सरकारी योजनाएं और सार्वजनिक सूचनाएं।\nकार्य, विभाग या कीवर्ड द्वारा खोजें...\nअनुसार फ़िल्टर करें\nप्रकाशन तिथि\nसंदर्भ संख्या\nअंतिम तिथि\nसूचना देखें\nविभाग",
-      "hash": "985ac3119cfb2e212a311c6b0221a8c08a728077130b411f1b303dfb3b630ca0",
+      "content": "home\nnagarParishad\nnoticesTitle\nmahatenders.gov.in\n/\n=======\n>>>>>>> Stashed changes\n:\n—\nसभी श्रेणियां\nसूचना\nयोजना\nघोषणा\nमुख्य पृष्ठ\nनगर परिषद\nसार्वजनिक सूचनाएं\nसार्वजनिक सूचनाएं, नागरिक सेवाएं और स्थानीय जानकारी।\nकार्य, विभाग या कीवर्ड द्वारा खोजें...\nअनुसार फ़िल्टर करें\nप्रकाशन तिथि\nसंदर्भ संख्या\nअंतिम तिथि\nसूचना देखें\nविभाग",
+      "hash": "f194624a17082ac3d26023bf44147887502c2ad3fba1a16f9834770dbef206a5",
       "language": "hi",
       "category": "nagar-parishad",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:37:07.972Z"
+      "updatedAt": "2026-10-31T12:10:32.042Z"
     },
     {
       "id": "483136b5096fc5cd52cff539",
@@ -450,8 +450,8 @@
       "id": "7cb956bd632db20a46f2bd2d",
       "title": "nagar parishad",
       "url": "/nagar-parishad",
-      "content": "Assessment of property tax, water usage billing, shop licenses, and integration with the state MahaULB digital payment gateway.\nPilgrim & Tourism Welfare\nSpecial arrangements for the annual Nath Shashti fair, Godavari riverfront cleaning, visitor guidance, and cultural heritage support.\nTown Demographics & Civic Indicators\nOfficial Census of India and Directorate of Municipal Administration statistics for Paithan Municipal Council.\nTotal Population\nMale Population\nFemale Population\nSex Ratio\nTotal Households\nLiteracy Rate\nEmergency & Civic Helpline Directory\nVerified contacts for essential municipal, public safety, medical, and utility helplines serving Paithan.\nDepartment / Facility\nOfficer Role / Section\nDirect Telephone\nLocation\nService Availability\n24×7 Available\nOffice Hours\nCouncil Secretariat & Helplines\nCitizens and visitors may contact the municipal administrative offices during government working hours.\nEmail\nQuick Portal Navigation\nElected Representatives\n17 Wards Directory & Map\nDevelopment Works Register\nOfficial Notices & Tenders",
-      "hash": "8a66854335d9dc0fc6b893c2bd014891871f5d90235582b7769ad836558f78bf",
+      "content": "Assessment of property tax, water usage billing, shop licenses, and integration with the state MahaULB digital payment gateway.\nPilgrim & Tourism Welfare\nSpecial arrangements for the annual Nath Shashti fair, Godavari riverfront cleaning, visitor guidance, and cultural heritage support.\nTown Demographics & Civic Indicators\nOfficial Census of India and Directorate of Municipal Administration statistics for Paithan Municipal Council.\nTotal Population\nMale Population\nFemale Population\nSex Ratio\nTotal Households\nLiteracy Rate\nEmergency & Civic Helpline Directory\nVerified contacts for essential municipal, public safety, medical, and utility helplines serving Paithan.\nDepartment / Facility\nOfficer Role / Section\nDirect Telephone\nLocation\nService Availability\n24×7 Available\nOffice Hours\nCouncil Secretariat & Helplines\nCitizens and visitors may contact the municipal administrative offices during government working hours.\nEmail\nQuick Portal Navigation\nElected Representatives\n17 Wards Directory & Map\nDevelopment Works Register\nPublic notices",
+      "hash": "99a22240ec5d7e4e3e8906d370b7d5cfbd09a91b0053196d8c489caf68705384",
       "language": "en",
       "category": "nagar-parishad",
       "sourceType": "page",
@@ -474,8 +474,8 @@
       "id": "0eb5b1c73f0fdb6af1d4bc56",
       "title": "nagar parishad",
       "url": "/nagar-parishad",
-      "content": "आपत्कालीन व नागरी हेल्पलाइन निर्देशिका\nपैठण शहरासाठी नगरपालिका, पोलीस, अग्निशामक, रुग्णालय व उपयुक्तता संपर्क क्रमांक.\nविभाग / सुविधा\nअधिकारी पद / कक्ष\nथेट दूरध्वनी\nस्थान\nसेवा उपलब्धता\n२४×७ उपलब्ध\nकार्यालयीन वेळ\nनगरपरिषद मुख्यालय व संपर्क\nनागरिक व भाविक शासकीय कामकाजाच्या दिवशी नगरपरिषद कार्यालयाशी संपर्क साधू शकतात.\nईमेल\nजलद पोर्टल नेव्हिगेशन\nलोकप्रतिनिधी व प्रशासकीय नेतृत्व\n१७ प्रभाग निर्देशिका व नकाशा\nविकास कामे नोंदवही\nअधिकृत जाहीर सूचना व निविदा",
-      "hash": "b312ac260cd10178f0e77a26de105c7d945a14454bb7615b06924fbdfa57c734",
+      "content": "आपत्कालीन व नागरी हेल्पलाइन निर्देशिका\nपैठण शहरासाठी नगरपालिका, पोलीस, अग्निशामक, रुग्णालय व उपयुक्तता संपर्क क्रमांक.\nविभाग / सुविधा\nअधिकारी पद / कक्ष\nथेट दूरध्वनी\nस्थान\nसेवा उपलब्धता\n२४×७ उपलब्ध\nकार्यालयीन वेळ\nनगरपरिषद मुख्यालय व संपर्क\nनागरिक व भाविक शासकीय कामकाजाच्या दिवशी नगरपरिषद कार्यालयाशी संपर्क साधू शकतात.\nईमेल\nजलद पोर्टल नेव्हिगेशन\nलोकप्रतिनिधी व प्रशासकीय नेतृत्व\n१७ प्रभाग निर्देशिका व नकाशा\nविकास कामे नोंदवही\nसार्वजनिक सूचना",
+      "hash": "01c47ba4b0404c977b201ba367a959a2d774f392066614265c7b1baca7afc3e6",
       "language": "mr",
       "category": "nagar-parishad",
       "sourceType": "page",
@@ -498,8 +498,8 @@
       "id": "e3178578a8ee8dd83cbff7bd",
       "title": "nagar parishad",
       "url": "/nagar-parishad",
-      "content": "आपातकालीन एवं नागरिक हेल्पलाइन निर्देशिका\nपैठण शहर हेतु नगरपालिका, पुलिस, दमकल, अस्पताल एवं आवश्यक हेल्पलाइन नंबर।\nविभाग / सुविधा\nअधिकारी पद / अनुभाग\nसीधा फोन\nस्थान\nसेवा उपलब्धता\n२४×७ उपलब्ध\nकार्यालयीन समय\nनगर परिषद मुख्यालय एवं संपर्क\nनागरिक एवं श्रद्धालु सरकारी कार्य दिवसों में नगर परिषद कार्यालय से संपर्क कर सकते हैं।\nईमेल\nत्वरित पोर्टल नेविगेशन\nजनप्रतिनिधि और प्रशासनिक नेतृत्व\n१७ वार्ड निर्देशिका और मानचित्र\nविकास कार्य रजिस्टर\nआधिकारिक सार्वजनिक सूचनाएं और निविदाएं",
-      "hash": "1e651d415740c846a604a947de01ae003f6b8701694eb43b1a0acda92dce21ed",
+      "content": "आपातकालीन एवं नागरिक हेल्पलाइन निर्देशिका\nपैठण शहर हेतु नगरपालिका, पुलिस, दमकल, अस्पताल एवं आवश्यक हेल्पलाइन नंबर।\nविभाग / सुविधा\nअधिकारी पद / अनुभाग\nसीधा फोन\nस्थान\nसेवा उपलब्धता\n२४×७ उपलब्ध\nकार्यालयीन समय\nनगर परिषद मुख्यालय एवं संपर्क\nनागरिक एवं श्रद्धालु सरकारी कार्य दिवसों में नगर परिषद कार्यालय से संपर्क कर सकते हैं।\nईमेल\nत्वरित पोर्टल नेविगेशन\nजनप्रतिनिधि और प्रशासनिक नेतृत्व\n१७ वार्ड निर्देशिका और मानचित्र\nविकास कार्य रजिस्टर\nसार्वजनिक सूचनाएं",
+      "hash": "7f7af5c226624fe57ce16b0fb698dcf95dc8e1385b0b3dde666e828605181d4f",
       "language": "hi",
       "category": "nagar-parishad",
       "sourceType": "page",
@@ -522,8 +522,8 @@
       "id": "8fc314559b13c594dc3ebb45",
       "title": "projects",
       "url": "/nagar-parishad/projects",
-      "content": "स्वच्छ भारत २.० वैज्ञानिक घनकचरा व्यवस्थापन व खत प्रकल्प (पैठण-शेवगाव रस्ता)\nCivic Sanitation\n100% door-to-door segregated municipal waste collection across 17 wards processing 18 metric tons/day with mechanical compost screening and Refuse Derived Fuel (RDF) briquette generation.\n(\n)\n:\n%\n|\n: 02431-223010\nEstablishment\nKey Municipal Projects & Infrastructure\nFlagship public development programs executed by Paithan Municipal Council.\nCompleted\nOngoing\nTarget Completion Date\nImplementing Agency\nSanctioned Cost\nSanctioned Amount\nCurrent Progress Stage\nTarget Timeline\nOfficial Notices & Tenders\nTelephone",
-      "hash": "34797cbc9137807e4e2bdd76b323b08b028b56102d4f79876ea0359ae2fa5ca8",
+      "content": "स्वच्छ भारत २.० वैज्ञानिक घनकचरा व्यवस्थापन व खत प्रकल्प (पैठण-शेवगाव रस्ता)\nCivic Sanitation\n100% door-to-door segregated municipal waste collection across 17 wards processing 18 metric tons/day with mechanical compost screening and Refuse Derived Fuel (RDF) briquette generation.\n(\n)\n:\n%\n|\n: 02431-223010\nEstablishment\nKey Municipal Projects & Infrastructure\nFlagship public development programs executed by Paithan Municipal Council.\nCompleted\nOngoing\nTarget Completion Date\nImplementing Agency\nSanctioned Cost\nSanctioned Amount\nCurrent Progress Stage\nTarget Timeline\nPublic notices\nTelephone",
+      "hash": "18693299bf4ab6dc77913afe18c21687fcf980c3186ffd651df989f4f7737a95",
       "language": "en",
       "category": "nagar-parishad",
       "sourceType": "page",
@@ -546,8 +546,8 @@
       "id": "49f1d54bd0e58c71bf8ea383",
       "title": "projects",
       "url": "/nagar-parishad/projects",
-      "content": "स्वच्छ भारत २.० वैज्ञानिक घनकचरा व्यवस्थापन व खत प्रकल्प (पैठण-शेवगाव रस्ता)\nCivic Sanitation\n100% door-to-door segregated municipal waste collection across 17 wards processing 18 metric tons/day with mechanical compost screening and Refuse Derived Fuel (RDF) briquette generation.\n(\n)\n:\n%\n|\n: 02431-223010\nस्थापना\nप्रमुख विकास प्रकल्प व पायाभूत सुविधा\nपैठण नगरपरिषदेद्वारे राबविण्यात येत असलेले महत्त्वाकांक्षी विकास प्रकल्प.\nपूर्ण\nप्रगतीपथावर\nपूर्णत्वाची मुदत\nअंमलबजावणी यंत्रणा\nमंजूर निधी\nप्रगतीची सद्यस्थिती\nमुदत\nअधिकृत जाहीर सूचना व निविदा\nदूरध्वनी",
-      "hash": "59c7709c03ddb8320477ca38810a96167c305bef735d2ab4915fb07be740cbc7",
+      "content": "स्वच्छ भारत २.० वैज्ञानिक घनकचरा व्यवस्थापन व खत प्रकल्प (पैठण-शेवगाव रस्ता)\nCivic Sanitation\n100% door-to-door segregated municipal waste collection across 17 wards processing 18 metric tons/day with mechanical compost screening and Refuse Derived Fuel (RDF) briquette generation.\n(\n)\n:\n%\n|\n: 02431-223010\nस्थापना\nप्रमुख विकास प्रकल्प व पायाभूत सुविधा\nपैठण नगरपरिषदेद्वारे राबविण्यात येत असलेले महत्त्वाकांक्षी विकास प्रकल्प.\nपूर्ण\nप्रगतीपथावर\nपूर्णत्वाची मुदत\nअंमलबजावणी यंत्रणा\nमंजूर निधी\nप्रगतीची सद्यस्थिती\nमुदत\nसार्वजनिक सूचना\nदूरध्वनी",
+      "hash": "f444bd56665d0e2ef0a9b9d9768dbafd686a6acd598ff9d73c8e3f83182fb86f",
       "language": "mr",
       "category": "nagar-parishad",
       "sourceType": "page",
@@ -570,8 +570,8 @@
       "id": "1dbbeb1ad7cc3b7e555c27f1",
       "title": "projects",
       "url": "/nagar-parishad/projects",
-      "content": "स्वच्छ भारत २.० वैज्ञानिक घनकचरा व्यवस्थापन व खत प्रकल्प (पैठण-शेवगाव रस्ता)\nCivic Sanitation\n100% door-to-door segregated municipal waste collection across 17 wards processing 18 metric tons/day with mechanical compost screening and Refuse Derived Fuel (RDF) briquette generation.\n(\n)\n:\n%\n|\n: 02431-223010\nस्थापना\nप्रमुख विकास परियोजनाएं एवं बुनियादी ढांचा\nपैठण नगर परिषद द्वारा संचालित प्रमुख विकास परियोजनाएं।\nपूर्ण\nप्रगति पर\nपूर्णता की समय सीमा\nकार्यान्वयन एजेंसी\nस्वीकृत राशि\nवर्तमान प्रगति स्थिति\nसमय सीमा\nआधिकारिक सार्वजनिक सूचनाएं और निविदाएं\nटेलीफोन",
-      "hash": "fcc46f9d5952e9cd81b5e6e9ea9f102c35c8c4a2ab0fa68f2099cd88cade09d4",
+      "content": "स्वच्छ भारत २.० वैज्ञानिक घनकचरा व्यवस्थापन व खत प्रकल्प (पैठण-शेवगाव रस्ता)\nCivic Sanitation\n100% door-to-door segregated municipal waste collection across 17 wards processing 18 metric tons/day with mechanical compost screening and Refuse Derived Fuel (RDF) briquette generation.\n(\n)\n:\n%\n|\n: 02431-223010\nस्थापना\nप्रमुख विकास परियोजनाएं एवं बुनियादी ढांचा\nपैठण नगर परिषद द्वारा संचालित प्रमुख विकास परियोजनाएं।\nपूर्ण\nप्रगति पर\nपूर्णता की समय सीमा\nकार्यान्वयन एजेंसी\nस्वीकृत राशि\nवर्तमान प्रगति स्थिति\nसमय सीमा\nसार्वजनिक सूचनाएं\nटेलीफोन",
+      "hash": "2f5789d8259b62a5cd55af1109e55edc94534ef1ea581f37743d13529e8a04af",
       "language": "hi",
       "category": "nagar-parishad",
       "sourceType": "page",
@@ -624,7 +624,7 @@
       "category": "nagar-parishad",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:51.108Z"
+      "updatedAt": "2026-10-31T12:10:23.761Z"
     },
     {
       "id": "d1df873c76da829869e2d167",
@@ -636,7 +636,7 @@
       "category": "nagar-parishad",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:51.108Z"
+      "updatedAt": "2026-10-31T12:10:23.761Z"
     },
     {
       "id": "37de8460aa630e32783a310b",
@@ -648,115 +648,115 @@
       "category": "nagar-parishad",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:51.108Z"
+      "updatedAt": "2026-10-31T12:10:23.761Z"
     },
     {
       "id": "4824b3e7fd63784e591f1d6c",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "P\naithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town&apos;s heritage and its visitor information here.\nPratishthana was the capital of the Satavahanas, and King Hala&apos;s Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.\nwingCivicTitle\nwingCivicTitleMr\nwingCivicLink1\nwingCivicLink2\nwingCivicLink3\nwingCivicLink4\nwingHeritageTitle\nwingHeritageTitleMr\nwingHeritageLink1\nwingHeritageLink2\nwingHeritageLink3\nwingHeritageLink4\nwingTourismTitle\nwingTourismTitleMr\nwingTourismLink1\nwingTourismLink2\nwingTourismLink3\nwingTourismLink4\n02431-223010\n112\n112 / 223033\n108\n108 / 223040\n&#8594;\n—\n:\nWard\n%\nTenders and public notices\nEvery announcement, scheme, tender and public notice the council issues is published in one register, with its reference number and closing date.\nAll notifications\nNagar Parishad\nनगर परिषद",
-      "hash": "6111802fc489009d7e9efbbb5f16029e75fa7c7d7dcd13845fa37dde6361fafa",
+      "content": "P\naithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town&apos;s heritage and its visitor information here.\nPratishthana was the capital of the Satavahanas, and King Hala&apos;s Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.\nwingCivicTitle\nwingCivicTitleMr\nwingCivicLink1\nwingCivicLink2\nwingCivicLink3\nwingCivicLink4\nwingHeritageTitle\nwingHeritageTitleMr\nwingHeritageLink1\nwingHeritageLink2\nwingHeritageLink3\nwingHeritageLink4\nwingTourismTitle\nwingTourismTitleMr\nwingTourismLink1\nwingTourismLink2\nwingTourismLink3\nwingTourismLink4\n02431-223010\n112\n112 / 223033\n108\n108 / 223040\n&#8594;\n—\n:\nWard\n%\nPublic notices\nPublic notices, civic services and local information.\nAll notifications\nNagar Parishad\nनगर परिषद\nCouncil administration for all 17 wards: elected representatives, the corporator roster, development works and official notices.\n17 wards · Class C council · Established 1854\nPublic representatives",
+      "hash": "c2d5dad75fb3457ee249dcb8b6d6349b530c4f316245e0df0de5142cdc8476df",
       "language": "en",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "45743b9d393ed2b642811ae8",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "Council administration for all 17 wards: elected representatives, the corporator roster, development works and official notices.\n17 wards · Class C council · Established 1854\nPublic representatives\nWard directory & corporators\nDevelopment works register\nTenders & public notices\nHeritage & Museum\nवारसा व संग्रहालय\nPratishthana, capital of the Satavahanas, the state archaeological museum, and two thousand years of Paithani silk weaving.\nKing Hala's Gaha Sattasai · GI-tagged Paithani silk\nDr. Balasaheb Patil Museum\nSatavahana coins & antiquities\nHistory of ancient Pratishthana\nSant Eknath & Paithani weaving\nExplore Paithan\nपर्यटन व परिसर\nJayakwadi Dam on the Godavari, the Nath Sagar wetland sanctuary, and the riverside ghats of the Sant Eknath pilgrimage circuit.\n341 km² sanctuary · Winter migratory season\nJayakwadi Dam & reservoir\nJaikwadi Bird Sanctuary\nTemples & heritage sites\nSuggested day routes\nCitizen Services & e-Governance\nDirect access to online civic services, certificate applications, tax payment, and grievance registration.\nProperty & Water Tax\nOnline assessment, water billing, and direct tax receipt generation.\nPay online\nBirth & Death Certificate",
-      "hash": "a0c05db113c1a9c42bd5cb7f172f6b4fea64e3d13a1f8f2f66e34202eaeac6d6",
+      "content": "Ward directory & corporators\nDevelopment works register\nHeritage & Museum\nवारसा व संग्रहालय\nPratishthana, capital of the Satavahanas, the state archaeological museum, and two thousand years of Paithani silk weaving.\nKing Hala's Gaha Sattasai · GI-tagged Paithani silk\nDr. Balasaheb Patil Museum\nSatavahana coins & antiquities\nHistory of ancient Pratishthana\nSant Eknath & Paithani weaving\nExplore Paithan\nपर्यटन व परिसर\nJayakwadi Dam on the Godavari, the Nath Sagar wetland sanctuary, and the riverside ghats of the Sant Eknath pilgrimage circuit.\n341 km² sanctuary · Winter migratory season\nJayakwadi Dam & reservoir\nJaikwadi Bird Sanctuary\nTemples & heritage sites\nSuggested day routes\nCitizen Services & e-Governance\nDirect access to online civic services, certificate applications, tax payment, and grievance registration.\nProperty & Water Tax\nOnline assessment, water billing, and direct tax receipt generation.\nPay online\nBirth & Death Certificate\nCivil registration and official digital certificate downloads.\nApply online\nCouncil representation across 17 wards\nDelimited ward boundaries, public amenities, corporators, and active infrastructure works.\nOpen interactive ward map",
+      "hash": "b25fae8a84e646d793e8d5e6487ea3332184582b6a874201e06882bcfdaadb1c",
       "language": "en",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "2764dcc52341a836d791e1da",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "Civil registration and official digital certificate downloads.\nApply online\nCouncil representation across 17 wards\nDelimited ward boundaries, public amenities, corporators, and active infrastructure works.\nOpen interactive ward map\nRegister a Grievance\nFile municipal complaints and track resolution live across 17 wards.\nFile complaint\nपैठण नगर परिषद · स्थापना १८५४\nPublished\nCategory\nSubject\nClosing date\nDownload notice\nRef\nElected Representatives\nPaithan Municipal Council\nActive municipal projects across wards\nWards\nView all development works\nControl room\nTown landmarks & heritage\nKey cultural, religious, and tourism destinations in and around Paithan.\nView details",
-      "hash": "c0ae074b944c2232dbdba4cd3c4fd484f64a7a037b3f787b4ac21ea85ccef680",
+      "content": "Register a Grievance\nFile municipal complaints and track resolution live across 17 wards.\nFile complaint\nपैठण नगर परिषद · स्थापना १८५४\nPublished\nCategory\nSubject\nClosing date\nDownload notice\nRef\nElected Representatives\nPaithan Municipal Council\nActive municipal projects across wards\nWards\nView all development works\nControl room\nTown landmarks & heritage\nKey cultural, religious, and tourism destinations in and around Paithan.\nView details",
+      "hash": "a24e5e22aea36f18e4f98e889ca4a89abb9e9127ed2aaf5825818aa6838b90b0",
       "language": "en",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "6d55e7c2b51694289b0871db",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "P\naithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town&apos;s heritage and its visitor information here.\nPratishthana was the capital of the Satavahanas, and King Hala&apos;s Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.\nwingCivicTitle\nwingCivicTitleMr\nwingCivicLink1\nwingCivicLink2\nwingCivicLink3\nwingCivicLink4\nwingHeritageTitle\nwingHeritageTitleMr\nwingHeritageLink1\nwingHeritageLink2\nwingHeritageLink3\nwingHeritageLink4\nwingTourismTitle\nwingTourismTitleMr\nwingTourismLink1\nwingTourismLink2\nwingTourismLink3\nwingTourismLink4\n02431-223010\n112\n112 / 223033\n108\n108 / 223040\n&#8594;\n—\n:\nWard\n%\nनिविदा व जाहीर सूचना\nनगर परिषदेमार्फत प्रसिद्ध केल्या जाणाऱ्या सर्व योजना, जाहीर सूचना, ई-निविदा संदर्भ क्रमांकासह येथे उपलब्ध आहेत.\nसर्व सूचना व निविदा\nनगर परिषद\nसर्व १७ प्रभागांचे प्रशासन: लोकप्रतिनिधी, नगरसेवक यादी, प्रभागवार विकास कामे आणि अधिकृत जाहीर निविदा.\n१७ प्रभाग · 'क' वर्ग नगर परिषद · स्थापना १८५४",
-      "hash": "aaa9af077042815e77e8eea249bb5908cf239a10878dd484c03c6f8d908c5654",
+      "content": "P\naithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town&apos;s heritage and its visitor information here.\nPratishthana was the capital of the Satavahanas, and King Hala&apos;s Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.\nwingCivicTitle\nwingCivicTitleMr\nwingCivicLink1\nwingCivicLink2\nwingCivicLink3\nwingCivicLink4\nwingHeritageTitle\nwingHeritageTitleMr\nwingHeritageLink1\nwingHeritageLink2\nwingHeritageLink3\nwingHeritageLink4\nwingTourismTitle\nwingTourismTitleMr\nwingTourismLink1\nwingTourismLink2\nwingTourismLink3\nwingTourismLink4\n02431-223010\n112\n112 / 223033\n108\n108 / 223040\n&#8594;\n—\n:\nWard\n%\nसार्वजनिक सूचना\nसार्वजनिक सूचना, नागरी सेवा आणि स्थानिक माहिती.\nनगर परिषद\n१७ प्रभाग · 'क' वर्ग नगर परिषद · स्थापना १८५४\nलोकप्रतिनिधी व अधिकारी\nप्रभाग निर्देशिका व नगरसेवक\nविकास कामे नोंदवही\nवारसा व संग्रहालय",
+      "hash": "efeb15f7baa6b7a49d32f50c5d4781f463ce967af0cdd07676a31311da22e124",
       "language": "mr",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "4272376c44ecec92a240df6a",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "लोकप्रतिनिधी व अधिकारी\nप्रभाग निर्देशिका व नगरसेवक\nविकास कामे नोंदवही\nवारसा व संग्रहालय\nप्राचीन प्रतिष्ठान, सातवाहन राजवंशाची राजधानी, राज्य पुरातत्त्व संग्रहालय आणि दोन सहस्रकांचा पैठणी विणकाम वारसा.\nराजा हाल रचित गाहा सत्तसई · GI मानांकित पैठणी\nडॉ. बाळासाहेब पाटील संग्रहालय\nसातवाहन नाणी व अवशेष\nप्राचीन प्रतिष्ठानचा गौरवशाली इतिहास\nसंत एकनाथ महाराज व पैठणी विणकाम\nपर्यटन व परिसर\nगोदावरीवरील भव्य जायकवाडी धरण, ३४१ चौ.किमी.चे नाथसागर पक्षी अभयारण्य आणि संत एकनाथ तीर्थक्षेत्र घाट.\n३४१ चौ.किमी. अभयारण्य · हिवाळी स्थलांतरित पक्षी\nजायकवाडी धरण व जलाशय\nजायकवाडी पक्षी अभयारण्य\nमंदिरे व ऐतिहासिक स्थळे\n१-दिवसीय नियोजित पर्यटन मार्ग\nनागरी सेवा व ई-प्रशासन\nऑनलाइन नागरी सेवा, प्रमाणपत्र अर्ज, कर भरणा आणि तक्रार निवारणासाठी अधिकृत शासकीय पोर्टल.\nमालमत्ता व पाणीपट्टी कर\nऑनलाइन कर मूल्यांकन, पाणीपट्टी देयके आणि थेट पावती MahaULB द्वारे.\nऑनलाइन कर भरा\nजन्म व मृत्यू प्रमाणपत्र\nनागरी नोंदणी प्रणाली (CRS) द्वारे अधिकृत डिजिटल प्रमाणपत्रांसाठी अर्ज व डाऊनलोड.\nऑनलाइन अर्ज करा\n१७ प्रभागांमधील नागरी व्यवस्था\nप्रभाग सीमा, सार्वजनिक सुविधा, नगरसेवक आणि सुरू असलेली विकासकामे.\nसंवादपर प्रभाग नकाशा उघडा\nनागरी तक्रार नोंदवा\nस्वच्छता, पाणीपुरवठा व दिवाबत्ती तक्रारी नोंदवा आणि १७ प्रभागांत थेट निवारण तपासा.",
-      "hash": "f56979d728d6ac904d6a672c7a75278464964f44851ed596327235c5dbbe088c",
+      "content": "प्राचीन प्रतिष्ठान, सातवाहन राजवंशाची राजधानी, राज्य पुरातत्त्व संग्रहालय आणि दोन सहस्रकांचा पैठणी विणकाम वारसा.\nराजा हाल रचित गाहा सत्तसई · GI मानांकित पैठणी\nडॉ. बाळासाहेब पाटील संग्रहालय\nसातवाहन नाणी व अवशेष\nप्राचीन प्रतिष्ठानचा गौरवशाली इतिहास\nसंत एकनाथ महाराज व पैठणी विणकाम\nपर्यटन व परिसर\nगोदावरीवरील भव्य जायकवाडी धरण, ३४१ चौ.किमी.चे नाथसागर पक्षी अभयारण्य आणि संत एकनाथ तीर्थक्षेत्र घाट.\n३४१ चौ.किमी. अभयारण्य · हिवाळी स्थलांतरित पक्षी\nजायकवाडी धरण व जलाशय\nजायकवाडी पक्षी अभयारण्य\nमंदिरे व ऐतिहासिक स्थळे\n१-दिवसीय नियोजित पर्यटन मार्ग\nनागरी सेवा व ई-प्रशासन\nऑनलाइन नागरी सेवा, प्रमाणपत्र अर्ज, कर भरणा आणि तक्रार निवारणासाठी अधिकृत शासकीय पोर्टल.\nमालमत्ता व पाणीपट्टी कर\nऑनलाइन कर मूल्यांकन, पाणीपट्टी देयके आणि थेट पावती MahaULB द्वारे.\nऑनलाइन कर भरा\nजन्म व मृत्यू प्रमाणपत्र\nनागरी नोंदणी प्रणाली (CRS) द्वारे अधिकृत डिजिटल प्रमाणपत्रांसाठी अर्ज व डाऊनलोड.\nऑनलाइन अर्ज करा\n१७ प्रभागांमधील नागरी व्यवस्था\nप्रभाग सीमा, सार्वजनिक सुविधा, नगरसेवक आणि सुरू असलेली विकासकामे.\nसंवादपर प्रभाग नकाशा उघडा\nनागरी तक्रार नोंदवा\nस्वच्छता, पाणीपुरवठा व दिवाबत्ती तक्रारी नोंदवा आणि १७ प्रभागांत थेट निवारण तपासा.\nतक्रार नोंदवा\nपैठण नगर परिषद · स्थापना १८५४\nप्रसिद्ध दिनांक\nवर्ग / प्रकार\nविषय\nअंतिम मुदत",
+      "hash": "62b21f4384b82f087b9a8d34fe055fba3539f38fdc3fe0c5c2260c1c92cd5bb8",
       "language": "mr",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "3296ccf906e9bc4d7d6c5a44",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "तक्रार नोंदवा\nपैठण नगर परिषद · स्थापना १८५४\nप्रसिद्ध दिनांक\nवर्ग / प्रकार\nविषय\nअंतिम मुदत\nसूचना पहा\nसंदर्भ क्र.\nलोकप्रतिनिधी व प्रशासकीय नेतृत्व\nपैठण नगर परिषद\nप्रभागांमधील सक्रिय नागरी प्रकल्प\nप्रभाग संख्या\nसर्व विकास कामे पहा\nनियंत्रण कक्ष\nपैठणची प्रमुख ऐतिहासिक व पर्यटन स्थळे\nगोदावरी तीरावरील आध्यात्मिक, सांस्कृतिक व पर्यटन स्थळांची अधिकृत माहिती.\nतपशील पहा",
-      "hash": "d2c97b3400f3cbf78aedd4256fb971000d58dd7f3effb979d37ecfff111279f6",
+      "content": "सूचना पहा\nसंदर्भ क्र.\nलोकप्रतिनिधी व प्रशासकीय नेतृत्व\nपैठण नगर परिषद\nप्रभागांमधील सक्रिय नागरी प्रकल्प\nप्रभाग संख्या\nसर्व विकास कामे पहा\nनियंत्रण कक्ष\nपैठणची प्रमुख ऐतिहासिक व पर्यटन स्थळे\nगोदावरी तीरावरील आध्यात्मिक, सांस्कृतिक व पर्यटन स्थळांची अधिकृत माहिती.\nतपशील पहा",
+      "hash": "2bdd34ff1149867b3c0a238989d2bf0f464a4d3fb0ea1d1d7a8feb71aae19264",
       "language": "mr",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "e57da4a9bc2a5dbc593b40a3",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "P\naithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town&apos;s heritage and its visitor information here.\nPratishthana was the capital of the Satavahanas, and King Hala&apos;s Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.\nwingCivicTitle\nwingCivicTitleMr\nwingCivicLink1\nwingCivicLink2\nwingCivicLink3\nwingCivicLink4\nwingHeritageTitle\nwingHeritageTitleMr\nwingHeritageLink1\nwingHeritageLink2\nwingHeritageLink3\nwingHeritageLink4\nwingTourismTitle\nwingTourismTitleMr\nwingTourismLink1\nwingTourismLink2\nwingTourismLink3\nwingTourismLink4\n02431-223010\n112\n112 / 223033\n108\n108 / 223040\n&#8594;\n—\n:\nWard\n%\nनिविदाएं और सार्वजनिक सूचनाएं\nनगर परिषद द्वारा जारी की जाने वाली सभी घोषणाएं, योजनाएं और ई-निविदाएं संदर्भ संख्या के साथ उपलब्ध हैं।\nसभी सूचनाएं और निविदाएं\nनगर परिषद\nसभी १७ वार्डों का प्रशासन: जनप्रतिनिधि, पार्षद सूची, विकास कार्य और आधिकारिक निविदाएं।\n१७ वार्ड · 'सी' वर्ग नगर परिषद · स्थापना १८५४",
-      "hash": "76fdf04ebbf5077e20c802040313a399e876f8567a959ffe93d49f4149336bb8",
+      "content": "P\naithan is a municipal town of 17 wards in Chhatrapati Sambhajinagar district, and the ancient Pratishthana — capital of the Satavahanas, and home of the Paithani weavers. The council publishes its records, the town&apos;s heritage and its visitor information here.\nPratishthana was the capital of the Satavahanas, and King Hala&apos;s Gaha Sattasai is still sung here after two thousand years. The cloth woven in this town carries the GI tag, and the peepal at the kund has not moved since the Satavahanas.\nwingCivicTitle\nwingCivicTitleMr\nwingCivicLink1\nwingCivicLink2\nwingCivicLink3\nwingCivicLink4\nwingHeritageTitle\nwingHeritageTitleMr\nwingHeritageLink1\nwingHeritageLink2\nwingHeritageLink3\nwingHeritageLink4\nwingTourismTitle\nwingTourismTitleMr\nwingTourismLink1\nwingTourismLink2\nwingTourismLink3\nwingTourismLink4\n02431-223010\n112\n112 / 223033\n108\n108 / 223040\n&#8594;\n—\n:\nWard\n%\nसार्वजनिक सूचनाएं\nसार्वजनिक सूचनाएं, नागरिक सेवाएं और स्थानीय जानकारी।\nनगर परिषद\n१७ वार्ड · 'सी' वर्ग नगर परिषद · स्थापना १८५४\nजनप्रतिनिधि और अधिकारी\nवार्ड निर्देशिका और पार्षद\nविकास कार्य रजिस्टर\nविरासत और संग्रहालय\nवारसा व संग्रहालय",
+      "hash": "aaf86ef5f182dde3a19eee84b21a9357605b67bf535e95ff99fe851fcb7b8495",
       "language": "hi",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "3b80562a2c2c7211e7451ad3",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "जनप्रतिनिधि और अधिकारी\nवार्ड निर्देशिका और पार्षद\nविकास कार्य रजिस्टर\nविरासत और संग्रहालय\nवारसा व संग्रहालय\nप्राचीन प्रतिष्ठान, सातवाहन राजवंश की राजधानी, राज्य पुरातत्व संग्रहालय और दो हजार वर्षों की पैठणी बुनाई परंपरा।\nराजा हाल रचित गाथा सप्तशती · GI टैग प्राप्त पैठणी\nडॉ. बालासाहेब पाटिल संग्रहालय\nसातवाहन सिक्के और पुरावशेष\nप्राचीन प्रतिष्ठान का गौरवशाली इतिहास\nसंत एकनाथ और पैठणी बुनाई परंपरा\nपर्यटन और स्थल\nपर्यटन व परिसर\nगोदावरी पर विशाल जायकवाड़ी बांध, ३४१ वर्ग किमी का नाथ सागर पक्षी अभयारण्य और संत एकनाथ तीर्थ घाट।\n३४१ वर्ग किमी अभयारण्य · शीतकालीन प्रवासी पक्षी\nजायकवाड़ी बांध और जलाशय\nजायकवाड़ी पक्षी अभयारण्य\nमंदिर और ऐतिहासिक स्थल\nसुझाए गए १-दिवसीय पर्यटन मार्ग\nनागरिक सेवाएं और ई-गवर्नेंस\nऑनलाइन नागरिक सेवाएं, प्रमाणपत्र आवेदन, कर भुगतान और शिकायत निवारण का आधिकारिक मंच।\nसंपत्ति और जल कर\nऑनलाइन कर मूल्यांकन, जल बिलिंग और MahaULB के माध्यम से रसीद डाउनलोड।\nऑनलाइन कर भरें\nजन्म और मृत्यु प्रमाणपत्र\nनागरिक पंजीकरण प्रणाली (CRS) द्वारा डिजिटल प्रमाणपत्र आवेदन और डाउनलोड।\nऑनलाइन आवेदन करें\n१७ वार्डों में नागरिक व्यवस्था\nवार्ड सीमाएं, जनसुविधाएं, पार्षद और सक्रिय बुनियादी ढांचा कार्य।\nसंवादात्मक वार्ड मानचित्र खोलें\nनागरिक शिकायत दर्ज करें",
-      "hash": "61b1a9e8ecf3b13117cff07c26edd9a99264f2776c5a64cae5e8cfc71fe2cd9d",
+      "content": "प्राचीन प्रतिष्ठान, सातवाहन राजवंश की राजधानी, राज्य पुरातत्व संग्रहालय और दो हजार वर्षों की पैठणी बुनाई परंपरा।\nराजा हाल रचित गाथा सप्तशती · GI टैग प्राप्त पैठणी\nडॉ. बालासाहेब पाटिल संग्रहालय\nसातवाहन सिक्के और पुरावशेष\nप्राचीन प्रतिष्ठान का गौरवशाली इतिहास\nसंत एकनाथ और पैठणी बुनाई परंपरा\nपर्यटन और स्थल\nपर्यटन व परिसर\nगोदावरी पर विशाल जायकवाड़ी बांध, ३४१ वर्ग किमी का नाथ सागर पक्षी अभयारण्य और संत एकनाथ तीर्थ घाट।\n३४१ वर्ग किमी अभयारण्य · शीतकालीन प्रवासी पक्षी\nजायकवाड़ी बांध और जलाशय\nजायकवाड़ी पक्षी अभयारण्य\nमंदिर और ऐतिहासिक स्थल\nसुझाए गए १-दिवसीय पर्यटन मार्ग\nनागरिक सेवाएं और ई-गवर्नेंस\nऑनलाइन नागरिक सेवाएं, प्रमाणपत्र आवेदन, कर भुगतान और शिकायत निवारण का आधिकारिक मंच।\nसंपत्ति और जल कर\nऑनलाइन कर मूल्यांकन, जल बिलिंग और MahaULB के माध्यम से रसीद डाउनलोड।\nऑनलाइन कर भरें\nजन्म और मृत्यु प्रमाणपत्र\nनागरिक पंजीकरण प्रणाली (CRS) द्वारा डिजिटल प्रमाणपत्र आवेदन और डाउनलोड।\nऑनलाइन आवेदन करें\n१७ वार्डों में नागरिक व्यवस्था\nवार्ड सीमाएं, जनसुविधाएं, पार्षद और सक्रिय बुनियादी ढांचा कार्य।\nसंवादात्मक वार्ड मानचित्र खोलें\nनागरिक शिकायत दर्ज करें\nस्वच्छता, जल आपूर्ति और प्रकाश व्यवस्था की शिकायतें दर्ज करें और निवारण ट्रैक करें।\nशिकायत दर्ज करें\nपैठण नगर परिषद · स्थापना १८५४\nप्रकाशन तिथि\nश्रेणी",
+      "hash": "16b83292fc904c7ccd182b362cce05dd276dbd8a294bdd50cb7856a5a8f724a1",
       "language": "hi",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "766e87eee58e58db0c1331f3",
       "title": "Paithan Digital Platform",
       "url": "/",
-      "content": "स्वच्छता, जल आपूर्ति और प्रकाश व्यवस्था की शिकायतें दर्ज करें और निवारण ट्रैक करें।\nशिकायत दर्ज करें\nपैठण नगर परिषद · स्थापना १८५४\nप्रकाशन तिथि\nश्रेणी\nविषय\nअंतिम तिथि\nसूचना देखें\nसंदर्भ संख्या\nजनप्रतिनिधि और प्रशासनिक नेतृत्व\nपैठण नगर परिषद\nवार्डों में सक्रिय नगर पालिका परियोजनाएं\nवार्ड संख्या\nसभी विकास कार्य देखें\nनियंत्रण कक्ष\nपैठण के प्रमुख ऐतिहासिक और पर्यटन स्थल\nगोदावरी तट पर आध्यात्मिक, सांस्कृतिक और पर्यटन स्थलों की आधिकारिक जानकारी।\nविवरण देखें",
-      "hash": "a2eb63f529226743b27fe8c2071b5240601066b6f1f55d9169327cb65d9359f3",
+      "content": "विषय\nअंतिम तिथि\nसूचना देखें\nसंदर्भ संख्या\nजनप्रतिनिधि और प्रशासनिक नेतृत्व\nपैठण नगर परिषद\nवार्डों में सक्रिय नगर पालिका परियोजनाएं\nवार्ड संख्या\nसभी विकास कार्य देखें\nनियंत्रण कक्ष\nपैठण के प्रमुख ऐतिहासिक और पर्यटन स्थल\nगोदावरी तट पर आध्यात्मिक, सांस्कृतिक और पर्यटन स्थलों की आधिकारिक जानकारी।\nविवरण देखें",
+      "hash": "950346f5f9aa8267d79cef0c2df929d89052c7e7cab0b0725f2455f4cb502e99",
       "language": "hi",
       "category": "website",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-30T03:40:57.989Z"
+      "updatedAt": "2026-10-31T12:10:23.764Z"
     },
     {
       "id": "e250d1fe861372e24af35981",
@@ -1302,37 +1302,37 @@
       "id": "54885752b99a47a995b08c19",
       "title": "sitemap",
       "url": "/sitemap",
-      "content": "Sitemap\nMain Pages\nHome\nSearch\nAI Citizen Assistant\nContact & Feedback\nPolicies & Legal\nAll Policies\nPrivacy Policy\nTerms & Conditions\nCopyright Policy\nHyperlinking Policy\nDisclaimer\nAccessibility Statement\nGrievances & Complaints\nSubmit Grievance\nTrack Grievance\nCivic Services (Nagar Parishad)\nAbout the Council\nPublic Representatives\n17 Wards & Map\nWard-wise Nagar Sevaks\nDevelopment Works Register\nMajor Municipal Projects\nOfficial Notices & Tenders\nAll Civic Services\nHeritage & Culture\nDr. Balasaheb Patil Museum\nSatavahana Coins & Artifacts\n3D Artifact Models\nAncient Pratishthana History\nPaithani Sarees & Sant Eknath\nTourism & Places\nJayakwadi Dam\nNath Sagar & Bird Sanctuary\nPlaces to Visit in Paithan\nSamadhi Mandir & Temples\n1-Day & Pilgrim Routes\nTourist Map & Directions\n/\n→",
-      "hash": "ce62ecd3506e3990a216c69bb46db327b291c43721ecbde32e4f63bae4bfc239",
+      "content": "Sitemap\nMain Pages\nHome\nSearch\nAI Citizen Assistant\nContact & Feedback\nPolicies & Legal\nAll Policies\nPrivacy Policy\nTerms & Conditions\nCopyright Policy\nHyperlinking Policy\nDisclaimer\nAccessibility Statement\nGrievances & Complaints\nSubmit Grievance\nTrack Grievance\nCivic Services (Nagar Parishad)\nAbout the Council\nPublic Representatives\n17 Wards & Map\nWard-wise Nagar Sevaks\nDevelopment Works Register\nMajor Municipal Projects\nPublic notices\nAll Civic Services\nHeritage & Culture\nDr. Balasaheb Patil Museum\nSatavahana Coins & Artifacts\n3D Artifact Models\nAncient Pratishthana History\nPaithani Sarees & Sant Eknath\nTourism & Places\nJayakwadi Dam\nNath Sagar & Bird Sanctuary\nPlaces to Visit in Paithan\nSamadhi Mandir & Temples\n1-Day & Pilgrim Routes\nTourist Map & Directions\n/\n→",
+      "hash": "00643bae06937aa34fd8ff3af864bc7b292d683f68aaffee248f79572038cad7",
       "language": "en",
       "category": "sitemap",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-06T15:19:57.850Z"
+      "updatedAt": "2026-10-14T17:40:13.638Z"
     },
     {
       "id": "ed64f679f2d90de24a0cefb0",
       "title": "sitemap",
       "url": "/sitemap",
-      "content": "Sitemap\nMain Pages\nHome\nSearch\nAI Citizen Assistant\nContact & Feedback\nPolicies & Legal\nAll Policies\nPrivacy Policy\nTerms & Conditions\nCopyright Policy\nHyperlinking Policy\nDisclaimer\nAccessibility Statement\nGrievances & Complaints\nSubmit Grievance\nTrack Grievance\nCivic Services (Nagar Parishad)\nAbout the Council\nPublic Representatives\n17 Wards & Map\nWard-wise Nagar Sevaks\nDevelopment Works Register\nMajor Municipal Projects\nOfficial Notices & Tenders\nAll Civic Services\nHeritage & Culture\nDr. Balasaheb Patil Museum\nSatavahana Coins & Artifacts\n3D Artifact Models\nAncient Pratishthana History\nPaithani Sarees & Sant Eknath\nTourism & Places\nJayakwadi Dam\nNath Sagar & Bird Sanctuary\nPlaces to Visit in Paithan\nSamadhi Mandir & Temples\n1-Day & Pilgrim Routes\nTourist Map & Directions\n/\n→",
-      "hash": "ce62ecd3506e3990a216c69bb46db327b291c43721ecbde32e4f63bae4bfc239",
+      "content": "Sitemap\nMain Pages\nHome\nSearch\nAI Citizen Assistant\nContact & Feedback\nPolicies & Legal\nAll Policies\nPrivacy Policy\nTerms & Conditions\nCopyright Policy\nHyperlinking Policy\nDisclaimer\nAccessibility Statement\nGrievances & Complaints\nSubmit Grievance\nTrack Grievance\nCivic Services (Nagar Parishad)\nAbout the Council\nPublic Representatives\n17 Wards & Map\nWard-wise Nagar Sevaks\nDevelopment Works Register\nMajor Municipal Projects\nPublic notices\nAll Civic Services\nHeritage & Culture\nDr. Balasaheb Patil Museum\nSatavahana Coins & Artifacts\n3D Artifact Models\nAncient Pratishthana History\nPaithani Sarees & Sant Eknath\nTourism & Places\nJayakwadi Dam\nNath Sagar & Bird Sanctuary\nPlaces to Visit in Paithan\nSamadhi Mandir & Temples\n1-Day & Pilgrim Routes\nTourist Map & Directions\n/\n→",
+      "hash": "00643bae06937aa34fd8ff3af864bc7b292d683f68aaffee248f79572038cad7",
       "language": "mr",
       "category": "sitemap",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-06T15:19:57.850Z"
+      "updatedAt": "2026-10-14T17:40:13.638Z"
     },
     {
       "id": "a4c1d246e09abf86fafe51c3",
       "title": "sitemap",
       "url": "/sitemap",
-      "content": "Sitemap\nMain Pages\nHome\nSearch\nAI Citizen Assistant\nContact & Feedback\nPolicies & Legal\nAll Policies\nPrivacy Policy\nTerms & Conditions\nCopyright Policy\nHyperlinking Policy\nDisclaimer\nAccessibility Statement\nGrievances & Complaints\nSubmit Grievance\nTrack Grievance\nCivic Services (Nagar Parishad)\nAbout the Council\nPublic Representatives\n17 Wards & Map\nWard-wise Nagar Sevaks\nDevelopment Works Register\nMajor Municipal Projects\nOfficial Notices & Tenders\nAll Civic Services\nHeritage & Culture\nDr. Balasaheb Patil Museum\nSatavahana Coins & Artifacts\n3D Artifact Models\nAncient Pratishthana History\nPaithani Sarees & Sant Eknath\nTourism & Places\nJayakwadi Dam\nNath Sagar & Bird Sanctuary\nPlaces to Visit in Paithan\nSamadhi Mandir & Temples\n1-Day & Pilgrim Routes\nTourist Map & Directions\n/\n→",
-      "hash": "ce62ecd3506e3990a216c69bb46db327b291c43721ecbde32e4f63bae4bfc239",
+      "content": "Sitemap\nMain Pages\nHome\nSearch\nAI Citizen Assistant\nContact & Feedback\nPolicies & Legal\nAll Policies\nPrivacy Policy\nTerms & Conditions\nCopyright Policy\nHyperlinking Policy\nDisclaimer\nAccessibility Statement\nGrievances & Complaints\nSubmit Grievance\nTrack Grievance\nCivic Services (Nagar Parishad)\nAbout the Council\nPublic Representatives\n17 Wards & Map\nWard-wise Nagar Sevaks\nDevelopment Works Register\nMajor Municipal Projects\nPublic notices\nAll Civic Services\nHeritage & Culture\nDr. Balasaheb Patil Museum\nSatavahana Coins & Artifacts\n3D Artifact Models\nAncient Pratishthana History\nPaithani Sarees & Sant Eknath\nTourism & Places\nJayakwadi Dam\nNath Sagar & Bird Sanctuary\nPlaces to Visit in Paithan\nSamadhi Mandir & Temples\n1-Day & Pilgrim Routes\nTourist Map & Directions\n/\n→",
+      "hash": "00643bae06937aa34fd8ff3af864bc7b292d683f68aaffee248f79572038cad7",
       "language": "hi",
       "category": "sitemap",
       "sourceType": "page",
       "reliability": "website",
-      "updatedAt": "2026-10-06T15:19:57.850Z"
+      "updatedAt": "2026-10-14T17:40:13.638Z"
     },
     {
       "id": "ff3549d2a3321d65d8cb40a7",
@@ -1944,31 +1944,7 @@
       "category": "nagar-parishad",
       "sourceType": "public-data",
       "reliability": "website",
-      "updatedAt": "2026-10-30T18:52:06.697Z"
-    },
-    {
-      "id": "58852b3ee01c318ee59b5b11",
-      "title": "E-Tender: Solid Waste Management, Door-to-Door Collection & Segregation across 17 Wards",
-      "url": "/nagar-parishad/notifications",
-      "content": "title: E-Tender: Solid Waste Management, Door-to-Door Collection & Segregation across 17 Wards\ntitleMr: ई-निविदा: १७ प्रभागांमध्ये घनकचरा व्यवस्थापन, घरोघरी कचरा संकलन व वर्गीकरण\ncategory: TENDER\ndepartment: Health & Sanitation Department\nreferenceNo: MC-PTN/SAN/SWM-2026/08\npublishedAt: 2026-09-18\nclosingAt: 2026-10-08",
-      "hash": "255782a225dd263a2da8c728fad469b8468baa97e790c093e77c0e0abc0ec4f2",
-      "language": "en",
-      "category": "nagar-parishad",
-      "sourceType": "public-data",
-      "reliability": "website",
-      "updatedAt": "2026-10-14T15:13:45.495Z"
-    },
-    {
-      "id": "3592dac5a88e986f4098974f",
-      "title": "E-Tender: Annual Electrical & Mechanical Maintenance for Paithan Municipal Water Pumping Station",
-      "url": "/nagar-parishad/notifications",
-      "content": "title: E-Tender: Annual Electrical & Mechanical Maintenance for Paithan Municipal Water Pumping Station\ntitleMr: ई-निविदा: नगर परिषद पाणीपुरवठा उपसा केंद्राचे वार्षिक विद्युत व यांत्रिकी देखभाल\ncategory: TENDER\ndepartment: Water Supply Department\nreferenceNo: MC-PTN/WSD/TND-2026/04\npublishedAt: 2026-09-15\nclosingAt: 2026-10-05",
-      "hash": "7a5a5e6b282bced99a96c5a6b2ad5d68ee5c4c806dacb932b75d9758950e89c4",
-      "language": "en",
-      "category": "nagar-parishad",
-      "sourceType": "public-data",
-      "reliability": "website",
-      "updatedAt": "2026-10-14T15:13:45.495Z"
+      "updatedAt": "2026-10-31T12:13:02.033Z"
     },
     {
       "id": "e92be68b0338a45cff788445",
@@ -1988,18 +1964,6 @@
       "url": "/nagar-parishad/notifications",
       "content": "title: Pradhan Mantri Awas Yojana (Urban): Approved Beneficiary Subsidy Disbursement List Released\ntitleMr: प्रधानमंत्री आवास योजना (शहरी): मंजूर लाभार्थी घरकुल अनुदानाची यादी प्रसिद्ध\ncategory: SCHEME\ndepartment: Town Planning & Housing\nreferenceNo: MC-PTN/PMAY/2026/89\npublishedAt: 2026-09-10",
       "hash": "647dace63f1dc70da39ea2fdf30d7c9eb8dab44a653d52bdd8afa02b6b585ae0",
-      "language": "en",
-      "category": "nagar-parishad",
-      "sourceType": "public-data",
-      "reliability": "website",
-      "updatedAt": "2026-10-14T15:13:45.495Z"
-    },
-    {
-      "id": "2e4c9a70503e6d2b6772a549",
-      "title": "Expression of Interest: Heritage Tour Guide Empanelment for Paithan Archaeological Circuit",
-      "url": "/nagar-parishad/notifications",
-      "content": "title: Expression of Interest: Heritage Tour Guide Empanelment for Paithan Archaeological Circuit\ntitleMr: अभिरुची प्रस्ताव: पैठण पुरातत्व पर्यटन मार्गदर्शकांची (गाईड) सूची तयार करणे\ncategory: TENDER\ndepartment: Tourism Promotion Cell\nreferenceNo: MC-PTN/TRM/EOI-2026/02\npublishedAt: 2026-09-08\nclosingAt: 2026-09-28",
-      "hash": "d2ebeb6d6a68319255949e5bf0344e24a3c9d9e47a0b8dfecc7d695a0ec45a50",
       "language": "en",
       "category": "nagar-parishad",
       "sourceType": "public-data",
@@ -2766,13 +2730,13 @@
       "id": "feaf7e196a4ccc06340243b0",
       "title": "Nagar Parishad",
       "url": "/nagar-parishad",
-      "content": "Nagar Parishad\nAbout Nagar Parishad: Departments, administrative structure and office contact. Open /nagar-parishad\nPublic representatives: MLA, MP, council administration and ward corporators. Open /nagar-parishad/representatives\nWard map: All 17 ward boundaries. Open /nagar-parishad/ward-map\nNagar Sevak (ward-wise): Representative and activity for each ward. Open /nagar-parishad/nagar-sevak\nDevelopment works: Filter by ward and by status. Open /nagar-parishad/development-works\nProjects: Larger council projects. Open /nagar-parishad/projects\nNotifications: Announcements, schemes, tenders and public notices. Open /nagar-parishad/notifications",
-      "hash": "17952d532ead9e9286dba64817d14d866d792848411bff7d1f6dddf1ab06c657",
+      "content": "Nagar Parishad\nAbout Nagar Parishad: Departments, administrative structure and office contact. Open /nagar-parishad\nPublic representatives: MLA, MP, council administration and ward corporators. Open /nagar-parishad/representatives\nWard map: All 17 ward boundaries. Open /nagar-parishad/ward-map\nNagar Sevak (ward-wise): Representative and activity for each ward. Open /nagar-parishad/nagar-sevak\nDevelopment works: Filter by ward and by status. Open /nagar-parishad/development-works\nProjects: Larger council projects. Open /nagar-parishad/projects\nNotifications: Announcements, schemes and public notices. Open /nagar-parishad/notifications",
+      "hash": "aa35f4ec6054d5e6c6a83916dfaa38f026dfdbf0f980be937c7312801204ddd4",
       "language": "en",
       "category": "navigation",
       "sourceType": "public-data",
       "reliability": "website",
-      "updatedAt": "2026-10-14T14:56:44.176Z"
+      "updatedAt": "2026-10-14T17:42:39.953Z"
     },
     {
       "id": "e215ab3a3102fc2857da59fa",
@@ -2800,11 +2764,11 @@
     }
   ],
   "report": {
-    "discovered": 217,
-    "indexed": 233,
-    "updated": 0,
-    "unchanged": 233,
-    "removed": 0,
+    "discovered": 214,
+    "indexed": 230,
+    "updated": 44,
+    "unchanged": 186,
+    "removed": 4,
     "skipped": [
       "/nagar-parishad/representatives/mla: empty or ineligible",
       "/nagar-parishad/representatives/mla: empty or ineligible",

@@ -132,6 +132,7 @@ async function searchDevelopmentWorks(query: string): Promise<SearchResult[]> {
 async function searchNotices(query: string): Promise<SearchResult[]> {
   const notices = (await prisma.notification.findMany({
     where: {
+      category: { not: "TENDER" },
       OR: [
         { title: { contains: query, mode: "insensitive" } },
         { titleMr: { contains: query, mode: "insensitive" } },

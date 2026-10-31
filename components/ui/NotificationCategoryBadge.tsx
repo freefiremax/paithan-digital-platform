@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
 const CATEGORY_CLASS: Readonly<Record<NotificationCategory, string>> = {
-  TENDER: "badge-tender",
   NOTICE: "badge-notice",
   SCHEME: "badge-scheme",
   ANNOUNCEMENT: "badge-announcement",
@@ -22,9 +21,7 @@ export function NotificationCategoryBadge({ category, className }: NotificationC
   const t = useTranslations("nagarParishad");
 
   const categoryLabel =
-    category === "TENDER"
-      ? t("categoryTender")
-      : category === "NOTICE"
+    category === "NOTICE"
       ? t("categoryNotice")
       : category === "SCHEME"
       ? t("categoryScheme")

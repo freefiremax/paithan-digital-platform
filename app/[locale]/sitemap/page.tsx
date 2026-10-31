@@ -62,7 +62,7 @@ export default async function SitemapPage({ params }: PageProps) {
         { href: "/nagar-parishad/nagar-sevak", label: messages.sitemap?.nagarSevaks || "Ward-wise Nagar Sevaks" },
         { href: "/nagar-parishad/development-works", label: messages.sitemap?.developmentWorks || "Development Works Register" },
         { href: "/nagar-parishad/projects", label: messages.sitemap?.projects || "Major Municipal Projects" },
-        { href: "/nagar-parishad/notifications", label: messages.sitemap?.notifications || "Official Notices & Tenders" },
+        { href: "/nagar-parishad/notifications", label: messages.sitemap?.notifications || "Public notices" },
         { href: "/services", label: messages.sitemap?.services || "All Civic Services" },
       ],
     },

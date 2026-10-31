@@ -28,10 +28,9 @@ export const workStatusLabels: Readonly<Record<WorkStatus, string>> = {
   PLANNED: "Planned",
 };
 
-export type NotificationCategory = "TENDER" | "NOTICE" | "SCHEME" | "ANNOUNCEMENT";
+export type NotificationCategory = "NOTICE" | "SCHEME" | "ANNOUNCEMENT";
 
 export const notificationCategoryLabels: Readonly<Record<NotificationCategory, string>> = {
-  TENDER: "E-Tender",
   NOTICE: "Public Notice",
   SCHEME: "Scheme",
   ANNOUNCEMENT: "Announcement",
@@ -396,7 +395,7 @@ export const pillars: readonly Pillar[] = [
       { label: "Public representatives", href: "/nagar-parishad/representatives" },
       { label: "Ward map & corporator roster", href: "/nagar-parishad/ward-map" },
       { label: "Development works registry", href: "/nagar-parishad/development-works" },
-      { label: "Tenders & notices", href: "/nagar-parishad/notifications" },
+      { label: "Public notices", href: "/nagar-parishad/notifications" },
     ],
   },
   {
@@ -498,28 +497,6 @@ export interface NotificationItem {
 
 export const notifications: readonly NotificationItem[] = [
   {
-    id: "notif-1",
-    title: "E-Tender: Solid Waste Management, Door-to-Door Collection & Segregation across 17 Wards",
-    titleMr: "ई-निविदा: १७ प्रभागांमध्ये घनकचरा व्यवस्थापन, घरोघरी कचरा संकलन व वर्गीकरण",
-    category: "TENDER",
-    department: "Health & Sanitation Department",
-    referenceNo: "MC-PTN/SAN/SWM-2026/08",
-    publishedAt: "2026-09-18",
-    closingAt: "2026-10-08",
-    isPinned: true,
-  },
-  {
-    id: "notif-2",
-    title: "E-Tender: Annual Electrical & Mechanical Maintenance for Paithan Municipal Water Pumping Station",
-    titleMr: "ई-निविदा: नगर परिषद पाणीपुरवठा उपसा केंद्राचे वार्षिक विद्युत व यांत्रिकी देखभाल",
-    category: "TENDER",
-    department: "Water Supply Department",
-    referenceNo: "MC-PTN/WSD/TND-2026/04",
-    publishedAt: "2026-09-15",
-    closingAt: "2026-10-05",
-    isPinned: true,
-  },
-  {
     id: "notif-3",
     title: "Citizen Advisory: Advance Planning, Water Dispensing & Sanitation Guidelines for Nath Shashti Mahotsav",
     titleMr: "नागरिक सूचना: नाथषष्ठी महोत्सव पूर्वतयारी, पाणीपुरवठा व स्वच्छता मार्गदर्शक सूचना",
@@ -537,16 +514,6 @@ export const notifications: readonly NotificationItem[] = [
     department: "Town Planning & Housing",
     referenceNo: "MC-PTN/PMAY/2026/89",
     publishedAt: "2026-09-10",
-  },
-  {
-    id: "notif-5",
-    title: "Expression of Interest: Heritage Tour Guide Empanelment for Paithan Archaeological Circuit",
-    titleMr: "अभिरुची प्रस्ताव: पैठण पुरातत्व पर्यटन मार्गदर्शकांची (गाईड) सूची तयार करणे",
-    category: "TENDER",
-    department: "Tourism Promotion Cell",
-    referenceNo: "MC-PTN/TRM/EOI-2026/02",
-    publishedAt: "2026-09-08",
-    closingAt: "2026-09-28",
   },
 ];
 

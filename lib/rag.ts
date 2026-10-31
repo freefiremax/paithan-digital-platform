@@ -309,7 +309,7 @@ export const KNOWLEDGE_BASE: readonly KnowledgeDoc[] = [
 - Citizen Grievances: File complaints at '/grievances/new' and track live resolution status at '/grievances/track'.
 - Municipal Projects & Works: Explore real-time infrastructure, water, and road works at '/nagar-parishad/development-works'.
 - Comprehensive Search: Use the global search bar in the header or navigate to '/search' to find any municipal document or tourist destination.
-- Admin Portal: Municipal administrators can log in at '/admin/login' to manage public notices, tenders, and verify grievance resolutions.`,
+- Admin Portal: Municipal administrators can log in at '/admin/login' to manage public notices and verify grievance resolutions.`,
   },
 ];
 
