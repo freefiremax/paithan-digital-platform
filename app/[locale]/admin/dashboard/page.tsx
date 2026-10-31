@@ -11,6 +11,7 @@ import {
   PlusCircle,
   ShieldCheck,
   Building2,
+  BarChart3,
 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { notifications, developmentWorks, wards, councilProfile } from "@/lib/mock-data";
@@ -123,6 +124,29 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Neon Visitor Analytics Strip */}
+      <div className="bg-gradient-to-r from-[#0C1E3C] to-[#173059] rounded-2xl p-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm border border-slate-700/40">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">
+            <BarChart3 className="w-4 h-4" />
+            <span>Neon Analytics Live Sync</span>
+          </div>
+          <h3 className="text-base font-bold text-white">
+            Visitor Engagement, Time Spent &amp; Sector Interest
+          </h3>
+          <p className="text-xs text-slate-300">
+            Track how many citizens are visiting, which sections they take interest in, and their time on the platform.
+          </p>
+        </div>
+        <Link
+          href="/admin/analytics"
+          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2.5 rounded-xl text-xs font-bold transition shrink-0"
+        >
+          <span>Open Full Analytics</span>
+          <ArrowUpRight className="w-4 h-4" />
+        </Link>
       </div>
 
       {/* Main Grid: Active Tenders Queue & Ward Works Progress */}

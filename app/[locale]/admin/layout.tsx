@@ -17,6 +17,7 @@ import {
   X,
   ShieldCheck,
   User,
+  BarChart3,
 } from "lucide-react";
 import { councilProfile } from "@/lib/mock-data";
 
@@ -76,6 +77,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       label: t("dashboardTitle"),
       href: "/admin/dashboard",
       icon: LayoutDashboard,
+    },
+    {
+      label: locale === "mr" ? "अभ्यागत विश्लेषक" : locale === "hi" ? "आगंतुक विश्लेषण" : "Visitor Analytics",
+      href: "/admin/analytics",
+      icon: BarChart3,
     },
     {
       label: t("tendersCirculars"),
