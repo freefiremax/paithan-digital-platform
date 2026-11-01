@@ -198,6 +198,7 @@
     "builtBy": "Designed and built by"
   },
   "common": {
+    "phone": "Phone",
     "loading": "Loading...",
     "skipIntro": "Skip intro",
     "error": "An error occurred",
