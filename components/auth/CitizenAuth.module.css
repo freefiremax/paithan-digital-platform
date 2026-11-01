@@ -1,5 +1,5 @@
-.page { min-height: 100svh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 24px clamp(16px, 4vw, 56px); background: var(--paper-50); color: var(--paper-900); color-scheme: light; }
-.mastheadInner { width: 100%; max-width: 1120px; margin: 0 auto; }
+.page { min-height: auto; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; gap: 12px; padding: 36px clamp(16px, 4vw, 56px); background: var(--paper-50); color: var(--paper-900); color-scheme: light; }
+.mastheadInner { display: none; }
 .back { color: var(--portal-blue-900); display: inline-flex; align-items: center; gap: 7px; font-size: 12px; line-height: 1.5; text-decoration: underline; text-underline-offset: 4px; }
 .layout { width: 100%; max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #d8c7af; border-radius: 18px; overflow: hidden; background: #fffaf3; box-shadow: 0 12px 40px #4d0f2009; }
 .formColumn { min-width: 0; padding: 24px 30px; border-left: 1px solid #d8c7af; align-self: center; }

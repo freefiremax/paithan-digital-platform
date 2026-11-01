@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { NextIntlClientProvider } from 'next-intl';
-import { Helplines } from '@/app/[locale]/contact/Helplines';
-import { WebInfoManager } from '@/app/[locale]/contact/WebInfoManager';
+import { Helplines } from '@/app/[locale]/(public)/contact/Helplines';
+import { WebInfoManager } from '@/app/[locale]/(public)/contact/WebInfoManager';
 import { PolicyDocument, type PolicyKind } from '@/components/policies/PolicyDocument';
 import en from '@/messages/en.json';
 import mr from '@/messages/mr.json';

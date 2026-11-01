@@ -1,5 +1,5 @@
-.page { min-height: 100svh; color-scheme: light; background: var(--paper-50); color: var(--paper-900); }
-.masthead { background: var(--paper-100); border-bottom: 1px solid var(--border-subtle); }
+.page { min-height: auto; color-scheme: light; background: var(--paper-50); color: var(--paper-900); }
+.masthead { display: none; }
 .mastheadInner { max-width: 1200px; margin: auto; padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: flex; align-items: center; gap: 12px; color: var(--portal-blue-900); font-weight: 600; font-size: 14px; text-decoration: none; }
 .brand svg { flex-shrink: 0; }
