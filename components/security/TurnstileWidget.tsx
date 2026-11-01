@@ -141,7 +141,7 @@ export function TurnstileWidget({
     )}
     {siteKey && <div className={styles.slot}>
       {(status === 'loading' || status === 'checking' || status === 'interactive') && (
-        <div className={styles.cfPlaceholder} aria-hidden="true">
+        <div className={`${styles.cfPlaceholder} ${styles.cfOverlay}`} aria-hidden="true">
           <div className={styles.cfPlaceholderLeft}>
             <svg className={styles.cfSpinner} width="22" height="22" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="3" r="1.8" fill="#16a34a" opacity="1" />
@@ -163,12 +163,16 @@ export function TurnstileWidget({
               </svg>
               <span className={styles.cfBrandName}>CLOUDFLARE</span>
             </div>
-            <span className={styles.cfLegal}>Privacy • Terms</span>
+            <span className={styles.cfLegal}>
+              <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer" className={styles.cfLegalLink}>Privacy</a>
+              {' • '}
+              <a href="https://www.cloudflare.com/website-terms/" target="_blank" rel="noopener noreferrer" className={styles.cfLegalLink}>Terms</a>
+            </span>
           </div>
         </div>
       )}
       {status === 'verified' && (
-        <div className={styles.cfPlaceholder} aria-hidden="true">
+        <div className={`${styles.cfPlaceholder} ${styles.cfStatic}`} aria-hidden="true">
           <div className={styles.cfPlaceholderLeft}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="10" fill="#16a34a" />
@@ -184,7 +188,11 @@ export function TurnstileWidget({
               </svg>
               <span className={styles.cfBrandName}>CLOUDFLARE</span>
             </div>
-            <span className={styles.cfLegal}>Privacy • Terms</span>
+            <span className={styles.cfLegal}>
+              <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer" className={styles.cfLegalLink}>Privacy</a>
+              {' • '}
+              <a href="https://www.cloudflare.com/website-terms/" target="_blank" rel="noopener noreferrer" className={styles.cfLegalLink}>Terms</a>
+            </span>
           </div>
         </div>
       )}
