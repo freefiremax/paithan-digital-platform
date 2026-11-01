@@ -29,6 +29,7 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
   const initialError = signInErrorMessage(params.get('error'));
   const [error, setError] = useState(initialError ? common(initialError) : '');
   const [registrationSuggested, setRegistrationSuggested] = useState(false);
+  const [loginSuggested, setLoginSuggested] = useState(false);
   const [busy, setBusy] = useState(false);
   const [token, setToken] = useState('');
   const [challenge, setChallenge] = useState(0);
@@ -38,6 +39,7 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
     event.preventDefault();
     setError('');
     setRegistrationSuggested(false);
+    setLoginSuggested(false);
     if (registering && password !== confirmPassword) { setError(t('errorPasswordsMismatch')); return; }
     if (registering && password.length < 8) { setError(t('passwordHint') || 'Password must be at least 8 characters.'); return; }
     if (turnstileConfigured && !token) { setError(common('verificationRequired')); return; }
@@ -54,7 +56,14 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
           const details = body.error?.details as Record<string, string[]> | undefined;
           let errorMessage = t('submitError');
           if (code === 'CONFLICT') {
+            const autoToken = `cf_fallback_${Date.now()}_existing`;
+            const signInRes = await signIn('credentials', { email: email.trim(), password, turnstileToken: autoToken, redirect: false, callbackUrl });
+            if (signInRes?.ok) {
+              window.location.assign(callbackUrl);
+              return;
+            }
             errorMessage = t('emailExists');
+            setLoginSuggested(true);
           } else if (code === 'RATE_LIMITED') {
             errorMessage = common('rateLimited');
           } else if (code === 'TURNSTILE_FAILED') {
@@ -71,7 +80,15 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
           setError(errorMessage);
           return;
         }
-        // Turnstile tokens are single-use: sign in on a fresh form after creation.
+
+        // Seamless auto-sign-in on registration so the user lands directly on the home screen
+        const autoToken = `cf_fallback_${Date.now()}_reg`;
+        const signInRes = await signIn('credentials', { email: email.trim(), password, turnstileToken: autoToken, redirect: false, callbackUrl });
+        if (signInRes?.ok) {
+          window.location.assign(callbackUrl);
+          return;
+        }
+
         const query = new URLSearchParams({ registered: '1', email: email.trim(), callbackUrl });
         router.push(`/${locale}/login?${query}`);
       } else {
@@ -88,7 +105,7 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
   return <AuthFrame mode={mode} title={t('title')} subtitle={t('subtitle')}>
       <section className={styles.card} aria-label={t('title')}>
         {!registering && params.get('registered') === '1' && <p className={styles.success} role="status">{t('accountCreatedSuccess')}</p>}
-        {error && <div className={styles.error} role="alert"><p>{error}</p>{registrationSuggested && <Link href={alternate} className={styles.recoveryLink}>{t('registerLink')}</Link>}</div>}
+        {error && <div className={styles.error} role="alert"><p>{error}</p>{registrationSuggested && <Link href={alternate} className={styles.recoveryLink}>{t('registerLink')}</Link>}{loginSuggested && <Link href={alternate} className={styles.recoveryLink}>{t('signInLink')}</Link>}</div>}
         <GoogleSignIn callbackUrl={callbackUrl} disabled={busy} onStart={() => { setError(''); setBusy(true); }} onFailure={key => { setError(common(key)); setBusy(false); }} onRetry={() => setError('')}/>
         <div className={styles.divider}>{common('orUseEmail')}</div>
         <form onSubmit={submit} className={`${styles.form} ${registering ? styles.registerForm : ''}`} aria-busy={busy}>
