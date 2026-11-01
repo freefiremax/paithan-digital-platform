@@ -17,7 +17,7 @@ export default function RoutesPage() {
       <Breadcrumb
         items={[
           { label: tNav("home"), href: "/" },
-          { label: tNav("tourism"), href: "/tourism" },
+          { label: tNav("tourismPlaces"), href: "/tourism" },
           { label: t("routesTitle") },
         ]}
       />
