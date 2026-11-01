@@ -68,7 +68,10 @@ export async function createErrorResponse(error: unknown): Promise<{ error: { co
     }
   }
 
-  console.error("[api] Unexpected server error.");
+  console.error("[api] Unexpected server error.", {
+    name: error instanceof Error ? error.name : "Unknown",
+    code: typeof error === "object" && error !== null && "code" in error ? String(error.code) : undefined,
+  });
   try {
     const Sentry = await import("@sentry/nextjs");
     Sentry.captureException(error);
@@ -83,5 +86,5 @@ export async function createErrorResponse(error: unknown): Promise<{ error: { co
 
 export async function handleApiError(error: unknown): Promise<NextResponse> {
   const { error: errorBody, status } = await createErrorResponse(error);
-  return NextResponse.json(errorBody, { status });
+  return NextResponse.json({ error: errorBody }, { status });
 }

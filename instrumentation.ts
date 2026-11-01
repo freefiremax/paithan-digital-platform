@@ -13,6 +13,8 @@ export function register() {
     tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
     debug: process.env.NODE_ENV === "development",
     enabled: process.env.NODE_ENV !== "test",
+    // Keep transaction filtering active with Sentry 11.
+    traceLifecycle: "static",
     ignoreErrors: [
       "NEXT_REDIRECT",
       "NEXT_NOT_FOUND",

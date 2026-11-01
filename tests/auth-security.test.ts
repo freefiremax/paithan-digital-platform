@@ -32,6 +32,14 @@ beforeEach(() => {
 });
 
 describe("Citizen registration authorization", () => {
+  it("never adds a password to an existing Google account through public registration", async () => {
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({ id: "google-user", passwordHash: null } as Awaited<ReturnType<typeof prisma.user.findUnique>>);
+    const response = await POST(registration());
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ error: { code: "CONFLICT" } });
+    expect(prisma.user.update).not.toHaveBeenCalled();
+    expect(prisma.user.create).not.toHaveBeenCalled();
+  });
   it.each([{ role: "ADMIN" }, { role: "EDITOR" }, { wardId: "c123456789012345678901234" }])("rejects privileged fields %o before database writes", async extra => {
     expect((await POST(registration(extra))).status).toBe(400);
     expect(prisma.user.create).not.toHaveBeenCalled();

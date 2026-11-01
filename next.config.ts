@@ -7,6 +7,10 @@ const withNextIntl = createNextIntlPlugin('./i18n.ts');
 const nextConfig: NextConfig = {
   turbopack: {},
   poweredByHeader: false,
+  // Prisma loads its native engine at runtime; preserve it in Vercel functions.
+  outputFileTracingIncludes: {
+    '/*': ['node_modules/.prisma/client/**/*'],
+  },
   async headers() {
     return [{ source: '/:path*', headers: [
       { key: 'X-Content-Type-Options', value: 'nosniff' },

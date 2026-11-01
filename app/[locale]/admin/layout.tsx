@@ -19,6 +19,7 @@ import {
   User,
   BarChart3,
 } from "lucide-react";
+import { PublicShell } from "@/components/layout/PublicShell";
 import { councilProfile } from "@/lib/mock-data";
 
 interface AdminUser {
@@ -51,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   if (isLoginPage) {
-    return <>{children}</>;
+    return <PublicShell>{children}</PublicShell>;
   }
 
   if (status === "loading") {

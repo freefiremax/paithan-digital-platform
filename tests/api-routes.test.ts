@@ -86,7 +86,7 @@ describe("Error Handling", () => {
       const response = await handleApiError(error);
       expect(response.status).toBe(400);
       const body = await response.json();
-      expect(body).toEqual({ code: "TEST_ERROR", message: "Test message" });
+      expect(body).toEqual({ error: { code: "TEST_ERROR", message: "Test message" } });
     });
   });
 });

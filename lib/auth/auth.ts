@@ -21,11 +21,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret:
     process.env.AUTH_SECRET ||
     process.env.NEXTAUTH_SECRET ||
-    env.NEXTAUTH_SECRET ||
-    "paithan-council-platform-auth-production-secret-fallback-32chars",
+    env.NEXTAUTH_SECRET,
   pages: { signIn: "/login", error: "/login" },
   logger: {
-    error: (error) => console.error("[auth] Authentication operation failed.", error instanceof AuthError ? error.type : "Unknown"),
+    error: (error) => {
+      const cause = error instanceof AuthError ? error.cause?.err : undefined;
+      console.error("[auth] Authentication operation failed.", {
+        type: error instanceof AuthError ? error.type : "Unknown",
+        cause: cause instanceof Error ? cause.name : undefined,
+        code: cause && typeof cause === "object" && "code" in cause ? String(cause.code) : undefined,
+      });
+    },
     warn: () => console.warn("[auth] Authentication configuration warning."),
     debug: () => { /* Authentication payloads must not be logged. */ },
   },

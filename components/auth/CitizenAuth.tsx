@@ -13,10 +13,6 @@ import { TurnstileWidget } from '@/components/security/TurnstileWidget';
 import { citizenCallbackUrl } from '@/lib/auth/redirect';
 import styles from './CitizenAuth.module.css';
 
-function createFallbackToken(suffix: string) {
-  return `cf_fallback_${Date.now()}_${suffix}`;
-}
-
 export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
   const registering = mode === 'register';
   const locale = useLocale();
@@ -60,12 +56,6 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
           const details = body.error?.details as Record<string, string[]> | undefined;
           let errorMessage = t('submitError');
           if (code === 'CONFLICT') {
-            const autoToken = createFallbackToken('existing');
-            const signInRes = await signIn('credentials', { email: email.trim(), password, turnstileToken: autoToken, redirect: false, callbackUrl });
-            if (signInRes?.ok) {
-              window.location.assign(callbackUrl);
-              return;
-            }
             errorMessage = t('emailExists');
             setLoginSuggested(true);
           } else if (code === 'RATE_LIMITED') {
@@ -82,14 +72,6 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
             errorMessage = body.error.message;
           }
           setError(errorMessage);
-          return;
-        }
-
-        // Seamless auto-sign-in on registration so the user lands directly on the home screen
-        const autoToken = createFallbackToken('reg');
-        const signInRes = await signIn('credentials', { email: email.trim(), password, turnstileToken: autoToken, redirect: false, callbackUrl });
-        if (signInRes?.ok) {
-          window.location.assign(callbackUrl);
           return;
         }
 

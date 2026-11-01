@@ -14,14 +14,13 @@ vi.mock('next-intl', () => ({
 describe('Header Global Citizen Search & Alignment Verification', () => {
   const headerPath = path.join(process.cwd(), 'components/layout/Header.tsx');
   const searchPath = path.join(process.cwd(), 'components/search/HeaderGlobalSearch.tsx');
-  const publicLayoutPath = path.join(process.cwd(), 'app/[locale]/(public)/layout.tsx');
 
   const enMessages = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'messages/en.json'), 'utf8'));
   const mrMessages = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'messages/mr.json'), 'utf8'));
   const hiMessages = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'messages/hi.json'), 'utf8'));
 
   it('should render Header component inside the public layout', () => {
-    const layoutContent = fs.readFileSync(publicLayoutPath, 'utf8');
+    const layoutContent = fs.readFileSync(path.join(process.cwd(), 'components/layout/PublicShell.tsx'), 'utf8');
     expect(layoutContent).toContain('import { Header } from "@/components/layout/Header";');
     expect(layoutContent).toContain('<Header />');
   });

@@ -8,7 +8,6 @@ import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { AuthFrame } from "@/components/auth/AuthFrame";
 import { GoogleSignIn } from "@/components/auth/GoogleSignIn";
 import { signInErrorMessage } from "@/lib/auth/error-message";
-import { citizenCallbackUrl } from "@/lib/auth/redirect";
 import styles from "@/components/auth/CitizenAuth.module.css";
 import { useTranslations, useLocale } from "next-intl";
 import { TurnstileWidget } from "@/components/security/TurnstileWidget";
@@ -19,8 +18,7 @@ function AdminLoginForm() {
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
 
-  const rawCallbackUrl = searchParams.get("callbackUrl");
-  const targetCallbackUrl = citizenCallbackUrl(rawCallbackUrl, locale);
+  const targetCallbackUrl = `/${locale}/admin/dashboard`;
   const emailParam = searchParams.get("email") || "";
   const isRegistered = searchParams.get("registered") === "1";
   const errorParam = searchParams.get("error");
@@ -44,7 +42,7 @@ function AdminLoginForm() {
       if (userRole === "ADMIN" || userRole === "EDITOR") {
         router.replace(`/${locale}/admin/dashboard`);
       } else {
-        router.replace(targetCallbackUrl);
+        router.replace(`/${locale}`);
       }
     }
   }, [status, session, locale, targetCallbackUrl, router]);
@@ -64,12 +62,13 @@ function AdminLoginForm() {
         callbackUrl: targetCallbackUrl,
       });
 
-      if (result?.error) {
-        setError(result.code === "account_not_found" ? common("staffAccountMissing") : t("errorInvalidCredentials"));
+      if (!result || result.error || !result.ok) {
+        setError(result?.code === "account_not_found" ? common("staffAccountMissing") : t("errorInvalidCredentials"));
         return;
       }
 
-      window.location.assign(targetCallbackUrl);
+      router.replace(targetCallbackUrl);
+      router.refresh();
     } catch {
       setError(t("errorUnexpected"));
     } finally {
