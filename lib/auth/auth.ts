@@ -30,6 +30,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         type: error instanceof AuthError ? error.type : "Unknown",
         cause: cause instanceof Error ? cause.name : undefined,
         code: cause && typeof cause === "object" && "code" in cause ? String(cause.code) : undefined,
+        oauthError: cause && typeof cause === "object" && "error" in cause &&
+          ["invalid_client", "invalid_grant", "invalid_request", "unauthorized_client", "access_denied", "temporarily_unavailable"].includes(String(cause.error))
+          ? String(cause.error) : undefined,
       });
     },
     warn: () => console.warn("[auth] Authentication configuration warning."),
