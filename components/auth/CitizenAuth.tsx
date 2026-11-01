@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
@@ -31,8 +31,6 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
   const [registrationSuggested, setRegistrationSuggested] = useState(false);
   const [busy, setBusy] = useState(false);
   const [token, setToken] = useState('');
-  const tokenRef = useRef(token);
-  tokenRef.current = token;
   const [challenge, setChallenge] = useState(0);
   const turnstileConfigured = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -42,24 +40,13 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
     setRegistrationSuggested(false);
     if (registering && password !== confirmPassword) { setError(t('errorPasswordsMismatch')); return; }
     if (registering && password.length < 8) { setError(t('passwordHint') || 'Password must be at least 8 characters.'); return; }
+    if (turnstileConfigured && !token) { setError(common('verificationRequired')); return; }
     setBusy(true);
     try {
-      let activeToken = tokenRef.current;
-      if (turnstileConfigured && !activeToken) {
-        const start = Date.now();
-        while (!tokenRef.current && Date.now() - start < 2500) {
-          await new Promise(r => setTimeout(r, 150));
-        }
-        activeToken = tokenRef.current;
-        if (!activeToken) {
-          activeToken = `cf_fallback_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-        }
-      }
-
       if (registering) {
         const response = await fetch('/api/auth/register', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: name.trim(), email: email.trim(), password, turnstileToken: activeToken }),
+          body: JSON.stringify({ name: name.trim(), email: email.trim(), password, turnstileToken: token }),
         });
         const body = await response.json();
         if (!response.ok) {
@@ -88,7 +75,7 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
         const query = new URLSearchParams({ registered: '1', email: email.trim(), callbackUrl });
         router.push(`/${locale}/login?${query}`);
       } else {
-        const result = await signIn('credentials', { email: email.trim(), password, turnstileToken: activeToken, redirect: false, callbackUrl });
+        const result = await signIn('credentials', { email: email.trim(), password, turnstileToken: token, redirect: false, callbackUrl });
         if (result?.code === 'account_not_found' || result?.error === 'account_not_found') { setError(t('accountNotFound')); setRegistrationSuggested(true); return; }
         if (!result || result.error || !result.ok) { setError(t('errorInvalidCredentials')); return; }
         window.location.assign(callbackUrl);
