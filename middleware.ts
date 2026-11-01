@@ -57,6 +57,8 @@ export default async function middleware(request: NextRequest) {
     const token = secret ? await getToken({
       req: request,
       secret,
+      // Auth.js prefixes its session cookie with __Secure- on HTTPS.
+      secureCookie: request.nextUrl.protocol === 'https:',
     }) : null;
 
     if (!token) {
@@ -67,7 +69,7 @@ export default async function middleware(request: NextRequest) {
       return NextResponse.redirect(signInUrl);
     }
 
-    if (token.role === 'PUBLIC') {
+    if (token.role !== 'ADMIN' && token.role !== 'EDITOR') {
       return new NextResponse(null, { status: 403 });
     }
   }
