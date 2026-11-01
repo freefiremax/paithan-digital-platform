@@ -101,15 +101,16 @@ export const loginSchema = z.object({
 }).strict();
 
 export const createUserSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email("Please enter a valid email address"),
   name: z.string().min(1).max(100).optional(),
-  password: z.string().min(12).max(128),
+  password: z.string().min(8, "Password must be at least 8 characters").max(128),
   role: roleEnum.default("PUBLIC"),
   wardId: z.string().cuid().optional().nullable(),
 }).strict();
 
 // Public registration must never accept staff roles or ward assignments.
 export const citizenRegistrationSchema = createUserSchema.omit({ role: true, wardId: true }).extend({
+  password: z.string().min(8, "Password must be at least 8 characters").max(128),
   turnstileToken: z.string().max(2048).optional(),
 }).strict();
 

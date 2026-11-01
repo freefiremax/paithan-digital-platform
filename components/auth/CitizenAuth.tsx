@@ -39,6 +39,7 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
     setError('');
     setRegistrationSuggested(false);
     if (registering && password !== confirmPassword) { setError(t('errorPasswordsMismatch')); return; }
+    if (registering && password.length < 8) { setError(t('passwordHint') || 'Password must be at least 8 characters.'); return; }
     if (turnstileConfigured && !token) { setError(common('verificationRequired')); return; }
     setBusy(true);
     try {
@@ -50,7 +51,24 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
         const body = await response.json();
         if (!response.ok) {
           const code = body.error?.code;
-          setError(code === 'CONFLICT' ? t('emailExists') : code === 'RATE_LIMITED' ? common('rateLimited') : code === 'TURNSTILE_FAILED' ? common('verificationRequired') : t('submitError'));
+          const details = body.error?.details as Record<string, string[]> | undefined;
+          let errorMessage = t('submitError');
+          if (code === 'CONFLICT') {
+            errorMessage = t('emailExists');
+          } else if (code === 'RATE_LIMITED') {
+            errorMessage = common('rateLimited');
+          } else if (code === 'TURNSTILE_FAILED') {
+            errorMessage = common('verificationRequired');
+          } else if (details?.password?.[0]) {
+            errorMessage = details.password[0];
+          } else if (details?.email?.[0]) {
+            errorMessage = details.email[0];
+          } else if (details?.name?.[0]) {
+            errorMessage = details.name[0];
+          } else if (body.error?.message && body.error.message !== 'Invalid input') {
+            errorMessage = body.error.message;
+          }
+          setError(errorMessage);
           return;
         }
         // Turnstile tokens are single-use: sign in on a fresh form after creation.
@@ -76,8 +94,8 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
         <form onSubmit={submit} className={`${styles.form} ${registering ? styles.registerForm : ''}`} aria-busy={busy}>
           {registering && <div className={styles.field}><label htmlFor="auth-name">{t('nameLabel')}</label><div className={styles.inputWrap}><User size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-name" name="name" autoComplete="name" required maxLength={100} value={name} onChange={e => setName(e.target.value)} className={styles.input} placeholder={t('namePlaceholder')} /></div></div>}
           <div className={styles.field}><label htmlFor="auth-email">{t('emailLabel')}</label><div className={styles.inputWrap}><Mail size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-email" name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={e => setEmail(e.target.value)} className={styles.input} placeholder={t('emailPlaceholder')} /></div></div>
-          <div className={styles.field}><label htmlFor="auth-password">{t('passwordLabel')}</label><div className={styles.inputWrap}><Lock size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-password" name="password" type={showPassword ? 'text' : 'password'} autoComplete={registering ? 'new-password' : 'current-password'} required minLength={registering ? 12 : 1} maxLength={128} value={password} onChange={e => setPassword(e.target.value)} className={styles.input} placeholder={t('passwordPlaceholder')} aria-describedby={registering ? 'password-hint' : undefined}/><button type="button" className={styles.toggle} onClick={() => setShowPassword(value => !value)} aria-label={common(showPassword ? 'hidePassword' : 'showPassword')} aria-pressed={showPassword}>{showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}</button></div>{registering && <p id="password-hint" className={styles.hint}>{t('passwordHint')}</p>}</div>
-          {registering && <div className={styles.field}><label htmlFor="auth-confirm">{t('confirmPasswordLabel')}</label><div className={styles.inputWrap}><Lock size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-confirm" name="confirmPassword" type={showPassword ? 'text' : 'password'} autoComplete="new-password" required minLength={12} maxLength={128} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className={styles.input} placeholder={t('confirmPasswordPlaceholder')}/></div></div>}
+          <div className={styles.field}><label htmlFor="auth-password">{t('passwordLabel')}</label><div className={styles.inputWrap}><Lock size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-password" name="password" type={showPassword ? 'text' : 'password'} autoComplete={registering ? 'new-password' : 'current-password'} required minLength={registering ? 8 : 1} maxLength={128} value={password} onChange={e => setPassword(e.target.value)} className={styles.input} placeholder={t('passwordPlaceholder')} aria-describedby={registering ? 'password-hint' : undefined}/><button type="button" className={styles.toggle} onClick={() => setShowPassword(value => !value)} aria-label={common(showPassword ? 'hidePassword' : 'showPassword')} aria-pressed={showPassword}>{showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}</button></div>{registering && <p id="password-hint" className={styles.hint}>{t('passwordHint')}</p>}</div>
+          {registering && <div className={styles.field}><label htmlFor="auth-confirm">{t('confirmPasswordLabel')}</label><div className={styles.inputWrap}><Lock size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-confirm" name="confirmPassword" type={showPassword ? 'text' : 'password'} autoComplete="new-password" required minLength={8} maxLength={128} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className={styles.input} placeholder={t('confirmPasswordPlaceholder')}/></div></div>}
           {turnstileConfigured && <TurnstileWidget key={challenge} theme="light" action={mode} onVerify={setToken} />}
           <button type="submit" className={styles.submit} disabled={busy}>{busy ? t('loading') : t('submitBtn')}</button>
         </form>

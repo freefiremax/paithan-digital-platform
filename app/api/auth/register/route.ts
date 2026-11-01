@@ -47,10 +47,32 @@ export async function POST(req: NextRequest) {
     });
 
     if (existing) {
-      return NextResponse.json(
-        { error: { code: "CONFLICT", message: "An account with this email already exists" } },
-        { status: 409 }
-      );
+      if (existing.passwordHash) {
+        return NextResponse.json(
+          { error: { code: "CONFLICT", message: "An account with this email already exists" } },
+          { status: 409 }
+        );
+      }
+
+      // User registered previously via Google OAuth with no password; set their password so they can log in via credentials
+      const passwordHash = await hash(parsed.data.password);
+      const updatedUser = await prisma.user.update({
+        where: { id: existing.id },
+        data: {
+          passwordHash,
+          name: parsed.data.name || existing.name,
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          role: true,
+          wardId: true,
+          createdAt: true,
+        },
+      });
+
+      return NextResponse.json(updatedUser, { status: 201 });
     }
 
     const passwordHash = await hash(parsed.data.password);

@@ -7,7 +7,7 @@ vi.mock("next-auth", () => ({ CredentialsSignin: class extends Error { code = "c
 vi.mock("next-auth/providers/credentials", () => ({ default: (options: unknown) => ({ id: "credentials", ...options as object }) }));
 vi.mock("next-auth/providers/google", () => ({ default: (options: unknown) => ({ id: "google", ...options as object }) }));
 vi.mock("@auth/prisma-adapter", () => ({ PrismaAdapter: () => ({}) }));
-vi.mock("@/lib/db", () => ({ prisma: { user: { findUnique: vi.fn(), create: vi.fn() } } }));
+vi.mock("@/lib/db", () => ({ prisma: { user: { findUnique: vi.fn(), create: vi.fn(), update: vi.fn() } } }));
 vi.mock("@node-rs/argon2", () => ({ hash: vi.fn(async () => "hashed-password"), verify: vi.fn(async () => true) }));
 vi.mock("@/lib/env", () => ({ env: { NEXTAUTH_SECRET: "test-secret", GOOGLE_CLIENT_ID: "test-id", GOOGLE_CLIENT_SECRET: "test-secret" } }));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn(), RATE_LIMIT_CONFIGS: { auth: {}, apiMutation: {} } }));
