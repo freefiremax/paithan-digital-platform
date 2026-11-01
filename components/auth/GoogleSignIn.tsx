@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { GoogleMark } from './GoogleMark';
 import styles from './CitizenAuth.module.css';
@@ -15,11 +16,11 @@ export function GoogleSignIn({ callbackUrl, disabled = false, onStart, onFailure
   const [failed, setFailed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [attempt, setAttempt] = useState(0);
+
   useEffect(() => {
     let active = true;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 25000);
-    // Prepare CSRF in parallel with the security widget, rather than after a click.
     void fetch('/api/auth/csrf', { credentials: 'same-origin', cache: 'no-store', signal: controller.signal }).then(async response => {
       if (!active) return;
       if (!response.ok) { setFailed(true); return; }
@@ -32,40 +33,18 @@ export function GoogleSignIn({ callbackUrl, disabled = false, onStart, onFailure
     }).catch(() => { if (active) { setFailed(true); } }).finally(() => clearTimeout(timeout));
     return () => { active = false; clearTimeout(timeout); controller.abort(); };
   }, [attempt]);
+
   async function submit(event: FormEvent<HTMLFormElement>) {
-    if (disabled || submitting) {
-      event.preventDefault();
-      return;
-    }
+    event.preventDefault();
+    if (disabled || submitting) return;
     setSubmitting(true);
     callbacks.current.onStart();
 
-    let token = csrfToken;
-    if (!token) {
-      event.preventDefault();
-      try {
-        const response = await fetch('/api/auth/csrf', { credentials: 'same-origin', cache: 'no-store' });
-        if (response.ok) {
-          const body = await response.json();
-          if (typeof body?.csrfToken === 'string' && body.csrfToken.trim() && body.csrfToken.length <= 1024) {
-            token = body.csrfToken;
-            setCsrfToken(token);
-          }
-        }
-      } catch {
-        // Handled below
-      }
-
-      if (!token) {
-        setSubmitting(false);
-        callbacks.current.onFailure('signInUnavailable');
-        return;
-      }
-
-      const form = event.currentTarget;
-      const input = form.querySelector('input[name="csrfToken"]') as HTMLInputElement;
-      if (input) input.value = token;
-      form.submit();
+    try {
+      await signIn('google', { callbackUrl });
+    } catch {
+      setSubmitting(false);
+      callbacks.current.onFailure('signInUnavailable');
     }
   }
   return <div>

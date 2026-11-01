@@ -83,7 +83,7 @@ function AdminLoginForm() {
     <section className={styles.card} aria-label={t("title")}>
       {isRegistered && <p className={styles.success} role="status">{tLogin("accountCreatedSuccess")}</p>}
       {error && <p className={styles.error} role="alert">{error}</p>}
-      <GoogleSignIn callbackUrl={targetCallbackUrl} disabled={isLoading} onStart={() => { setError(''); setIsLoading(true); }} onFailure={key => setError(common(key))} onRetry={() => setError('')}/>
+      <GoogleSignIn callbackUrl={targetCallbackUrl} disabled={isLoading} onStart={() => { setError(''); setIsLoading(true); }} onFailure={key => { setError(common(key)); setIsLoading(false); }} onRetry={() => setError('')}/>
       <div className={styles.divider}>{common("orUseEmail")}</div>
       <form onSubmit={handleSubmit} className={styles.form} aria-busy={isLoading}>
         <div className={styles.field}><label htmlFor="auth-email">{t("emailLabel")}</label><div className={styles.inputWrap}><Mail size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-email" name="email" type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} className={styles.input} placeholder={t("emailPlaceholder")}/></div></div>

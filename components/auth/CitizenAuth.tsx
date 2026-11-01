@@ -89,7 +89,7 @@ export function CitizenAuth({ mode }: { mode: 'login' | 'register' }) {
       <section className={styles.card} aria-label={t('title')}>
         {!registering && params.get('registered') === '1' && <p className={styles.success} role="status">{t('accountCreatedSuccess')}</p>}
         {error && <div className={styles.error} role="alert"><p>{error}</p>{registrationSuggested && <Link href={alternate} className={styles.recoveryLink}>{t('registerLink')}</Link>}</div>}
-        <GoogleSignIn callbackUrl={callbackUrl} disabled={busy} onStart={() => { setError(''); setBusy(true); }} onFailure={key => setError(common(key))} onRetry={() => setError('')}/>
+        <GoogleSignIn callbackUrl={callbackUrl} disabled={busy} onStart={() => { setError(''); setBusy(true); }} onFailure={key => { setError(common(key)); setBusy(false); }} onRetry={() => setError('')}/>
         <div className={styles.divider}>{common('orUseEmail')}</div>
         <form onSubmit={submit} className={`${styles.form} ${registering ? styles.registerForm : ''}`} aria-busy={busy}>
           {registering && <div className={styles.field}><label htmlFor="auth-name">{t('nameLabel')}</label><div className={styles.inputWrap}><User size={17} className={styles.inputIcon} aria-hidden="true"/><input id="auth-name" name="name" autoComplete="name" required maxLength={100} value={name} onChange={e => setName(e.target.value)} className={styles.input} placeholder={t('namePlaceholder')} /></div></div>}
