@@ -18,7 +18,7 @@ export function GoogleSignIn({ callbackUrl, disabled = false, onStart, onFailure
   useEffect(() => {
     let active = true;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 25000);
     // Prepare CSRF in parallel with the security widget, rather than after a click.
     void fetch('/api/auth/csrf', { credentials: 'same-origin', cache: 'no-store', signal: controller.signal }).then(async response => {
       if (!active) return;
