@@ -54,7 +54,6 @@ export function TurnstileWidget({
     const completeVerified = (tok: string) => {
       if (!active || phase === 'verified') return;
       clearTimeout(timer);
-      clearTimeout(fastPathTimer);
       verifiedAt = Date.now();
       update('verified');
       setErrorCode('');
@@ -64,17 +63,13 @@ export function TurnstileWidget({
     const fail = (code = 'challenge-failed') => {
       if (!active || phase === 'verified') return;
       failureCode = code;
-      const fallbackToken = `cf_fallback_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-      completeVerified(fallbackToken);
+      clearTimeout(timer);
+      callbacks.current.onVerify('');
+      setErrorCode(code);
+      update('error');
+      callbacks.current.onError?.();
     };
 
-    // Fast-path resolution: Guarantee verification within 3.5s (under 5s max)
-    const fastPathTimer = setTimeout(() => {
-      if (active && phase !== 'verified') {
-        const fallbackToken = `cf_fallback_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-        completeVerified(fallbackToken);
-      }
-    }, 3500);
     // A slow challenge is not a failed challenge. Keep Cloudflare mounted and
     // let its actual callbacks decide success/failure; offer a fast retry.
     const watch = (milliseconds = 6000) => {
@@ -113,7 +108,7 @@ export function TurnstileWidget({
           completeVerified(token);
           timer = setTimeout(() => { if (!document.hidden) refresh(); }, 240000);
         },
-        'error-callback': () => { fail('challenge-error'); return true; },
+        'error-callback': code => { fail(code); return true; },
         'timeout-callback': () => fail('challenge-timeout'),
         'unsupported-callback': () => fail('unsupported-browser'),
         'before-interactive-callback': () => { if (!active || phase === 'verified') return; update('interactive'); },
@@ -122,7 +117,7 @@ export function TurnstileWidget({
       });
     }).catch(() => fail('render-failed'));
     return () => {
-      active = false; clearTimeout(timer); clearTimeout(fastPathTimer);
+      active = false; clearTimeout(timer);
       document.removeEventListener('visibilitychange', resume); window.removeEventListener('online', resume);
       if (id !== null) { try { api?.remove(id); } catch { /* Already removed. */ } }
     };
@@ -140,7 +135,7 @@ export function TurnstileWidget({
       </div>
     )}
     {siteKey && <div className={styles.slot}>
-      {(status === 'loading' || status === 'checking' || status === 'interactive') && (
+      {(status === 'loading' || status === 'checking') && (
         <div className={`${styles.cfPlaceholder} ${styles.cfOverlay}`} aria-hidden="true">
           <div className={styles.cfPlaceholderLeft}>
             <svg className={styles.cfSpinner} width="22" height="22" viewBox="0 0 24 24" fill="none">
