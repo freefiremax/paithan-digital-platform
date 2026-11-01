@@ -32,22 +32,47 @@ export function GoogleSignIn({ callbackUrl, disabled = false, onStart, onFailure
     }).catch(() => { if (active) { setFailed(true); } }).finally(() => clearTimeout(timeout));
     return () => { active = false; clearTimeout(timeout); controller.abort(); };
   }, [attempt]);
-  function submit(event: FormEvent<HTMLFormElement>) {
-    if (!csrfToken || disabled || submitting) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    if (disabled || submitting) {
       event.preventDefault();
-      if (!csrfToken) {
-        callbacks.current.onFailure('signInUnavailable');
-      }
       return;
     }
-    setSubmitting(true); callbacks.current.onStart();
-    // Native Auth.js POST preserves CSRF/state/PKCE checks and avoids getProviders().
+    setSubmitting(true);
+    callbacks.current.onStart();
+
+    let token = csrfToken;
+    if (!token) {
+      event.preventDefault();
+      try {
+        const response = await fetch('/api/auth/csrf', { credentials: 'same-origin', cache: 'no-store' });
+        if (response.ok) {
+          const body = await response.json();
+          if (typeof body?.csrfToken === 'string' && body.csrfToken.trim() && body.csrfToken.length <= 1024) {
+            token = body.csrfToken;
+            setCsrfToken(token);
+          }
+        }
+      } catch {
+        // Handled below
+      }
+
+      if (!token) {
+        setSubmitting(false);
+        callbacks.current.onFailure('signInUnavailable');
+        return;
+      }
+
+      const form = event.currentTarget;
+      const input = form.querySelector('input[name="csrfToken"]') as HTMLInputElement;
+      if (input) input.value = token;
+      form.submit();
+    }
   }
   return <div>
     <form action="/api/auth/signin/google" method="POST" onSubmit={submit} data-google-sign-in>
       <input type="hidden" name="callbackUrl" value={callbackUrl}/>
       <input type="hidden" name="csrfToken" value={csrfToken}/>
-      <button type="submit" disabled={disabled || submitting || !csrfToken} className={styles.google} aria-busy={!failed && !csrfToken}><GoogleMark/>{t('continueWithGoogle')}</button>
+      <button type="submit" disabled={disabled || submitting} className={styles.google} aria-busy={submitting}><GoogleMark/>{t('continueWithGoogle')}</button>
     </form>
     {failed && <button type="button" className={styles.recoveryLink} onClick={() => { callbacks.current.onRetry(); setFailed(false); setCsrfToken(''); setAttempt(value => value + 1); }}>{t('retrySignIn')}</button>}
   </div>;

@@ -116,9 +116,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       }
       // Recheck authorization on session reads as well as client update requests.
-      if (!user && (token.id || token.sub)) {
-        const storedUser = await prisma.user.findUnique({ where: { id: (token.id || token.sub) as string } });
+      if (!user && (token.id || token.sub || token.email)) {
+        const userId = (token.id || token.sub) as string | undefined;
+        let storedUser = userId ? await prisma.user.findUnique({ where: { id: userId } }) : null;
+        if (!storedUser && token.email) {
+          storedUser = await prisma.user.findUnique({ where: { email: token.email as string } });
+        }
         if (!storedUser) return null;
+        token.id = storedUser.id;
         token.role = storedUser.role;
         token.wardId = storedUser.wardId;
         token.name = storedUser.name;
